@@ -1,0 +1,3 @@
+[submodule "msrepository"]
+	path = msrepository
+	url = https://gitlab.com/MilSpecSG/msrepository
