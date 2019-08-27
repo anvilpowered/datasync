@@ -1,2 +1,12 @@
 rootProject.name = 'MSDataSync'
+include 'sponge'
+
+include 'msrepository'
+include 'msrepository:msr-api'
+include 'msrepository:msr-sponge'
+include 'msrepository:msr-api:api-repository'
+include 'msrepository:msr-api:api-config'
+include 'msrepository:msr-sponge:sponge-repository'
+include 'msrepository:msr-sponge:sponge-config'
+include 'api'
 
