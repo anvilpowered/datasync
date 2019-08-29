@@ -24,13 +24,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SyncStartCommand implements CommandExecutor {
+public class UploadStartCommand implements CommandExecutor {
 
     @Inject
     PlayerSerializer<Member, Player> playerSerializer;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
+    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+
+        SyncLockCommand.assertUnlocked(source);
+
         Optional<Player> optionalPlayer = context.getOne(Text.of("player"));
 
         if (optionalPlayer.isPresent()) {
@@ -61,7 +64,7 @@ public class SyncStartCommand implements CommandExecutor {
                             "Successfully serialized the following players: \n", TextColors.GREEN, s));
                         if (unsuccessful.size() > 0) {
                             String u = unsuccessful.stream().map(User::getName).collect(Collectors.joining(","));
-                            source.sendMessage(Text.of(TextColors.RED, "The following players were not successfully serialized: \n", u));
+                            source.sendMessage(Text.of(TextColors.RED, "The following players were unsuccessfully serialized: \n", u));
                         }
                     }
                 });
