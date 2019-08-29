@@ -18,7 +18,7 @@ public class SyncCommandManager implements CommandManager {
     SyncHelpCommand syncHelpCommand;
 
     @Inject
-    SyncStartCommand syncStartCommand;
+    UploadStartCommand uploadStartCommand;
 
     public static Map<List<String>, CommandSpec> subCommands = new HashMap<>();
 
@@ -32,7 +32,7 @@ public class SyncCommandManager implements CommandManager {
             .arguments(
                 GenericArguments.optional(GenericArguments.player(Text.of("player")))
             )
-            .executor(syncStartCommand)
+            .executor(uploadStartCommand)
             .build());
 
 

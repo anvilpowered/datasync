@@ -24,9 +24,4 @@ public class Utils {
             return true;
         });
     }
-
-    public static <P> CompletableFuture<Stream<P>> consolidateTasks(Stream<CompletableFuture<P>> stream) {
-        return CompletableFuture.allOf(stream.toArray(CompletableFuture[]::new))
-            .thenApplyAsync(v -> stream.map(CompletableFuture::join));
-    }
 }
