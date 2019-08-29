@@ -1,9 +1,9 @@
-package msdatasync;
+package rocks.milspecsg.msdatasync;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
-import msdatasync.service.config.implementation.MSConfigurationService;
+import rocks.milspecsg.msdatasync.service.implementation.config.MSConfigurationService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
