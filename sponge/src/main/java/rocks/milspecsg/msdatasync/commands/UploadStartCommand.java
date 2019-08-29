@@ -38,6 +38,7 @@ public class UploadStartCommand implements CommandExecutor {
 
         if (optionalPlayer.isPresent()) {
             // serialize only one player
+            System.out.println("Serializing " + optionalPlayer.get().getName());
             playerSerializer.serialize(optionalPlayer.get()).thenAcceptAsync(success -> {
                 if (success) {
                     source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Successfully serialized ", optionalPlayer.get().getName()));

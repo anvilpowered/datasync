@@ -45,9 +45,9 @@ public class SyncLockCommand implements CommandExecutor {
                 case "on":
                     if (index >= 0) {
                         unlockedPlayers.remove(index);
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock", TextColors.YELLOW, "enabled"));
+                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock ", TextColors.YELLOW, "enabled"));
                     } else {
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock already", TextColors.YELLOW, "enabled"));
+                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock already ", TextColors.YELLOW, "enabled"));
                     }
                     break;
                 case "off":

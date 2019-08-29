@@ -63,32 +63,38 @@ public abstract class ApiMemberRepository<M extends Member, P, K, User> extends 
     }
 
 
-
     @Override
     public CompletableFuture<Boolean> setMemberKey(Member member, K key, Optional<?> optionalValue) {
         return CompletableFuture.supplyAsync(() -> {
-            if (!optionalValue.isPresent()) return false;
+            System.out.print("Checking value...");
+            if (!optionalValue.isPresent()) {
+                System.out.println("MISSING");
+                return false;
+            }
+            System.out.println("OK");
+
+            System.out.print("Checking name...");
             Optional<String> optionalName = dataKeyService.getName(key);
-            if (!optionalName.isPresent()) return false;
+            if (!optionalName.isPresent()) {
+                System.out.println("MISSING");
+                return false;
+            }
+            System.out.println("OK");
+            System.out.println("Putting: " + optionalName.get() + " , " + optionalValue.get());
             member.keys.put(optionalName.get(), optionalValue.get());
             return true;
         });
     }
 
     @Override
-    public <T> CompletableFuture<Optional<T>> getMemberKey(Member member, K key, TypeToken<T> typeToken) {
+    public CompletableFuture<Optional<?>> getMemberKey(Member member, K key) {
         return CompletableFuture.supplyAsync(() -> {
 
             Optional<String> optionalName = dataKeyService.getName(key);
             if (!optionalName.isPresent()) return Optional.empty();
             if (!member.keys.containsKey(optionalName.get())) return Optional.empty();
 
-            Object keyValue = member.keys.get(optionalName.get());
-
-            if (typeToken.isAssignableFrom(keyValue.getClass())) {
-                return Optional.of((T) keyValue);
-            }
-            return Optional.empty();
+            return Optional.ofNullable(member.keys.get(optionalName.get()));
         });
     }
 

@@ -6,8 +6,8 @@ import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Singleton
 public abstract class ApiDataKeyService<K> implements DataKeyService<K> {
 
     private Map<K, String> nameMap;

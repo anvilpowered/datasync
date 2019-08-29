@@ -34,6 +34,7 @@ public class DownloadStartCommand implements CommandExecutor {
 
         if (optionalPlayer.isPresent()) {
             // serialize only one player
+            System.out.println("Deserializing " + optionalPlayer.get().getName());
             playerSerializer.deserialize(optionalPlayer.get()).thenAcceptAsync(success -> {
                 if (success) {
                     source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Successfully deserialized ", optionalPlayer.get().getName()));

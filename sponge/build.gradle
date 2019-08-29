@@ -55,14 +55,21 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = "MSQuestIntegration-Sponge-${modVersion}.jar"
+    archiveName = "MSDataSync-Sponge-${modVersion}.jar"
 
     dependencies {
 //        include(dependency(':msrepository:msr-sponge:spo'))
 ////        include(dependency('rocks.milspecsg.msrepository:.*'))
 
-        include project(':msrepository:msr-sponge:sponge-config')
+
+        include dependency('org.mongodb:bson:3.10.1')
+        include dependency('org.mongodb:mongodb-driver-sync:3.10.1')
+        include dependency('org.mongodb.morphia:morphia:1.3.2')
+        include dependency('org.mongodb:mongo-java-driver:3.4.0')
         include project(':msrepository:msr-api:api-config')
+        include project(':msrepository:msr-api:api-repository')
+        include project(':msrepository:msr-sponge:sponge-config')
+        include project(':msrepository:msr-sponge:sponge-repository')
         include project(':api')
     }
 }

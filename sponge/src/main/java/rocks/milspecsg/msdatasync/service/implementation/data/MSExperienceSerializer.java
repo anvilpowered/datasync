@@ -19,6 +19,7 @@ public class MSExperienceSerializer extends ApiExperienceSerializer<Member, Play
 
     @Override
     public CompletableFuture<Boolean> deserialize(Member member, Player player) {
+        System.out.println("in experience");
         return Utils.deserialize(memberRepository, member, player, Keys.TOTAL_EXPERIENCE);
     }
 }

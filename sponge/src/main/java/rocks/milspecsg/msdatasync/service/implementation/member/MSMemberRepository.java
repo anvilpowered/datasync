@@ -1,6 +1,7 @@
 package rocks.milspecsg.msdatasync.service.implementation.member;
 
 import com.google.common.reflect.TypeToken;
+import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -20,6 +21,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MSMemberRepository extends ApiMemberRepository<Member, Player, Key, User> {
 
+    @Inject
     public MSMemberRepository(MongoContext mongoContext) {
         super(mongoContext);
     }
