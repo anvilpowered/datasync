@@ -51,7 +51,7 @@ public interface MemberRepository<M extends Member, P, K, U> extends Repository<
 
     CompletableFuture<Boolean> setMemberKey(Member member, K key, Optional<?> optionalValue);
 
-    <T> CompletableFuture<Optional<T>> getMemberKey(Member member, K key, TypeToken<T> typeToken);
+    CompletableFuture<Optional<?>> getMemberKey(Member member, K key);
 
     Query<M> asQuery(UUID userUUID);
 
