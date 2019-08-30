@@ -9,6 +9,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.entity.living.player.gamemode.GameMode;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.util.generator.dummy.DummyObjectProvider;
 import rocks.milspecsg.msdatasync.MSDataSync;
@@ -31,12 +32,8 @@ public class Utils {
             }
 
             Task.builder().execute(() -> {
-                Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> {
-
-                    p.offer(key, (E) decode(optional.get(), key));
-                });
+                Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> p.offer(key, (E) decode(optional.get(), key)));
             }).submit(MSDataSync.plugin);
-
             return true;
         });
     }
@@ -59,8 +56,6 @@ public class Utils {
                     return GameModes.NOT_SET;
             }
         }
-
-
         return value;
     }
 }

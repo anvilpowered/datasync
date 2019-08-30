@@ -45,9 +45,9 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
 
     @Inject
     private Provider<HungerSerializer<M, P>> hungerSerializerProvider;
-//
-//    @Inject
-//    private Provider<InventorySerializer<M, P>> inventorySerializerProvider;
+
+    @Inject
+    private Provider<InventorySerializer<M, P>> inventorySerializerProvider;
 
     @Inject
     private ConfigurationService configurationService;
@@ -66,6 +66,7 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
         serializers.add(gameModeSerializerProvider.get());
         serializers.add(healthSerializerProvider.get());
         serializers.add(hungerSerializerProvider.get());
+        serializers.add(inventorySerializerProvider.get());
     }
 
     @Override
@@ -95,8 +96,10 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
                 if (!serializer.serialize(member, player).join()) {
                     System.err.println("[MSDataSync] Serialization FAILED for player uuid " + member.userUUID + " : " + serializer.getName());
                     return false;
+                } else {
                 }
             }
+
             return memberRepository.insertOne(member).join().isPresent();
         });
     }
@@ -109,7 +112,6 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
         }
         return CompletableFuture.supplyAsync(() -> {
             for (Serializer<M, P> serializer : serializers) {
-                System.out.println("doing " + serializer.getName());
                 if (!serializer.deserialize(member, player).join()) {
                     System.err.println("[MSDataSync] Deserialization FAILED for player uuid " + member.userUUID + " : " + serializer.getName());
                     return false;
