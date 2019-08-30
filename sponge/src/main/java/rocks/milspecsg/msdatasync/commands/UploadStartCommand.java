@@ -7,6 +7,7 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
@@ -38,7 +39,7 @@ public class UploadStartCommand implements CommandExecutor {
 
         if (optionalPlayer.isPresent()) {
             // serialize only one player
-            System.out.println("Serializing " + optionalPlayer.get().getName());
+//            System.out.println("Serializing " + optionalPlayer.get().getName());
             playerSerializer.serialize(optionalPlayer.get()).thenAcceptAsync(success -> {
                 if (success) {
                     source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Successfully serialized ", optionalPlayer.get().getName()));

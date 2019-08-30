@@ -66,21 +66,14 @@ public abstract class ApiMemberRepository<M extends Member, P, K, User> extends 
     @Override
     public CompletableFuture<Boolean> setMemberKey(Member member, K key, Optional<?> optionalValue) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.print("Checking value...");
             if (!optionalValue.isPresent()) {
-                System.out.println("MISSING");
                 return false;
             }
-            System.out.println("OK");
 
-            System.out.print("Checking name...");
             Optional<String> optionalName = dataKeyService.getName(key);
             if (!optionalName.isPresent()) {
-                System.out.println("MISSING");
                 return false;
             }
-            System.out.println("OK");
-            System.out.println("Putting: " + optionalName.get() + " , " + optionalValue.get());
             member.keys.put(optionalName.get(), optionalValue.get());
             return true;
         });

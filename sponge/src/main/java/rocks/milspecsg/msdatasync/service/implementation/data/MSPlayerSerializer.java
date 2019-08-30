@@ -26,10 +26,8 @@ public class MSPlayerSerializer extends ApiPlayerSerializer<Member, Player, Key,
     @Override
     public CompletableFuture<Boolean> deserialize(Player player) {
         return memberRepository.getOne(player.getUniqueId()).thenApplyAsync(optionalMember -> {
-            System.out.println("Got member optional");
             if (!optionalMember.isPresent()) return false;
             Member member = optionalMember.get();
-            System.out.println("Got member " + member.getId());
             if (member.keys == null) member.keys = new HashMap<>();
             return deserialize(member, player).join();
         });

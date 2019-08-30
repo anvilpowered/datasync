@@ -1,7 +1,11 @@
 package rocks.milspecsg.msdatasync.service.implementation.data;
 
+import org.spongepowered.api.CatalogType;
+import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.mutable.entity.HealthData;
+import org.spongepowered.api.data.persistence.DataTranslators;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import rocks.milspecsg.msdatasync.model.core.Member;
@@ -14,13 +18,7 @@ public class MSHealthSerializer extends ApiHealthSerializer<Member, Player, Key,
 
     @Override
     public CompletableFuture<Boolean> serialize(Member member, Player player) {
-        System.out.println("Serializing health");
-        System.out.println(member.keys);
-        return Utils.serialize(memberRepository, member, player, Keys.HEALTH).thenApplyAsync(result -> {
-            System.out.println("result: " + result);
-            System.out.println(member.keys);
-            return result;
-        });
+        return Utils.serialize(memberRepository, member, player, Keys.HEALTH);
     }
 
     @Override
