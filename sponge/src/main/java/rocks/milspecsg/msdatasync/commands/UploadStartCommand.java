@@ -52,6 +52,7 @@ public class UploadStartCommand implements CommandExecutor {
             Collection<Player> players = Sponge.getServer().getOnlinePlayers();
             ConcurrentLinkedQueue<Player> successful = new ConcurrentLinkedQueue<>();
             ConcurrentLinkedQueue<Player> unsuccessful = new ConcurrentLinkedQueue<>();
+            Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Starting upload..."));
 
             for (Player player : players) {
                 playerSerializer.serialize(player).thenAcceptAsync(success -> {
@@ -62,11 +63,14 @@ public class UploadStartCommand implements CommandExecutor {
                     }
                     if (successful.size() + unsuccessful.size() >= players.size()) {
                         String s = successful.stream().map(User::getName).collect(Collectors.joining(","));
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW,
-                            "Successfully serialized the following players: \n", TextColors.GREEN, s));
+                        source.sendMessage(
+                            Text.of(TextColors.YELLOW, "The following players were successfully serialized: \n", TextColors.GREEN, s)
+                        );
                         if (unsuccessful.size() > 0) {
                             String u = unsuccessful.stream().map(User::getName).collect(Collectors.joining(","));
-                            source.sendMessage(Text.of(TextColors.RED, "The following players were unsuccessfully serialized: \n", u));
+                            source.sendMessage(
+                                Text.of(TextColors.RED, "The following players were unsuccessfully serialized: \n", u)
+                            );
                         }
                     }
                 });

@@ -10,7 +10,9 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
+import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
+import rocks.milspecsg.msdatasync.listeners.PlayerListener;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.service.data.*;
 import rocks.milspecsg.msdatasync.service.implementation.config.MSConfigurationService;
@@ -22,8 +24,10 @@ import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msdatasync.service.implementation.data.*;
 import rocks.milspecsg.msdatasync.service.implementation.keys.MSDataKeyService;
 import rocks.milspecsg.msdatasync.service.implementation.member.MSMemberRepository;
+import rocks.milspecsg.msdatasync.service.implementation.tasks.MSSerializationTaskService;
 import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
+import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msrepository.APIConfigurationModule;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 import rocks.milspecsg.msrepository.service.config.ApiConfigurationService;
@@ -45,6 +49,7 @@ public class MSDataSync {
         Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, "Loading..."));
         initServices();
         initSingletonServices();
+        initListeners();
         initCommands();
         Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, "Finished"));
     }
@@ -57,6 +62,13 @@ public class MSDataSync {
         injector.getInstance(ConfigurationService.class);
         injector.getInstance(MSDataKeyService.class).initializeDefaultMappings();
         injector.getInstance(MSPlayerSerializer.class).loadConfig();
+        injector.getInstance(SerializationTaskService.class).startSerializationTask();
+    }
+
+    private void initListeners() {
+        PlayerListener playerListener = injector.getInstance(PlayerListener.class);
+        playerListener.loadConfig();
+        Sponge.getEventManager().registerListeners(this, playerListener);
     }
 
     private void initCommands() {
@@ -100,6 +112,10 @@ public class MSDataSync {
 
             bind(new TypeLiteral<ApiMemberRepository<Member, Player, Key, User>>() {})
                 .to(new TypeLiteral<MSMemberRepository>() {});
+
+            bind(ApiSerializationTaskService.class).to(MSSerializationTaskService.class);
+
+            bind(PlayerListener.class);
         }
     }
 }
