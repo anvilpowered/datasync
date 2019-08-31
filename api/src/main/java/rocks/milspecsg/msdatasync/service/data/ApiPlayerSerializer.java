@@ -25,14 +25,6 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
     }
 
     private List<Serializer<M, P>> serializers;
-//
-//    public void addSerializer(Provider<? extends Serializer<M, P>> serializerProvider) {
-//        serializers.add(serializerProvider);
-//    }
-//
-//    public void clearSerializers() {
-//        serializers.clear();
-//    }
 
     @Inject
     private Provider<ExperienceSerializer<M, P>> experienceSerializerProvider;
@@ -49,25 +41,45 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
     @Inject
     private Provider<InventorySerializer<M, P>> inventorySerializerProvider;
 
-    @Inject
     private ConfigurationService configurationService;
 
     @Inject
-    private Injector injector;
-
-    public ApiPlayerSerializer() {
+    public ApiPlayerSerializer(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+        configurationService.addConfigLoadedListener(this::loadConfig);
     }
 
-    public void loadConfig() {
-//        List<String> enabledSerializers = configurationService.getConfigList(ConfigKeys.ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
-//        });
+    private void loadConfig() {
+        List<String> enabledSerializers = configurationService.getConfigList(ConfigKeys.ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {});
         serializers = new ArrayList<>();
-        serializers.add(experienceSerializerProvider.get());
-        serializers.add(gameModeSerializerProvider.get());
-        serializers.add(healthSerializerProvider.get());
-        serializers.add(hungerSerializerProvider.get());
-        serializers.add(inventorySerializerProvider.get());
+
+        if (enabledSerializers.contains("Experience")) {
+            announceEnabled("Experience");
+            serializers.add(experienceSerializerProvider.get());
+        }
+
+        if (enabledSerializers.contains("GameMode")) {
+            announceEnabled("GameMode");
+            serializers.add(gameModeSerializerProvider.get());
+        }
+
+        if (enabledSerializers.contains("Health")) {
+            announceEnabled("Health");
+            serializers.add(healthSerializerProvider.get());
+        }
+
+        if (enabledSerializers.contains("Hunger")) {
+            announceEnabled("Hunger");
+            serializers.add(hungerSerializerProvider.get());
+        }
+
+        if (enabledSerializers.contains("Inventory")) {
+            announceEnabled("Inventory");
+            serializers.add(inventorySerializerProvider.get());
+        }
     }
+
+    protected abstract void announceEnabled(String name);
 
     @Override
     public CompletableFuture<Boolean> serialize(M member, P player) {
@@ -75,31 +87,13 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
             System.err.println("[MSDataSync] No enabled serializers");
             return CompletableFuture.completedFuture(true);
         }
-//        return ApiUtils.combineTasks(serializers.stream().map(serializer -> serializer.serialize(member, player)))
-//            // Reduce to single boolean with (a,b) -> a && b accumulator. Only true of all values in stream are true.
-//            // Only true when ALL serializers successfully ran
-//            .thenApplyAsync(stream -> {
-//                System.out.println("Tasks finished");
-//                return stream.reduce(true, (a, b) -> a && b);
-//            }).thenApplyAsync(result -> {
-//                if (result) {
-//                    System.out.println("successful serialization: " + member.getId());
-//                    return memberRepository.insertOne(member).join().isPresent();
-//                } else {
-//                    System.out.println("unsuccessful serialization: " + member.getId());
-//                    return false;
-//                }
-//            });
-
         return CompletableFuture.supplyAsync(() -> {
             for (Serializer<M, P> serializer : serializers) {
                 if (!serializer.serialize(member, player).join()) {
                     System.err.println("[MSDataSync] Serialization FAILED for player uuid " + member.userUUID + " : " + serializer.getName());
                     return false;
-                } else {
                 }
             }
-
             return memberRepository.insertOne(member).join().isPresent();
         });
     }

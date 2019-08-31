@@ -8,8 +8,10 @@ import org.spongepowered.api.config.DefaultConfig;
 import rocks.milspecsg.msrepository.service.config.ApiConfigurationService;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.*;
 
+@Singleton
 public class MSConfigurationService extends ApiConfigurationService {
 
     @Inject

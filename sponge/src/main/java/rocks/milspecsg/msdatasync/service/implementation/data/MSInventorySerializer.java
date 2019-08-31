@@ -129,18 +129,15 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
                     r1.put(DataQuery.of(SEPARATOR, s1), value);
                 });
                 result.put(dq, r1);
-            } else if (o instanceof List) {
-//                System.out.println("This is a list!");
-                List<String> list = (List<String>) o;
-
-                List<String> r1 = new ArrayList<>(list.size());
-                //list.forEach(st -> r1.add(TextSerializers.LEGACY_FORMATTING_CODE.deserializeUnchecked(st)));
-                list.forEach(st -> {
-//                    System.out.println("Adding " + st);
-                    r1.add(st);
-                });
-                result.put(dq, r1);
-            } else if (!s.equals("ItemType") && o instanceof String) {
+            }
+//            else if (o instanceof List) {
+//                List<String> list = (List<String>) o;
+//
+//                List<String> r1 = new ArrayList<>(list.size());
+//                r1.addAll(list);
+//                result.put(dq, r1);
+//            }
+            else if (!s.equals("ItemType") && o instanceof String) {
                 String n = o.toString();
 //                System.out.println(("This is a string: " + n));
                 result.put(dq, n);

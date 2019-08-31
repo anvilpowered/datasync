@@ -7,10 +7,7 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msdatasync.PluginPermissions;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SyncCommandManager implements CommandManager {
 
@@ -25,6 +22,9 @@ public class SyncCommandManager implements CommandManager {
 
     @Inject
     SyncLockCommand syncLockCommand;
+
+    @Inject
+    SyncReloadCommand syncReloadCommand;
 
     public static Map<List<String>, CommandSpec> subCommands = new HashMap<>();
 
@@ -58,11 +58,17 @@ public class SyncCommandManager implements CommandManager {
 
         subCommands.put(Arrays.asList("lock", "l"), CommandSpec.builder()
             .description(Text.of("Lock / Unlock commands"))
-            .permission(PluginPermissions.START_COMMAND)
+            .permission(PluginPermissions.LOCK_COMMAND)
             .arguments(
                 GenericArguments.optional(GenericArguments.choices(Text.of("value"), lockChoices))
             )
             .executor(syncLockCommand)
+            .build());
+
+        subCommands.put(Collections.singletonList("reload"), CommandSpec.builder()
+            .description(Text.of("Reload config"))
+            .permission(PluginPermissions.RELOAD_COMMAND)
+            .executor(syncReloadCommand)
             .build());
 
 
