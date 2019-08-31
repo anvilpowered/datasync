@@ -24,16 +24,37 @@ import java.util.stream.Collectors;
 @Singleton
 public class MSSerializationTaskService extends ApiSerializationTaskService {
 
-    @Inject
-    ConfigurationService configurationService;
+    private ConfigurationService configurationService;
 
     @Inject
-    PlayerSerializer<Member, Player> playerSerializer;
+    private PlayerSerializer<Member, Player> playerSerializer;
+
+    private Task task = null;
+
+    @Inject
+    public MSSerializationTaskService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+        this.configurationService.addConfigLoadedListener(this::loadConfig);
+    }
+
+    private void loadConfig() {
+        stopSerializationTask();
+        startSerializationTask();
+    }
+
 
     @Override
     public void startSerializationTask() {
         Integer interval = configurationService.getConfigInteger(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS);
-        Task.builder().interval(interval, TimeUnit.SECONDS).execute(getSerializationTask()).submit(MSDataSync.plugin);
+
+        Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Submitting sync task with interval: ", interval, " seconds"));
+
+        task = Task.builder().interval(interval, TimeUnit.SECONDS).execute(getSerializationTask()).submit(MSDataSync.plugin);
+    }
+
+    @Override
+    public void stopSerializationTask() {
+        if (task != null) task.cancel();
     }
 
     @Override

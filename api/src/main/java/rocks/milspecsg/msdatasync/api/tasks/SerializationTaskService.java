@@ -8,6 +8,10 @@ public interface SerializationTaskService {
      */
     void startSerializationTask();
 
+    /**
+     * Stops serialization task
+     */
+    void stopSerializationTask();
 
     /**
      *

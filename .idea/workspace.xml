@@ -2,36 +2,76 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="515b02d3-954b-45db-b35a-6c6c601e5e17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/tasks/ApiSerializationTaskService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/annotation-processors.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/annotation-processors.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/fileContent.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/ApiModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/ApiModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/libs/api-0.1.0-dev.jar" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/libs/api-0.1.0-dev.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-repository/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/db/mongodb/MongoContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/db/mongodb/MongoContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$14.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$15.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$16.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/listeners/PlayerListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/listeners/PlayerListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/resources/main/mcmod.info" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/resources/main/mcmod.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/tmp/generateMetadata/mcmod.info" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/tmp/generateMetadata/mcmod.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -144,10 +184,31 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java">
+        <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1218">
-              <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+            <state relative-caret-position="353">
+              <caret line="447" column="68" selection-start-line="447" selection-start-column="68" selection-end-line="447" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="441">
+              <caret line="39" column="158" selection-start-line="39" selection-start-column="158" selection-end-line="39" selection-end-column="158" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="625">
+              <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -155,41 +216,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="49" column="39" selection-start-line="49" selection-start-column="39" selection-end-line="49" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="924">
-              <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="70" column="47" lean-forward="true" selection-start-line="70" selection-start-column="47" selection-end-line="70" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="377">
+              <caret line="51" column="43" lean-forward="true" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -197,29 +225,24 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="13" column="50" lean-forward="true" selection-start-line="13" selection-start-column="50" selection-end-line="13" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="52" column="54" lean-forward="true" selection-start-line="52" selection-start-column="54" selection-end-line="52" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+            <state relative-caret-position="168">
+              <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
               <folding>
-                <element signature="e#898#899#0" expanded="true" />
-                <element signature="e#997#998#0" expanded="true" />
+                <element signature="e#873#874#0" expanded="true" />
+                <element signature="e#916#917#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="167">
+              <caret line="33" column="11" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2165#2166#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -228,8 +251,43 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="73" column="33" lean-forward="true" selection-start-line="73" selection-start-column="33" selection-end-line="73" selection-end-column="33" />
+            <state relative-caret-position="24">
+              <caret line="113" column="61" lean-forward="true" selection-start-line="113" selection-start-column="61" selection-end-line="113" selection-end-column="61" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#5286#5287#0" expanded="true" />
+                <element signature="e#5401#5402#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="460">
+              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -246,11 +304,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>serializing hun</find>
-      <find>serializing hea</find>
-      <find>concurrentha</find>
-      <find>offer opt</find>
-      <find>Proper</find>
       <find>Data</find>
       <find>insert</find>
       <find>checking valu</find>
@@ -261,7 +314,6 @@
       <find>toCon</find>
       <find>Builter</find>
       <find>S</find>
-      <find>System</find>
       <find>System.ou</find>
       <find>System.out</find>
       <find>boolean</find>
@@ -276,6 +328,12 @@
       <find>un</find>
       <find>uns</find>
       <find>l</find>
+      <find>addconfig</find>
+      <find>(ConfigurationService</find>
+      <find>Config</find>
+      <find>ConfigurationService</find>
+      <find>System</find>
+      <find>System.out.p</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -284,10 +342,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncHelpCommand.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiSerializer.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiHungerSerializer.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiHealthSerializer.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiGameModeSerializer.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiExperienceSerializer.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.java" />
@@ -301,7 +355,6 @@
         <option value="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.java" />
         <option value="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/db/mongodb/MongoContext.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncLockCommand.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/keys/ApiDataKeyService.java" />
@@ -314,34 +367,38 @@
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/SerializedDataContainer.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/db/mongodb/ApiMongoContext.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/member/ApiMemberRepository.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.java" />
-        <option value="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" />
-        <option value="$PROJECT_DIR$/sponge/build.gradle" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/tasks/SerializationTask.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTask.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/tasks/ApiSerializationTaskService.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/SerializationTask.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/ApiModule.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java" />
         <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" />
+        <option value="$PROJECT_DIR$/sponge/gradle.properties" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" />
+        <option value="$PROJECT_DIR$/sponge/build.gradle" />
+        <option value="$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" />
         <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" />
+        <option value="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" />
+        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" />
+        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="y" value="23" />
-    <option name="width" value="1920" />
-    <option name="height" value="1128" />
+    <option name="width" value="956" />
+    <option name="height" value="1200" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -521,6 +578,18 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="msrepository" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="msrepository" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
@@ -842,7 +911,7 @@
       <workItem from="1567095614596" duration="18000" />
       <workItem from="1567095645927" duration="60633000" />
       <workItem from="1567203484541" duration="5000" />
-      <workItem from="1567232442793" duration="5959000" />
+      <workItem from="1567232442793" duration="14998000" />
     </task>
     <servers />
   </component>
@@ -852,21 +921,23 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="109801000" />
+    <option name="totallyTimeSpent" value="118840000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2761194" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2761194" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32854578" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32854578" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32854578" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -895,111 +966,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-jre/26f4fcbf06334df7a5091daa120682f252052957/guava-28.1-jre-sources.jar!/com/google/common/collect/ImmutableBiMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="71" column="3" lean-forward="true" selection-start-line="71" selection-start-column="3" selection-end-line="71" selection-end-column="3" />
-          <folding>
-            <element signature="e#2853#2854#0" expanded="true" />
-            <element signature="e#2907#2908#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/MemoryDataContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="54" column="5" lean-forward="true" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
-          <folding>
-            <element signature="e#2252#2253#0" expanded="true" />
-            <element signature="e#2309#2310#0" expanded="true" />
-            <element signature="e#3327#3328#0" expanded="true" />
-            <element signature="e#3384#3385#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/item/ItemType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="39" column="3" lean-forward="true" selection-start-line="39" selection-start-column="3" selection-end-line="39" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#3690#0" expanded="true" />
-            <element signature="e#3535#3536#0" expanded="true" />
-            <element signature="e#3563#3564#0" expanded="true" />
-            <element signature="e#3624#3625#0" expanded="true" />
-            <element signature="e#3685#3686#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/item/inventory/ItemStack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="58" column="17" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/3.10.1/482d329c72d04aa48b0c1e774623594ab8b31ff6/mongodb-driver-core-3.10.1-sources.jar!/com/mongodb/BasicDBObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1983">
-          <caret line="54" column="13" selection-start-line="54" selection-start-column="13" selection-end-line="54" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="585" column="14" selection-start-line="585" selection-start-column="14" selection-end-line="585" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/lang/Class.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="508" column="7" lean-forward="true" selection-start-line="508" selection-start-column="7" selection-end-line="508" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-jre/26f4fcbf06334df7a5091daa120682f252052957/guava-28.1-jre-sources.jar!/com/google/common/reflect/TypeToken.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="929" column="25" lean-forward="true" selection-start-line="929" selection-start-column="25" selection-end-line="929" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/concurrent/atomic/AtomicBoolean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="44" column="29" lean-forward="true" selection-start-line="44" selection-start-column="29" selection-end-line="44" selection-end-column="29" />
-          <folding>
-            <element signature="e#1522#1523#0" expanded="true" />
-            <element signature="e#1566#1567#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/src/main/java/rocks/milspecsg/msrepository/model/results/SpongeCreateResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/value/ValueContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2835">
-          <caret line="174" lean-forward="true" selection-start-line="174" selection-end-line="174" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/DataView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/DataContainer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1092,16 +1058,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1155">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1113,23 +1069,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="115" column="44" lean-forward="true" selection-start-line="115" selection-start-column="44" selection-end-line="115" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="171" column="45" selection-start-line="171" selection-start-column="45" selection-end-line="171" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="278" column="21" lean-forward="true" selection-start-line="278" selection-start-column="21" selection-end-line="278" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -1150,31 +1089,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/tasks/ApiSerializationTaskService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/ApiModule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="907">
           <caret line="72" column="59" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1206,44 +1124,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="49" column="39" selection-start-line="49" selection-start-column="39" selection-end-line="49" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="70" column="47" lean-forward="true" selection-start-line="70" selection-start-column="47" selection-end-line="70" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="13" column="50" lean-forward="true" selection-start-line="13" selection-start-column="50" selection-end-line="13" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -1251,45 +1131,228 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java">
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1218">
-          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+        <state relative-caret-position="676">
+          <caret line="70" column="47" lean-forward="true" selection-start-line="70" selection-start-column="47" selection-end-line="70" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java">
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        <state relative-caret-position="84">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/39bfec7021d6fb13888d49bae64a9c5521aeaf90/spongeapi-7.1.0.jar!/org/spongepowered/api/event/SpongeEventFactory.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="365" column="42" selection-start-line="365" selection-start-column="42" selection-end-line="365" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/gradle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/SerializedItemStack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/Member.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
           <folding>
-            <element signature="e#898#899#0" expanded="true" />
-            <element signature="e#997#998#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.inject/guice/4.0/961359f8352b791c6443a207c847e25d6d3ca7cd/guice-4.0-sources.jar!/com/google/inject/Singleton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepositoryCacheService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#510#511#0" expanded="true" />
+            <element signature="e#553#554#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigLoadedListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="52" column="54" lean-forward="true" selection-start-line="52" selection-start-column="54" selection-end-line="52" selection-end-column="54" />
+        <state relative-caret-position="456">
+          <caret line="52" column="17" lean-forward="true" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+          <folding>
+            <element signature="e#853#854#0" expanded="true" />
+            <element signature="e#894#895#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java">
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="73" column="33" lean-forward="true" selection-start-line="73" selection-start-column="33" selection-end-line="73" selection-end-column="33" />
+        <state relative-caret-position="625">
+          <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" column="34" lean-forward="true" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/tasks/ApiSerializationTaskService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="69" lean-forward="true" selection-start-line="4" selection-start-column="69" selection-end-line="4" selection-end-column="69" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="167">
+          <caret line="33" column="11" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2165#2166#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="51" column="43" lean-forward="true" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="113" column="61" lean-forward="true" selection-start-line="113" selection-start-column="61" selection-end-line="113" selection-end-column="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5286#5287#0" expanded="true" />
+            <element signature="e#5401#5402#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+          <folding>
+            <element signature="e#873#874#0" expanded="true" />
+            <element signature="e#916#917#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="447" column="68" selection-start-line="447" selection-start-column="68" selection-end-line="447" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="39" column="158" selection-start-line="39" selection-start-column="158" selection-end-line="39" selection-end-column="158" />
         </state>
       </provider>
     </entry>
