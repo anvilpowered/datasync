@@ -47,6 +47,7 @@ public class DownloadStartCommand implements CommandExecutor {
             Collection<Player> players = Sponge.getServer().getOnlinePlayers();
             ConcurrentLinkedQueue<Player> successful = new ConcurrentLinkedQueue<>();
             ConcurrentLinkedQueue<Player> unsuccessful = new ConcurrentLinkedQueue<>();
+            Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Starting download..."));
 
             for (Player player : players) {
                 playerSerializer.deserialize(player).thenAcceptAsync(success -> {
@@ -56,12 +57,17 @@ public class DownloadStartCommand implements CommandExecutor {
                         unsuccessful.add(player);
                     }
                     if (successful.size() + unsuccessful.size() >= players.size()) {
-                        String s = successful.stream().map(User::getName).collect(Collectors.joining(","));
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW,
-                            "Successfully deserialized the following players: \n", TextColors.GREEN, s));
+                        if (successful.size() > 0) {
+                            String s = successful.stream().map(User::getName).collect(Collectors.joining(","));
+                            source.sendMessage(
+                                Text.of(TextColors.YELLOW, "The following players were successfully deserialized: \n", TextColors.GREEN, s)
+                            );
+                        }
                         if (unsuccessful.size() > 0) {
                             String u = unsuccessful.stream().map(User::getName).collect(Collectors.joining(","));
-                            source.sendMessage(Text.of(TextColors.RED, "The following players were unsuccessfully deserialized: \n", u));
+                            source.sendMessage(
+                                Text.of(TextColors.RED, "The following players were unsuccessfully deserialized: \n", u)
+                            );
                         }
                     }
                 });

@@ -59,7 +59,7 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
     }
 
     public void loadConfig() {
-//        List<String> enabledSerializers = configurationService.getConfigList(ConfigKeys.ENABLED_SERIALIZERS, new TypeToken<List<String>>() {
+//        List<String> enabledSerializers = configurationService.getConfigList(ConfigKeys.ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
 //        });
         serializers = new ArrayList<>();
         serializers.add(experienceSerializerProvider.get());

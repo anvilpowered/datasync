@@ -6,11 +6,13 @@ import com.google.inject.TypeLiteral;
 import rocks.milspecsg.msdatasync.api.data.*;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.member.MemberRepository;
+import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.db.mongodb.ApiMongoContext;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.service.data.*;
 import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
+import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msrepository.db.mongodb.MongoContext;
 
 public class ApiModule<M extends Member, P, K, U> extends AbstractModule {
@@ -65,6 +67,8 @@ public class ApiModule<M extends Member, P, K, U> extends AbstractModule {
         ).to(
             (TypeLiteral<ApiDataKeyService<K>>) TypeLiteral.get(new TypeToken<ApiDataKeyService<K>>(getClass()) {}.getType())
         );
+
+        bind(SerializationTaskService.class).to(new TypeLiteral<ApiSerializationTaskService>() {});
 
         bind(MongoContext.class).to(ApiMongoContext.class);
     }

@@ -19,8 +19,11 @@ public class MSConfigurationService extends ApiConfigurationService {
 
     @Override
     protected void initNodeTypeMap() {
-        nodeTypeMap.put(ConfigKeys.ENABLED_SERIALIZERS, new TypeToken<List<String>>() {
-        });
+        nodeTypeMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {});
+
+        nodeTypeMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, new TypeToken<Boolean>() {});
+
+        nodeTypeMap.put(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS, new TypeToken<Integer>() {});
     }
 
     @Override
@@ -40,23 +43,35 @@ public class MSConfigurationService extends ApiConfigurationService {
 //            return list;
 //            });
 //
-//        listVerificationMap.put(ConfigKeys.ENABLED_SERIALIZERS, enabledSerializersVerificationMap);
+//        listVerificationMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, enabledSerializersVerificationMap);
 
     }
 
     @Override
     protected void initDefaultMaps() {
-        defaultListMap.put(ConfigKeys.ENABLED_SERIALIZERS, Arrays.asList("Experience", "GameMode", "Health", "Hunger", "Inventory"));
+        defaultListMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, Arrays.asList("Experience", "GameMode", "Health", "Hunger", "Inventory"));
+
+        defaultBooleanMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, true);
+
+        defaultIntegerMap.put(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS, 300);
     }
 
     @Override
     protected void initNodeNameMap() {
-        nodeNameMap.put(ConfigKeys.ENABLED_SERIALIZERS, "enabledSerializers");
+        nodeNameMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, "enabledSerializers");
+
+        nodeNameMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "serializeOnJoinLeave");
+
+        nodeNameMap.put(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS, "serializationTaskIntervalSeconds");
     }
 
     @Override
     protected void initNodeDescriptionMap() {
-        nodeDescriptionMap.put(ConfigKeys.ENABLED_SERIALIZERS, "\nThings to sync to DB." +
+        nodeDescriptionMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, "\nThings to sync to DB." +
             "\nAvailable: Experience, GameMode, Health, Hunger, Inventory");
+
+        nodeDescriptionMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "\nWhether MSDataSync should sync players to DB on join/leave");
+
+        nodeDescriptionMap.put(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS, "\nInterval for automatic serialization task");
     }
 }
