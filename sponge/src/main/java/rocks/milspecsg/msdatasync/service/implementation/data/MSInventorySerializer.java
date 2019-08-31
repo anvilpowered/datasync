@@ -6,17 +6,11 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.item.ItemTypes;
-import org.spongepowered.api.item.enchantment.Enchantment;
-import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.SerializedItemStack;
@@ -46,28 +40,30 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
             try {
                 List<SerializedItemStack> itemStacks = new ArrayList<>();
                 Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> {
-                    p.getInventory().offer(
-                        ItemStack.builder()
-                            .itemType(ItemTypes.STICK)
-                            .add(Keys.DISPLAY_NAME, Text.of("This", TextColors.AQUA, Text.of(" is a stick", TextColors.BLUE)))
-                            .add(Keys.ITEM_LORE, Arrays.asList(Text.of("lore1", TextColors.BLACK), Text.of("lore2"), Text.of("lore3")))
-                            .add(Keys.ITEM_ENCHANTMENTS, Arrays.asList(
-                                Enchantment.builder()
-                                    .type(EnchantmentTypes.KNOCKBACK)
-                                    .level(50)
-                                    .build(),
-                                Enchantment.builder()
-                                    .type(EnchantmentTypes.SHARPNESS)
-                                    .level(30)
-                                    .build()
-                            ))
-                            .build()
-                    );
+//                    p.getInventory().offer(
+//                        ItemStack.builder()
+//                            .itemType(ItemTypes.STICK)
+//                            .add(Keys.DISPLAY_NAME, Text.of("This", TextColors.AQUA, Text.of(" is a stick", TextColors.BLUE)))
+//                            .add(Keys.ITEM_LORE, Arrays.asList(Text.of("lore1"), Text.of("lore2"), Text.of("lore3")))
+//                            .add(Keys.ITEM_ENCHANTMENTS, Arrays.asList(
+//                                Enchantment.builder()
+//                                    .type(EnchantmentTypes.KNOCKBACK)
+//                                    .level(50)
+//                                    .build(),
+//                                Enchantment.builder()
+//                                    .type(EnchantmentTypes.SHARPNESS)
+//                                    .level(30)
+//                                    .build()
+//                            ))
+//                            .build()
+//                    );
 
                     for (Inventory slot : p.getInventory().slots()) {
                         SerializedItemStack serializedItemStack = new SerializedItemStack();
                         ItemStack before = slot.peek().orElse(ItemStack.empty());
-                        serializedItemStack.properties = serialize(before.toContainer().getValues(false));
+                        DataContainer dc = before.toContainer();
+//                        System.out.println("SDC: " + dc.toString());
+                        serializedItemStack.properties = serialize(dc.getValues(false));
                         itemStacks.add(serializedItemStack);
                     }
                 });
@@ -92,9 +88,16 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
 //                System.out.println("Finished (M), S: " + s + ", M: " + m.toString());
                 result.put(s, m);
             } else if (o instanceof List) {
-                Object dc = serialize(((List<DataContainer>) o).get(0).getValues(false));
-//                System.out.println("Finished (DC), S: " + s + ", DC: " + dc.toString());
-                result.put(s, dc);
+                List<?> list = (List<?>) o;
+                List<Object> r1 = new ArrayList<>();
+                list.forEach(li -> {
+                    if (li instanceof DataContainer) {
+                        r1.add(serialize(((DataContainer) li).getValues(false)));
+                    } else if (li instanceof String) {
+                        r1.add(li);
+                    }
+                });
+                result.put(s, r1);
             } else {
 //                System.out.println("Not going deeper, S: " + s + ", O: " + o.toString());
                 result.put(s, o);
@@ -116,12 +119,32 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
                         Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
                         DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
                         v.forEach(dc::set);
-                        value = ImmutableList.of(dc);
+                        if (s1.equals("ench")) {
+                            value = ImmutableList.of(dc);
+                        } else {
+                            value = dc;
+                        }
                     } catch (ClassCastException ignored) {
                     }
                     r1.put(DataQuery.of(SEPARATOR, s1), value);
                 });
                 result.put(dq, r1);
+            } else if (o instanceof List) {
+//                System.out.println("This is a list!");
+                List<String> list = (List<String>) o;
+
+                List<String> r1 = new ArrayList<>(list.size());
+                //list.forEach(st -> r1.add(TextSerializers.LEGACY_FORMATTING_CODE.deserializeUnchecked(st)));
+                list.forEach(st -> {
+//                    System.out.println("Adding " + st);
+                    r1.add(st);
+                });
+                result.put(dq, r1);
+            } else if (!s.equals("ItemType") && o instanceof String) {
+                String n = o.toString();
+//                System.out.println(("This is a string: " + n));
+                result.put(dq, n);
+                //result.put(dq, TextSerializers.LEGACY_FORMATTING_CODE.deserializeUnchecked(n));
             } else {
                 result.put(dq, o);
             }
@@ -150,6 +173,7 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
                         if (slots.hasNext()) {
                             DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
                             deserialize(stack.properties).forEach(dc::set);
+                            //System.out.println("DDC: " + dc.toString());
                             ItemStack is = ItemStack.builder().fromContainer(dc).build();
                             slots.next().offer(is);
                         }
