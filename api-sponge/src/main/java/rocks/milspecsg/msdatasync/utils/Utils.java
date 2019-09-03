@@ -21,9 +21,7 @@ public class Utils {
         CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
 
         Task.builder().execute(
-            () -> Sponge.getServer().getPlayer(player.getUniqueId())
-                .map(p -> memberRepository.setMemberKey(member, key, player.get(key)))
-                .orElse(CompletableFuture.completedFuture(false))
+            () -> memberRepository.setMemberKey(member, key, player.get(key))
                 .thenAcceptAsync(completableFuture::complete)
         ).submit(plugin);
 
