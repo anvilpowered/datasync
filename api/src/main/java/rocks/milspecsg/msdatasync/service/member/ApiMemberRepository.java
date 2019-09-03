@@ -1,6 +1,5 @@
 package rocks.milspecsg.msdatasync.service.member;
 
-import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
@@ -60,35 +59,6 @@ public abstract class ApiMemberRepository<M extends Member, P, K, User> extends 
     @Override
     public Query<M> asQuery(UUID userUUID) {
         return asQuery().field("userUUID").equal(userUUID);
-    }
-
-
-    @Override
-    public CompletableFuture<Boolean> setMemberKey(Member member, K key, Optional<?> optionalValue) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (!optionalValue.isPresent()) {
-                return false;
-            }
-
-            Optional<String> optionalName = dataKeyService.getName(key);
-            if (!optionalName.isPresent()) {
-                return false;
-            }
-            member.keys.put(optionalName.get(), optionalValue.get());
-            return true;
-        });
-    }
-
-    @Override
-    public CompletableFuture<Optional<?>> getMemberKey(Member member, K key) {
-        return CompletableFuture.supplyAsync(() -> {
-
-            Optional<String> optionalName = dataKeyService.getName(key);
-            if (!optionalName.isPresent()) return Optional.empty();
-            if (!member.keys.containsKey(optionalName.get())) return Optional.empty();
-
-            return Optional.ofNullable(member.keys.get(optionalName.get()));
-        });
     }
 
 }

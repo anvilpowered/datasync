@@ -5,13 +5,14 @@ import rocks.milspecsg.msrepository.model.Dbo;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-@Entity("members")
-public class Member extends Dbo {
+@Entity("snapshots")
+public class Snapshot extends Dbo {
 
-    public UUID userUUID;
+    public String name;
 
-    public List<Snapshot> snapshots;
+    public Map<String, Object> keys;
+
+    public List<SerializedItemStack> itemStacks;
 
 }
