@@ -3,6 +3,7 @@ package rocks.milspecsg.msdatasync.service.implementation.member;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.spongepowered.api.Sponge;
@@ -48,11 +49,13 @@ public class MSMemberRepository extends ApiMemberRepository<Member, Player, Key,
 
     @Override
     public UpdateOperations<Member> createUpdateOperations() {
-        return mongoContext.datastore.createUpdateOperations(Member.class);
+        Optional<Datastore> optionalDatastore = mongoContext.getDataStore();
+        return optionalDatastore.map(datastore -> datastore.createUpdateOperations(Member.class)).orElse(null);
     }
 
     @Override
     public Query<Member> asQuery() {
-        return mongoContext.datastore.createQuery(Member.class);
+        Optional<Datastore> optionalDatastore = mongoContext.getDataStore();
+        return optionalDatastore.map(datastore -> datastore.createQuery(Member.class)).orElse(null);
     }
 }

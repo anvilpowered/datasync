@@ -2,20 +2,15 @@ package rocks.milspecsg.msdatasync.service.data;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
-import com.google.inject.Singleton;
 import rocks.milspecsg.msdatasync.api.data.*;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
-import rocks.milspecsg.msdatasync.utils.ApiUtils;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends ApiSerializer<M, P, K, U> implements PlayerSerializer<M, P> {
 
@@ -82,14 +77,14 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
     protected abstract void announceEnabled(String name);
 
     @Override
-    public CompletableFuture<Boolean> serialize(M member, P player) {
+    public CompletableFuture<Boolean> serialize(M member, P player, Object plugin) {
         if (serializers.isEmpty()) {
             System.err.println("[MSDataSync] No enabled serializers");
             return CompletableFuture.completedFuture(true);
         }
         return CompletableFuture.supplyAsync(() -> {
             for (Serializer<M, P> serializer : serializers) {
-                if (!serializer.serialize(member, player).join()) {
+                if (!serializer.serialize(member, player, plugin).join()) {
                     System.err.println("[MSDataSync] Serialization FAILED for player uuid " + member.userUUID + " : " + serializer.getName());
                     return false;
                 }
@@ -99,14 +94,14 @@ public abstract class ApiPlayerSerializer<M extends Member, P, K, U> extends Api
     }
 
     @Override
-    public CompletableFuture<Boolean> deserialize(M member, P player) {
+    public CompletableFuture<Boolean> deserialize(M member, P player, Object plugin) {
         if (serializers.isEmpty()) {
             System.err.println("[MSDataSync] No enabled deserializers");
             return CompletableFuture.completedFuture(true);
         }
         return CompletableFuture.supplyAsync(() -> {
             for (Serializer<M, P> serializer : serializers) {
-                if (!serializer.deserialize(member, player).join()) {
+                if (!serializer.deserialize(member, player, plugin).join()) {
                     System.err.println("[MSDataSync] Deserialization FAILED for player uuid " + member.userUUID + " : " + serializer.getName());
                     return false;
                 }

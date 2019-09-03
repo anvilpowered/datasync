@@ -11,7 +11,6 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
-import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.SerializedItemStack;
 import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
@@ -24,7 +23,7 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
     private static char SEPARATOR = '_';
 
     @Override
-    public CompletableFuture<Boolean> serialize(Member member, Player player) {
+    public CompletableFuture<Boolean> serialize(Member member, Player player, Object plugin) {
         CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
             try {
                 // this really should not take longer than 10 seconds
@@ -36,28 +35,9 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
             return false;
         });
         Task.builder().execute(() -> {
-
             try {
                 List<SerializedItemStack> itemStacks = new ArrayList<>();
                 Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> {
-//                    p.getInventory().offer(
-//                        ItemStack.builder()
-//                            .itemType(ItemTypes.STICK)
-//                            .add(Keys.DISPLAY_NAME, Text.of("This", TextColors.AQUA, Text.of(" is a stick", TextColors.BLUE)))
-//                            .add(Keys.ITEM_LORE, Arrays.asList(Text.of("lore1"), Text.of("lore2"), Text.of("lore3")))
-//                            .add(Keys.ITEM_ENCHANTMENTS, Arrays.asList(
-//                                Enchantment.builder()
-//                                    .type(EnchantmentTypes.KNOCKBACK)
-//                                    .level(50)
-//                                    .build(),
-//                                Enchantment.builder()
-//                                    .type(EnchantmentTypes.SHARPNESS)
-//                                    .level(30)
-//                                    .build()
-//                            ))
-//                            .build()
-//                    );
-
                     for (Inventory slot : p.getInventory().slots()) {
                         SerializedItemStack serializedItemStack = new SerializedItemStack();
                         ItemStack before = slot.peek().orElse(ItemStack.empty());
@@ -74,7 +54,7 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
                 return;
             }
             future.complete(true);
-        }).submit(MSDataSync.plugin);
+        }).submit(plugin);
         return future;
     }
 
@@ -150,7 +130,7 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
     }
 
     @Override
-    public CompletableFuture<Boolean> deserialize(Member member, Player player) {
+    public CompletableFuture<Boolean> deserialize(Member member, Player player, Object plugin) {
         CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
             try {
                 // this really should not take longer than 10 seconds
@@ -182,7 +162,7 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
                 return;
             }
             future.complete(true);
-        }).submit(MSDataSync.plugin);
+        }).submit(plugin);
         return future;
     }
 }

@@ -13,12 +13,12 @@ import java.util.concurrent.CompletableFuture;
 public class MSExperienceSerializer extends ApiExperienceSerializer<Member, Player, Key, User> {
 
     @Override
-    public CompletableFuture<Boolean> serialize(Member member, Player player) {
-        return Utils.serialize(memberRepository, member, player, Keys.TOTAL_EXPERIENCE);
+    public CompletableFuture<Boolean> serialize(Member member, Player player, Object plugin) {
+        return Utils.serialize(memberRepository, member, player, Keys.TOTAL_EXPERIENCE, plugin);
     }
 
     @Override
-    public CompletableFuture<Boolean> deserialize(Member member, Player player) {
-        return Utils.deserialize(memberRepository, member, player, Keys.TOTAL_EXPERIENCE);
+    public CompletableFuture<Boolean> deserialize(Member member, Player player, Object plugin) {
+        return Utils.deserialize(memberRepository, member, player, Keys.TOTAL_EXPERIENCE, plugin);
     }
 }

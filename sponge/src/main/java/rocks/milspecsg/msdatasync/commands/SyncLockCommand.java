@@ -8,7 +8,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.PluginInfo;
+import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class SyncLockCommand implements CommandExecutor {
             int index = unlockedPlayers.indexOf((player.getUniqueId()));
 
             if (!optionalValue.isPresent()) {
-                source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Currently ", TextColors.YELLOW, index >= 0 ? "unlocked" : "locked"));
+                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Currently ", TextColors.YELLOW, index >= 0 ? "unlocked" : "locked"));
                 return CommandResult.success();
             }
 
@@ -45,28 +45,28 @@ public class SyncLockCommand implements CommandExecutor {
                 case "on":
                     if (index >= 0) {
                         unlockedPlayers.remove(index);
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock ", TextColors.YELLOW, "enabled"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock ", TextColors.YELLOW, "enabled"));
                     } else {
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock already ", TextColors.YELLOW, "enabled"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock already ", TextColors.YELLOW, "enabled"));
                     }
                     break;
                 case "off":
                     if (index < 0) {
                         unlockedPlayers.add(player.getUniqueId());
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock ", TextColors.YELLOW, "disabled", TextColors.RED, " (be careful)"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock ", TextColors.YELLOW, "disabled", TextColors.RED, " (be careful)"));
                     } else {
-                        source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Lock already ", TextColors.YELLOW, "disabled"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock already ", TextColors.YELLOW, "disabled"));
                     }
                     break;
                 default:
-                    source.sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.RED, "Unrecognized option: \"", value, "\". Lock is ", TextColors.YELLOW, index >= 0 ? "disabled" : "enabled"));
+                    source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Unrecognized option: \"", value, "\". Lock is ", TextColors.YELLOW, index >= 0 ? "disabled" : "enabled"));
                     break;
             }
 
 
         } else {
             // console is always unlocked
-            source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Console is always unlocked"));
+            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Console is always unlocked"));
         }
 
         return CommandResult.success();

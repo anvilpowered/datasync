@@ -7,23 +7,19 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.PluginInfo;
+import rocks.milspecsg.msdatasync.MSDataSync;
+import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
 import rocks.milspecsg.msdatasync.model.core.Member;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class UploadStartCommand implements CommandExecutor {
 
@@ -40,11 +36,11 @@ public class UploadStartCommand implements CommandExecutor {
         if (optionalPlayer.isPresent()) {
             // serialize only one player
 //            System.out.println("Serializing " + optionalPlayer.get().getName());
-            playerSerializer.serialize(optionalPlayer.get()).thenAcceptAsync(success -> {
+            playerSerializer.serialize(optionalPlayer.get(), MSDataSync.plugin).thenAcceptAsync(success -> {
                 if (success) {
-                    source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Successfully serialized ", optionalPlayer.get().getName()));
+                    source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully serialized ", optionalPlayer.get().getName()));
                 } else {
-                    source.sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.RED, "An error occurred while serializing ", optionalPlayer.get().getName()));
+                    source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while serializing ", optionalPlayer.get().getName()));
                 }
             });
         } else {
@@ -52,10 +48,10 @@ public class UploadStartCommand implements CommandExecutor {
             Collection<Player> players = Sponge.getServer().getOnlinePlayers();
             ConcurrentLinkedQueue<Player> successful = new ConcurrentLinkedQueue<>();
             ConcurrentLinkedQueue<Player> unsuccessful = new ConcurrentLinkedQueue<>();
-            Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Starting upload..."));
+            Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting upload..."));
 
             for (Player player : players) {
-                playerSerializer.serialize(player).thenAcceptAsync(success -> {
+                playerSerializer.serialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
                     if (success) {
                         successful.add(player);
                     } else {

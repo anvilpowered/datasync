@@ -11,7 +11,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.PluginInfo;
+import rocks.milspecsg.msdatasync.MSDataSync;
+import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
 import rocks.milspecsg.msdatasync.model.core.Member;
 
@@ -35,11 +36,11 @@ public class DownloadStartCommand implements CommandExecutor {
         if (optionalPlayer.isPresent()) {
             // serialize only one player
 //            System.out.println("Deserializing " + optionalPlayer.get().getName());
-            playerSerializer.deserialize(optionalPlayer.get()).thenAcceptAsync(success -> {
+            playerSerializer.deserialize(optionalPlayer.get(), MSDataSync.plugin).thenAcceptAsync(success -> {
                 if (success) {
-                    source.sendMessage(Text.of(PluginInfo.PluginPrefix, "Successfully deserialized ", optionalPlayer.get().getName()));
+                    source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", optionalPlayer.get().getName()));
                 } else {
-                    source.sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.RED, "An error occurred while deserializing ", optionalPlayer.get().getName()));
+                    source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while deserializing ", optionalPlayer.get().getName()));
                 }
             });
         } else {
@@ -47,10 +48,10 @@ public class DownloadStartCommand implements CommandExecutor {
             Collection<Player> players = Sponge.getServer().getOnlinePlayers();
             ConcurrentLinkedQueue<Player> successful = new ConcurrentLinkedQueue<>();
             ConcurrentLinkedQueue<Player> unsuccessful = new ConcurrentLinkedQueue<>();
-            Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Starting download..."));
+            Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting download..."));
 
             for (Player player : players) {
-                playerSerializer.deserialize(player).thenAcceptAsync(success -> {
+                playerSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
                     if (success) {
                         successful.add(player);
                     } else {
