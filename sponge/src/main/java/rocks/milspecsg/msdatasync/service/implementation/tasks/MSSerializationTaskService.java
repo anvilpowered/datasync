@@ -9,7 +9,7 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
-import rocks.milspecsg.msdatasync.PluginInfo;
+import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
@@ -42,14 +42,16 @@ public class MSSerializationTaskService extends ApiSerializationTaskService {
         startSerializationTask();
     }
 
-
     @Override
     public void startSerializationTask() {
         Integer interval = configurationService.getConfigInteger(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS);
 
-        Sponge.getServer().getConsole().sendMessage(Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Submitting sync task with interval: ", interval, " seconds"));
-
-        task = Task.builder().interval(interval, TimeUnit.SECONDS).execute(getSerializationTask()).submit(MSDataSync.plugin);
+        if (interval > 0 ) {
+            Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Submitting sync task with interval: ", interval, " seconds"));
+            task = Task.builder().interval(interval, TimeUnit.SECONDS).execute(getSerializationTask()).submit(MSDataSync.plugin);
+        } else {
+            Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Sync task has been disabled from config!"));
+        }
     }
 
     @Override
@@ -67,15 +69,15 @@ public class MSSerializationTaskService extends ApiSerializationTaskService {
             Text toSend;
 
             if (players.isEmpty()) {
-                toSend = Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Starting sync task... no players online, skipping!");
+                toSend = Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting sync task... no players online, skipping!");
             } else {
-                toSend = Text.of(PluginInfo.PluginPrefix, TextColors.YELLOW, "Starting sync task...");
+                toSend = Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting sync task...");
             }
 
             Sponge.getServer().getConsole().sendMessage(toSend);
 
             for (Player player : players) {
-                playerSerializer.serialize(player).thenAcceptAsync(success -> {
+                playerSerializer.serialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
                     if (success) {
                         successful.add(player);
                     } else {

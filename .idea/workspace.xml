@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="515b02d3-954b-45db-b35a-6c6c601e5e17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/MSDataSync.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/api-sponge/MSDataSync.api-sponge.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/api-sponge/MSDataSync.api-sponge.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api-sponge/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSyncApiModule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSyncPluginInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/annotation-processors.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/annotation-processors.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileContent/fileContent.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.bin" afterDir="false" />
@@ -16,84 +23,575 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/data/Serializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/api/data/Serializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/db/mongodb/ApiMongoContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/db/mongodb/ApiMongoContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/config/ConfigKeys.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/config/ConfigKeys.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/classes/java/main/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/build/libs/api-0.1.0-dev.jar" beforeDir="false" afterPath="$PROJECT_DIR$/api/build/libs/api-0.1.0-dev.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/Serializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/db/mongodb/ApiMongoContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/db/mongodb/ApiMongoContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-repository/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/db/mongodb/MongoContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/db/mongodb/MongoContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$12.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$13.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$14.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$15.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$16.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$13.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$14.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$15.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$16.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$9.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/MSDataSync.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/PluginInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/SyncLockCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/SyncLockCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/UploadStartCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/commands/UploadStartCommand.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/listeners/PlayerListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/listeners/PlayerListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSGameModeSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSHealthSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.class" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/classes/java/main/rocks/milspecsg/msdatasync/utils/Utils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/AggregateIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/ChangeStreamIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/ClientSession.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/DistinctIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/FindIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/ListCollectionsIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/ListDatabasesIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/ListIndexesIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MapReduceIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoClient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoClientFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoClients.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoCollection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoCursor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoDatabase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/MongoIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSBucket.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSBucketImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSBuckets.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSDownloadStream.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSDownloadStreamImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSFindIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSFindIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSUploadStream.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/GridFSUploadStreamImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/gridfs/package-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/AggregateIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ChangeStreamIterableImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ChangeStreamIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ClientSessionBinding$SessionBindingConnectionSource.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ClientSessionBinding$SyncClientSessionContext.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ClientSessionBinding.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ClientSessionImpl$TransactionState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ClientSessionImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/DistinctIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/FallbackMongoIterableFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/FindIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8AggregateIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8ChangeStreamIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8DistinctIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8FindIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8ForEachHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8ListCollectionsIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8ListDatabasesIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8ListIndexesIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8MapReduceIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/Java8MongoIterableFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ListCollectionsIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ListDatabasesIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/ListIndexesIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MapReduceIterableImpl$WrappedMapReduceReadOperation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MapReduceIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MappingIterable$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MappingIterable$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MappingIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoBatchCursorAdapter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoClientDelegate$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoClientDelegate$DelegateOperationExecutor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoClientDelegate.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoClientImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoClientImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoCollectionImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoCollectionImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoDatabaseImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoDatabaseImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoIterableFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoIterableImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoIterableImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoIterables.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/MongoMappingCursor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/OperationExecutor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/internal/package-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/com/mongodb/client/package-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/log-morphia-all.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/mcmod.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/AbstractEntityInterceptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/AdvancedDatastore.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/AnnotationBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/AuthenticationException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/CollationBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/DAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/Datastore.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/DatastoreImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/DeleteOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/EntityInterceptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/FieldBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/FindAndModifyOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/IndexBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/IndexHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/IndexOptionsBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/IndexedBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/InsertOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/Key.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/MapReduceOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/MapreduceResults$Stats.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/MapreduceResults.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/MapreduceType$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/MapreduceType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/Morphia.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/ObjectFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/TextBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/UpdateOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/ValidationBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/Accumulator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/AggregationElement.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/AggregationPipeline.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/AggregationPipelineImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/GeoNear$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/GeoNear$GeoNearBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/GeoNear.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/Group.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/Projection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/aggregation/Sort.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/AlsoLoad.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/CappedAt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Collation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/ConstructorArgs.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Converters.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Embedded.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Entity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/EntityListeners.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Field.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Id.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/IdGetter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Index.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/IndexOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Indexed.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Indexes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/NotSaved.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Polymorphic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/PostLoad.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/PostPersist.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/PreLoad.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/PrePersist.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/PreSave.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Property.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Reference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Serialized.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Text.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Transient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Validation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/annotations/Version.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/BigDecimalConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/BooleanConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/ByteConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/CharArrayConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/CharacterConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/ClassConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/ConverterException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/ConverterNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/Converters.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/CustomConverters.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/DateConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/DefaultConverters.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/DoubleConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/EnumConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/EnumSetConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/FloatConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/IdentityConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/InstantConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/IntegerConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/IterableConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/KeyConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/LocalDateConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/LocalDateTimeConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/LocalTimeConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/LocaleConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/LongConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/MapOfValuesConverter$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/MapOfValuesConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/ObjectIdConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/SerializedObjectConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/ShortConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/SimpleValueConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/StringConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/TimestampConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/TypeConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/URIConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/converters/UUIDConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/dao/BasicDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/dao/DAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/CoordinateReferenceSystem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/CoordinateReferenceSystemType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJson.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeoJsonType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/Geometry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryCollection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryQueryConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter$LineStringConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter$MultiLineStringConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter$MultiPointConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter$MultiPolygonConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter$PointConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter$PolygonConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/GeometryShapeConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/LineString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/MultiLineString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/MultiPoint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/MultiPolygon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/NamedCoordinateReferenceSystem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/NamedCoordinateReferenceSystemConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/Point.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/PointBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/geo/Polygon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/internal/MorphiaUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/internal/PathTarget.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/Logger.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/LoggerFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/Logr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/LogrFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/MorphiaLoggerFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/SilentLogger.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/jdk/FasterJDKLogger.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/jdk/FastestJDKLogger.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/jdk/JDKLogger.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/jdk/JDKLoggerFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/logging/jdk/ShortFormatter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/CustomMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/DefaultCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/EmbeddedMapper$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/EmbeddedMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/EphemeralMappedField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/MappedClass$ClassMethodPair.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/MappedClass.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/MappedField.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/Mapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/MapperOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/MappingException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/ReferenceMapper$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/ReferenceMapper$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/ReferenceMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/Serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/ValueMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/cache/DefaultEntityCache.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/cache/DefaultEntityCacheFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/cache/EntityCache.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/cache/EntityCacheFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/cache/EntityCacheStatistics.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/CGLibLazyProxyFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/DatastoreProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/LazyFeatureDependencies.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/LazyProxyFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/NonFinalizingHotSwappingInvoker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/AbstractReference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/CollectionObjectReference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/EntityObjectReference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/LazyReferenceFetchingException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/MapObjectReference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/ProxiedEntityReference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/ProxiedEntityReferenceList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/ProxiedEntityReferenceMap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/ProxiedReference.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/lazy/proxy/ProxyHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/ClassConstraint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/ConstraintViolation$Level.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/ConstraintViolation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/ConstraintViolationException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/MappingValidator$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/MappingValidator$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/MappingValidator$LogLine.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/MappingValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/ContainsEmbeddedWithId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/DuplicatedAttributeNames.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/EmbeddedAndId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/EmbeddedAndValue.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/EntityAndEmbed.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/EntityCannotBeMapOrIterable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/FieldEnumString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/MultipleId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/MultipleVersions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/classrules/NoId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/ContradictingFieldAnnotation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/FieldConstraint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/IdDoesNotMix.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/LazyReferenceMissingDependencies.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/LazyReferenceOnArray.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/MapKeyDifferentFromString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/MapNotSerializable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/MisplacedProperty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/ReferenceToUnidentifiable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/mapping/validation/fieldrules/VersionMisuse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/AbstractCriteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/AbstractQueryFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/ArraySlice.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/CountOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Criteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/CriteriaContainer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/CriteriaContainerImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/CriteriaJoin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/DefaultQueryFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/FieldCriteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/FieldEnd.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/FieldEndImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/FilterOperator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/FindOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/GeoFieldCriteria$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/GeoFieldCriteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Meta$MetaDataKeyword.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Meta.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/MorphiaIterator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/MorphiaKeyIterator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/PushOptions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Query.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/QueryException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/QueryFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/QueryImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/QueryResults.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/QueryValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Shape$Center.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Shape$Point.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Shape.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Sort.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/StandardGeoFieldCriteria$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/StandardGeoFieldCriteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/Type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/UpdateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/UpdateOperations.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/UpdateOperator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/UpdateOpsImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/UpdateResults.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/ValidationException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/WhereCriteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/AllOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/CollectionTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/DefaultTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/DoubleTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/EntityAnnotatedValueValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/EntityTypeAndIdValueValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/ExistsOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/GeoWithinOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/InOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/IntegerTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/KeyValueTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/ListValueValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/LongTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/MappedFieldTypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/ModOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/NotInOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/OperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/PatternValueValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/SizeOperationValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/TypeValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/ValidationFailure.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/Validator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/ValueClassValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/query/validation/ValueValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/Assert$AssertionFailedException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/Assert.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/IndexDirection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/IndexType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/IterHelper$IterCallback.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/IterHelper$MapIterCallback.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/IterHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/org/mongodb/morphia/utils/ReflectionUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/DefaultMapEntry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$Entry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$EntryIterator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$KeyIterator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$SoftRef.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$ValueIterator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap$WeakRef.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/relocated/morphia/org/apache/commons/collections/ReferenceMap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$13.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$14.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$15.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$16.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/ApiModule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncConfigurationModule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$13.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$14.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$15.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$16.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync$MSDataSyncModule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/MSDataSync.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/PluginInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/PluginPermissions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/ExperienceSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/GameModeSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/HealthSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/HungerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/InventorySerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/data/Serializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/keys/DataKeyService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/api/member/MemberRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/commands/CommandManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/commands/SyncCommandManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/commands/SyncHelpCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/commands/SyncLockCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/commands/UploadStartCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/listeners/PlayerListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/model/core/Member.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/config/ConfigKeys.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiExperienceSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiGameModeSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiHealthSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiHungerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiInventorySerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/data/ApiSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/data/MSGameModeSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/data/MSHealthSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/keys/ApiDataKeyService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/service/member/ApiMemberRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/utils/ApiUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msdatasync/utils/Utils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/APIConfigurationModule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/APIConfigurationModule$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/APIConfigurationModule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/api/CacheInvalidationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/api/Repository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/api/RepositoryCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/api/config/ConfigKeys.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/api/config/ConfigurationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/db/mongodb/MongoContext.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/Dbo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/ObjectWithId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/config/list/IntegerList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/config/list/StringList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/config/map/IntegerIntegerMap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/config/map/IntegerStringMap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/config/map/StringIntegerMap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/config/map/StringStringMap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/results/CreateResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/results/PermissibleResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/results/Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/results/SpongeCreateResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/results/SpongePermissibleResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/model/results/UpdateResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/service/ApiCacheInvalidationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/service/ApiRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/service/ApiRepositoryCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.1.0/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/build/libs/MSDataSync-Sponge-0.2.0.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/resources/main/mcmod.info" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/resources/main/mcmod.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/build/tmp/generateMetadata/mcmod.info" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/build/tmp/generateMetadata/mcmod.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncLockCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncLockCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSGameModeSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSGameModeSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHealthSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHealthSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
-    <ignored path="$PROJECT_DIR$/.gradle/" />
-    <ignored path="$PROJECT_DIR$/build/" />
-    <ignored path="$PROJECT_DIR$/sponge/.gradle/" />
-    <ignored path="$PROJECT_DIR$/sponge/build/" />
-    <ignored path="$PROJECT_DIR$/api/.gradle/" />
-    <ignored path="$PROJECT_DIR$/api/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-api/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-api/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-sponge/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-sponge/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-api/api-config/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-api/api-config/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-api/api-repository/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-api/api-repository/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/.gradle/" />
-    <ignored path="$PROJECT_DIR$/msrepository/msr-sponge/sponge-repository/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +601,6 @@
   <component name="DefaultGradleProjectSettings">
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
-    <option name="isMigrated" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -126,173 +623,12 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="MSDataSync" type="f1a62948:ProjectNode" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="com.google.guava:guava:28.1-jre" type="cfea851d:ExternalSystemViewDefaultContributor$LibraryDependencyDataExternalSystemNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MSDataSync" type="f1a62948:ProjectNode" />
-                <item name="sponge" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="shadow" type="c8890929:TasksNode$1" />
-              </path>
             </expand>
             <select />
           </tree_state>
         </projects_view>
       </state>
     </system>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="447" column="68" selection-start-line="447" selection-start-column="68" selection-end-line="447" selection-end-column="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="39" column="158" selection-start-line="39" selection-start-column="158" selection-end-line="39" selection-end-column="158" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="625">
-              <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="51" column="43" lean-forward="true" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
-              <folding>
-                <element signature="e#873#874#0" expanded="true" />
-                <element signature="e#916#917#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="33" column="11" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2165#2166#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
-              <caret line="113" column="61" lean-forward="true" selection-start-line="113" selection-start-column="61" selection-end-line="113" selection-end-column="61" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5286#5287#0" expanded="true" />
-                <element signature="e#5401#5402#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -302,496 +638,15 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Data</find>
-      <find>insert</find>
-      <find>checking valu</find>
-      <find>doing</find>
-      <find>itera</find>
-      <find>putting</find>
-      <find>com.google.common.collect.ImmutableB</find>
-      <find>toCon</find>
-      <find>Builter</find>
-      <find>S</find>
-      <find>System.ou</find>
-      <find>System.out</find>
-      <find>boolean</find>
-      <find>_</find>
-      <find>O</find>
-      <find>O:</find>
-      <find>Syst</find>
-      <find>Syste</find>
-      <find>SYst</find>
-      <find>Sys</find>
-      <find>unsuc</find>
-      <find>un</find>
-      <find>uns</find>
-      <find>l</find>
-      <find>addconfig</find>
-      <find>(ConfigurationService</find>
-      <find>Config</find>
-      <find>ConfigurationService</find>
-      <find>System</find>
-      <find>System.out.p</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiGameModeSerializer.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiExperienceSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSGameModeSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncStartCommand.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadCommandManager.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncUnlockCommand.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/utils/ApiUtils.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiInventorySerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginInfo.java" />
-        <option value="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.java" />
-        <option value="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/db/mongodb/MongoContext.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncLockCommand.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/keys/ApiDataKeyService.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/member/MemberRepository.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/SerializedItemType.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHealthSerializer.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/Member.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/SerializedItemStack.java" />
-        <option value="$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepository.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/SerializedDataContainer.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/db/mongodb/ApiMongoContext.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/member/ApiMemberRepository.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/tasks/SerializationTask.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTask.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/tasks/ApiSerializationTaskService.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/SerializationTask.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/ApiModule.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java" />
-        <option value="$PROJECT_DIR$/sponge/gradle.properties" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/build.gradle" />
-        <option value="$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java" />
-        <option value="$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java" />
-        <option value="$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java" />
-        <option value="$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="width" value="956" />
-    <option name="height" value="1200" />
-  </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="mongodb" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msrepository" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msrepository" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="api-repository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msrepository" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge-config" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge-config" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge-config" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge-config" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge-config" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msrepository" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msrepository" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="msr-sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge-config" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msrepository" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="listeners" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="implementation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="keys" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="member" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MSDataSync" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MSDataSync" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="sponge" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="msdatasync" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectId" id="1QCi2MgwKBZ5BO7bHsqqgx6KQlg" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -804,14 +659,18 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/api/src" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/sponge" />
       <recent name="$PROJECT_DIR$/sponge/src/main/java" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/api/src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -911,466 +770,33 @@
       <workItem from="1567095614596" duration="18000" />
       <workItem from="1567095645927" duration="60633000" />
       <workItem from="1567203484541" duration="5000" />
-      <workItem from="1567232442793" duration="14998000" />
+      <workItem from="1567232442793" duration="16039000" />
+      <workItem from="1567274946205" duration="208000" />
+      <workItem from="1567275291864" duration="1761000" />
+      <workItem from="1567280782492" duration="474000" />
+      <workItem from="1567287898026" duration="4663000" />
+      <workItem from="1567345166996" duration="180000" />
+      <workItem from="1567345396623" duration="10569000" />
     </task>
     <servers />
-  </component>
-  <component name="TestHistory">
-    <history-entry file="MSDataSync_[check] - 2019.08.28 at 09h 46m 46s.xml">
-      <configuration name="MSDataSync [check]" configurationId="GradleRunConfiguration" />
-    </history-entry>
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118840000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2761194" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Capture Tool" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32854578" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32854578" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Build" order="7" weight="0.3276481" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3276481" />
-      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32944345" />
-      <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Maven" order="3" />
-      <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="right" id="Scheme.REPL" order="5" side_tool="true" />
-      <window_info anchor="right" id="Codota" order="6" weight="0.32995737" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Gradle" order="8" weight="0.32995737" />
-      <window_info anchor="right" id="Database" order="9" />
-      <window_info anchor="right" id="Palette&#9;" order="10" />
-      <window_info anchor="right" id="Theme Preview" order="11" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/DataContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="34" column="43" selection-start-line="34" selection-start-column="43" selection-end-line="34" selection-end-column="43" />
-          <folding>
-            <element signature="e#2396#2397#0" expanded="true" />
-            <element signature="e#2450#2451#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/util/List.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="151" column="16" selection-start-line="151" selection-start-column="16" selection-end-line="151" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/lang/System.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="58" column="19" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/text/serializer/SafeTextSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="40" column="17" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
-          <folding>
-            <element signature="e#1712#1713#0" expanded="true" />
-            <element signature="e#1753#1754#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/text/TextElement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/text/TextRepresentable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/DataSerializable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/src.zip!/java/lang/Comparable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="94" column="3" lean-forward="true" selection-start-line="94" selection-start-column="3" selection-end-line="94" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/text/Text.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="81" column="77" lean-forward="true" selection-start-line="81" selection-start-column="77" selection-end-line="81" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/text/serializer/TextSerializers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="41" column="43" selection-start-line="41" selection-start-column="43" selection-end-line="41" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSHungerSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSExperienceSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/d35a93c547868e95b5ffa922db11549ef9292cad/spongeapi-7.1.0-sources.jar!/org/spongepowered/api/data/MemoryDataView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="115" column="44" lean-forward="true" selection-start-line="115" selection-start-column="44" selection-end-line="115" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListeners.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/api/CacheInvalidationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/ApiModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="907">
-          <caret line="72" column="59" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/member/MSMemberRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="693">
-          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/data/PlayerSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/utils/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="924">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/config/ConfigKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/UploadStartCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="70" column="47" lean-forward="true" selection-start-line="70" selection-start-column="47" selection-end-line="70" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/spongeapi/7.1.0/39bfec7021d6fb13888d49bae64a9c5521aeaf90/spongeapi-7.1.0.jar!/org/spongepowered/api/event/SpongeEventFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="365" column="42" selection-start-line="365" selection-start-column="42" selection-end-line="365" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/build.gradle">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/gradle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/SerializedItemStack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/model/core/Member.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/keys/MSDataKeyService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.inject/guice/4.0/961359f8352b791c6443a207c847e25d6d3ca7cd/guice-4.0-sources.jar!/com/google/inject/Singleton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-repository/src/main/java/rocks/milspecsg/msrepository/service/ApiRepositoryCacheService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#510#511#0" expanded="true" />
-            <element signature="e#553#554#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigLoadedListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/config/MSConfigurationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-api/api-config/src/main/java/rocks/milspecsg/msrepository/api/config/ConfigurationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/data/ApiPlayerSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="52" column="17" lean-forward="true" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
-          <folding>
-            <element signature="e#853#854#0" expanded="true" />
-            <element signature="e#894#895#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSInventorySerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="625">
-          <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/api/tasks/SerializationTaskService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="34" lean-forward="true" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/main/java/rocks/milspecsg/msdatasync/service/tasks/ApiSerializationTaskService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="69" lean-forward="true" selection-start-line="4" selection-start-column="69" selection-end-line="4" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/tasks/MSSerializationTaskService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="33" column="11" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2165#2166#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncReloadCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/PluginPermissions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/DownloadStartCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="51" column="43" lean-forward="true" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/commands/SyncCommandManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/MSDataSync.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="113" column="61" lean-forward="true" selection-start-line="113" selection-start-column="61" selection-end-line="113" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5286#5287#0" expanded="true" />
-            <element signature="e#5401#5402#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/service/implementation/data/MSPlayerSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
-          <folding>
-            <element signature="e#873#874#0" expanded="true" />
-            <element signature="e#916#917#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/msrepository/msr-sponge/sponge-config/src/main/java/rocks/milspecsg/msrepository/service/config/ApiConfigurationService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="447" column="68" selection-start-line="447" selection-start-column="68" selection-end-line="447" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sponge/src/main/java/rocks/milspecsg/msdatasync/listeners/PlayerListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="39" column="158" selection-start-line="39" selection-start-column="158" selection-end-line="39" selection-end-column="158" />
-        </state>
-      </provider>
-    </entry>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

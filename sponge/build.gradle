@@ -38,6 +38,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     implementation project(':api')
+    implementation project(':api-sponge')
     implementation project(':msrepository:msr-sponge:sponge-repository')
     implementation project(':msrepository:msr-sponge:sponge-config')
     
@@ -72,6 +73,7 @@ shadowJar {
         include project(':msrepository:msr-sponge:sponge-config')
         include project(':msrepository:msr-sponge:sponge-repository')
         include project(':api')
+        include project(':api-sponge')
     }
 }
 
