@@ -11,6 +11,8 @@ public class Snapshot extends Dbo {
 
     public String name;
 
+    public List<String> modulesUsed;
+
     public Map<String, Object> keys;
 
     public List<SerializedItemStack> itemStacks;

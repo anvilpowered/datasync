@@ -20,7 +20,7 @@ public class ApiMongoContext extends MongoContext {
         configurationService.addConfigLoadedListener(this::loadConfig);
     }
 
-    private void loadConfig() {
+    private void loadConfig(Object plugin) {
         closeConnection();
 
         String hostname = configurationService.getConfigString(ConfigKeys.MONGODB_HOSTNAME);

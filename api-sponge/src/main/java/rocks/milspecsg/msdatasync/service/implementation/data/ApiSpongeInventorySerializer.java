@@ -7,55 +7,38 @@ import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
-import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.SerializedItemStack;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class MSInventorySerializer extends ApiInventorySerializer<Member, Player, Key, User> {
+public class ApiSpongeInventorySerializer<S extends Snapshot> extends ApiInventorySerializer<S, Player, Key> {
 
     private static char SEPARATOR = '_';
 
     @Override
-    public CompletableFuture<Boolean> serialize(Member member, Player player, Object plugin) {
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                // this really should not take longer than 10 seconds
-                // usually less than 1
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return false;
-        });
-        Task.builder().execute(() -> {
-            try {
-                List<SerializedItemStack> itemStacks = new ArrayList<>();
-                Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> {
-                    for (Inventory slot : p.getInventory().slots()) {
-                        SerializedItemStack serializedItemStack = new SerializedItemStack();
-                        ItemStack before = slot.peek().orElse(ItemStack.empty());
-                        DataContainer dc = before.toContainer();
+    public boolean serialize(S snapshot, Player player) {
+        try {
+            List<SerializedItemStack> itemStacks = new ArrayList<>();
+                for (Inventory slot : player.getInventory().slots()) {
+                    SerializedItemStack serializedItemStack = new SerializedItemStack();
+                    ItemStack before = slot.peek().orElse(ItemStack.empty());
+                    DataContainer dc = before.toContainer();
 //                        System.out.println("SDC: " + dc.toString());
-                        serializedItemStack.properties = serialize(dc.getValues(false));
-                        itemStacks.add(serializedItemStack);
-                    }
-                });
-                member.itemStacks = itemStacks;
-            } catch (Exception e) {
-                e.printStackTrace();
-                future.complete(false);
-                return;
-            }
-            future.complete(true);
-        }).submit(plugin);
-        return future;
+                    serializedItemStack.properties = serialize(dc.getValues(false));
+                    itemStacks.add(serializedItemStack);
+                }
+            snapshot.itemStacks = itemStacks;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
@@ -130,39 +113,23 @@ public class MSInventorySerializer extends ApiInventorySerializer<Member, Player
     }
 
     @Override
-    public CompletableFuture<Boolean> deserialize(Member member, Player player, Object plugin) {
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                // this really should not take longer than 10 seconds
-                // usually less than 1
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public boolean deserialize(S snapshot, Player player) {
+        try {
+            player.getInventory().clear();
+            Iterator<Inventory> slots = player.getInventory().slots().iterator();
+            for (SerializedItemStack stack : snapshot.itemStacks) {
+                if (slots.hasNext()) {
+                    DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
+                    deserialize(stack.properties).forEach(dc::set);
+                    //System.out.println("DDC: " + dc.toString());
+                    ItemStack is = ItemStack.builder().fromContainer(dc).build();
+                    slots.next().offer(is);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
-        });
-        Task.builder().execute(() -> {
-            try {
-                Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> {
-                    p.getInventory().clear();
-                    Iterator<Inventory> slots = p.getInventory().slots().iterator();
-                    for (SerializedItemStack stack : member.itemStacks) {
-                        if (slots.hasNext()) {
-                            DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                            deserialize(stack.properties).forEach(dc::set);
-                            //System.out.println("DDC: " + dc.toString());
-                            ItemStack is = ItemStack.builder().fromContainer(dc).build();
-                            slots.next().offer(is);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                future.complete(false);
-                return;
-            }
-            future.complete(true);
-        }).submit(plugin);
-        return future;
+        }
+        return true;
     }
 }

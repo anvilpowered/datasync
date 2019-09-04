@@ -1,5 +1,6 @@
 package rocks.milspecsg.msdatasync.model.core;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import rocks.milspecsg.msrepository.model.Dbo;
 
@@ -12,6 +13,6 @@ public class Member extends Dbo {
 
     public UUID userUUID;
 
-    public List<Snapshot> snapshots;
+    public List<ObjectId> snapshotIds;
 
 }

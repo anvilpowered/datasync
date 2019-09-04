@@ -11,7 +11,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
-import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
@@ -22,22 +22,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Singleton
-public class MSSerializationTaskService extends ApiSerializationTaskService {
+public class ApiSpongeSerializationTaskService<S extends Snapshot> extends ApiSerializationTaskService<S, Player> {
 
     private ConfigurationService configurationService;
-
-    @Inject
-    private PlayerSerializer<Member, Player> playerSerializer;
 
     private Task task = null;
 
     @Inject
-    public MSSerializationTaskService(ConfigurationService configurationService) {
+    public ApiSpongeSerializationTaskService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
         this.configurationService.addConfigLoadedListener(this::loadConfig);
     }
 
-    private void loadConfig() {
+    private void loadConfig(Object plugin) {
         stopSerializationTask();
         startSerializationTask();
     }
@@ -77,7 +74,7 @@ public class MSSerializationTaskService extends ApiSerializationTaskService {
             Sponge.getServer().getConsole().sendMessage(toSend);
 
             for (Player player : players) {
-                playerSerializer.serialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
+                playerSerializer.serialize(player).thenAcceptAsync(success -> {
                     if (success) {
                         successful.add(player);
                     } else {
