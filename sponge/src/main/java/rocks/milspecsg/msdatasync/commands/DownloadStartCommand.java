@@ -14,7 +14,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
-import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class DownloadStartCommand implements CommandExecutor {
 
     @Inject
-    PlayerSerializer<Member, Player> playerSerializer;
+    PlayerSerializer<Snapshot, Player> playerSerializer;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

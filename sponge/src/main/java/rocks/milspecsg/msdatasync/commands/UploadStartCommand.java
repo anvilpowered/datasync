@@ -14,7 +14,9 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
+import rocks.milspecsg.msdatasync.api.data.SnapshotSerializer;
 import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 public class UploadStartCommand implements CommandExecutor {
 
     @Inject
-    PlayerSerializer<Member, Player> playerSerializer;
+    PlayerSerializer<Snapshot, Player> playerSerializer;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -36,7 +38,7 @@ public class UploadStartCommand implements CommandExecutor {
         if (optionalPlayer.isPresent()) {
             // serialize only one player
 //            System.out.println("Serializing " + optionalPlayer.get().getName());
-            playerSerializer.serialize(optionalPlayer.get(), MSDataSync.plugin).thenAcceptAsync(success -> {
+            playerSerializer.serialize(optionalPlayer.get()).thenAcceptAsync(success -> {
                 if (success) {
                     source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully serialized ", optionalPlayer.get().getName()));
                 } else {
@@ -51,7 +53,7 @@ public class UploadStartCommand implements CommandExecutor {
             Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting upload..."));
 
             for (Player player : players) {
-                playerSerializer.serialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
+                playerSerializer.serialize(player).thenAcceptAsync(success -> {
                     if (success) {
                         successful.add(player);
                     } else {

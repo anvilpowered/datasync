@@ -1,6 +1,5 @@
 package rocks.milspecsg.msdatasync.api.member;
 
-import com.google.common.reflect.TypeToken;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
 import rocks.milspecsg.msdatasync.model.core.Member;
@@ -62,23 +61,23 @@ public interface MemberRepository<M extends Member, S extends Snapshot, U> exten
 
     CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID);
 
-    CompletableFuture<Optional<Boolean>> addSnapshot(Query<M> query, ObjectId snapshotId);
+    CompletableFuture<Boolean> addSnapshot(Query<M> query, ObjectId snapshotId);
 
-    CompletableFuture<Optional<Boolean>> addSnapshot(ObjectId id, ObjectId snapshotId);
+    CompletableFuture<Boolean> addSnapshot(ObjectId id, ObjectId snapshotId);
 
-    CompletableFuture<Optional<Boolean>> addSnapshot(UUID userUUID, ObjectId snapshotId);
+    CompletableFuture<Boolean> addSnapshot(UUID userUUID, ObjectId snapshotId);
 
-    Optional<S> getSnapshot(Query<M> query, Date date);
+    CompletableFuture<Optional<S>> getSnapshot(Query<M> query, Date date);
 
-    Optional<S> getSnapshot(ObjectId id, Date date);
+    CompletableFuture<Optional<S>> getSnapshot(ObjectId id, Date date);
 
-    Optional<S> getSnapshot(UUID userUUID, Date date);
+    CompletableFuture<Optional<S>> getSnapshot(UUID userUUID, Date date);
 
-    Optional<List<ObjectId>> getClosestSnapshots(ObjectId id, Date date);
+    CompletableFuture<Optional<List<ObjectId>>> getClosestSnapshots(ObjectId id, Date date);
 
-    Optional<S> getLatestSnapshot(ObjectId id);
+    CompletableFuture<Optional<S>> getLatestSnapshot(ObjectId id);
 
-    Optional<S> getLatestSnapshot(UUID userUUID);
+    CompletableFuture<Optional<S>> getLatestSnapshot(UUID userUUID);
 
     CompletableFuture<Optional<U>> getUser(ObjectId id);
 

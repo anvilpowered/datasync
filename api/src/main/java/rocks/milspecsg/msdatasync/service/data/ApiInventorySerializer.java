@@ -2,12 +2,13 @@ package rocks.milspecsg.msdatasync.service.data;
 
 import rocks.milspecsg.msdatasync.api.data.InventorySerializer;
 import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
-public abstract class ApiInventorySerializer<M extends Member, P, K, U> extends ApiSerializer<M, P, K, U> implements InventorySerializer<M, P> {
+public abstract class ApiInventorySerializer<S extends Snapshot, P, K> extends ApiSerializer<S, P, K> implements InventorySerializer<S, P> {
 
     @Override
     public String getName() {
-        return "Inventory";
+        return "msdatasync:inventory";
     }
 
 }

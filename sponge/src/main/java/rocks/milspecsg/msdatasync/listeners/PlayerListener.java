@@ -11,7 +11,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
-import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
@@ -21,7 +21,7 @@ public class PlayerListener {
     private ConfigurationService configurationService;
 
     @Inject
-    PlayerSerializer<Member, Player> playerSerializer;
+    PlayerSerializer<Snapshot, Player> playerSerializer;
 
     private boolean enabled = true;
 
@@ -31,7 +31,7 @@ public class PlayerListener {
         this.configurationService.addConfigLoadedListener(this::loadConfig);
     }
 
-    private void loadConfig() {
+    private void loadConfig(Object plugin) {
         enabled = configurationService.getConfigBoolean(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE);
         if (!enabled) {
             Sponge.getServer().getConsole().sendMessage(
@@ -46,7 +46,7 @@ public class PlayerListener {
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent) {
         if (enabled) {
             Player player = joinEvent.getTargetEntity();
-            playerSerializer.serialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
+            playerSerializer.serialize(player).thenAcceptAsync(success -> {
                 if (success) {
                     Sponge.getServer().getConsole().sendMessage(
                         Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully serialized ", player.getName(), " on join!")
