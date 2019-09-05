@@ -12,15 +12,15 @@ import rocks.milspecsg.msdatasync.utils.Utils;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongeHealthSerializer<S extends Snapshot> extends ApiHealthSerializer<S, Player, Key> {
+public class ApiSpongeHealthSerializer extends ApiHealthSerializer<Snapshot, Player, Key> {
 
     @Override
-    public boolean serialize(S snapshot, Player player) {
+    public boolean serialize(Snapshot snapshot, Player player) {
         return Utils.serialize(snapshotRepository, snapshot, player, Keys.HEALTH);
     }
 
     @Override
-    public boolean deserialize(S snapshot, Player player) {
+    public boolean deserialize(Snapshot snapshot, Player player) {
         return Utils.deserialize(snapshotRepository, snapshot, player, Keys.HEALTH);
     }
 }

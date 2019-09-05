@@ -17,12 +17,12 @@ import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongeInventorySerializer<S extends Snapshot> extends ApiInventorySerializer<S, Player, Key> {
+public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Player, Key> {
 
     private static char SEPARATOR = '_';
 
     @Override
-    public boolean serialize(S snapshot, Player player) {
+    public boolean serialize(Snapshot snapshot, Player player) {
         try {
             List<SerializedItemStack> itemStacks = new ArrayList<>();
                 for (Inventory slot : player.getInventory().slots()) {
@@ -113,7 +113,7 @@ public class ApiSpongeInventorySerializer<S extends Snapshot> extends ApiInvento
     }
 
     @Override
-    public boolean deserialize(S snapshot, Player player) {
+    public boolean deserialize(Snapshot snapshot, Player player) {
         try {
             player.getInventory().clear();
             Iterator<Inventory> slots = player.getInventory().slots().iterator();

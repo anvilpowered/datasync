@@ -8,7 +8,7 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
 import java.util.Optional;
 
-public class MSMemberRepository extends ApiSpongeMemberRepository<Member, Snapshot> {
+public class MSMemberRepository extends ApiSpongeMemberRepository {
 
     @Override
     public Member generateEmpty() {
