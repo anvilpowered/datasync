@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class ApiSpongeMemberRepository<M extends Member, S extends Snapshot> extends ApiMemberRepository<M, S, Key, User> {
+public abstract class ApiSpongeMemberRepository extends ApiMemberRepository<Member, Snapshot, Key, User> {
 
     @Override
     public Optional<User> getUser(UUID userUUID) {
@@ -35,7 +35,7 @@ public abstract class ApiSpongeMemberRepository<M extends Member, S extends Snap
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getSnapshotIds(Query<M> query) {
+    public CompletableFuture<List<ObjectId>> getSnapshotIds(Query<Member> query) {
         return null;
     }
 
@@ -50,7 +50,7 @@ public abstract class ApiSpongeMemberRepository<M extends Member, S extends Snap
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(Query<M> query) {
+    public CompletableFuture<List<Date>> getSnapshotDates(Query<Member> query) {
         return null;
     }
 
@@ -65,9 +65,9 @@ public abstract class ApiSpongeMemberRepository<M extends Member, S extends Snap
     }
 
     @Override
-    public CompletableFuture<Boolean> addSnapshot(Query<M> query, ObjectId snapshotId) {
+    public CompletableFuture<Boolean> addSnapshot(Query<Member> query, ObjectId snapshotId) {
         return CompletableFuture.supplyAsync(() -> {
-            UpdateOperations<M> updateOperations = createUpdateOperations().addToSet("snapshotIds", snapshotId);
+            UpdateOperations<Member> updateOperations = createUpdateOperations().addToSet("snapshotIds", snapshotId);
 
             return mongoContext.getDataStore().map(datastore -> datastore.update(query, updateOperations).getUpdatedCount() > 0).orElse(false);
         });
@@ -84,17 +84,17 @@ public abstract class ApiSpongeMemberRepository<M extends Member, S extends Snap
     }
 
     @Override
-    public CompletableFuture<Optional<S>> getSnapshot(Query<M> query, Date date) {
+    public CompletableFuture<Optional<Snapshot>> getSnapshot(Query<Member> query, Date date) {
         return null;
     }
 
     @Override
-    public CompletableFuture<Optional<S>> getSnapshot(ObjectId id, Date date) {
+    public CompletableFuture<Optional<Snapshot>> getSnapshot(ObjectId id, Date date) {
         return null;
     }
 
     @Override
-    public CompletableFuture<Optional<S>> getSnapshot(UUID userUUID, Date date) {
+    public CompletableFuture<Optional<Snapshot>> getSnapshot(UUID userUUID, Date date) {
         return null;
     }
 
@@ -104,12 +104,12 @@ public abstract class ApiSpongeMemberRepository<M extends Member, S extends Snap
     }
 
     @Override
-    public CompletableFuture<Optional<S>> getLatestSnapshot(ObjectId id) {
+    public CompletableFuture<Optional<Snapshot>> getLatestSnapshot(ObjectId id) {
         return getOne(id).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> snapshotRepository.getOne(member.snapshotIds.get(member.snapshotIds.size() - 1)).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<S>> getLatestSnapshot(UUID userUUID) {
+    public CompletableFuture<Optional<Snapshot>> getLatestSnapshot(UUID userUUID) {
         return getOne(userUUID).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> snapshotRepository.getOne(member.snapshotIds.get(member.snapshotIds.size() - 1)).join()));
     }
 

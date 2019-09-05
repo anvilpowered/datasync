@@ -143,7 +143,7 @@ public class MSDataSync {
         }
     }
 
-    private static class MSDataSyncModule extends ApiSpongeModule<Member, Snapshot> {
+    private static class MSDataSyncModule extends ApiSpongeModule {
         @Override
         protected void configure() {
             super.configure();
@@ -152,10 +152,10 @@ public class MSDataSync {
 
             bind(SpongePluginInfo.class).to(MSDataSyncPluginInfo.class);
 
-            bind(new TypeLiteral<ApiSpongeMemberRepository<Member, Snapshot>>() {})
+            bind(new TypeLiteral<ApiSpongeMemberRepository>() {})
                 .to(new TypeLiteral<MSMemberRepository>() {});
 
-            bind(new TypeLiteral<ApiSpongeSnapshotRepository<Snapshot>>() {})
+            bind(new TypeLiteral<ApiSpongeSnapshotRepository>() {})
                 .to(new TypeLiteral<MSSnapshotRepository>() {});
 
             bind(new TypeLiteral<ApiSerializationTaskService<Snapshot, Player>>() {})

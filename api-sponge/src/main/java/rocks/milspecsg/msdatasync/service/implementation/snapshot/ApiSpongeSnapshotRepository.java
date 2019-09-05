@@ -4,5 +4,5 @@ import org.spongepowered.api.data.key.Key;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotRepository;
 
-public abstract class ApiSpongeSnapshotRepository<S extends Snapshot> extends ApiSnapshotRepository<S, Key> {
+public abstract class ApiSpongeSnapshotRepository extends ApiSnapshotRepository<Snapshot, Key> {
 }

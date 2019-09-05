@@ -17,7 +17,7 @@ import rocks.milspecsg.msrepository.SpongePluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
 @Singleton
-public class ApiSpongeSnapshotSerializer<S extends Snapshot> extends ApiSnapshotSerializer<S, Player, Key> {
+public class ApiSpongeSnapshotSerializer extends ApiSnapshotSerializer<Snapshot, Player, Key> {
 
     @Inject
     public ApiSpongeSnapshotSerializer(ConfigurationService configurationService) {
@@ -31,7 +31,7 @@ public class ApiSpongeSnapshotSerializer<S extends Snapshot> extends ApiSnapshot
     protected void postLoadedEvent(Object plugin) {
         Sponge.getPluginManager().fromInstance(plugin).ifPresent(container -> {
             EventContext eventContext = EventContext.builder().add(EventContextKeys.PLUGIN, container).build();
-            SerializerInitializationEvent<S> event = new SerializerInitializationEvent<>(this, snapshotRepository, Cause.of(eventContext, plugin));
+            SerializerInitializationEvent<Snapshot> event = new SerializerInitializationEvent<>(this, snapshotRepository, Cause.of(eventContext, plugin));
             Sponge.getEventManager().post(event);
         });
     }

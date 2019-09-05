@@ -7,15 +7,15 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.ApiGameModeSerializer;
 import rocks.milspecsg.msdatasync.utils.Utils;
 
-public class ApiSpongeGameModeSerializer<S extends Snapshot> extends ApiGameModeSerializer<S, Player, Key> {
+public class ApiSpongeGameModeSerializer extends ApiGameModeSerializer<Snapshot, Player, Key> {
 
     @Override
-    public boolean serialize(S snapshot, Player player) {
+    public boolean serialize(Snapshot snapshot, Player player) {
         return Utils.serialize(snapshotRepository, snapshot, player, Keys.GAME_MODE);
     }
 
     @Override
-    public boolean deserialize(S snapshot, Player player) {
+    public boolean deserialize(Snapshot snapshot, Player player) {
         return Utils.deserialize(snapshotRepository, snapshot, player, Keys.GAME_MODE);
     }
 }

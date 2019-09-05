@@ -11,11 +11,11 @@ import rocks.milspecsg.msdatasync.service.data.ApiPlayerSerializer;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongePlayerSerializer<M extends Member, S extends Snapshot> extends ApiPlayerSerializer<M, S, Player, Key, User> {
+public class ApiSpongePlayerSerializer extends ApiPlayerSerializer<Member, Snapshot, Player, Key, User> {
 
     @Override
     public CompletableFuture<Boolean> serialize(Player player) {
-        S snapshot = snapshotRepository.generateEmpty();
+        Snapshot snapshot = snapshotRepository.generateEmpty();
         serialize(snapshot, player);
         if (snapshot.keys == null) snapshot.keys = new HashMap<>();
         return snapshotRepository.insertOne(snapshot).thenApplyAsync(optionalSnapshot -> {
@@ -38,7 +38,7 @@ public class ApiSpongePlayerSerializer<M extends Member, S extends Snapshot> ext
                 return;
             }
 
-            S snapshot = optionalSnapshot.get();
+            Snapshot snapshot = optionalSnapshot.get();
             if (snapshot.keys == null) snapshot.keys = new HashMap<>();
             Task.builder().execute(() -> result.complete(deserialize(snapshot, player))).submit(plugin);
         });

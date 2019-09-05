@@ -12,10 +12,10 @@ import rocks.milspecsg.msdatasync.utils.Utils;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongeHungerSerializer<S extends Snapshot> extends ApiHungerSerializer<S, Player, Key> {
+public class ApiSpongeHungerSerializer extends ApiHungerSerializer<Snapshot, Player, Key> {
 
     @Override
-    public boolean serialize(S snapshot, Player player) {
+    public boolean serialize(Snapshot snapshot, Player player) {
         // second statement should still run if first one fails
         boolean a = Utils.serialize(snapshotRepository, snapshot, player, Keys.FOOD_LEVEL);
         boolean b = Utils.serialize(snapshotRepository, snapshot, player, Keys.SATURATION);
@@ -23,7 +23,7 @@ public class ApiSpongeHungerSerializer<S extends Snapshot> extends ApiHungerSeri
     }
 
     @Override
-    public boolean deserialize(S snapshot, Player player) {
+    public boolean deserialize(Snapshot snapshot, Player player) {
         // second statement should still run if first one fails
         boolean a = Utils.deserialize(snapshotRepository, snapshot, player, Keys.FOOD_LEVEL);
         boolean b = Utils.deserialize(snapshotRepository, snapshot, player, Keys.SATURATION);

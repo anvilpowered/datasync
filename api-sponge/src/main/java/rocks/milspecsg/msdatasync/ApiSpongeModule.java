@@ -17,64 +17,64 @@ import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
 import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotRepository;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-public class ApiSpongeModule<M extends Member, S extends Snapshot> extends ApiModule<M, S, Player, Key, User> {
+public class ApiSpongeModule extends ApiModule<Member, Snapshot, Player, Key, User> {
 
     @Override
     protected void configure() {
         super.configure();
 
         bind(
-            (TypeLiteral<ApiExperienceSerializer<S, Player, Key>>) TypeLiteral.get(new TypeToken<ApiExperienceSerializer<S, Player, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiExperienceSerializer<Snapshot, Player, Key>>) TypeLiteral.get(new TypeToken<ApiExperienceSerializer<Snapshot, Player, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeExperienceSerializer<S>>) TypeLiteral.get(new TypeToken<ApiSpongeExperienceSerializer<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeExperienceSerializer>) TypeLiteral.get(new TypeToken<ApiSpongeExperienceSerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiGameModeSerializer<S, Player, Key>>) TypeLiteral.get(new TypeToken<ApiGameModeSerializer<S, Player, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiGameModeSerializer<Snapshot, Player, Key>>) TypeLiteral.get(new TypeToken<ApiGameModeSerializer<Snapshot, Player, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeGameModeSerializer<S>>) TypeLiteral.get(new TypeToken<ApiSpongeGameModeSerializer<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeGameModeSerializer>) TypeLiteral.get(new TypeToken<ApiSpongeGameModeSerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiHealthSerializer<S, Player, Key>>) TypeLiteral.get(new TypeToken<ApiHealthSerializer<S, Player, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiHealthSerializer<Snapshot, Player, Key>>) TypeLiteral.get(new TypeToken<ApiHealthSerializer<Snapshot, Player, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeHealthSerializer<S>>) TypeLiteral.get(new TypeToken<ApiSpongeHealthSerializer<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeHealthSerializer>) TypeLiteral.get(new TypeToken<ApiSpongeHealthSerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiHungerSerializer<S, Player, Key>>) TypeLiteral.get(new TypeToken<ApiHungerSerializer<S, Player, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiHungerSerializer<Snapshot, Player, Key>>) TypeLiteral.get(new TypeToken<ApiHungerSerializer<Snapshot, Player, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeHungerSerializer<S>>) TypeLiteral.get(new TypeToken<ApiSpongeHungerSerializer<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeHungerSerializer>) TypeLiteral.get(new TypeToken<ApiSpongeHungerSerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiInventorySerializer<S, Player, Key>>) TypeLiteral.get(new TypeToken<ApiInventorySerializer<S, Player, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiInventorySerializer<Snapshot, Player, Key>>) TypeLiteral.get(new TypeToken<ApiInventorySerializer<Snapshot, Player, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeInventorySerializer<S>>) TypeLiteral.get(new TypeToken<ApiSpongeInventorySerializer<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeInventorySerializer>) TypeLiteral.get(new TypeToken<ApiSpongeInventorySerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiPlayerSerializer<M, S, Player, Key, User>>) TypeLiteral.get(new TypeToken<ApiPlayerSerializer<M, S, Player, Key, User>>(getClass()) {}.getType())
+            (TypeLiteral<ApiPlayerSerializer<Member, Snapshot, Player, Key, User>>) TypeLiteral.get(new TypeToken<ApiPlayerSerializer<Member, Snapshot, Player, Key, User>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongePlayerSerializer<M, S>>) TypeLiteral.get(new TypeToken<ApiSpongePlayerSerializer<M, S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongePlayerSerializer>) TypeLiteral.get(new TypeToken<ApiSpongePlayerSerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiSnapshotSerializer<S, Player, Key>>) TypeLiteral.get(new TypeToken<ApiSnapshotSerializer<S, Player, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSnapshotSerializer<Snapshot, Player, Key>>) TypeLiteral.get(new TypeToken<ApiSnapshotSerializer<Snapshot, Player, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeSnapshotSerializer<S>>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotSerializer<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeSnapshotSerializer>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotSerializer>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiMemberRepository<M, S, Key, User>>) TypeLiteral.get(new TypeToken<ApiMemberRepository<M, S, Key, User>>(getClass()) {}.getType())
+            (TypeLiteral<ApiMemberRepository<Member, Snapshot, Key, User>>) TypeLiteral.get(new TypeToken<ApiMemberRepository<Member, Snapshot, Key, User>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeMemberRepository<M, S>>) TypeLiteral.get(new TypeToken<ApiSpongeMemberRepository<M, S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeMemberRepository>) TypeLiteral.get(new TypeToken<ApiSpongeMemberRepository>(getClass()) {}.getType())
         );
 
         bind(
-            (TypeLiteral<ApiSnapshotRepository<S, Key>>) TypeLiteral.get(new TypeToken<ApiSnapshotRepository<S, Key>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSnapshotRepository<Snapshot, Key>>) TypeLiteral.get(new TypeToken<ApiSnapshotRepository<Snapshot, Key>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSpongeSnapshotRepository<S>>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotRepository<S>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSpongeSnapshotRepository>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotRepository>(getClass()) {}.getType())
         );
 
         bind(new TypeLiteral<ApiDataKeyService<Key>>() {})

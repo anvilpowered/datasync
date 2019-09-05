@@ -3,11 +3,12 @@ package rocks.milspecsg.msdatasync.service.implementation.snapshot;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
+import org.spongepowered.api.data.key.Key;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
 import java.util.Optional;
 
-public class MSSnapshotRepository extends ApiSpongeSnapshotRepository<Snapshot> {
+public class MSSnapshotRepository extends ApiSpongeSnapshotRepository {
 
     @Override
     public Snapshot generateEmpty() {
