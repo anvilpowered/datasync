@@ -6,6 +6,7 @@ import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msdatasync.PluginPermissions;
+import rocks.milspecsg.msdatasync.commands.snapshot.*;
 
 import java.util.*;
 
@@ -18,38 +19,135 @@ public class SyncCommandManager implements CommandManager {
     UploadStartCommand uploadStartCommand;
 
     @Inject
-    DownloadStartCommand downloadStartCommand;
-
-    @Inject
     SyncLockCommand syncLockCommand;
 
     @Inject
     SyncReloadCommand syncReloadCommand;
 
+    @Inject
+    SnapshotCreateCommand snapshotCreateCommand;
+
+    @Inject
+    SnapshotDeleteCommand snapshotDeleteCommand;
+
+    @Inject
+    SnapshotHelpCommand snapshotHelpCommand;
+
+    @Inject
+    SnapshotEditCommand snapshotEditCommand;
+
+    @Inject
+    SnapshotInfoCommand snapshotInfoCommand;
+
+    @Inject
+    SnapshotListCommand snapshotListCommand;
+
+    @Inject
+    SnapshotRestoreCommand snapshotRestoreCommand;
+
     public static Map<List<String>, CommandSpec> subCommands = new HashMap<>();
+    public static Map<List<String>, CommandSpec> snapshotSubCommands = new HashMap<>();
 
     @Override
     public void register(Object plugin) {
         Map<List<String>, CommandSpec> subCommands = new HashMap<>();
+        Map<List<String>, CommandSpec> snapshotSubCommands = new HashMap<>();
 
-        subCommands.put(Arrays.asList("upload", "up", "u"), CommandSpec.builder()
-            .description(Text.of("Upload current player inventory to DB. If no player selected, all online are uploaded"))
-            .permission(PluginPermissions.START_COMMAND)
+//        subCommands.put(Arrays.asList("upload", "up", "u"), CommandSpec.builder()
+//            .description(Text.of("Upload current player inventory to DB. If no player selected, all online are uploaded"))
+//            .permission(PluginPermissions.START_COMMAND)
+//            .arguments(
+//                GenericArguments.optional(GenericArguments.player(Text.of("player")))
+//            )
+//            .executor(uploadStartCommand)
+//            .build());
+//
+//        subCommands.put(Arrays.asList("download", "down", "d"), CommandSpec.builder()
+//            .description(Text.of("Download current player inventory from DB. If no player selected, all online are downloaded"))
+//            .permission(PluginPermissions.START_COMMAND)
+//            .arguments(
+//                GenericArguments.optional(GenericArguments.player(Text.of("player")))
+//            )
+//            .executor(downloadStartCommand)
+//            .build());
+
+        snapshotSubCommands.put(Arrays.asList("create", "c", "upload", "up"), CommandSpec.builder()
+            .description(Text.of("Manually create new snapshot for player and upload to DB. If no player selected, all online are uploaded"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
-                GenericArguments.optional(GenericArguments.player(Text.of("player")))
+                GenericArguments.player(Text.of("player"))
             )
-            .executor(uploadStartCommand)
-            .build());
+            .executor(snapshotCreateCommand)
+            .build()
+        );
 
-        subCommands.put(Arrays.asList("download", "down", "d"), CommandSpec.builder()
-            .description(Text.of("Download current player inventory from DB. If no player selected, all online are downloaded"))
-            .permission(PluginPermissions.START_COMMAND)
+        snapshotSubCommands.put(Collections.singletonList("delete"), CommandSpec.builder()
+            .description(Text.of("Delete snapshot for player"))
+            .permission(PluginPermissions.EDIT_SNAPSHOTS)
             .arguments(
-                GenericArguments.optional(GenericArguments.player(Text.of("player")))
+                GenericArguments.player(Text.of("player")),
+                GenericArguments.string(Text.of("date"))
             )
-            .executor(downloadStartCommand)
-            .build());
+            .executor(snapshotDeleteCommand)
+            .build()
+        );
 
+        snapshotSubCommands.put(Arrays.asList("edit", "e", "invsee"), CommandSpec.builder()
+            .description(Text.of("Edit snapshot for player from DB. If no date is selected, latest snapshot is selected"))
+            .permission(PluginPermissions.EDIT_SNAPSHOTS)
+            .arguments(
+                GenericArguments.player(Text.of("player")),
+                GenericArguments.optional(GenericArguments.string(Text.of("date")))
+            )
+            .executor(snapshotEditCommand)
+            .build()
+        );
+
+        snapshotSubCommands.put(Collections.singletonList("help"), CommandSpec.builder()
+            .description(Text.of("Shows this help page"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .executor(snapshotHelpCommand)
+            .build()
+        );
+
+        snapshotSubCommands.put(Arrays.asList("info", "i"), CommandSpec.builder()
+            .description(Text.of("Show more snapshot info"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .arguments(
+                GenericArguments.player(Text.of("player")),
+                GenericArguments.optional(GenericArguments.string(Text.of("date")))
+            )
+            .executor(snapshotInfoCommand)
+            .build()
+        );
+
+        snapshotSubCommands.put(Arrays.asList("list", "l"), CommandSpec.builder()
+            .description(Text.of("List available snapshots for player"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .arguments(
+                GenericArguments.player(Text.of("player"))
+            )
+            .executor(snapshotListCommand)
+            .build()
+        );
+
+        snapshotSubCommands.put(Arrays.asList("restore", "r", "download", "down"), CommandSpec.builder()
+            .description(Text.of("Manually restore snapshot for player from DB. If no date is selected, latest snapshot is restored"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .arguments(
+                GenericArguments.player(Text.of("player")),
+                GenericArguments.optional(GenericArguments.string(Text.of("date")))
+            )
+            .executor(snapshotRestoreCommand)
+            .build()
+        );
+
+        subCommands.put(Arrays.asList("snapshot", "snap", "s"), CommandSpec.builder()
+            .description(Text.of("Snapshot base command"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .executor(snapshotHelpCommand)
+            .children(snapshotSubCommands)
+            .build());
 
         Map<String, String> lockChoices = new HashMap<>();
 
@@ -71,10 +169,16 @@ public class SyncCommandManager implements CommandManager {
             .executor(syncReloadCommand)
             .build());
 
+        subCommands.put(Arrays.asList("upload", "up"), CommandSpec.builder()
+            .description(Text.of("Upload all players on server"))
+            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .executor(uploadStartCommand)
+            .build());
+
 
         //Build all commands
         CommandSpec mainCommand = CommandSpec.builder()
-            .description(Text.of("Displays all available party subcommands"))
+            .description(Text.of("Displays all available sync subcommands"))
             .executor(syncHelpCommand)
             .children(subCommands)
             .build();
@@ -82,5 +186,6 @@ public class SyncCommandManager implements CommandManager {
         //Register commands
         Sponge.getCommandManager().register(plugin, mainCommand, "sync", "msdatasync", "datasync", "synchronize");
         SyncCommandManager.subCommands = subCommands;
+        SyncCommandManager.snapshotSubCommands = snapshotSubCommands;
     }
 }

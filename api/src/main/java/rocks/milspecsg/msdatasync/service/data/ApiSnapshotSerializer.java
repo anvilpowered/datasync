@@ -16,7 +16,7 @@ import java.util.List;
  * @param <P> Player class to get data from
  * @param <K> Key class
  */
-public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K> extends ApiSerializer<S, P, K> implements SnapshotSerializer<S, P> {
+public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends ApiSerializer<S, P, K> implements SnapshotSerializer<S, P> {
 
     @Override
     public String getName() {
@@ -40,7 +40,7 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K> extends Ap
     private Provider<HungerSerializer<S, P>> hungerSerializerProvider;
 
     @Inject
-    private Provider<InventorySerializer<S, P>> inventorySerializerProvider;
+    private Provider<InventorySerializer<S, P, I>> inventorySerializerProvider;
 
     private ConfigurationService configurationService;
 
@@ -49,6 +49,11 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K> extends Ap
         this.configurationService = configurationService;
         configurationService.addConfigLoadedListener(this::loadConfig);
         externalSerializers = new ArrayList<>();
+    }
+
+    @Override
+    public boolean isSerializerEnabled(String name) {
+        return serializers.stream().anyMatch(serializer -> serializer.getName().equals(name));
     }
 
     @Override
@@ -126,6 +131,9 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K> extends Ap
             // will still try to keep going even if one module fails
             try {
                 if (serializer.serialize(snapshot, player)) {
+                    if (snapshot.modulesUsed == null) {
+                        snapshot.modulesUsed = new ArrayList<>();
+                    }
                     snapshot.modulesUsed.add(serializer.getName());
                 } else {
                     System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for player " + getUsername(player));

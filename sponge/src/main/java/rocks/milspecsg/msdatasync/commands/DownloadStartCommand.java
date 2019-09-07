@@ -16,6 +16,7 @@ import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
+import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -25,6 +26,9 @@ public class DownloadStartCommand implements CommandExecutor {
 
     @Inject
     PlayerSerializer<Snapshot, Player> playerSerializer;
+
+    @Inject
+    DateFormat dateFormat;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -36,8 +40,8 @@ public class DownloadStartCommand implements CommandExecutor {
         if (optionalPlayer.isPresent()) {
             // serialize only one player
 //            System.out.println("Deserializing " + optionalPlayer.get().getName());
-            playerSerializer.deserialize(optionalPlayer.get(), MSDataSync.plugin).thenAcceptAsync(success -> {
-                if (success) {
+            playerSerializer.deserialize(optionalPlayer.get(), MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
+                if (optionalSnapshot.isPresent()) {
                     source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", optionalPlayer.get().getName()));
                 } else {
                     source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while deserializing ", optionalPlayer.get().getName()));
@@ -51,8 +55,8 @@ public class DownloadStartCommand implements CommandExecutor {
             Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting download..."));
 
             for (Player player : players) {
-                playerSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
-                    if (success) {
+                playerSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
+                    if (optionalSnapshot.isPresent()) {
                         successful.add(player);
                     } else {
                         unsuccessful.add(player);

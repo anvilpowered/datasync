@@ -73,7 +73,11 @@ public interface MemberRepository<M extends Member, S extends Snapshot, U> exten
 
     CompletableFuture<Optional<S>> getSnapshot(UUID userUUID, Date date);
 
-    CompletableFuture<Optional<List<ObjectId>>> getClosestSnapshots(ObjectId id, Date date);
+    CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<M> query, Date date);
+
+    CompletableFuture<List<ObjectId>> getClosestSnapshots(ObjectId id, Date date);
+
+    CompletableFuture<List<ObjectId>> getClosestSnapshots(UUID userUUID, Date date);
 
     CompletableFuture<Optional<S>> getLatestSnapshot(ObjectId id);
 

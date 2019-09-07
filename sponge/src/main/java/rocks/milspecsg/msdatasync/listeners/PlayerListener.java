@@ -11,6 +11,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
+import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
@@ -46,14 +47,14 @@ public class PlayerListener {
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent) {
         if (enabled) {
             Player player = joinEvent.getTargetEntity();
-            playerSerializer.serialize(player).thenAcceptAsync(success -> {
-                if (success) {
+            playerSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
+                if (optionalSnapshot.isPresent()) {
                     Sponge.getServer().getConsole().sendMessage(
-                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully serialized ", player.getName(), " on join!")
+                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", player.getName(), " on join!")
                     );
                 } else {
                     Sponge.getServer().getConsole().sendMessage(
-                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while serializing ", player.getName(), " on join!")
+                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while deserializing ", player.getName(), " on join!")
                     );
                 }
             });
@@ -62,16 +63,17 @@ public class PlayerListener {
 
     @Listener
     public void onPlayerDisconnect(ClientConnectionEvent.Disconnect disconnectEvent) {
+        SyncLockCommand.lockPlayer(disconnectEvent.getTargetEntity());
         if (enabled) {
             Player player = disconnectEvent.getTargetEntity();
-            playerSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(success -> {
-                if (success) {
+            playerSerializer.serialize(player, "Disconnect").thenAcceptAsync(optionalSnapshot -> {
+                if (optionalSnapshot.isPresent()) {
                     Sponge.getServer().getConsole().sendMessage(
-                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", player.getName(), " on disconnect!")
+                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully serialized ", player.getName(), " on disconnect!")
                     );
                 } else {
                     Sponge.getServer().getConsole().sendMessage(
-                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while deserializing ", player.getName(), " on disconnect!")
+                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while serializing ", player.getName(), " on disconnect!")
                     );
                 }
             });

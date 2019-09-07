@@ -29,6 +29,6 @@ public abstract class ApiPlayerSerializer<M extends Member, S extends Snapshot, 
 
     @Override
     public boolean deserialize(S snapshot, P player) {
-        return snapshotSerializer.serialize(snapshot, player);
+        return snapshotSerializer.deserialize(snapshot, player);
     }
 }
