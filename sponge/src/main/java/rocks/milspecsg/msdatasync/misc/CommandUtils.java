@@ -27,11 +27,11 @@ public class CommandUtils {
     @Inject
     DateFormatService dateFormatService;
 
-    public void parseDateOrGetLatest(CommandSource source, CommandContext context, Player targetPlayer, Consumer<Optional<Snapshot>> afterFound) throws CommandException {
+    public void parseDateOrGetLatest(CommandSource source, CommandContext context, User targetUser, Consumer<Optional<Snapshot>> afterFound) throws CommandException {
         Optional<String> optionalDate = context.getOne(Text.of("date"));
         if (!optionalDate.isPresent()) {
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "No date present... finding latest snapshot for " + targetPlayer.getName()));
-            memberRepository.getLatestSnapshot(targetPlayer.getUniqueId()).thenAcceptAsync(afterFound);
+            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "No date present... finding latest snapshot for " + targetUser.getName()));
+            memberRepository.getLatestSnapshot(targetUser.getUniqueId()).thenAcceptAsync(afterFound);
         } else {
             Date date;
             try {
@@ -39,31 +39,31 @@ public class CommandUtils {
             } catch (ParseException e) {
                 throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Invalid date format"));
             }
-            memberRepository.getSnapshot(targetPlayer.getUniqueId(), date).thenAcceptAsync(afterFound);
+            memberRepository.getSnapshot(targetUser.getUniqueId(), date).thenAcceptAsync(afterFound);
         }
     }
 
-    public Text snapshotActions(Player targetPlayer, String date) {
+    public Text snapshotActions(User targetUser, String date) {
         return Text.builder()
             .append(
                 Text.builder()
                     .append(Text.of(TextColors.GREEN, "[ Restore ]"))
                     .onHover(TextActions.showText(Text.of(TextColors.GREEN, "Click to restore")))
-                    .onClick(TextActions.suggestCommand("/sync snapshot restore " + targetPlayer.getName() + " " + date))
+                    .onClick(TextActions.suggestCommand("/sync snapshot restore " + targetUser.getName() + " " + date))
                     .build())
             .append(Text.of(" "))
             .append(
                 Text.builder()
                     .append(Text.of(TextColors.GOLD, "[ Edit ]"))
                     .onHover(TextActions.showText(Text.of(TextColors.GOLD, "Click to edit")))
-                    .onClick(TextActions.suggestCommand("/sync snapshot edit " + targetPlayer.getName() + " " + date))
+                    .onClick(TextActions.suggestCommand("/sync snapshot edit " + targetUser.getName() + " " + date))
                     .build())
             .append(Text.of(" "))
             .append(
                 Text.builder()
                     .append(Text.of(TextColors.RED, "[ Delete ]"))
                     .onHover(TextActions.showText(Text.of(TextColors.RED, "Click to delete")))
-                    .onClick(TextActions.suggestCommand("/sync snapshot delete " + targetPlayer.getName() + " " + date))
+                    .onClick(TextActions.suggestCommand("/sync snapshot delete " + targetUser.getName() + " " + date))
                     .build())
             .build();
     }

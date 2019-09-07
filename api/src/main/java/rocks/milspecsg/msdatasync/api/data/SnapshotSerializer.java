@@ -6,11 +6,11 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * @param <S> {@link Snapshot} or subclass. Default implementation by MSDataSync as {@link Snapshot}
- * @param <P> Player class to get data from
+ * @param <U> Player class to get data from
  */
-public interface SnapshotSerializer<S extends Snapshot, P> extends Serializer<S, P> {
+public interface SnapshotSerializer<S extends Snapshot, U> extends Serializer<S, U> {
 
-    void registerSerializer(Serializer<S, P> serializer);
+    void registerSerializer(Serializer<S, U> serializer);
 
     boolean isSerializerEnabled(String name);
 

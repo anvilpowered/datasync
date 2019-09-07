@@ -12,11 +12,10 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
-import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
+import rocks.milspecsg.msdatasync.api.data.UserSerializer;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ public class UploadStartCommand implements CommandExecutor {
 
 
     @Inject
-    PlayerSerializer<Snapshot, Player> playerSerializer;
+    UserSerializer<Snapshot, User> userSerializer;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -35,10 +34,13 @@ public class UploadStartCommand implements CommandExecutor {
         Collection<Player> players = Sponge.getServer().getOnlinePlayers();
         ConcurrentLinkedQueue<Player> successful = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<Player> unsuccessful = new ConcurrentLinkedQueue<>();
-        Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Starting upload..."));
+
+        if (players.isEmpty()) {
+            throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "There are no players currently online"));
+        }
 
         for (Player player : players) {
-            playerSerializer.serialize(player).thenAcceptAsync(optionalSnapshot -> {
+            userSerializer.serialize(player).thenAcceptAsync(optionalSnapshot -> {
                 if (optionalSnapshot.isPresent()) {
                     successful.add(player);
                 } else {

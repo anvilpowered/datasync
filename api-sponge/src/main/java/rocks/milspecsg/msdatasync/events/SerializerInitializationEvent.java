@@ -2,6 +2,7 @@ package rocks.milspecsg.msdatasync.events;
 
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
 import rocks.milspecsg.msdatasync.api.data.Serializer;
@@ -14,11 +15,11 @@ import java.util.concurrent.CompletableFuture;
 public class SerializerInitializationEvent<S extends Snapshot> extends AbstractEvent {
 
     private final Cause cause;
-    private final SnapshotSerializer<S, Player> snapshotSerializer;
+    private final SnapshotSerializer<S, User> snapshotSerializer;
     private final SnapshotRepository<S, Key> snapshotRepository;
 
     public SerializerInitializationEvent(
-        SnapshotSerializer<S, Player> snapshotSerializer,
+        SnapshotSerializer<S, User> snapshotSerializer,
         SnapshotRepository<S, Key> snapshotRepository,
         Cause cause) {
 
@@ -33,7 +34,7 @@ public class SerializerInitializationEvent<S extends Snapshot> extends AbstractE
         return this.cause;
     }
 
-    public SnapshotSerializer<S, Player> getSnapshotSerializer() {
+    public SnapshotSerializer<S, User> getSnapshotSerializer() {
         return snapshotSerializer;
     }
 

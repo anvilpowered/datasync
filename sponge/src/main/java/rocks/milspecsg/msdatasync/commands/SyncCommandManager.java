@@ -53,39 +53,21 @@ public class SyncCommandManager implements CommandManager {
         Map<List<String>, CommandSpec> subCommands = new HashMap<>();
         Map<List<String>, CommandSpec> snapshotSubCommands = new HashMap<>();
 
-//        subCommands.put(Arrays.asList("upload", "up", "u"), CommandSpec.builder()
-//            .description(Text.of("Upload current player inventory to DB. If no player selected, all online are uploaded"))
-//            .permission(PluginPermissions.START_COMMAND)
-//            .arguments(
-//                GenericArguments.optional(GenericArguments.player(Text.of("player")))
-//            )
-//            .executor(uploadStartCommand)
-//            .build());
-//
-//        subCommands.put(Arrays.asList("download", "down", "d"), CommandSpec.builder()
-//            .description(Text.of("Download current player inventory from DB. If no player selected, all online are downloaded"))
-//            .permission(PluginPermissions.START_COMMAND)
-//            .arguments(
-//                GenericArguments.optional(GenericArguments.player(Text.of("player")))
-//            )
-//            .executor(downloadStartCommand)
-//            .build());
-
         snapshotSubCommands.put(Arrays.asList("create", "c", "upload", "up"), CommandSpec.builder()
-            .description(Text.of("Manually create new snapshot for player and upload to DB. If no player selected, all online are uploaded"))
+            .description(Text.of("Manually create new snapshot for user and upload to DB. If no user selected, all online are uploaded"))
             .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
-                GenericArguments.player(Text.of("player"))
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user")))
             )
             .executor(snapshotCreateCommand)
             .build()
         );
 
         snapshotSubCommands.put(Collections.singletonList("delete"), CommandSpec.builder()
-            .description(Text.of("Delete snapshot for player"))
+            .description(Text.of("Delete snapshot for user"))
             .permission(PluginPermissions.EDIT_SNAPSHOTS)
             .arguments(
-                GenericArguments.player(Text.of("player")),
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.string(Text.of("date"))
             )
             .executor(snapshotDeleteCommand)
@@ -93,10 +75,10 @@ public class SyncCommandManager implements CommandManager {
         );
 
         snapshotSubCommands.put(Arrays.asList("edit", "e", "invsee"), CommandSpec.builder()
-            .description(Text.of("Edit snapshot for player from DB. If no date is selected, latest snapshot is selected"))
+            .description(Text.of("Edit snapshot for user from DB. If no date is selected, latest snapshot is selected"))
             .permission(PluginPermissions.EDIT_SNAPSHOTS)
             .arguments(
-                GenericArguments.player(Text.of("player")),
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.optional(GenericArguments.string(Text.of("date")))
             )
             .executor(snapshotEditCommand)
@@ -114,7 +96,7 @@ public class SyncCommandManager implements CommandManager {
             .description(Text.of("Show more snapshot info"))
             .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
-                GenericArguments.player(Text.of("player")),
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.optional(GenericArguments.string(Text.of("date")))
             )
             .executor(snapshotInfoCommand)
@@ -122,20 +104,20 @@ public class SyncCommandManager implements CommandManager {
         );
 
         snapshotSubCommands.put(Arrays.asList("list", "l"), CommandSpec.builder()
-            .description(Text.of("List available snapshots for player"))
+            .description(Text.of("List available snapshots for user"))
             .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
-                GenericArguments.player(Text.of("player"))
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user")))
             )
             .executor(snapshotListCommand)
             .build()
         );
 
         snapshotSubCommands.put(Arrays.asList("restore", "r", "download", "down"), CommandSpec.builder()
-            .description(Text.of("Manually restore snapshot for player from DB. If no date is selected, latest snapshot is restored"))
+            .description(Text.of("Manually restore snapshot for user from DB. If no date is selected, latest snapshot is restored"))
             .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
-                GenericArguments.player(Text.of("player")),
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.optional(GenericArguments.string(Text.of("date")))
             )
             .executor(snapshotRestoreCommand)

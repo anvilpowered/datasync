@@ -50,7 +50,7 @@ public class MSConfigurationService extends ApiConfigurationService {
     protected void initDefaultMaps() {
         defaultListMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, Arrays.asList("msdatasync:experience", "msdatasync:gameMode", "msdatasync:health", "msdatasync:hunger", "msdatasync:inventory"));
         defaultBooleanMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, true);
-        defaultIntegerMap.put(ConfigKeys.SERIALIZATION_TASK_INTERVAL_MINUTES, 300);
+        defaultIntegerMap.put(ConfigKeys.SERIALIZATION_TASK_INTERVAL_MINUTES, 5);
         defaultStringMap.put(ConfigKeys.MONGODB_HOSTNAME, "localhost");
         defaultIntegerMap.put(ConfigKeys.MONGODB_PORT, 27017);
         defaultStringMap.put(ConfigKeys.MONGODB_DBNAME, "msdatasync");

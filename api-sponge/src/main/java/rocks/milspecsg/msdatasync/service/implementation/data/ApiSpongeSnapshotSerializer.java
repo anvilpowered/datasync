@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKeys;
@@ -18,7 +19,7 @@ import rocks.milspecsg.msrepository.SpongePluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
 @Singleton
-public class ApiSpongeSnapshotSerializer extends ApiSnapshotSerializer<Snapshot, Player, Key, Inventory> {
+public class ApiSpongeSnapshotSerializer extends ApiSnapshotSerializer<Snapshot, Key, User, Inventory> {
 
     @Inject
     public ApiSpongeSnapshotSerializer(ConfigurationService configurationService) {
@@ -43,8 +44,8 @@ public class ApiSpongeSnapshotSerializer extends ApiSnapshotSerializer<Snapshot,
     }
 
     @Override
-    protected String getUsername(Player player) {
-        return player.getName();
+    protected String getUsername(User user) {
+        return user.getName();
     }
 
 }

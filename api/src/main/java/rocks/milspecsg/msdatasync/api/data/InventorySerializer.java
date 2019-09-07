@@ -2,7 +2,7 @@ package rocks.milspecsg.msdatasync.api.data;
 
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
-public interface InventorySerializer<S extends Snapshot, P, I> extends Serializer<S, P> {
+public interface InventorySerializer<S extends Snapshot, U, I> extends Serializer<S, U> {
 
     /**
      * Moves data from {@code inventory} into {@code member}

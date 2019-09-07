@@ -61,6 +61,12 @@ public interface MemberRepository<M extends Member, S extends Snapshot, U> exten
 
     CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID);
 
+    CompletableFuture<Boolean> deleteSnapshot(Query<M> query, ObjectId snapshotId);
+
+    CompletableFuture<Boolean> deleteSnapshot(ObjectId id, ObjectId snapshotId);
+
+    CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, ObjectId snapshotId);
+
     CompletableFuture<Boolean> addSnapshot(Query<M> query, ObjectId snapshotId);
 
     CompletableFuture<Boolean> addSnapshot(ObjectId id, ObjectId snapshotId);

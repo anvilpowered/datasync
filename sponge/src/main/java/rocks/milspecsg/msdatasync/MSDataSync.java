@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
@@ -158,8 +159,8 @@ public class MSDataSync {
             bind(new TypeLiteral<ApiSpongeSnapshotRepository>() {})
                 .to(new TypeLiteral<MSSnapshotRepository>() {});
 
-            bind(new TypeLiteral<ApiSerializationTaskService<Snapshot, Player>>() {})
-                .to(new TypeLiteral<ApiSpongeSerializationTaskService<Snapshot>>() {});
+            bind(new TypeLiteral<ApiSerializationTaskService<Member, Snapshot, User>>() {})
+                .to(new TypeLiteral<ApiSpongeSerializationTaskService<Member, Snapshot>>() {});
 
         }
     }
