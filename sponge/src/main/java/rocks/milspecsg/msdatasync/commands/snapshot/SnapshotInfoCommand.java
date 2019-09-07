@@ -7,12 +7,11 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
-import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
 import rocks.milspecsg.msdatasync.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
@@ -33,17 +32,17 @@ public class SnapshotInfoCommand implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
 
 
-        Optional<Player> optionalPlayer = context.getOne(Text.of("player"));
+        Optional<User> optionalUser = context.getOne(Text.of("user"));
 
-        if (!optionalPlayer.isPresent()) {
-            throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Player is required"));
+        if (!optionalUser.isPresent()) {
+            throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "User is required"));
         }
 
-        Player targetPlayer = optionalPlayer.get();
+        User targetPlayer = optionalUser.get();
 
         Consumer<Optional<Snapshot>> afterFound = optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
-                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Could not find snapshot for " + targetPlayer.getName()));
+                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Could not find snapshot for user " + targetPlayer.getName()));
                 return;
             }
             Snapshot snapshot = optionalSnapshot.get();

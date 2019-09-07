@@ -7,6 +7,7 @@ import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
@@ -17,7 +18,7 @@ import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Player, Key, Inventory> {
+public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Key, User, Inventory> {
 
     private static char SEPARATOR = '_';
 
@@ -29,7 +30,6 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                 SerializedItemStack serializedItemStack = new SerializedItemStack();
                 ItemStack before = slot.peek().orElse(ItemStack.empty());
                 DataContainer dc = before.toContainer();
-//                        System.out.println("SDC: " + dc.toString());
                 serializedItemStack.properties = serialize(dc.getValues(false));
                 itemStacks.add(serializedItemStack);
             }
@@ -41,8 +41,8 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
         return true;    }
 
     @Override
-    public boolean serialize(Snapshot snapshot, Player player) {
-        return serializeInventory(snapshot, player.getInventory());
+    public boolean serialize(Snapshot snapshot, User user) {
+        return serializeInventory(snapshot, user.getInventory());
     }
 
     @Override
@@ -54,7 +54,6 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                 if (slots.hasNext()) {
                     DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
                     deserialize(stack.properties).forEach(dc::set);
-                    //System.out.println("DDC: " + dc.toString());
                     ItemStack is = ItemStack.builder().fromContainer(dc).build();
                     slots.next().offer(is);
                 }
@@ -66,18 +65,16 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
         return true;    }
 
     @Override
-    public boolean deserialize(Snapshot snapshot, Player player) {
-      return deserializeInventory(snapshot, player.getInventory());
+    public boolean deserialize(Snapshot snapshot, User user) {
+      return deserializeInventory(snapshot, user.getInventory());
     }
 
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
         Map<String, Object> result = new HashMap<>();
         values.forEach((dq, o) -> {
             String s = dq.asString(SEPARATOR);
-//            System.out.println("Class for " + s + ": " + o.getClass().getCanonicalName());
             if (o instanceof Map) {
                 Object m = serialize((Map<DataQuery, Object>) o);
-//                System.out.println("Finished (M), S: " + s + ", M: " + m.toString());
                 result.put(s, m);
             } else if (o instanceof List) {
                 List<?> list = (List<?>) o;
@@ -91,7 +88,6 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                 });
                 result.put(s, r1);
             } else {
-//                System.out.println("Not going deeper, S: " + s + ", O: " + o.toString());
                 result.put(s, o);
             }
         });
@@ -122,18 +118,9 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                 });
                 result.put(dq, r1);
             }
-//            else if (o instanceof List) {
-//                List<String> list = (List<String>) o;
-//
-//                List<String> r1 = new ArrayList<>(list.size());
-//                r1.addAll(list);
-//                result.put(dq, r1);
-//            }
             else if (!s.equals("ItemType") && o instanceof String) {
                 String n = o.toString();
-//                System.out.println(("This is a string: " + n));
                 result.put(dq, n);
-                //result.put(dq, TextSerializers.LEGACY_FORMATTING_CODE.deserializeUnchecked(n));
             } else {
                 result.put(dq, o);
             }

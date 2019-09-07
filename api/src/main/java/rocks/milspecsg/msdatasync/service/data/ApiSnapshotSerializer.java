@@ -13,34 +13,34 @@ import java.util.List;
 
 /**
  * @param <S> {@link Snapshot} or subclass. Default implementation by MSDataSync as {@link Snapshot}
- * @param <P> Player class to get data from
+ * @param <U> Player class to get data from
  * @param <K> Key class
  */
-public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends ApiSerializer<S, P, K> implements SnapshotSerializer<S, P> {
+public abstract class ApiSnapshotSerializer<S extends Snapshot, K, U, I> extends ApiSerializer<S, K, U> implements SnapshotSerializer<S, U> {
 
     @Override
     public String getName() {
         return "msdatasync:snapshot";
     }
 
-    private List<Serializer<S, P>> serializers;
+    private List<Serializer<S, U>> serializers;
 
-    private List<Serializer<S, P>> externalSerializers;
-
-    @Inject
-    private Provider<ExperienceSerializer<S, P>> experienceSerializerProvider;
+    private List<Serializer<S, U>> externalSerializers;
 
     @Inject
-    private Provider<GameModeSerializer<S, P>> gameModeSerializerProvider;
+    private Provider<ExperienceSerializer<S, U>> experienceSerializerProvider;
 
     @Inject
-    private Provider<HealthSerializer<S, P>> healthSerializerProvider;
+    private Provider<GameModeSerializer<S, U>> gameModeSerializerProvider;
 
     @Inject
-    private Provider<HungerSerializer<S, P>> hungerSerializerProvider;
+    private Provider<HealthSerializer<S, U>> healthSerializerProvider;
 
     @Inject
-    private Provider<InventorySerializer<S, P, I>> inventorySerializerProvider;
+    private Provider<HungerSerializer<S, U>> hungerSerializerProvider;
+
+    @Inject
+    private Provider<InventorySerializer<S, U, I>> inventorySerializerProvider;
 
     private ConfigurationService configurationService;
 
@@ -57,7 +57,7 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends
     }
 
     @Override
-    public void registerSerializer(Serializer<S, P> serializer) {
+    public void registerSerializer(Serializer<S, U> serializer) {
         externalSerializers.add(serializer);
     }
 
@@ -104,7 +104,7 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends
     protected abstract void postLoadedEvent(Object plugin);
 
     private void verifyExternalSerializers() {
-        List<Serializer<S, P>> externalSerializersToRemove = new ArrayList<>();
+        List<Serializer<S, U>> externalSerializersToRemove = new ArrayList<>();
         externalSerializers.forEach(serializer -> {
             String name = serializer.getName();
             if (name.startsWith("msdatasync") || name.split(":").length != 2) {
@@ -118,25 +118,25 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends
 
     protected abstract void announceEnabled(String name);
 
-    protected abstract String getUsername(P player);
+    protected abstract String getUsername(U user);
 
     @Override
-    public boolean serialize(S snapshot, P player) {
+    public boolean serialize(S snapshot, U user) {
         if (serializers.isEmpty()) {
             System.err.println("[MSDataSync] No enabled serializers");
             return false;
         }
         boolean success = true;
-        for (Serializer<S, P> serializer : serializers) {
+        for (Serializer<S, U> serializer : serializers) {
             // will still try to keep going even if one module fails
             try {
-                if (serializer.serialize(snapshot, player)) {
+                if (serializer.serialize(snapshot, user)) {
                     if (snapshot.modulesUsed == null) {
                         snapshot.modulesUsed = new ArrayList<>();
                     }
                     snapshot.modulesUsed.add(serializer.getName());
                 } else {
-                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for player " + getUsername(player));
+                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for user " + getUsername(user));
                     success = false;
                 }
             } catch (Exception e) {
@@ -147,24 +147,24 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends
     }
 
     @Override
-    public boolean deserialize(S snapshot, P player) {
+    public boolean deserialize(S snapshot, U user) {
         if (serializers.isEmpty()) {
             System.err.println("[MSDataSync] No enabled deserializers");
             return false;
         }
         boolean success = true;
         List<String> serializersToUse = new ArrayList<>(snapshot.modulesUsed);
-        for (Serializer<S, P> serializer : serializers) {
+        for (Serializer<S, U> serializer : serializers) {
             // will still try to keep going even if one module fails
             try {
                 if (serializersToUse.remove(serializer.getName())) {
                     // only use modules that were used to upload
-                    if (!serializer.deserialize(snapshot, player)) {
-                        System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for player " + getUsername(player));
+                    if (!serializer.deserialize(snapshot, user)) {
+                        System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for user " + getUsername(user));
                         success = false;
                     }
                 } else {
-                    System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for player " + getUsername(player) + " but it is enabled in the config, skipping!");
+                    System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for user " + getUsername(user) + " but it is enabled in the config, skipping!");
                 }
             } catch (Exception e) {
                 success = false;
@@ -176,8 +176,8 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, P, K, I> extends
                 + moduleName +
                 "\" was used in snapshot "
                 + snapshot.getId() +
-                " but it is not enabled in the config! Not all data from snapshot could be added to player "
-                + getUsername(player)
+                " but it is not enabled in the config! Not all data from snapshot could be added to user "
+                + getUsername(user)
         ));
         return success;
     }

@@ -4,13 +4,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
-import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
+import rocks.milspecsg.msdatasync.api.data.UserSerializer;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
@@ -22,7 +23,7 @@ public class PlayerListener {
     private ConfigurationService configurationService;
 
     @Inject
-    PlayerSerializer<Snapshot, Player> playerSerializer;
+    UserSerializer<Snapshot, User> userSerializer;
 
     private boolean enabled = true;
 
@@ -47,7 +48,7 @@ public class PlayerListener {
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent) {
         if (enabled) {
             Player player = joinEvent.getTargetEntity();
-            playerSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
+            userSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
                 if (optionalSnapshot.isPresent()) {
                     Sponge.getServer().getConsole().sendMessage(
                         Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", player.getName(), " on join!")
@@ -66,7 +67,7 @@ public class PlayerListener {
         SyncLockCommand.lockPlayer(disconnectEvent.getTargetEntity());
         if (enabled) {
             Player player = disconnectEvent.getTargetEntity();
-            playerSerializer.serialize(player, "Disconnect").thenAcceptAsync(optionalSnapshot -> {
+            userSerializer.serialize(player, "Disconnect").thenAcceptAsync(optionalSnapshot -> {
                 if (optionalSnapshot.isPresent()) {
                     Sponge.getServer().getConsole().sendMessage(
                         Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully serialized ", player.getName(), " on disconnect!")

@@ -1,5 +1,6 @@
 package rocks.milspecsg.msdatasync.service.implementation.member;
 
+import com.mongodb.WriteResult;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -68,6 +69,30 @@ public abstract class ApiSpongeMemberRepository extends ApiMemberRepository<Memb
     @Override
     public CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID) {
         return getSnapshotDates(asQuery(userUUID));
+    }
+
+    @Override
+    public CompletableFuture<Boolean> deleteSnapshot(Query<Member> query, ObjectId snapshotId) {
+        return CompletableFuture.supplyAsync(() -> {
+            UpdateOperations<Member> updateOperations = createUpdateOperations().removeAll("snapshotIds", snapshotId);
+            if (!mongoContext.getDataStore().map(datastore -> datastore.update(query, updateOperations).getUpdatedCount() > 0).orElse(false)) {
+                return false;
+            }
+            // now remove snapshot from snapshot collection
+
+            WriteResult wr = snapshotRepository.deleteOne(snapshotId).join();
+            return wr.wasAcknowledged() && wr.getN() > 0;
+        });
+    }
+
+    @Override
+    public CompletableFuture<Boolean> deleteSnapshot(ObjectId id, ObjectId snapshotId) {
+        return deleteSnapshot(asQuery(id), snapshotId);
+    }
+
+    @Override
+    public CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, ObjectId snapshotId) {
+        return deleteSnapshot(asQuery(userUUID), snapshotId);
     }
 
     @Override

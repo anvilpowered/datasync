@@ -40,12 +40,12 @@ public class SnapshotListCommand implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
 
-        Optional<Player> optionalPlayer = context.getOne(Text.of("player"));
-        if (!optionalPlayer.isPresent()) {
-            throw new CommandException(Text.of("Player is required"));
+        Optional<User> optionalUser = context.getOne(Text.of("user"));
+        if (!optionalUser.isPresent()) {
+            throw new CommandException(Text.of("User is required"));
         }
 
-        Player player = optionalPlayer.get();
+        User player = optionalUser.get();
 
         memberRepository.getSnapshotDates(player.getUniqueId()).thenAcceptAsync(dates -> {
             List<Text> lines = new ArrayList<>();

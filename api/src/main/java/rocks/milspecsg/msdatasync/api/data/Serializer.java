@@ -6,9 +6,9 @@ import java.util.UUID;
 
 /**
  * @param <S> {@link Snapshot} or subclass. Default implementation by MSDataSync as {@link Snapshot}
- * @param <P> Player class to get data from
+ * @param <U> User class to get data from
  */
-public interface Serializer<S extends Snapshot, P> {
+public interface Serializer<S extends Snapshot, U> {
 
     /**
      * @return Name of {@link Serializer}.
@@ -21,18 +21,18 @@ public interface Serializer<S extends Snapshot, P> {
      * Moves data from {@code player} into {@code member}
      *
      * @param snapshot {@link Snapshot} to add data to
-     * @param player   Player to get data from
+     * @param user     User to get data from
      * @return Whether serialization was successful
      */
-    boolean serialize(S snapshot, P player);
+    boolean serialize(S snapshot, U user);
 
     /**
      * Moves data from {@code member} into {@code player}
      *
      * @param snapshot {@link Snapshot} to get data from
-     * @param player   Player to add data to
+     * @param user     User to add data to
      * @return Whether deserialization was successful
      */
-    boolean deserialize(S snapshot, P player);
+    boolean deserialize(S snapshot, U user);
 
 }

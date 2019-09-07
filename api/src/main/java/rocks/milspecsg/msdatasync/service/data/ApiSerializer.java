@@ -9,10 +9,10 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
 /**
  * @param <S> {@link Snapshot} or subclass. Default implementation by MSDataSync as {@link Snapshot}
- * @param <P> Player class to get data from
+ * @param <U> User class to get data from
  * @param <K> Key class
  */
-public abstract class ApiSerializer<S extends Snapshot, P, K> implements Serializer<S, P> {
+public abstract class ApiSerializer<S extends Snapshot, K, U> implements Serializer<S, U> {
 
     @Inject
     protected SnapshotRepository<S, K> snapshotRepository;
