@@ -26,6 +26,12 @@ public class SyncLockCommand implements CommandExecutor {
         }
     }
 
+    public static void lockPlayer(CommandSource source) {
+        if (source instanceof Player) {
+            unlockedPlayers.remove(((Player) source).getUniqueId());
+        }
+    }
+
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
         if (source instanceof Player) {

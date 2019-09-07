@@ -17,28 +17,57 @@ import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Player, Key> {
+public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Player, Key, Inventory> {
 
     private static char SEPARATOR = '_';
 
     @Override
-    public boolean serialize(Snapshot snapshot, Player player) {
+    public boolean serializeInventory(Snapshot snapshot, Inventory inventory) {
         try {
             List<SerializedItemStack> itemStacks = new ArrayList<>();
-                for (Inventory slot : player.getInventory().slots()) {
-                    SerializedItemStack serializedItemStack = new SerializedItemStack();
-                    ItemStack before = slot.peek().orElse(ItemStack.empty());
-                    DataContainer dc = before.toContainer();
+            for (Inventory slot : inventory.slots()) {
+                SerializedItemStack serializedItemStack = new SerializedItemStack();
+                ItemStack before = slot.peek().orElse(ItemStack.empty());
+                DataContainer dc = before.toContainer();
 //                        System.out.println("SDC: " + dc.toString());
-                    serializedItemStack.properties = serialize(dc.getValues(false));
-                    itemStacks.add(serializedItemStack);
-                }
+                serializedItemStack.properties = serialize(dc.getValues(false));
+                itemStacks.add(serializedItemStack);
+            }
             snapshot.itemStacks = itemStacks;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+        return true;    }
+
+    @Override
+    public boolean serialize(Snapshot snapshot, Player player) {
+        return serializeInventory(snapshot, player.getInventory());
+    }
+
+    @Override
+    public boolean deserializeInventory(Snapshot snapshot, Inventory inventory) {
+        try {
+            inventory.clear();
+            Iterator<Inventory> slots = inventory.slots().iterator();
+            for (SerializedItemStack stack : snapshot.itemStacks) {
+                if (slots.hasNext()) {
+                    DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
+                    deserialize(stack.properties).forEach(dc::set);
+                    //System.out.println("DDC: " + dc.toString());
+                    ItemStack is = ItemStack.builder().fromContainer(dc).build();
+                    slots.next().offer(is);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;    }
+
+    @Override
+    public boolean deserialize(Snapshot snapshot, Player player) {
+      return deserializeInventory(snapshot, player.getInventory());
     }
 
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
@@ -110,26 +139,5 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
             }
         });
         return result;
-    }
-
-    @Override
-    public boolean deserialize(Snapshot snapshot, Player player) {
-        try {
-            player.getInventory().clear();
-            Iterator<Inventory> slots = player.getInventory().slots().iterator();
-            for (SerializedItemStack stack : snapshot.itemStacks) {
-                if (slots.hasNext()) {
-                    DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                    deserialize(stack.properties).forEach(dc::set);
-                    //System.out.println("DDC: " + dc.toString());
-                    ItemStack is = ItemStack.builder().fromContainer(dc).build();
-                    slots.next().offer(is);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 }

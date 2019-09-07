@@ -12,4 +12,6 @@ public interface SnapshotSerializer<S extends Snapshot, P> extends Serializer<S,
 
     void registerSerializer(Serializer<S, P> serializer);
 
+    boolean isSerializerEnabled(String name);
+
 }

@@ -6,6 +6,7 @@ import rocks.milspecsg.msdatasync.api.snapshot.SnapshotRepository;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msrepository.service.ApiRepository;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 public abstract class ApiSnapshotRepository<S extends Snapshot, K> extends ApiRepository<S> implements SnapshotRepository<S, K> {
@@ -21,6 +22,9 @@ public abstract class ApiSnapshotRepository<S extends Snapshot, K> extends ApiRe
         Optional<String> optionalName = dataKeyService.getName(key);
         if (!optionalName.isPresent()) {
             return false;
+        }
+        if (snapshot.keys == null) {
+            snapshot.keys = new HashMap<>();
         }
         snapshot.keys.put(optionalName.get(), optionalValue.get());
         return true;

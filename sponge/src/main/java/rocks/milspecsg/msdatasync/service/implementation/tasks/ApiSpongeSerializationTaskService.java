@@ -10,7 +10,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
-import rocks.milspecsg.msdatasync.api.data.PlayerSerializer;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
@@ -41,7 +40,8 @@ public class ApiSpongeSerializationTaskService<S extends Snapshot> extends ApiSe
 
     @Override
     public void startSerializationTask() {
-        Integer interval = configurationService.getConfigInteger(ConfigKeys.SERIALIZATION_TASK_INTERVAL_SECONDS);
+        Integer interval = 0;//configurationService.getConfigInteger(ConfigKeys.SERIALIZATION_TASK_INTERVAL_MINUTES);
+
 
         if (interval > 0 ) {
             Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Submitting sync task with interval: ", interval, " seconds"));
@@ -74,8 +74,8 @@ public class ApiSpongeSerializationTaskService<S extends Snapshot> extends ApiSe
             Sponge.getServer().getConsole().sendMessage(toSend);
 
             for (Player player : players) {
-                playerSerializer.serialize(player).thenAcceptAsync(success -> {
-                    if (success) {
+                playerSerializer.serialize(player, "Auto").thenAcceptAsync(optionalSnapshot -> {
+                    if (optionalSnapshot.isPresent()) {
                         successful.add(player);
                     } else {
                         unsuccessful.add(player);

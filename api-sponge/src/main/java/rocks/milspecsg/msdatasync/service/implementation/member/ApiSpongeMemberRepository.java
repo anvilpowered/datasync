@@ -11,11 +11,9 @@ import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public abstract class ApiSpongeMemberRepository extends ApiMemberRepository<Member, Snapshot, Key, User> {
 
@@ -36,39 +34,46 @@ public abstract class ApiSpongeMemberRepository extends ApiMemberRepository<Memb
 
     @Override
     public CompletableFuture<List<ObjectId>> getSnapshotIds(Query<Member> query) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> {
+            Member member = query.project("snapshotIds", true).get();
+
+            if (member == null || member.snapshotIds == null) {
+                return new ArrayList<>();
+            }
+
+            return member.snapshotIds;
+        });
     }
 
     @Override
     public CompletableFuture<List<ObjectId>> getSnapshotIds(ObjectId id) {
-        return null;
+        return getSnapshotIds(asQuery(id));
     }
 
     @Override
     public CompletableFuture<List<ObjectId>> getSnapshotIds(UUID userUUID) {
-        return null;
+        return getSnapshotIds(asQuery(userUUID));
     }
 
     @Override
     public CompletableFuture<List<Date>> getSnapshotDates(Query<Member> query) {
-        return null;
+        return getSnapshotIds(query).thenApplyAsync(objectIds -> objectIds.stream().map(ObjectId::getDate).collect(Collectors.toList()));
     }
 
     @Override
     public CompletableFuture<List<Date>> getSnapshotDates(ObjectId id) {
-        return null;
+        return getSnapshotDates(asQuery(id));
     }
 
     @Override
     public CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID) {
-        return null;
+        return getSnapshotDates(asQuery(userUUID));
     }
 
     @Override
     public CompletableFuture<Boolean> addSnapshot(Query<Member> query, ObjectId snapshotId) {
         return CompletableFuture.supplyAsync(() -> {
             UpdateOperations<Member> updateOperations = createUpdateOperations().addToSet("snapshotIds", snapshotId);
-
             return mongoContext.getDataStore().map(datastore -> datastore.update(query, updateOperations).getUpdatedCount() > 0).orElse(false);
         });
     }
@@ -80,27 +85,69 @@ public abstract class ApiSpongeMemberRepository extends ApiMemberRepository<Memb
 
     @Override
     public CompletableFuture<Boolean> addSnapshot(UUID userUUID, ObjectId snapshotId) {
-        return addSnapshot(asQuery(userUUID), snapshotId);
+        return getOneOrGenerate(userUUID).thenApplyAsync(optionalMember -> {
+            if (!optionalMember.isPresent()) {
+                return false;
+            }
+            return addSnapshot(asQuery(userUUID), snapshotId).join();
+        });
     }
 
     @Override
     public CompletableFuture<Optional<Snapshot>> getSnapshot(Query<Member> query, Date date) {
-        return null;
+        return getSnapshotIds(query)
+            .thenApplyAsync(objectIds -> objectIds.stream()
+                .filter(objectId -> objectId.getDate().equals(date))
+                .findFirst()
+                .flatMap(objectId -> snapshotRepository.getOne(objectId).join())
+            );
     }
 
     @Override
     public CompletableFuture<Optional<Snapshot>> getSnapshot(ObjectId id, Date date) {
-        return null;
+        return getSnapshot(asQuery(id), date);
     }
 
     @Override
     public CompletableFuture<Optional<Snapshot>> getSnapshot(UUID userUUID, Date date) {
-        return null;
+        return getSnapshot(asQuery(userUUID), date);
     }
 
     @Override
-    public CompletableFuture<Optional<List<ObjectId>>> getClosestSnapshots(ObjectId id, Date date) {
-        return null;
+    public CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<Member> query, Date date) {
+        return getSnapshotIds(query).thenApplyAsync(objectIds -> {
+                Optional<ObjectId> closestBefore = Optional.empty();
+                Optional<ObjectId> closestAfter = Optional.empty();
+                Optional<ObjectId> same = Optional.empty();
+
+                for (ObjectId objectId : objectIds) {
+                    Date toTest = objectId.getDate();
+
+                    if (toTest.equals(date)) {
+                        same = Optional.of(objectId);
+                    } else if (toTest.before(date) && (!closestBefore.isPresent() || toTest.after(closestBefore.get().getDate()))) {
+                        closestBefore = Optional.of(objectId);
+                    } else if (toTest.after(date) && (!closestAfter.isPresent() || toTest.before(closestAfter.get().getDate()))) {
+                        closestAfter = Optional.of(objectId);
+                    }
+                }
+
+                List<ObjectId> toReturn = new ArrayList<>();
+                closestBefore.ifPresent(toReturn::add);
+                same.ifPresent(toReturn::add);
+                closestAfter.ifPresent(toReturn::add);
+                return toReturn;
+            });
+    }
+
+    @Override
+    public CompletableFuture<List<ObjectId>> getClosestSnapshots(ObjectId id, Date date) {
+        return getClosestSnapshots(asQuery(id), date);
+    }
+
+    @Override
+    public CompletableFuture<List<ObjectId>> getClosestSnapshots(UUID userUUID, Date date) {
+        return getClosestSnapshots(asQuery(userUUID), date);
     }
 
     @Override
