@@ -49,6 +49,8 @@ public class MSConfigurationService extends ApiConfigurationService {
         });
         nodeTypeMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, new TypeToken<Integer>() {
         });
+        nodeTypeMap.put(ConfigKeys.SERVER_NAME, new TypeToken<String>() {
+        });
     }
 
     @Override
@@ -92,12 +94,13 @@ public class MSConfigurationService extends ApiConfigurationService {
         defaultStringMap.put(ConfigKeys.MONGODB_HOSTNAME, "localhost");
         defaultIntegerMap.put(ConfigKeys.MONGODB_PORT, 27017);
         defaultStringMap.put(ConfigKeys.MONGODB_DBNAME, "msdatasync");
-        defaultStringMap.put(ConfigKeys.MONGODB_USERNAME, "");
-        defaultStringMap.put(ConfigKeys.MONGODB_PASSWORD, "");
+        defaultStringMap.put(ConfigKeys.MONGODB_USERNAME, "admin");
+        defaultStringMap.put(ConfigKeys.MONGODB_PASSWORD, "password");
         defaultBooleanMap.put(ConfigKeys.MONGODB_USE_AUTH, false);
         defaultIntegerMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, 5);
         defaultListMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, Arrays.asList("60:24", "1440:7"));
         defaultIntegerMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, 5);
+        defaultStringMap.put(ConfigKeys.SERVER_NAME, "server");
     }
 
     @Override
@@ -113,6 +116,7 @@ public class MSConfigurationService extends ApiConfigurationService {
         nodeNameMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
         nodeNameMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
         nodeNameMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, "snapshot.uploadInterval");
+        nodeNameMap.put(ConfigKeys.SERVER_NAME, "serverName");
 
     }
 
@@ -141,5 +145,6 @@ public class MSConfigurationService extends ApiConfigurationService {
         );
         nodeDescriptionMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, "\nInterval for automatic serialization task. Set to 0 to disable, min 1, max 60. Recommended range 3-15");
 
+        nodeDescriptionMap.put(ConfigKeys.SERVER_NAME, "\nName of server. This value is attached with every snapshot made on this server");
     }
 }

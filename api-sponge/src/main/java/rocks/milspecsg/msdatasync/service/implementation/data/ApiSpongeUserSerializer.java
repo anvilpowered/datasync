@@ -5,18 +5,25 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
+import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.service.data.ApiUserSerializer;
+import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class ApiSpongeUserSerializer extends ApiUserSerializer<Member, Snapshot, Key, User> {
 
+    @Inject
+    ConfigurationService configurationService;
+
     @Override
     public CompletableFuture<Optional<Snapshot>> serialize(User user, String name) {
         Snapshot snapshot = snapshotRepository.generateEmpty();
         snapshot.name = name;
+        snapshot.server = configurationService.getConfigString(ConfigKeys.SERVER_NAME);
         serialize(snapshot, user);
         return snapshotRepository.insertOne(snapshot).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {

@@ -46,10 +46,11 @@ public class SnapshotOptimizationService {
     private volatile CompletableFuture<Void> currentOptimizeAllTask = null;
 
     private volatile int total = 0;
-    private volatile int completed = 0;
+    private volatile int membersCompleted = 0;
+    private volatile int snapshotsDeleted = 0;
 
     private synchronized void incrementCompleted() {
-        completed++;
+        membersCompleted++;
     }
 
     private synchronized void setTotal(final int total) {
@@ -58,15 +59,16 @@ public class SnapshotOptimizationService {
 
     private synchronized void resetCounters() {
         total = 0;
-        completed = 0;
+        membersCompleted = 0;
+        snapshotsDeleted = 0;
     }
 
-    public int getTotal() {
+    public int getTotalMembers() {
         return total;
     }
 
-    public int getCompleted() {
-        return completed;
+    public int getMembersCompleted() {
+        return membersCompleted;
     }
 
     public boolean isOptimizationTaskRunning() {
@@ -80,6 +82,7 @@ public class SnapshotOptimizationService {
         if (!currentOptimizeAllTask.isDone()){
             currentOptimizeAllTask.complete(null);
         }
+        resetCounters();
         currentOptimizeAllTask = null;
         return true;
     }

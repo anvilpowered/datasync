@@ -8,6 +8,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.misc.SnapshotOptimizationService;
@@ -33,12 +34,16 @@ public class OptimizeStartCommand implements CommandExecutor {
         }
 
         if (optionalMode.get().equals("all")) {
-            if (!snapshotOptimizationService.startOptimizeAll(source)) {
+            if (snapshotOptimizationService.startOptimizeAll(source)) {
+                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully started optimization task: all"));
+            } else {
                 throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Optimizer already running! Use /sync optimize info"));
             }
             snapshotOptimizationService.startOptimizeAll(source);
         } else {
-            if (users.isEmpty()) {
+            if (!users.isEmpty()) {
+                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully started optimization task: user"));
+            } else {
                 throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "No users were affected"));
             }
             snapshotOptimizationService.optimize(users, source, "Manual");
