@@ -1,29 +1,36 @@
 package rocks.milspecsg.msdatasync.api.data;
 
-import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
-import java.util.concurrent.CompletableFuture;
+/**
+ * @param <S> {@link Snapshot} or subclass. Default implementation by MSDataSync as {@link Snapshot}
+ * @param <U> User class to get data from
+ */
+public interface Serializer<S extends Snapshot, U> {
 
-public interface Serializer<M extends Member, P> {
-
+    /**
+     * @return Name of {@link Serializer}.
+     * Should follow format "plugin:name"
+     * For example "msdatasync:inventory"
+     */
     String getName();
 
     /**
-     *
      * Moves data from {@code player} into {@code member}
-     *  @param member {@link Member} to add data to
-     * @param player Player to get data from
-     * @param plugin Plugin to run task internally
+     *
+     * @param snapshot {@link Snapshot} to add data to
+     * @param user     User to get data from
+     * @return Whether serialization was successful
      */
-    CompletableFuture<Boolean> serialize(M member, P player, Object plugin);
+    boolean serialize(S snapshot, U user);
 
     /**
-     *
      * Moves data from {@code member} into {@code player}
-     *  @param member {@link Member} to get data from
-     * @param player Player to add data to
-     * @param plugin
+     *
+     * @param snapshot {@link Snapshot} to get data from
+     * @param user     User to add data to
+     * @return Whether deserialization was successful
      */
-    CompletableFuture<Boolean> deserialize(M member, P player, Object plugin);
+    boolean deserialize(S snapshot, U user);
 
 }

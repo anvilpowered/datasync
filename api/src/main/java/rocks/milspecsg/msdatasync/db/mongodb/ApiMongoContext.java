@@ -20,7 +20,7 @@ public class ApiMongoContext extends MongoContext {
         configurationService.addConfigLoadedListener(this::loadConfig);
     }
 
-    private void loadConfig() {
+    private void loadConfig(Object plugin) {
         closeConnection();
 
         String hostname = configurationService.getConfigString(ConfigKeys.MONGODB_HOSTNAME);
@@ -28,7 +28,7 @@ public class ApiMongoContext extends MongoContext {
         String dbName = configurationService.getConfigString(ConfigKeys.MONGODB_DBNAME);
         String username = configurationService.getConfigString(ConfigKeys.MONGODB_USERNAME);
         String password = configurationService.getConfigString(ConfigKeys.MONGODB_PASSWORD);
-        boolean useAuth = configurationService.getConfigBoolean(ConfigKeys.MONGODB_USEAUTH);
+        boolean useAuth = configurationService.getConfigBoolean(ConfigKeys.MONGODB_USE_AUTH);
 
         init(hostname, port, dbName, username, password, useAuth);
     }

@@ -5,6 +5,9 @@ import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Key;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
@@ -17,10 +20,18 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.listeners.PlayerListener;
+import rocks.milspecsg.msdatasync.misc.SnapshotOptimizationService;
+import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.implementation.config.MSConfigurationService;
 import rocks.milspecsg.msdatasync.service.implementation.data.*;
-import rocks.milspecsg.msdatasync.service.implementation.keys.MSDataKeyService;
-import rocks.milspecsg.msdatasync.service.implementation.tasks.MSSerializationTaskService;
+import rocks.milspecsg.msdatasync.service.implementation.keys.ApiSpongeDataKeyService;
+import rocks.milspecsg.msdatasync.service.implementation.member.ApiSpongeMemberRepository;
+import rocks.milspecsg.msdatasync.service.implementation.member.MSMemberRepository;
+import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotRepository;
+import rocks.milspecsg.msdatasync.service.implementation.snapshot.MSSnapshotRepository;
+import rocks.milspecsg.msdatasync.service.implementation.tasks.ApiSpongeSerializationTaskService;
+import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msrepository.APIConfigurationModule;
 import rocks.milspecsg.msrepository.SpongePluginInfo;
@@ -36,6 +47,11 @@ import rocks.milspecsg.msrepository.service.config.ApiConfigurationService;
     url = MSDataSyncPluginInfo.url
 )
 public class MSDataSync {
+
+    @Override
+    public String toString() {
+        return MSDataSyncPluginInfo.id;
+    }
 
     @Inject
     public Injector spongeRootInjector;
@@ -85,7 +101,7 @@ public class MSDataSync {
     }
 
     private void loadConfig() {
-        injector.getInstance(ConfigurationService.class).load();
+        injector.getInstance(ConfigurationService.class).load(this);
     }
 
     private void initServices() {
@@ -93,8 +109,8 @@ public class MSDataSync {
     }
 
     private void initSingletonServices() {
-        injector.getInstance(MSDataKeyService.class).initializeDefaultMappings();
-        injector.getInstance(MSPlayerSerializer.class);
+        injector.getInstance(ApiSpongeDataKeyService.class).initializeDefaultMappings();
+        injector.getInstance(ApiSpongeSnapshotSerializer.class);
         injector.getInstance(SerializationTaskService.class);
     }
 
@@ -129,16 +145,26 @@ public class MSDataSync {
         }
     }
 
-    private static class MSDataSyncModule extends MSDataSyncApiModule {
+    private static class MSDataSyncModule extends ApiSpongeModule {
         @Override
         protected void configure() {
             super.configure();
 
-            bind(ApiSerializationTaskService.class).to(MSSerializationTaskService.class);
-
             bind(PlayerListener.class);
 
             bind(SpongePluginInfo.class).to(MSDataSyncPluginInfo.class);
+
+            bind(SnapshotOptimizationService.class);
+
+            bind(new TypeLiteral<ApiSpongeMemberRepository>() {})
+                .to(new TypeLiteral<MSMemberRepository>() {});
+
+            bind(new TypeLiteral<ApiSpongeSnapshotRepository>() {})
+                .to(new TypeLiteral<MSSnapshotRepository>() {});
+
+            bind(new TypeLiteral<ApiSerializationTaskService<Member, Snapshot, User>>() {})
+                .to(new TypeLiteral<ApiSpongeSerializationTaskService<Member, Snapshot>>() {});
+
         }
     }
 }

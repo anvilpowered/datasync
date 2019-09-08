@@ -6,7 +6,7 @@ import org.spongepowered.api.data.key.Keys;
 import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 
 @Singleton
-public class MSDataKeyService extends ApiDataKeyService<Key> {
+public class ApiSpongeDataKeyService extends ApiDataKeyService<Key> {
 
     @Override
     public void initializeDefaultMappings() {

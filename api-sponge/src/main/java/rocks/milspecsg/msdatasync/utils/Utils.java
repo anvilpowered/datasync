@@ -1,53 +1,37 @@
 package rocks.milspecsg.msdatasync.utils;
 
 import com.google.common.reflect.TypeToken;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.entity.living.player.gamemode.GameMode;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import org.spongepowered.api.scheduler.Task;
-import rocks.milspecsg.msdatasync.api.member.MemberRepository;
-import rocks.milspecsg.msdatasync.model.core.Member;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotRepository;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.Optional;
 
 public class Utils {
 
-    public static <E> CompletableFuture<Boolean> serialize(MemberRepository<Member, Player, Key, User> memberRepository, Member member, Player player, Key<? extends BaseValue<E>> key, Object plugin) {
-
-        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-
-        Task.builder().execute(
-            () -> memberRepository.setMemberKey(member, key, player.get(key))
-                .thenAcceptAsync(completableFuture::complete)
-        ).submit(plugin);
-
-        return completableFuture;
+    public static <E, S extends Snapshot> boolean serialize(SnapshotRepository<S, Key> snapshotRepository, S snapshot, User user, Key<? extends BaseValue<E>> key) {
+        return snapshotRepository.setSnapshotValue(snapshot, key, user.get(key));
     }
 
-    public static <E> CompletableFuture<Boolean> deserialize(MemberRepository<Member, Player, Key, User> memberRepository, Member member, Player player, Key<? extends BaseValue<E>> key, Object plugin) {
-        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+    public static <E, S extends Snapshot> boolean deserialize(SnapshotRepository<S, Key> snapshotRepository, S snapshot, User user, Key<? extends BaseValue<E>> key) {
 
-        memberRepository.getMemberKey(member, key).thenAcceptAsync(optional -> {
-            if (!optional.isPresent()) {
-                completableFuture.complete(false);
-            }
+        Optional<?> optionalSnapshot = snapshotRepository.getSnapshotValue(snapshot, key);
+        if (!optionalSnapshot.isPresent()) {
+            return false;
+        }
 
-            Task.builder().execute(() -> Sponge.getServer().getPlayer(player.getUniqueId()).ifPresent(p -> {
-                try {
-                    p.offer(key, (E) decode(optional.get(), key));
-                    completableFuture.complete(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    completableFuture.complete(false);
-                }
-            })).submit(plugin);
-        });
-
-        return completableFuture;
+        try {
+            user.offer(key, (E) decode(optionalSnapshot.get(), key));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private static Object decode(Object value, Key<? extends BaseValue<?>> key) {

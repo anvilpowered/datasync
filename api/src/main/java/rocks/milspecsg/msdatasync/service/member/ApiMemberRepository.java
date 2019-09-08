@@ -1,13 +1,12 @@
 package rocks.milspecsg.msdatasync.service.member;
 
-import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
-import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.member.MemberRepository;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotRepository;
 import rocks.milspecsg.msdatasync.model.core.Member;
-import rocks.milspecsg.msrepository.db.mongodb.MongoContext;
+import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msrepository.model.Dbo;
 import rocks.milspecsg.msrepository.service.ApiRepository;
 
@@ -15,15 +14,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class ApiMemberRepository<M extends Member, P, K, User> extends ApiRepository<M> implements MemberRepository<M, P, K, User> {
+public abstract class ApiMemberRepository<M extends Member, S extends Snapshot, K, U> extends ApiRepository<M> implements MemberRepository<M, S, U> {
 
     @Inject
-    DataKeyService<K> dataKeyService;
-
-    @Inject
-    public ApiMemberRepository(MongoContext mongoContext) {
-        super(mongoContext);
-    }
+    protected SnapshotRepository<S, K> snapshotRepository;
 
     @Override
     public CompletableFuture<Optional<M>> getOneOrGenerate(UUID userUUID) {
@@ -37,10 +31,10 @@ public abstract class ApiMemberRepository<M extends Member, P, K, User> extends 
         });
     }
 
-    @Override
-    public CompletableFuture<Optional<M>> getOne(ObjectId id) {
-        return CompletableFuture.supplyAsync(() -> Optional.ofNullable(asQuery(id).get()));
-    }
+//    @Override
+//    public CompletableFuture<Optional<M>> getOne(ObjectId id) {
+//        return CompletableFuture.supplyAsync(() -> Optional.ofNullable(asQuery(id).get()));
+//    }
 
     @Override
     public CompletableFuture<Optional<M>> getOne(UUID userUUID) {
@@ -60,35 +54,6 @@ public abstract class ApiMemberRepository<M extends Member, P, K, User> extends 
     @Override
     public Query<M> asQuery(UUID userUUID) {
         return asQuery().field("userUUID").equal(userUUID);
-    }
-
-
-    @Override
-    public CompletableFuture<Boolean> setMemberKey(Member member, K key, Optional<?> optionalValue) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (!optionalValue.isPresent()) {
-                return false;
-            }
-
-            Optional<String> optionalName = dataKeyService.getName(key);
-            if (!optionalName.isPresent()) {
-                return false;
-            }
-            member.keys.put(optionalName.get(), optionalValue.get());
-            return true;
-        });
-    }
-
-    @Override
-    public CompletableFuture<Optional<?>> getMemberKey(Member member, K key) {
-        return CompletableFuture.supplyAsync(() -> {
-
-            Optional<String> optionalName = dataKeyService.getName(key);
-            if (!optionalName.isPresent()) return Optional.empty();
-            if (!member.keys.containsKey(optionalName.get())) return Optional.empty();
-
-            return Optional.ofNullable(member.keys.get(optionalName.get()));
-        });
     }
 
 }
