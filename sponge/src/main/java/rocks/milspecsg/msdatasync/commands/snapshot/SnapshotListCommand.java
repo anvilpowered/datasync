@@ -78,7 +78,7 @@ public class SnapshotListCommand implements CommandExecutor {
                     .builder()
                     .title(Text.of(TextColors.GOLD, "Snapshots - ", player.getName()))
                     .padding(Text.of(TextColors.DARK_GREEN, "-"))
-                    .contents(lines).linesPerPage(10);
+                    .contents(lines).linesPerPage(20);
             paginationBuilder.build().sendTo(source);
         });
 

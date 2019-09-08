@@ -19,7 +19,7 @@ import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msrepository.db.mongodb.MongoContext;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-public class ApiModule<M extends Member, S extends Snapshot, K, U, I> extends AbstractModule {
+public class ApiModule<M extends Member, S extends Snapshot, K, U, I, F> extends AbstractModule {
 
     @Override
     protected void configure() {
@@ -48,9 +48,9 @@ public class ApiModule<M extends Member, S extends Snapshot, K, U, I> extends Ab
         );
 
         bind(
-            (TypeLiteral<InventorySerializer<S, U, I>>) TypeLiteral.get(new TypeToken<InventorySerializer<S, U, I>>(getClass()) {}.getType())
+            (TypeLiteral<InventorySerializer<S, U, I, F>>) TypeLiteral.get(new TypeToken<InventorySerializer<S, U, I, F>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiInventorySerializer<S, K, U, I>>) TypeLiteral.get(new TypeToken<ApiInventorySerializer<S, K, U, I>>(getClass()) {}.getType())
+            (TypeLiteral<ApiInventorySerializer<S, K, U, I, F>>) TypeLiteral.get(new TypeToken<ApiInventorySerializer<S, K, U, I, F>>(getClass()) {}.getType())
         );
 
         bind(
@@ -62,7 +62,7 @@ public class ApiModule<M extends Member, S extends Snapshot, K, U, I> extends Ab
         bind(
             (TypeLiteral<SnapshotSerializer<S, U>>) TypeLiteral.get(new TypeToken<SnapshotSerializer<S, U>>(getClass()) {}.getType())
         ).to(
-            (TypeLiteral<ApiSnapshotSerializer<S, K, U, I>>) TypeLiteral.get(new TypeToken<ApiSnapshotSerializer<S, K, U, I>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSnapshotSerializer<S, K, U, I, F>>) TypeLiteral.get(new TypeToken<ApiSnapshotSerializer<S, K, U, I, F>>(getClass()) {}.getType())
         );
 
         bind(

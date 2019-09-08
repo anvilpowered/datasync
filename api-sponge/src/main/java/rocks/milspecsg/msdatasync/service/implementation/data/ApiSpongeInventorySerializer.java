@@ -1,44 +1,57 @@
 package rocks.milspecsg.msdatasync.service.implementation.data;
 
 import com.google.common.collect.ImmutableList;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
+import org.spongepowered.api.item.inventory.entity.PlayerInventory;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.model.core.SerializedItemStack;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
-public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Key, User, Inventory> {
+public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot> {
 
     private static char SEPARATOR = '_';
 
     @Override
-    public boolean serializeInventory(Snapshot snapshot, Inventory inventory) {
+    public boolean serializeInventory(Snapshot snapshot, Inventory inventory, int maxSlots) {
         try {
             List<SerializedItemStack> itemStacks = new ArrayList<>();
-            for (Inventory slot : inventory.slots()) {
+            Iterator<Inventory> iterator = inventory.slots().iterator();
+
+            for (int i = 0; i < maxSlots; i++) {
+                if (!iterator.hasNext()) break;
+                Inventory slot = iterator.next();
                 SerializedItemStack serializedItemStack = new SerializedItemStack();
-                ItemStack before = slot.peek().orElse(ItemStack.empty());
-                DataContainer dc = before.toContainer();
+                ItemStack stack = slot.peek().orElse(ItemStack.empty());
+                DataContainer dc = stack.toContainer();
                 serializedItemStack.properties = serialize(dc.getValues(false));
                 itemStacks.add(serializedItemStack);
             }
+
             snapshot.itemStacks = itemStacks;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;    }
+        return true;
+    }
+
+    @Override
+    public boolean serializeInventory(Snapshot snapshot, Inventory inventory) {
+        return serializeInventory(snapshot, inventory, 41);
+    }
 
     @Override
     public boolean serialize(Snapshot snapshot, User user) {
@@ -46,27 +59,42 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
     }
 
     @Override
-    public boolean deserializeInventory(Snapshot snapshot, Inventory inventory) {
+    public boolean deserializeInventory(Snapshot snapshot, Inventory inventory, ItemStackSnapshot fallbackItemStackSnapshot) {
         try {
             inventory.clear();
-            Iterator<Inventory> slots = inventory.slots().iterator();
-            for (SerializedItemStack stack : snapshot.itemStacks) {
-                if (slots.hasNext()) {
+            Iterator<SerializedItemStack> stacks = snapshot.itemStacks.iterator();
+            for (Iterator<Inventory> slots = inventory.slots().iterator(); slots.hasNext(); ) {
+                Inventory slot = slots.next();
+                if (stacks.hasNext()) {
                     DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                    deserialize(stack.properties).forEach(dc::set);
+                    deserialize(stacks.next().properties).forEach(dc::set);
                     ItemStack is = ItemStack.builder().fromContainer(dc).build();
-                    slots.next().offer(is);
+                    slot.set(is);
+                } else if (!(inventory instanceof PlayerInventory)) {
+                    if (slots.hasNext()) {
+                        slot.set(fallbackItemStackSnapshot.createStack());
+                    } else {
+                        slot.set(exitWithoutSavingItemStackSnapshot.createStack());
+                    }
                 }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;    }
+        return true;
+    }
+
+    @Override
+    public boolean deserializeInventory(Snapshot snapshot, Inventory inventory) {
+        return deserializeInventory(snapshot, inventory, defaultFallbackItemStackSnapshot);
+    }
 
     @Override
     public boolean deserialize(Snapshot snapshot, User user) {
-      return deserializeInventory(snapshot, user.getInventory());
+        return deserializeInventory(snapshot, user.getInventory());
     }
 
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
@@ -117,8 +145,7 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                     r1.put(DataQuery.of(SEPARATOR, s1), value);
                 });
                 result.put(dq, r1);
-            }
-            else if (!s.equals("ItemType") && o instanceof String) {
+            } else if (!s.equals("ItemType") && o instanceof String) {
                 String n = o.toString();
                 result.put(dq, n);
             } else {
@@ -126,5 +153,21 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
             }
         });
         return result;
+    }
+
+    private ItemStackSnapshot defaultFallbackItemStackSnapshot =
+        ItemStack.builder().itemType(ItemTypes.BARRIER).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.RED, "Not an actual slot")).build().createSnapshot();
+
+    @Override
+    public ItemStackSnapshot getDefaultFallbackItemStackSnapshot() {
+        return defaultFallbackItemStackSnapshot;
+    }
+
+    private ItemStackSnapshot exitWithoutSavingItemStackSnapshot =
+        ItemStack.builder().itemType(ItemTypes.GOLD_INGOT).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.GOLD, "Exit without saving")).build().createSnapshot();
+
+    @Override
+    public ItemStackSnapshot getExitWithoutSavingItemStackSnapshot() {
+        return exitWithoutSavingItemStackSnapshot;
     }
 }

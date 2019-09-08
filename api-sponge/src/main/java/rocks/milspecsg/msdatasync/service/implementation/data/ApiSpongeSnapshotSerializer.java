@@ -10,6 +10,7 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.item.inventory.Inventory;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.events.SerializerInitializationEvent;
@@ -19,7 +20,7 @@ import rocks.milspecsg.msrepository.SpongePluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
 @Singleton
-public class ApiSpongeSnapshotSerializer extends ApiSnapshotSerializer<Snapshot, Key, User, Inventory> {
+public class ApiSpongeSnapshotSerializer extends ApiSnapshotSerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot> {
 
     @Inject
     public ApiSpongeSnapshotSerializer(ConfigurationService configurationService) {

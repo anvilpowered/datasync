@@ -20,6 +20,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.listeners.PlayerListener;
+import rocks.milspecsg.msdatasync.misc.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.implementation.config.MSConfigurationService;
@@ -152,6 +153,8 @@ public class MSDataSync {
             bind(PlayerListener.class);
 
             bind(SpongePluginInfo.class).to(MSDataSyncPluginInfo.class);
+
+            bind(SnapshotOptimizationService.class);
 
             bind(new TypeLiteral<ApiSpongeMemberRepository>() {})
                 .to(new TypeLiteral<MSMemberRepository>() {});
