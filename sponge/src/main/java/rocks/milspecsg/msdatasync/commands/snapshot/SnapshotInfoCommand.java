@@ -76,7 +76,7 @@ public class SnapshotInfoCommand implements CommandExecutor {
                                 )))
                             .build()
                         ))
-                    .append(Text.of(TextColors.GRAY, "\n\nName: ", TextColors.YELLOW, snapshot.name, "\n\n"))
+                    .append(Text.of(TextColors.GRAY, "\n\nName: ", TextColors.YELLOW, snapshot.name))
                     .append(Text.of(TextColors.GRAY, "\n\nServer: ", TextColors.YELLOW, snapshot.server, "\n\n"))
                     .append(commandUtils.snapshotActions(targetPlayer, dateFormatService.format(created)))
                     .append(Text.of(" "))
