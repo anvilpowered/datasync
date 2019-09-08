@@ -22,7 +22,7 @@ public class OptimizeInfoCommand implements CommandExecutor {
         if (snapshotOptimizationService.isOptimizationTaskRunning()) {
             int completed = snapshotOptimizationService.getCompleted();
             int total = snapshotOptimizationService.getTotal();
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Optimization task: Completed ", completed, " out of ", total));
+            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Optimization task: Completed ", completed, " out of ", total, " ", TextColors.GOLD, (completed * 100) / total, "%"));
         } else {
             source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "There is currently no optimization task running"));
         }
