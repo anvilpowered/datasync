@@ -41,7 +41,7 @@ public class SyncLockCommand implements CommandExecutor {
             int index = unlockedPlayers.indexOf((player.getUniqueId()));
 
             if (!optionalValue.isPresent()) {
-                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Currently ", TextColors.YELLOW, index >= 0 ? "unlocked" : "locked"));
+                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Currently ", index >= 0 ? "unlocked" : "locked"));
                 return CommandResult.success();
             }
 
@@ -51,17 +51,17 @@ public class SyncLockCommand implements CommandExecutor {
                 case "on":
                     if (index >= 0) {
                         unlockedPlayers.remove(index);
-                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock ", TextColors.YELLOW, "enabled"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Lock enabled"));
                     } else {
-                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock already ", TextColors.YELLOW, "enabled"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Lock already enabled"));
                     }
                     break;
                 case "off":
                     if (index < 0) {
                         unlockedPlayers.add(player.getUniqueId());
-                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock ", TextColors.YELLOW, "disabled", TextColors.RED, " (be careful)"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Lock disabled", TextColors.RED, " (be careful)"));
                     } else {
-                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Lock already ", TextColors.YELLOW, "disabled"));
+                        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Lock already disabled"));
                     }
                     break;
                 default:
@@ -72,7 +72,7 @@ public class SyncLockCommand implements CommandExecutor {
 
         } else {
             // console is always unlocked
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Console is always unlocked"));
+            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Console is always unlocked"));
         }
 
         return CommandResult.success();

@@ -16,7 +16,7 @@ import java.util.List;
  * @param <U> Player class to get data from
  * @param <K> Key class
  */
-public abstract class ApiSnapshotSerializer<S extends Snapshot, K, U, I> extends ApiSerializer<S, K, U> implements SnapshotSerializer<S, U> {
+public abstract class ApiSnapshotSerializer<S extends Snapshot, K, U, I, F> extends ApiSerializer<S, K, U> implements SnapshotSerializer<S, U> {
 
     @Override
     public String getName() {
@@ -40,7 +40,7 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, K, U, I> extends
     private Provider<HungerSerializer<S, U>> hungerSerializerProvider;
 
     @Inject
-    private Provider<InventorySerializer<S, U, I>> inventorySerializerProvider;
+    private Provider<InventorySerializer<S, U, I, F>> inventorySerializerProvider;
 
     private ConfigurationService configurationService;
 

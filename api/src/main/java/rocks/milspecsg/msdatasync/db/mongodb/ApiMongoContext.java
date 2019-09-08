@@ -28,7 +28,7 @@ public class ApiMongoContext extends MongoContext {
         String dbName = configurationService.getConfigString(ConfigKeys.MONGODB_DBNAME);
         String username = configurationService.getConfigString(ConfigKeys.MONGODB_USERNAME);
         String password = configurationService.getConfigString(ConfigKeys.MONGODB_PASSWORD);
-        boolean useAuth = configurationService.getConfigBoolean(ConfigKeys.MONGODB_USEAUTH);
+        boolean useAuth = configurationService.getConfigBoolean(ConfigKeys.MONGODB_USE_AUTH);
 
         init(hostname, port, dbName, username, password, useAuth);
     }

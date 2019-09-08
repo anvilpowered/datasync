@@ -2,7 +2,17 @@ package rocks.milspecsg.msdatasync.api.data;
 
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
-public interface InventorySerializer<S extends Snapshot, U, I> extends Serializer<S, U> {
+public interface InventorySerializer<S extends Snapshot, U, I, F> extends Serializer<S, U> {
+
+    /**
+     * Moves data from {@code inventory} into {@code member}
+     *
+     * @param snapshot  {@link Snapshot} to add data to
+     * @param inventory Player to get data from
+     * @param maxSlots Maximum number of slots that will get serialized
+     * @return Whether serialization was successful
+     */
+    boolean serializeInventory(S snapshot, I inventory, int maxSlots);
 
     /**
      * Moves data from {@code inventory} into {@code member}
@@ -18,7 +28,21 @@ public interface InventorySerializer<S extends Snapshot, U, I> extends Serialize
      *
      * @param snapshot  {@link Snapshot} to get data from
      * @param inventory Player to add data to
+     * @param fallbackItemStackSnapshot Item stack to put into unused slots. To be made uneditable
+     * @return Whether deserialization was successful
+     */
+    boolean deserializeInventory(S snapshot, I inventory, F fallbackItemStackSnapshot);
+
+    /**
+     * Moves data from {@code member} into {@code inventory}
+     *
+     * @param snapshot  {@link Snapshot} to get data from
+     * @param inventory Player to add data to
      * @return Whether deserialization was successful
      */
     boolean deserializeInventory(S snapshot, I inventory);
+
+    F getDefaultFallbackItemStackSnapshot();
+
+    F getExitWithoutSavingItemStackSnapshot();
 }

@@ -6,6 +6,7 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.inventory.Inventory;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.*;
@@ -18,7 +19,7 @@ import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
 import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotRepository;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, User, Inventory> {
+public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, User, Inventory, ItemStackSnapshot> {
 
     @Override
     protected void configure() {
@@ -49,7 +50,7 @@ public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, User, Inve
         );
 
         bind(
-            (TypeLiteral<ApiInventorySerializer<Snapshot, Key, User, Inventory>>) TypeLiteral.get(new TypeToken<ApiInventorySerializer<Snapshot, Key, User, Inventory>>(getClass()) {}.getType())
+            (TypeLiteral<ApiInventorySerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot>>) TypeLiteral.get(new TypeToken<ApiInventorySerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot>>(getClass()) {}.getType())
         ).to(
             (TypeLiteral<ApiSpongeInventorySerializer>) TypeLiteral.get(new TypeToken<ApiSpongeInventorySerializer>(getClass()) {}.getType())
         );
@@ -61,7 +62,7 @@ public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, User, Inve
         );
 
         bind(
-            (TypeLiteral<ApiSnapshotSerializer<Snapshot, Key, User, Inventory>>) TypeLiteral.get(new TypeToken<ApiSnapshotSerializer<Snapshot, Key, User, Inventory>>(getClass()) {}.getType())
+            (TypeLiteral<ApiSnapshotSerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot>>) TypeLiteral.get(new TypeToken<ApiSnapshotSerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot>>(getClass()) {}.getType())
         ).to(
             (TypeLiteral<ApiSpongeSnapshotSerializer>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotSerializer>(getClass()) {}.getType())
         );

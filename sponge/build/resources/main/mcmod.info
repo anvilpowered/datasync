@@ -2,22 +2,22 @@
     {
         "modid": "msdatasync",
         "name": "MSDataSync",
-        "version": "0.5.0-dev",
+        "version": "0.5.0",
         "description": "A plugin to synchronize player inventories with a database",
         "url": "https://milspecsg.rocks",
         "authorList": [
             "Cableguy20"
         ],
         "dependencies": [
-            "spongeapi@7.1.0"
+            "spongeapi@7.2.0-SNAPSHOT"
         ],
         "requiredMods": [
-            "spongeapi@7.1.0"
+            "spongeapi@7.2.0-SNAPSHOT"
         ]
     },
     {
         "modid": "sponge",
         "name": "sponge",
-        "version": "0.5.0-dev"
+        "version": "0.5.0"
     }
 ]
