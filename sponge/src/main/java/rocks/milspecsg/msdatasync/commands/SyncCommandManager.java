@@ -72,7 +72,7 @@ public class SyncCommandManager implements CommandManager {
         Map<List<String>, CommandSpec> optimizeSubCommands = new HashMap<>();
 
         snapshotSubCommands.put(Arrays.asList("create", "c", "upload", "up"), CommandSpec.builder()
-            .description(Text.of("Creates manual snapshot for user and uploads it to DB"))
+            .description(Text.of("Creates a manual snapshot for user and uploads it to DB."))
             .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user")))
@@ -82,7 +82,7 @@ public class SyncCommandManager implements CommandManager {
         );
 
         snapshotSubCommands.put(Collections.singletonList("delete"), CommandSpec.builder()
-            .description(Text.of("Deletes snapshot for user"))
+            .description(Text.of("Deletes snapshot for user."))
             .permission(PluginPermissions.EDIT_SNAPSHOTS)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
@@ -93,7 +93,7 @@ public class SyncCommandManager implements CommandManager {
         );
 
         snapshotSubCommands.put(Arrays.asList("edit", "e", "view"), CommandSpec.builder()
-            .description(Text.of("Edit/view snapshot for user from DB. If no date is selected, latest snapshot is selected"))
+            .description(Text.of("Edit/view snapshot for user from DB. If no date is provided, latest snapshot is selected."))
             .permission(PluginPermissions.VIEW_SNAPSHOTS)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
@@ -111,7 +111,7 @@ public class SyncCommandManager implements CommandManager {
         );
 
         snapshotSubCommands.put(Arrays.asList("info", "i"), CommandSpec.builder()
-            .description(Text.of("Shows more snapshot info."))
+            .description(Text.of("More info for snapshot for user from DB. If no date is provided, latest snapshot is selected."))
             .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
@@ -204,7 +204,7 @@ public class SyncCommandManager implements CommandManager {
             .build());
 
         subCommands.put(Collections.singletonList("reload"), CommandSpec.builder()
-            .description(Text.of("Reloads config."))
+            .description(Text.of("Reloads plugin."))
             .permission(PluginPermissions.RELOAD_COMMAND)
             .executor(syncReloadCommand)
             .build());

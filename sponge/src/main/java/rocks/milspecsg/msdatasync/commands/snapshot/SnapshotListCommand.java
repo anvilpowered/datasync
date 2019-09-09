@@ -60,7 +60,7 @@ public class SnapshotListCommand implements CommandExecutor {
                                     TextColors.YELLOW,
                                     "Click for more info\n",
                                     TextColors.AQUA,
-                                    dateFormatService.formatDiff(new Date(System.currentTimeMillis() - date.getTime())),
+                                    dateFormatService.formatDiff(new Date(new Date().getTime() - date.getTime())),
                                     " ago"
                                 )))
                             .onClick(TextActions.suggestCommand("/sync snapshot info " + player.getName() + " " + d))

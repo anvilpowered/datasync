@@ -10,6 +10,7 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
+import rocks.milspecsg.msdatasync.PluginPermissions;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.misc.SnapshotOptimizationService;
 
@@ -34,6 +35,9 @@ public class OptimizeStartCommand implements CommandExecutor {
         }
 
         if (optionalMode.get().equals("all")) {
+            if (!source.hasPermission(PluginPermissions.MANUAL_OPTIMIZATION_ALL)) {
+                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "You do not have permission to start optimization task: all"));
+            }
             if (snapshotOptimizationService.startOptimizeAll(source)) {
                 source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully started optimization task: all"));
             } else {

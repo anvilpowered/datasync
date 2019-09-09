@@ -1,28 +1,8 @@
-//buildscript {
-//    repositories {
-//        maven {
-//            name = 'forge'
-//            url = 'https://files.minecraftforge.net/maven'
-//        }
-//    }
-//
-//    dependencies {
-//        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-//    }
-//}
-
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '4.0.0'
     id 'org.spongepowered.plugin' version '0.8.1'
 }
-
-//apply plugin: 'net.minecraftforge.gradle.forge'
-
-//minecraft {
-//    forgeVersion = project.forgeVersion
-//    mappings = project.mcpVersion
-//}
 
 version = modVersion
 group = modGroup
@@ -35,7 +15,8 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 
     implementation project(':api')
     implementation project(':api-sponge')
@@ -60,10 +41,6 @@ shadowJar {
     archiveName = "MSDataSync-Sponge-${modVersion}.jar"
 
     dependencies {
-//        include(dependency(':msrepository:msr-sponge:spo'))
-////        include(dependency('rocks.milspecsg.msrepository:.*'))
-
-
         include dependency('org.mongodb:bson:3.10.1')
         include dependency('org.mongodb:mongodb-driver-sync:3.10.1')
         include dependency('org.mongodb.morphia:morphia:1.3.2')
@@ -79,5 +56,9 @@ shadowJar {
 
 artifacts {
     archives shadowJar
+}
+
+test {
+    useJUnitPlatform()
 }
 
