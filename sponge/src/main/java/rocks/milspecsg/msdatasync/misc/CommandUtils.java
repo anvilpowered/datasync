@@ -20,6 +20,8 @@ import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -107,6 +109,31 @@ public class CommandUtils {
         if (!paginationService.isPresent()) return;
         PaginationList.Builder paginationBuilder = paginationService.get().builder().title(Text.of(TextColors.GOLD, "MSDataSync " + (commandName != null && commandName.length() > 1 ? commandName.substring(0, 1).toUpperCase() + commandName.substring(1) : "") + " - MilspecSG")).padding(Text.of(TextColors.DARK_GREEN, "-")).contents(helpList).linesPerPage(20);
         paginationBuilder.build().sendTo(source);
+    }
+
+    public void createInfoPage(final CommandSource source) {
+        try {
+            source.sendMessage(
+                Text.of(
+                    MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Running version ",
+                    TextColors.GOLD, MSDataSyncPluginInfo.version, "\n",
+                    TextColors.YELLOW, "This plugin was written by Cableguy20 from MilSpecSG\n",
+                    Text.builder()
+                        .append(Text.of(TextColors.AQUA, "[ Plugin Page ]"))
+                        .onHover(TextActions.showText(Text.of(TextColors.AQUA, "https://github.com/MilSpecSG/MSDataSync")))
+                        .onClick(TextActions.openUrl(new URL("https://github.com/MilSpecSG/MSDataSync")))
+                        .build(),
+                    " ",
+                    Text.builder()
+                        .append(Text.of(TextColors.AQUA, "[ MilSpecSG ]"))
+                        .onHover(TextActions.showText(Text.of(TextColors.AQUA, "https://www.milspecsg.rocks/")))
+                        .onClick(TextActions.openUrl(new URL("https://www.milspecsg.rocks/")))
+                        .build()
+                )
+            );
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

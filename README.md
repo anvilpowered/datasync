@@ -6,7 +6,7 @@ Do you run a multi server network where every server needs to share inventories 
 
 ### Look no further
 
-_MSDataSync_ is an advanced player data backup plugin that let's you store, manage, edit and rollback player data!
+_MSDataSync_ is an advanced player data backup plugin that lets you store, manage, edit and rollback player data!
 
 (Compatible with forge and vanilla)
 

@@ -6,25 +6,11 @@ import org.junit.jupiter.api.*;
 public class ExampleTests {
 
 
-    @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("Basic Serialization")
-    class Basic_Serialization {
+    @DisplayName("Test serializing")
+    @Test
+    void test_serializing() {
+        System.out.println("Starting serializer test...");
 
-        @DisplayName("Test serializing")
-        @Test
-        @Order(1)
-        void test_serializing() {
-            System.out.println("Starting serializer test...");
-
-
-
-
-
-
-
-
-            System.out.println("Finished!");
-        }
+        System.out.println("Finished!");
     }
 }

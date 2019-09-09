@@ -36,21 +36,21 @@ public class OptimizeStartCommand implements CommandExecutor {
 
         if (optionalMode.get().equals("all")) {
             if (!source.hasPermission(PluginPermissions.MANUAL_OPTIMIZATION_ALL)) {
-                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "You do not have permission to start optimization task: all"));
-            }
-            if (snapshotOptimizationService.startOptimizeAll(source)) {
+                throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "You do not have permission to start optimization task: all"));
+            } else if (snapshotOptimizationService.startOptimizeAll(source)) {
                 source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully started optimization task: all"));
             } else {
                 throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Optimizer already running! Use /sync optimize info"));
             }
             snapshotOptimizationService.startOptimizeAll(source);
         } else {
-            if (!users.isEmpty()) {
+            if (users.isEmpty()) {
+                throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "No users were selected by your query"));
+            } else if (snapshotOptimizationService.optimize(users, source, "Manual")) {
                 source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully started optimization task: user"));
             } else {
-                throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "No users were affected"));
+                throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "Optimizer already running! Use /sync optimize info"));
             }
-            snapshotOptimizationService.optimize(users, source, "Manual");
         }
 
         return CommandResult.success();

@@ -71,9 +71,10 @@ public class ApiSpongeSerializationTaskService<M extends Member, S extends Snaps
     @Override
     public Runnable getSerializationTask() {
         return () -> {
-            Collection<Player> players = Sponge.getServer().getOnlinePlayers();
-            for (Player player : players) {
-                snapshotOptimizationService.optimize(player, Sponge.getServer().getConsole(), "Auto");
+            if (snapshotOptimizationService.isOptimizationTaskRunning()) {
+                Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Optimization task already running! Task will skip"));
+            } else {
+                snapshotOptimizationService.optimize(Sponge.getServer().getOnlinePlayers(), Sponge.getServer().getConsole(), "Auto");
             }
         };
     }

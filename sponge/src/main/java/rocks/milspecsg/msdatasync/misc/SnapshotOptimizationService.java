@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -43,7 +44,8 @@ public class SnapshotOptimizationService {
 
     private ConfigurationService configurationService;
 
-    private volatile CompletableFuture<Void> currentOptimizeAllTask = null;
+    private volatile boolean optimizationTaskRunning = false;
+    private volatile boolean requestCancelOptimizationTask = false;
 
     private volatile int total = 0;
     private volatile int membersCompleted = 0;
@@ -51,6 +53,10 @@ public class SnapshotOptimizationService {
 
     private synchronized void incrementCompleted() {
         membersCompleted++;
+    }
+
+    private synchronized void incrementDeleted() {
+        snapshotsDeleted++;
     }
 
     private synchronized void setTotal(final int total) {
@@ -71,19 +77,21 @@ public class SnapshotOptimizationService {
         return membersCompleted;
     }
 
+    public int getSnapshotsDeleted() {
+        return snapshotsDeleted;
+    }
+
     public boolean isOptimizationTaskRunning() {
-        return currentOptimizeAllTask != null;
+        return optimizationTaskRunning;
     }
 
     public boolean stopOptimizationTask() {
         if (!isOptimizationTaskRunning()) {
             return false;
         }
-        if (!currentOptimizeAllTask.isDone()){
-            currentOptimizeAllTask.complete(null);
-        }
         resetCounters();
-        currentOptimizeAllTask = null;
+        optimizationTaskRunning = false;
+        requestCancelOptimizationTask = false;
         return true;
     }
 
@@ -97,29 +105,6 @@ public class SnapshotOptimizationService {
         Optional<List<int[]>> optional = syncUtils.decodeOptimizationStrategy(configurationService.getConfigList(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, new TypeToken<List<String>>() {
         }));
         optimizationStrategy = optional.orElse(null);
-    }
-
-    public CompletableFuture<Boolean> optimize(final Collection<User> users, final CommandSource source, final String name) {
-        return CompletableFuture.supplyAsync(() -> {
-            boolean deletedAnything = false;
-            for (User user : users) {
-                if (optimize(user, source, name).join()) {
-                    deletedAnything = true;
-                }
-            }
-            return deletedAnything;
-        });
-    }
-
-    public CompletableFuture<Boolean> optimize(final User user, final CommandSource source, final String name) {
-        return memberRepository.getSnapshotIds(user.getUniqueId()).thenApplyAsync(snapshotIds -> {
-            if (!optimizeFull(snapshotIds, user.getUniqueId(), source, name).join()) {
-                source.sendMessage(
-                    Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully ran optimization for ", user.getName(), " but no snapshots were deleted!")
-                );
-                return true;
-            } else return false;
-        });
     }
 
     /**
@@ -167,9 +152,10 @@ public class SnapshotOptimizationService {
                 memberRepository.deleteSnapshot(userUUID, objectId).thenAcceptAsync(success -> {
                     if (success) {
                         deletedAnything[0] = true;
-                        source.sendMessage(
-                            Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully removed snapshot ", dateFormatService.format(objectId.getDate()), " from " + optionalUser.get().getName())
-                        );
+                        incrementDeleted();
+//                        source.sendMessage(
+//                            Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully removed snapshot ", dateFormatService.format(objectId.getDate()), " from " + optionalUser.get().getName())
+//                        );
                     } else {
                         source.sendMessage(
                             Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "There was an error removing snapshot ", dateFormatService.format(objectId.getDate()), " from " + optionalUser.get().getName())
@@ -181,11 +167,38 @@ public class SnapshotOptimizationService {
         });
     }
 
-    public boolean startOptimizeAll(final CommandSource source) {
-        if (currentOptimizeAllTask != null) {
+    public boolean optimize(final Collection<? extends User> users, final CommandSource source, final String name) {
+        if (isOptimizationTaskRunning()) {
             return false;
         }
-        this.currentOptimizeAllTask = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture.supplyAsync(() -> {
+            for (User user : users) {
+                optimize(user, source, name).join();
+                incrementCompleted();
+
+                if (requestCancelOptimizationTask) {
+                    break;
+                }
+            }
+            return null;
+        }).thenAcceptAsync(v -> {
+            printOptimizationFinished(source, snapshotsDeleted, membersCompleted);
+            resetCounters();
+            stopOptimizationTask();
+        });
+        return true;
+    }
+
+    public CompletableFuture<Boolean> optimize(final User user, final CommandSource source, final String name) {
+        return memberRepository.getSnapshotIds(user.getUniqueId()).thenApplyAsync(snapshotIds -> optimizeFull(snapshotIds, user.getUniqueId(), source, name).join());
+    }
+
+    public boolean startOptimizeAll(final CommandSource source) {
+        if (optimizationTaskRunning) {
+            return false;
+        }
+        optimizationTaskRunning = true;
+        CompletableFuture.supplyAsync(() -> {
             List<ObjectId> memberIds = memberRepository.getAllIds().join();
             setTotal(memberIds.size());
             for (ObjectId memberId : memberIds) {
@@ -194,14 +207,24 @@ public class SnapshotOptimizationService {
                 Member member = optionalMember.get();
                 optimizeFull(member.snapshotIds, member.userUUID, source, "Manual").join();
                 incrementCompleted();
+
+                if (requestCancelOptimizationTask) {
+                    break;
+                }
             }
             return null;
         }).thenAcceptAsync(v -> {
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Optimization complete!"));
+            printOptimizationFinished(source, snapshotsDeleted, membersCompleted);
             resetCounters();
             stopOptimizationTask();
         });
         return true;
+    }
+
+    private static void printOptimizationFinished(final CommandSource source, final int snapshotsDeleted, final int membersCompleted) {
+        String snapshotString = snapshotsDeleted == 1 ? " snapshot from " : " snapshots from ";
+        String memberString = membersCompleted == 1 ? " user!" : " users!";
+        source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Optimization complete! Removed ", snapshotsDeleted, snapshotString, membersCompleted, memberString));
     }
 
     private static boolean within(ObjectId id, int minutes) {

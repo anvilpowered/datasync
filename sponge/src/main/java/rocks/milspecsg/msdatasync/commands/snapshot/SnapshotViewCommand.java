@@ -32,7 +32,7 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class SnapshotEditCommand implements CommandExecutor {
+public class SnapshotViewCommand implements CommandExecutor {
 
     @Inject
     SnapshotRepository<Snapshot, Key> snapshotRepository;
@@ -80,7 +80,7 @@ public class SnapshotEditCommand implements CommandExecutor {
                 Snapshot snapshot = optionalSnapshot.get();
                 source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Editing snapshot ", TextColors.GOLD, dateFormatService.format(optionalSnapshot.get().getId().getDate())));
                 final boolean[] closeData = new boolean[]{false};
-                final boolean permissionToEdit = player.hasPermission(PluginPermissions.EDIT_SNAPSHOTS);
+                final boolean permissionToEdit = player.hasPermission(PluginPermissions.SNAPSHOT_VIEW_EDIT);
                 Inventory inventory = Inventory.builder().of(inventoryArchetype).listener(InteractInventoryEvent.Close.class, e -> {
                     if (closeData[0] || !permissionToEdit) {
                         source.sendMessage(

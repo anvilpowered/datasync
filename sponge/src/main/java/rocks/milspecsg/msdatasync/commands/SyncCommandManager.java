@@ -20,6 +20,9 @@ public class SyncCommandManager implements CommandManager {
     SyncHelpCommand syncHelpCommand;
 
     @Inject
+    SyncInfoCommand syncInfoCommand;
+
+    @Inject
     UploadStartCommand uploadStartCommand;
 
     @Inject
@@ -38,9 +41,6 @@ public class SyncCommandManager implements CommandManager {
     SnapshotHelpCommand snapshotHelpCommand;
 
     @Inject
-    SnapshotEditCommand snapshotEditCommand;
-
-    @Inject
     SnapshotInfoCommand snapshotInfoCommand;
 
     @Inject
@@ -48,6 +48,9 @@ public class SyncCommandManager implements CommandManager {
 
     @Inject
     SnapshotRestoreCommand snapshotRestoreCommand;
+
+    @Inject
+    SnapshotViewCommand snapshotViewCommand;
 
     @Inject
     OptimizeHelpCommand optimizeHelpCommand;
@@ -73,7 +76,7 @@ public class SyncCommandManager implements CommandManager {
 
         snapshotSubCommands.put(Arrays.asList("create", "c", "upload", "up"), CommandSpec.builder()
             .description(Text.of("Creates a manual snapshot for user and uploads it to DB."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_CREATE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user")))
             )
@@ -83,7 +86,7 @@ public class SyncCommandManager implements CommandManager {
 
         snapshotSubCommands.put(Collections.singletonList("delete"), CommandSpec.builder()
             .description(Text.of("Deletes snapshot for user."))
-            .permission(PluginPermissions.EDIT_SNAPSHOTS)
+            .permission(PluginPermissions.SNAPSHOT_DELETE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.string(Text.of("date"))
@@ -94,25 +97,25 @@ public class SyncCommandManager implements CommandManager {
 
         snapshotSubCommands.put(Arrays.asList("edit", "e", "view"), CommandSpec.builder()
             .description(Text.of("Edit/view snapshot for user from DB. If no date is provided, latest snapshot is selected."))
-            .permission(PluginPermissions.VIEW_SNAPSHOTS)
+            .permission(PluginPermissions.SNAPSHOT_VIEW_BASE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.optional(GenericArguments.string(Text.of("date")))
             )
-            .executor(snapshotEditCommand)
+            .executor(snapshotViewCommand)
             .build()
         );
 
         snapshotSubCommands.put(Collections.singletonList("help"), CommandSpec.builder()
             .description(Text.of("Shows this help page."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_BASE)
             .executor(snapshotHelpCommand)
             .build()
         );
 
         snapshotSubCommands.put(Arrays.asList("info", "i"), CommandSpec.builder()
             .description(Text.of("More info for snapshot for user from DB. If no date is provided, latest snapshot is selected."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_BASE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.optional(GenericArguments.string(Text.of("date")))
@@ -123,7 +126,7 @@ public class SyncCommandManager implements CommandManager {
 
         snapshotSubCommands.put(Arrays.asList("list", "l"), CommandSpec.builder()
             .description(Text.of("Lists available snapshots for user."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_BASE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user")))
             )
@@ -133,7 +136,7 @@ public class SyncCommandManager implements CommandManager {
 
         snapshotSubCommands.put(Arrays.asList("restore", "r", "download", "down"), CommandSpec.builder()
             .description(Text.of("Manually restores snapshot from DB. If no date is selected, latest snapshot is restored."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_RESTORE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.optional(GenericArguments.string(Text.of("date")))
@@ -144,7 +147,7 @@ public class SyncCommandManager implements CommandManager {
 
         subCommands.put(Arrays.asList("snapshot", "snap", "s"), CommandSpec.builder()
             .description(Text.of("Snapshot base command."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_BASE)
             .executor(snapshotHelpCommand)
             .children(snapshotSubCommands)
             .build());
@@ -156,7 +159,7 @@ public class SyncCommandManager implements CommandManager {
 
         optimizeSubCommands.put(Arrays.asList("start", "s"), CommandSpec.builder()
             .description(Text.of("Starts manual optimization, deletes old snapshots."))
-            .permission(PluginPermissions.MANUAL_OPTIMIZATION)
+            .permission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
             .arguments(
                 GenericArguments.choices(Text.of("mode"), optimizeStartChoices),
                 GenericArguments.optional(GenericArguments.user(Text.of("user")))
@@ -166,25 +169,25 @@ public class SyncCommandManager implements CommandManager {
 
         optimizeSubCommands.put(Arrays.asList("info", "i"), CommandSpec.builder()
             .description(Text.of("Gets info on current manual optimization."))
-            .permission(PluginPermissions.MANUAL_OPTIMIZATION)
+            .permission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
             .executor(optimizeInfoCommand)
             .build());
 
         optimizeSubCommands.put(Collections.singletonList("stop"), CommandSpec.builder()
             .description(Text.of("Stops current manual optimization."))
-            .permission(PluginPermissions.MANUAL_OPTIMIZATION)
+            .permission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
             .executor(optimizeStopCommand)
             .build());
 
         optimizeSubCommands.put(Collections.singletonList("help"), CommandSpec.builder()
             .description(Text.of("Shows this help page."))
-            .permission(PluginPermissions.MANUAL_OPTIMIZATION)
+            .permission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
             .executor(optimizeHelpCommand)
             .build());
 
         subCommands.put(Arrays.asList("optimize", "opt", "o"), CommandSpec.builder()
             .description(Text.of("Optimize base command. (To delete old snapshots)"))
-            .permission(PluginPermissions.MANUAL_OPTIMIZATION)
+            .permission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
             .executor(optimizeHelpCommand)
             .children(optimizeSubCommands)
             .build());
@@ -211,20 +214,23 @@ public class SyncCommandManager implements CommandManager {
 
         subCommands.put(Arrays.asList("upload", "up"), CommandSpec.builder()
             .description(Text.of("Uploads all players on server."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
+            .permission(PluginPermissions.SNAPSHOT_CREATE)
             .executor(uploadStartCommand)
             .build());
 
         subCommands.put(Collections.singletonList("help"), CommandSpec.builder()
             .description(Text.of("Shows this help page."))
-            .permission(PluginPermissions.MANUAL_SYNC_COMMAND)
             .executor(syncHelpCommand)
             .build());
 
+        subCommands.put(Collections.singletonList("info"), CommandSpec.builder()
+            .description(Text.of("Shows plugin info."))
+            .executor(syncInfoCommand)
+            .build());
 
         //Build all commands
         CommandSpec mainCommand = CommandSpec.builder()
-            .description(Text.of("Displays all available sync subcommands."))
+            .description(Text.of("Displays all available sync sub commands."))
             .executor(syncHelpCommand)
             .children(subCommands)
             .build();
