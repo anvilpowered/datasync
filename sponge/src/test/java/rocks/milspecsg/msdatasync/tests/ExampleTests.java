@@ -1,13 +1,10 @@
-package tests;
+package rocks.milspecsg.msdatasync.tests;
 
 import org.junit.jupiter.api.*;
-import rocks.milspecsg.msdatasync.service.implementation.data.ApiSpongeSnapshotSerializer;
-
-import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
-@DisplayName("MSDataSync sponge tests")
+@DisplayName("MSDataSync sponge rocks.milspecsg.msdatasync.tests")
 public class ExampleTests {
 
 
