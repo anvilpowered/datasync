@@ -18,6 +18,8 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 
     implementation project(':api')
+    implementation project(':msrepository:msr-api:api-repository')
+    implementation project(':msrepository:msr-api:api-config')
     implementation project(':msrepository:msr-sponge:sponge-repository')
     implementation project(':msrepository:msr-sponge:sponge-config')
 
