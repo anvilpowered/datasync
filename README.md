@@ -1,4 +1,4 @@
-# MSDataSync [build](https://circleci.com/gh/MilSpecSG/MSDataSync.png?circle-token=:circle-token)
+# MSDataSync [![CircleCI](https://circleci.com/gh/MilSpecSG/MSDataSync.svg?style=svg)](https://circleci.com/gh/MilSpecSG/MSDataSync)
 
 Have you ever had problems with players losing items?
 
