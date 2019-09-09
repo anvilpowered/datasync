@@ -2,9 +2,7 @@ package rocks.milspecsg.msdatasync.tests;
 
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
-
-@DisplayName("MSDataSync sponge rocks.milspecsg.msdatasync.tests")
+@DisplayName("MSDataSync sponge tests")
 public class ExampleTests {
 
 
@@ -18,6 +16,14 @@ public class ExampleTests {
         @Order(1)
         void test_serializing() {
             System.out.println("Starting serializer test...");
+
+
+
+
+
+
+
+
             System.out.println("Finished!");
         }
     }
