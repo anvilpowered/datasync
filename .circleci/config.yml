@@ -9,6 +9,7 @@ jobs: # a collection of steps
       - image: circleci/openjdk:8u222-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
     steps: # a collection of executable commands
       - checkout # check out source code to working directory
+      - submodule foreach git pull origin master
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
