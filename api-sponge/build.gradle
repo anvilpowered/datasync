@@ -16,9 +16,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 
-    implementation project(':api')
-    implementation project(':msrepository:msr-sponge:sponge-repository')
-    implementation project(':msrepository:msr-sponge:sponge-config')
+    implementation project(path: ':api', configuration: 'default')
+    implementation project(path: ':msrepository:msr-sponge:sponge-repository', configuration: 'default')
+    implementation project(path: ':msrepository:msr-sponge:sponge-config', configuration: 'default')
 
     implementation 'com.google.inject:guice:4.0'
     compile 'com.google.guava:guava:28.1-jre'
