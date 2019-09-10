@@ -1,5 +1,7 @@
 # MSDataSync [![CircleCI](https://circleci.com/gh/MilSpecSG/MSDataSync.svg?style=svg)](https://circleci.com/gh/MilSpecSG/MSDataSync)
 
+<img src="icon.png" width="290" height="290" align="right">
+
 Have you ever had problems with players losing items?
 
 Do you run a multi server network where every server needs to share inventories and other player data?
