@@ -23,10 +23,12 @@ import java.util.*;
 public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot> {
 
     private static char SEPARATOR = '_';
+    private static char PERIOD_REPLACEMENT = '-';
 
     @Override
     public boolean serializeInventory(Snapshot snapshot, Inventory inventory, int maxSlots) {
         try {
+            boolean success = true;
             List<SerializedItemStack> itemStacks = new ArrayList<>();
             Iterator<Inventory> iterator = inventory.slots().iterator();
 
@@ -36,16 +38,22 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                 SerializedItemStack serializedItemStack = new SerializedItemStack();
                 ItemStack stack = slot.peek().orElse(ItemStack.empty());
                 DataContainer dc = stack.toContainer();
-                serializedItemStack.properties = serialize(dc.getValues(false));
+                try {
+                    serializedItemStack.properties = serialize(dc.getValues(false));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("[MSDataSync] There was an error while serializing slot " + i + " with item " + stack.getType().getId() + "! Will not add this item to snapshot!");
+                    success = false;
+                    continue;
+                }
                 itemStacks.add(serializedItemStack);
             }
-
             snapshot.itemStacks = itemStacks;
+            return success;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     @Override
@@ -100,7 +108,7 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
         Map<String, Object> result = new HashMap<>();
         values.forEach((dq, o) -> {
-            String s = dq.asString(SEPARATOR);
+            String s = dq.asString(SEPARATOR).replace('.', PERIOD_REPLACEMENT);
             if (o instanceof Map) {
                 Object m = serialize((Map<DataQuery, Object>) o);
                 result.put(s, m);
@@ -111,7 +119,7 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                     if (li instanceof DataContainer) {
                         r1.add(serialize(((DataContainer) li).getValues(false)));
                     } else if (li instanceof String) {
-                        r1.add(li);
+                        r1.add(((String) li).replace('.', PERIOD_REPLACEMENT));
                     }
                 });
                 result.put(s, r1);
@@ -125,12 +133,14 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
     private static Map<DataQuery, Object> deserialize(Map<String, Object> values) {
         Map<DataQuery, Object> result = new HashMap<>();
         values.forEach((s, o) -> {
+            s = s.replace('-', '.');
             DataQuery dq = DataQuery.of(SEPARATOR, s);
             if (o instanceof Map) {
                 Map<String, Object> m = (Map<String, Object>) o;
                 Map<DataQuery, Object> r1 = new HashMap<>();
                 m.forEach((s1, m1) -> {
                     Object value = m1;
+                    s1 = s1.replace(PERIOD_REPLACEMENT, '.');
                     try {
                         Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
                         DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
@@ -146,7 +156,7 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                 });
                 result.put(dq, r1);
             } else if (!s.equals("ItemType") && o instanceof String) {
-                String n = o.toString();
+                String n = o.toString().replace(PERIOD_REPLACEMENT, '.');
                 result.put(dq, n);
             } else {
                 result.put(dq, o);

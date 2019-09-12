@@ -1,3 +1,5 @@
+<img src="icon.png" width="150px" height="150px" alt="test">
+
 # MSDataSync [![CircleCI](https://circleci.com/gh/MilSpecSG/MSDataSync.svg?style=svg)](https://circleci.com/gh/MilSpecSG/MSDataSync)
 
 Have you ever had problems with players losing items?

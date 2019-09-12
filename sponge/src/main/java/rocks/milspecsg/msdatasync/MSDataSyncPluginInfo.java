@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 public final class MSDataSyncPluginInfo implements SpongePluginInfo {
     public static final String id = "msdatasync";
     public static final String name = "MSDataSync";
-    public static final String version = "0.5.1";
+    public static final String version = "0.5.2";
     public static final String description = "A plugin to synchronize player inventories with a database";
     public static final String url = "https://milspecsg.rocks";
     public static final String authors = "Cableguy20";

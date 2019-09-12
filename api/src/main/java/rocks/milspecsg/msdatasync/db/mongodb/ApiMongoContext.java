@@ -3,6 +3,7 @@ package rocks.milspecsg.msdatasync.db.mongodb;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.DefaultCreator;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.SerializedItemStack;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
@@ -39,6 +40,13 @@ public class ApiMongoContext extends MongoContext {
             Member.class,
             SerializedItemStack.class
         );
+
+        morphia.getMapper().getOptions().setObjectFactory(new DefaultCreator() {
+            @Override
+            protected ClassLoader getClassLoaderForClass() {
+                return ApiMongoContext.this.getClass().getClassLoader();
+            }
+        });
     }
 
 }

@@ -127,17 +127,22 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, K, U, I, F> exte
             return false;
         }
         boolean success = true;
+        if (snapshot.modulesUsed == null) {
+            snapshot.modulesUsed = new ArrayList<>();
+        }
+
+        if (snapshot.modulesFailed == null) {
+            snapshot.modulesFailed = new ArrayList<>();
+        }
+
         for (Serializer<S, U> serializer : serializers) {
             // will still try to keep going even if one module fails
             try {
-                if (serializer.serialize(snapshot, user)) {
-                    if (snapshot.modulesUsed == null) {
-                        snapshot.modulesUsed = new ArrayList<>();
-                    }
-                    snapshot.modulesUsed.add(serializer.getName());
-                } else {
-                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for user " + getUsername(user));
+                snapshot.modulesUsed.add(serializer.getName());
+                if (!serializer.serialize(snapshot, user)) {
+                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for user " + getUsername(user) +"! All valid data was still uploaded!");
                     success = false;
+                    snapshot.modulesFailed.add(serializer.getName());
                 }
             } catch (Exception e) {
                 success = false;

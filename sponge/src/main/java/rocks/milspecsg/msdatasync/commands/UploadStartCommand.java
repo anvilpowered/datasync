@@ -48,13 +48,13 @@ public class UploadStartCommand implements CommandExecutor {
                 }
                 if (successful.size() + unsuccessful.size() >= players.size()) {
                     if (successful.size() > 0) {
-                        String s = successful.stream().map(User::getName).collect(Collectors.joining(","));
+                        String s = successful.stream().map(User::getName).collect(Collectors.joining(", "));
                         source.sendMessage(
                             Text.of(TextColors.YELLOW, "The following players were successfully serialized: \n", TextColors.GREEN, s)
                         );
                     }
                     if (unsuccessful.size() > 0) {
-                        String u = unsuccessful.stream().map(User::getName).collect(Collectors.joining(","));
+                        String u = unsuccessful.stream().map(User::getName).collect(Collectors.joining(", "));
                         source.sendMessage(
                             Text.of(TextColors.RED, "The following players were unsuccessfully serialized: \n", u)
                         );

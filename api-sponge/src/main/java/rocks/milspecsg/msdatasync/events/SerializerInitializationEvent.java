@@ -26,7 +26,6 @@ public class SerializerInitializationEvent<S extends Snapshot> extends AbstractE
         this.cause = cause;
         this.snapshotSerializer = snapshotSerializer;
         this.snapshotRepository = snapshotRepository;
-
     }
 
     @Override
