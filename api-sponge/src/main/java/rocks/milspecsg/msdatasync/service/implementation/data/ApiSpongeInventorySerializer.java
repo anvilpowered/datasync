@@ -19,6 +19,7 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.ApiInventorySerializer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapshot, Key, User, Inventory, ItemStackSnapshot> {
 
@@ -74,10 +75,15 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
             for (Iterator<Inventory> slots = inventory.slots().iterator(); slots.hasNext(); ) {
                 Inventory slot = slots.next();
                 if (stacks.hasNext()) {
-                    DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                    deserialize(stacks.next().properties).forEach(dc::set);
-                    ItemStack is = ItemStack.builder().fromContainer(dc).build();
-                    slot.set(is);
+                    SerializedItemStack stack = stacks.next();
+                    try {
+                        DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
+                        deserialize(stack.properties).forEach(dc::set);
+                        ItemStack is = ItemStack.builder().fromContainer(dc).build();
+                        slot.set(is);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (!(inventory instanceof PlayerInventory)) {
                     if (slots.hasNext()) {
                         slot.set(fallbackItemStackSnapshot.createStack());
@@ -86,8 +92,6 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
                     }
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -132,36 +136,52 @@ public class ApiSpongeInventorySerializer extends ApiInventorySerializer<Snapsho
 
     private static Map<DataQuery, Object> deserialize(Map<String, Object> values) {
         Map<DataQuery, Object> result = new HashMap<>();
-        values.forEach((s, o) -> {
+        for (Map.Entry<String, Object> e : values.entrySet()) {
+            String s = e.getKey();
+            Object o = e.getValue();
+            if (o == null) {
+                continue;
+            }
             s = s.replace('-', '.');
             DataQuery dq = DataQuery.of(SEPARATOR, s);
             if (o instanceof Map) {
                 Map<String, Object> m = (Map<String, Object>) o;
                 Map<DataQuery, Object> r1 = new HashMap<>();
-                m.forEach((s1, m1) -> {
+                for (Map.Entry<String, Object> mapEntry : m.entrySet()) {
+                    String s1 = mapEntry.getKey();
+                    Object m1 = mapEntry.getValue();
+                    if (m1 == null) {
+                        continue;
+                    } else if (m1 instanceof List) {
+                        m1 = ((List<?>) m1).stream().filter(Objects::nonNull).collect(Collectors.toList());
+                    }
                     Object value = m1;
                     s1 = s1.replace(PERIOD_REPLACEMENT, '.');
-                    try {
-                        Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
-                        DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                        v.forEach(dc::set);
-                        if (s1.equals("ench")) {
-                            value = ImmutableList.of(dc);
-                        } else {
-                            value = dc;
+                    if (m1 instanceof Map) {
+                        try {
+                            Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
+                            DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
+                            v.forEach(dc::set);
+                            if (s1.equals("ench")) {
+                                value = ImmutableList.of(dc);
+                            } else {
+                                value = dc;
+                            }
+                        } catch (Exception ignored) {
                         }
-                    } catch (ClassCastException ignored) {
                     }
                     r1.put(DataQuery.of(SEPARATOR, s1), value);
-                });
+                }
                 result.put(dq, r1);
             } else if (!s.equals("ItemType") && o instanceof String) {
                 String n = o.toString().replace(PERIOD_REPLACEMENT, '.');
                 result.put(dq, n);
+            } else if (o instanceof List) {
+                result.put(dq, ((List<?>) o).stream().filter(Objects::nonNull).collect(Collectors.toList()));
             } else {
                 result.put(dq, o);
             }
-        });
+        }
         return result;
     }
 

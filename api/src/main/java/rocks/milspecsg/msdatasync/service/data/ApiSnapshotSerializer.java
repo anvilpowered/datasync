@@ -67,7 +67,7 @@ public abstract class ApiSnapshotSerializer<S extends Snapshot, K, U, I, F> exte
 
         verifyExternalSerializers();
 
-        List<String> enabledSerializers = new ArrayList<>(configurationService.getConfigList(ConfigKeys.ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
+        List<String> enabledSerializers = new ArrayList<>(configurationService.getConfigList(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
         }));
         serializers = new ArrayList<>();
 

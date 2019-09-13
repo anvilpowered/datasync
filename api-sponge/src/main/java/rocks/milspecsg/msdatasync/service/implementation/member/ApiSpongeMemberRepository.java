@@ -1,5 +1,6 @@
 package rocks.milspecsg.msdatasync.service.implementation.member;
 
+import com.google.inject.Inject;
 import com.mongodb.WriteResult;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
@@ -11,12 +12,18 @@ import org.spongepowered.api.service.user.UserStorageService;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
+import rocks.milspecsg.msrepository.db.mongodb.MongoContext;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public abstract class ApiSpongeMemberRepository extends ApiMemberRepository<Member, Snapshot, Key, User> {
+
+    @Inject
+    public ApiSpongeMemberRepository(MongoContext mongoContext) {
+        super(mongoContext);
+    }
 
     @Override
     public Optional<User> getUser(UUID userUUID) {

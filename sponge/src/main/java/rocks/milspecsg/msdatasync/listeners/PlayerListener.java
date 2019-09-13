@@ -17,6 +17,8 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
+import java.util.concurrent.CompletableFuture;
+
 @Singleton
 public class PlayerListener {
 
@@ -48,17 +50,21 @@ public class PlayerListener {
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent) {
         if (enabled) {
             Player player = joinEvent.getTargetEntity();
-            userSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
-                if (optionalSnapshot.isPresent()) {
-                    Sponge.getServer().getConsole().sendMessage(
-                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", player.getName(), " on join!")
-                    );
-                } else {
-                    Sponge.getServer().getConsole().sendMessage(
-                        Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while deserializing ", player.getName(), " on join!")
-                    );
-                }
+            CompletableFuture.supplyAsync(() -> {
+                userSerializer.deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
+                    if (optionalSnapshot.isPresent()) {
+                        Sponge.getServer().getConsole().sendMessage(
+                            Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully deserialized ", player.getName(), " on join!")
+                        );
+                    } else {
+                        Sponge.getServer().getConsole().sendMessage(
+                            Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while deserializing ", player.getName(), " on join!")
+                        );
+                    }
+                }).join();
+                return null;
             });
+
         }
     }
 

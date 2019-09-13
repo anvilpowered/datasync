@@ -2,6 +2,7 @@ package rocks.milspecsg.msdatasync.db.mongodb;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.DefaultCreator;
 import rocks.milspecsg.msdatasync.model.core.Member;
@@ -19,6 +20,7 @@ public class ApiMongoContext extends MongoContext {
     public ApiMongoContext(ConfigurationService configurationService) {
         this.configurationService = configurationService;
         configurationService.addConfigLoadedListener(this::loadConfig);
+        addConnectionOpenedListener(this::connectionOpened);
     }
 
     private void loadConfig(Object plugin) {
@@ -32,6 +34,13 @@ public class ApiMongoContext extends MongoContext {
         boolean useAuth = configurationService.getConfigBoolean(ConfigKeys.MONGODB_USE_AUTH);
 
         init(hostname, port, dbName, username, password, useAuth);
+    }
+
+    private void connectionOpened(Datastore datastore) {
+        // if enabled, database must be a replica set
+        if (configurationService.getConfigBoolean(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN)) {
+            boolean isReplicaSet = datastore.getMongo().getReplicaSetStatus() != null;
+        }
     }
 
     @Override

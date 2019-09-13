@@ -27,9 +27,11 @@ public class MSConfigurationService extends ApiConfigurationService {
 
     @Override
     protected void initNodeTypeMap() {
-        nodeTypeMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
+        nodeTypeMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
         });
         nodeTypeMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, new TypeToken<Boolean>() {
+        });
+        nodeTypeMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, new TypeToken<Boolean>() {
         });
         nodeTypeMap.put(ConfigKeys.MONGODB_HOSTNAME, new TypeToken<String>() {
         });
@@ -89,8 +91,9 @@ public class MSConfigurationService extends ApiConfigurationService {
 
     @Override
     protected void initDefaultMaps() {
-        defaultListMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, Arrays.asList("msdatasync:experience", "msdatasync:gameMode", "msdatasync:health", "msdatasync:hunger", "msdatasync:inventory"));
+        defaultListMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, Arrays.asList("msdatasync:experience", "msdatasync:gameMode", "msdatasync:health", "msdatasync:hunger", "msdatasync:inventory"));
         defaultBooleanMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, true);
+        defaultBooleanMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, false);
         defaultStringMap.put(ConfigKeys.MONGODB_HOSTNAME, "localhost");
         defaultIntegerMap.put(ConfigKeys.MONGODB_PORT, 27017);
         defaultStringMap.put(ConfigKeys.MONGODB_DBNAME, "msdatasync");
@@ -105,8 +108,9 @@ public class MSConfigurationService extends ApiConfigurationService {
 
     @Override
     protected void initNodeNameMap() {
-        nodeNameMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, "enabledSerializers");
-        nodeNameMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "serializeOnJoinLeave");
+        nodeNameMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, "serialize.enabledSerializers");
+        nodeNameMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "serialize.serializeOnJoinLeave");
+        nodeNameMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, "serialize.waitForSnapshotOnJoin");
         nodeNameMap.put(ConfigKeys.MONGODB_HOSTNAME, "mongodb.hostname");
         nodeNameMap.put(ConfigKeys.MONGODB_PORT, "mongodb.port");
         nodeNameMap.put(ConfigKeys.MONGODB_DBNAME, "mongodb.dbName");
@@ -122,9 +126,13 @@ public class MSConfigurationService extends ApiConfigurationService {
 
     @Override
     protected void initNodeDescriptionMap() {
-        nodeDescriptionMap.put(ConfigKeys.ENABLED_SERIALIZERS_LIST, "\nThings to sync to DB." +
+        nodeDescriptionMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, "\nThings to sync to DB." +
             "\nAvailable: msdatasync:experience, msdatasync:gameMode, msdatasync:health, msdatasync:hunger, msdatasync:inventory");
         nodeDescriptionMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "\nWhether MSDataSync should sync players to DB on join/leave");
+        nodeDescriptionMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
+            "\nWhether MSDataSync should wait for snapshots to be uploaded before downloading them.\n" +
+            "Note: this option is highly recommended if you are running a multi-server environment like Velocity"
+        );
         nodeDescriptionMap.put(ConfigKeys.MONGODB_HOSTNAME, "\nMongoDB hostname");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_PORT, "\nMongoDB port");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_DBNAME, "\nMongoDB database name");

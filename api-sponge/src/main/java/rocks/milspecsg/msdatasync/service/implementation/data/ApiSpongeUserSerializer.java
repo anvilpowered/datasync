@@ -50,15 +50,32 @@ public class ApiSpongeUserSerializer extends ApiUserSerializer<Member, Snapshot,
 
     @Override
     public CompletableFuture<Optional<Snapshot>> deserialize(User user, Object plugin) {
-        return memberRepository.getLatestSnapshot(user.getUniqueId()).thenApplyAsync(optionalSnapshot -> {
+        CompletableFuture<Void> waitForSnapshot;
+        if (configurationService.getConfigBoolean(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN)) {
+            waitForSnapshot = CompletableFuture.runAsync(() -> {
+//                while (true){
+//                    if (!memberRepository.getNext().map(member -> {
+//                        System.out.println(member.userUUID);
+//                        return member.userUUID.equals(user.getUniqueId());
+//                    }).orElse(false))
+//                        break;
+//                }
+                try {
+                    Thread.sleep(7000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            waitForSnapshot = CompletableFuture.completedFuture(null);
+        }
+        return waitForSnapshot.thenApplyAsync(v -> memberRepository.getLatestSnapshot(user.getUniqueId()).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
                 System.err.println("[MSDataSync] Could not find snapshot for user " + user.getName() + "! Check your DB configuration!");
-                return Optional.empty();
+                return Optional.<Snapshot>empty();
             }
-
             return deserialize(user, plugin, optionalSnapshot.get()).join();
-        });
-
+        }).join());
     }
 
     @Override

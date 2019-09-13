@@ -7,6 +7,7 @@ import rocks.milspecsg.msdatasync.api.member.MemberRepository;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotRepository;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
+import rocks.milspecsg.msrepository.db.mongodb.MongoContext;
 import rocks.milspecsg.msrepository.model.Dbo;
 import rocks.milspecsg.msrepository.service.ApiRepository;
 
@@ -18,6 +19,11 @@ public abstract class ApiMemberRepository<M extends Member, S extends Snapshot, 
 
     @Inject
     protected SnapshotRepository<S, K> snapshotRepository;
+
+    @Inject
+    public ApiMemberRepository(MongoContext mongoContext) {
+        super(mongoContext);
+    }
 
     @Override
     public CompletableFuture<Optional<M>> getOneOrGenerate(UUID userUUID) {

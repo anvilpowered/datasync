@@ -17,6 +17,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import rocks.milspecsg.msdatasync.api.data.UserSerializer;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.listeners.PlayerListener;
@@ -90,12 +91,17 @@ public class MSDataSync {
     @Listener
     public void stop(GameStoppingEvent event) {
         Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Stopping..."));
+        logger.info("Saving all players on server");
+        UserSerializer<Snapshot, User> userSerializer = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<UserSerializer<Snapshot, User>>() {
+        }));
+
+        Sponge.getServer().getOnlinePlayers().forEach(player -> userSerializer.serialize(player, "Server Stop"));
 
         removeListeners();
-        logger.debug("Unregistered listeners");
+        logger.info("Unregistered listeners");
 
         stopTasks();
-        logger.debug("Stopped tasks");
+        logger.info("Stopped tasks");
 
         Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Done"));
     }
@@ -156,14 +162,20 @@ public class MSDataSync {
 
             bind(SnapshotOptimizationService.class);
 
-            bind(new TypeLiteral<ApiSpongeMemberRepository>() {})
-                .to(new TypeLiteral<MSMemberRepository>() {});
+            bind(new TypeLiteral<ApiSpongeMemberRepository>() {
+            })
+                .to(new TypeLiteral<MSMemberRepository>() {
+                });
 
-            bind(new TypeLiteral<ApiSpongeSnapshotRepository>() {})
-                .to(new TypeLiteral<MSSnapshotRepository>() {});
+            bind(new TypeLiteral<ApiSpongeSnapshotRepository>() {
+            })
+                .to(new TypeLiteral<MSSnapshotRepository>() {
+                });
 
-            bind(new TypeLiteral<ApiSerializationTaskService<Member, Snapshot, User>>() {})
-                .to(new TypeLiteral<ApiSpongeSerializationTaskService<Member, Snapshot>>() {});
+            bind(new TypeLiteral<ApiSerializationTaskService<Member, Snapshot, User>>() {
+            })
+                .to(new TypeLiteral<ApiSpongeSerializationTaskService<Member, Snapshot>>() {
+                });
 
         }
     }

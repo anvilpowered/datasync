@@ -1,5 +1,6 @@
 package rocks.milspecsg.msdatasync.api.member;
 
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
 import rocks.milspecsg.msdatasync.model.core.Member;
@@ -90,6 +91,9 @@ public interface MemberRepository<M extends Member, S extends Snapshot, U> exten
     CompletableFuture<Optional<S>> getLatestSnapshot(UUID userUUID);
 
     CompletableFuture<Optional<U>> getUser(ObjectId id);
+
+    //TODO: move this method declaration to ApiRepository in repo MSRepository
+//    Optional<Member> getNext();
 
     Query<M> asQuery(UUID userUUID);
 
