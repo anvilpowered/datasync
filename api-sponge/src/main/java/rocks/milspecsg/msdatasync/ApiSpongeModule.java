@@ -2,24 +2,28 @@ package rocks.milspecsg.msdatasync;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.*;
 import rocks.milspecsg.msdatasync.service.implementation.data.*;
 import rocks.milspecsg.msdatasync.service.implementation.keys.ApiSpongeDataKeyService;
 import rocks.milspecsg.msdatasync.service.implementation.member.ApiSpongeMemberRepository;
+import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
+import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotRepository;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, User, Inventory, ItemStackSnapshot> {
+public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, Player, User, Inventory, ItemStackSnapshot, CommandSource> {
 
     @Override
     protected void configure() {
@@ -77,6 +81,12 @@ public class ApiSpongeModule extends ApiModule<Member, Snapshot, Key, User, Inve
             (TypeLiteral<ApiSnapshotRepository<Snapshot, Key>>) TypeLiteral.get(new TypeToken<ApiSnapshotRepository<Snapshot, Key>>(getClass()) {}.getType())
         ).to(
             (TypeLiteral<ApiSpongeSnapshotRepository>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotRepository>(getClass()) {}.getType())
+        );
+
+        bind(
+            (TypeLiteral<ApiSnapshotOptimizationService<Member, Snapshot, Player, User, CommandSource>>) TypeLiteral.get(new TypeToken<ApiSnapshotOptimizationService<Member, Snapshot, Player, User, CommandSource>>(getClass()) {}.getType())
+        ).to(
+            (TypeLiteral<ApiSpongeSnapshotOptimizationService>) TypeLiteral.get(new TypeToken<ApiSpongeSnapshotOptimizationService>(getClass()) {}.getType())
         );
 
         bind(new TypeLiteral<ApiDataKeyService<Key>>() {})

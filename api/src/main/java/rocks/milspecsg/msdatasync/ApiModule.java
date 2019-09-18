@@ -6,6 +6,9 @@ import com.google.inject.TypeLiteral;
 import rocks.milspecsg.msdatasync.api.data.*;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.member.MemberRepository;
+import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
+import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotRepository;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.db.mongodb.ApiMongoContext;
@@ -14,12 +17,15 @@ import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.data.*;
 import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 import rocks.milspecsg.msdatasync.service.member.ApiMemberRepository;
+import rocks.milspecsg.msdatasync.service.misc.ApiDateFormatService;
+import rocks.milspecsg.msdatasync.service.misc.ApiSyncUtils;
+import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.service.snapshot.ApiSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msrepository.db.mongodb.MongoContext;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-public class ApiModule<M extends Member, S extends Snapshot, K, U, I, F> extends AbstractModule {
+public class ApiModule<M extends Member, S extends Snapshot, K, P extends U, U, I, F, CS> extends AbstractModule {
 
     @Override
     protected void configure() {
@@ -88,6 +94,16 @@ public class ApiModule<M extends Member, S extends Snapshot, K, U, I, F> extends
         ).to(
             (TypeLiteral<ApiSerializationTaskService<M, S, U>>) TypeLiteral.get(new TypeToken<ApiSerializationTaskService<M, S, U>>(getClass()) {}.getType())
         );
+
+        bind(
+            (TypeLiteral<SnapshotOptimizationService<U, CS>>) TypeLiteral.get(new TypeToken<SnapshotOptimizationService<U, CS>>(getClass()) {}.getType())
+        ).to(
+            (TypeLiteral<ApiSnapshotOptimizationService<M, S, P, U, CS>>) TypeLiteral.get(new TypeToken<ApiSnapshotOptimizationService<M, S, P, U, CS>>(getClass()) {}.getType())
+        );
+
+        bind(DateFormatService.class).to(ApiDateFormatService.class);
+
+        bind(SyncUtils.class).to(ApiSyncUtils.class);
 
         bind(MongoContext.class).to(ApiMongoContext.class);
     }

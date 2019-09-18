@@ -5,18 +5,19 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
-import rocks.milspecsg.msdatasync.misc.SnapshotOptimizationService;
 
 import javax.inject.Inject;
 
 public class OptimizeStopCommand implements CommandExecutor {
 
     @Inject
-    SnapshotOptimizationService snapshotOptimizationService;
+    SnapshotOptimizationService<User, CommandSource> snapshotOptimizationService;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

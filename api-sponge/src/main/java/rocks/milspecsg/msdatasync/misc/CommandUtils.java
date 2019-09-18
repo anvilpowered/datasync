@@ -7,18 +7,17 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.member.MemberRepository;
-import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
+import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
+import rocks.milspecsg.msrepository.SpongePluginInfo;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,17 +36,20 @@ public class CommandUtils {
     @Inject
     private DateFormatService dateFormatService;
 
+    @Inject
+    private SpongePluginInfo spongePluginInfo;
+
     public void parseDateOrGetLatest(CommandSource source, CommandContext context, User targetUser, Consumer<Optional<Snapshot>> afterFound) throws CommandException {
         Optional<String> optionalDate = context.getOne(Text.of("date"));
         if (!optionalDate.isPresent()) {
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "No date present... finding latest snapshot for " + targetUser.getName()));
+            source.sendMessage(Text.of(spongePluginInfo.getPrefix(), TextColors.YELLOW, "No date present... finding latest snapshot for " + targetUser.getName()));
             memberRepository.getLatestSnapshot(targetUser.getUniqueId()).thenAcceptAsync(afterFound);
         } else {
             Date date;
             try {
                 date = dateFormatService.parse(optionalDate.get());
             } catch (ParseException e) {
-                throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Invalid date format"));
+                throw new CommandException(Text.of(spongePluginInfo.getPrefix(), TextColors.RED, "Invalid date format"));
             }
             memberRepository.getSnapshot(targetUser.getUniqueId(), date).thenAcceptAsync(afterFound);
         }
@@ -115,8 +117,8 @@ public class CommandUtils {
         try {
             source.sendMessage(
                 Text.of(
-                    MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Running version ",
-                    TextColors.GOLD, MSDataSyncPluginInfo.version, "\n",
+                    spongePluginInfo.getPrefix(), TextColors.YELLOW, "Running version ",
+                    TextColors.GOLD, spongePluginInfo.getVersion(), "\n",
                     TextColors.YELLOW, "This plugin was written by Cableguy20 from MilSpecSG\n",
                     Text.builder()
                         .append(Text.of(TextColors.AQUA, "[ Plugin Page ]"))

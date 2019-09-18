@@ -1,7 +1,7 @@
 package rocks.milspecsg.msdatasync.service.implementation.config;
 
 import com.google.common.reflect.TypeToken;
-import rocks.milspecsg.msdatasync.misc.SyncUtils;
+import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;

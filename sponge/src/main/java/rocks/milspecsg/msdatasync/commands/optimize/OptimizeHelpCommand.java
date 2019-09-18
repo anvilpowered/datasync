@@ -7,7 +7,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
-import rocks.milspecsg.msdatasync.misc.SyncUtils;
 
 import javax.inject.Inject;
 

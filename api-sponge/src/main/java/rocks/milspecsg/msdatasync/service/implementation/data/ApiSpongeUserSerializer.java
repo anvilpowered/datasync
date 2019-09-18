@@ -1,15 +1,17 @@
 package rocks.milspecsg.msdatasync.service.implementation.data;
 
+import com.google.inject.Inject;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.service.data.ApiUserSerializer;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +20,9 @@ public class ApiSpongeUserSerializer extends ApiUserSerializer<Member, Snapshot,
 
     @Inject
     ConfigurationService configurationService;
+
+    @Inject
+    SnapshotOptimizationService<User, CommandSource> snapshotOptimizationService;
 
     @Override
     public CompletableFuture<Optional<Snapshot>> serialize(User user, String name) {
@@ -49,7 +54,8 @@ public class ApiSpongeUserSerializer extends ApiUserSerializer<Member, Snapshot,
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot>> deserialize(User user, Object plugin) {
+    public CompletableFuture<Optional<Snapshot>> deserialize(final User user, final Object plugin) {
+        snapshotOptimizationService.addLockedPlayer(user.getUniqueId());
         CompletableFuture<Void> waitForSnapshot;
         if (configurationService.getConfigBoolean(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN)) {
             waitForSnapshot = CompletableFuture.runAsync(() -> {
@@ -75,7 +81,10 @@ public class ApiSpongeUserSerializer extends ApiUserSerializer<Member, Snapshot,
                 return Optional.<Snapshot>empty();
             }
             return deserialize(user, plugin, optionalSnapshot.get()).join();
-        }).join());
+        }).join()).thenApplyAsync(s -> {
+            snapshotOptimizationService.removeLockedPlayer(user.getUniqueId());
+            return s;
+        });
     }
 
     @Override

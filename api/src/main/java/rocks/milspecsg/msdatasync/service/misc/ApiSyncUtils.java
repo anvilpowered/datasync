@@ -1,11 +1,14 @@
-package rocks.milspecsg.msdatasync.misc;
+package rocks.milspecsg.msdatasync.service.misc;
+
+import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SyncUtils {
+public class ApiSyncUtils implements SyncUtils {
 
+    @Override
     public Optional<List<int[]>> decodeOptimizationStrategy(List<?> list) {
         List<int[]> numsList = new ArrayList<>();
 

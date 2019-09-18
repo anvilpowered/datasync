@@ -1,4 +1,6 @@
-package rocks.milspecsg.msdatasync.misc;
+package rocks.milspecsg.msdatasync.service.misc;
+
+import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -6,14 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateFormatService {
+public class ApiDateFormatService implements DateFormatService {
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
 
+    @Override
     public String format(Date date) {
         return df.format(date);
     }
 
+    @Override
     public String formatDiff(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -50,6 +54,7 @@ public class DateFormatService {
         return s.toString();
     }
 
+    @Override
     public Date parse(String string) throws ParseException {
         return df.parse(string);
     }

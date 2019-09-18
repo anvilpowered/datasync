@@ -5,8 +5,6 @@ import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
@@ -21,7 +19,7 @@ import rocks.milspecsg.msdatasync.api.data.UserSerializer;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.listeners.PlayerListener;
-import rocks.milspecsg.msdatasync.misc.SnapshotOptimizationService;
+import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.model.core.Member;
 import rocks.milspecsg.msdatasync.model.core.Snapshot;
 import rocks.milspecsg.msdatasync.service.implementation.config.MSConfigurationService;
@@ -32,7 +30,6 @@ import rocks.milspecsg.msdatasync.service.implementation.member.MSMemberReposito
 import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.implementation.snapshot.MSSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.implementation.tasks.ApiSpongeSerializationTaskService;
-import rocks.milspecsg.msdatasync.service.keys.ApiDataKeyService;
 import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
 import rocks.milspecsg.msrepository.APIConfigurationModule;
 import rocks.milspecsg.msrepository.SpongePluginInfo;
@@ -160,7 +157,7 @@ public class MSDataSync {
 
             bind(SpongePluginInfo.class).to(MSDataSyncPluginInfo.class);
 
-            bind(SnapshotOptimizationService.class);
+            bind(ApiSpongeSnapshotOptimizationService.class);
 
             bind(new TypeLiteral<ApiSpongeMemberRepository>() {
             })
