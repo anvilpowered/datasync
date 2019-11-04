@@ -1,3 +1,21 @@
+/*
+ *     MSDataSync - MilSpecSG
+ *     Copyright (C) 2019 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package rocks.milspecsg.msdatasync;
 
 import com.google.inject.Inject;
@@ -15,26 +33,17 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.api.data.UserSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
 import rocks.milspecsg.msdatasync.listeners.PlayerListener;
-import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotOptimizationService;
-import rocks.milspecsg.msdatasync.model.core.Member;
-import rocks.milspecsg.msdatasync.model.core.Snapshot;
-import rocks.milspecsg.msdatasync.service.implementation.config.MSConfigurationService;
-import rocks.milspecsg.msdatasync.service.implementation.data.*;
-import rocks.milspecsg.msdatasync.service.implementation.keys.ApiSpongeDataKeyService;
-import rocks.milspecsg.msdatasync.service.implementation.member.ApiSpongeMemberRepository;
-import rocks.milspecsg.msdatasync.service.implementation.member.MSMemberRepository;
-import rocks.milspecsg.msdatasync.service.implementation.snapshot.ApiSpongeSnapshotRepository;
-import rocks.milspecsg.msdatasync.service.implementation.snapshot.MSSnapshotRepository;
-import rocks.milspecsg.msdatasync.service.implementation.tasks.ApiSpongeSerializationTaskService;
-import rocks.milspecsg.msdatasync.service.tasks.ApiSerializationTaskService;
-import rocks.milspecsg.msrepository.APIConfigurationModule;
-import rocks.milspecsg.msrepository.SpongePluginInfo;
+import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.service.sponge.config.MSConfigurationService;
+import rocks.milspecsg.msdatasync.service.sponge.keys.CommonSpongeDataKeyService;
+import rocks.milspecsg.msdatasync.service.sponge.serializer.SpongeSnapshotSerializer;
+import rocks.milspecsg.msrepository.CommonConfigurationModule;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
-import rocks.milspecsg.msrepository.service.config.ApiConfigurationService;
+import rocks.milspecsg.msrepository.service.common.config.CommonConfigurationService;
 
 @Plugin(
     id = MSDataSyncPluginInfo.id,
@@ -89,10 +98,10 @@ public class MSDataSync {
     public void stop(GameStoppingEvent event) {
         Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Stopping..."));
         logger.info("Saving all players on server");
-        UserSerializer<Snapshot, User> userSerializer = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<UserSerializer<Snapshot, User>>() {
+        UserSerializerManager<Snapshot<?>, User> userSerializer = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<UserSerializerManager<Snapshot<?>, User>>() {
         }));
 
-        Sponge.getServer().getOnlinePlayers().forEach(player -> userSerializer.serialize(player, "Server Stop"));
+        Sponge.getServer().getOnlinePlayers().forEach(player -> userSerializer.getPrimaryComponent().serialize(player, "Server Stop"));
 
         removeListeners();
         logger.info("Unregistered listeners");
@@ -112,8 +121,8 @@ public class MSDataSync {
     }
 
     private void initSingletonServices() {
-        injector.getInstance(ApiSpongeDataKeyService.class).initializeDefaultMappings();
-        injector.getInstance(ApiSpongeSnapshotSerializer.class);
+        injector.getInstance(CommonSpongeDataKeyService.class).initializeDefaultMappings();
+        injector.getInstance(SpongeSnapshotSerializer.class);
         injector.getInstance(SerializationTaskService.class);
     }
 
@@ -137,42 +146,23 @@ public class MSDataSync {
         Sponge.getScheduler().getScheduledTasks(this).forEach(Task::cancel);
     }
 
-    private static class MSDataSyncConfigurationModule extends APIConfigurationModule {
+    private static class MSDataSyncConfigurationModule extends CommonConfigurationModule {
         @Override
         protected void configure() {
             super.configure();
 
-            bind(new TypeLiteral<ApiConfigurationService>() {
+            bind(new TypeLiteral<CommonConfigurationService>() {
             }).to(new TypeLiteral<MSConfigurationService>() {
             });
         }
     }
 
-    private static class MSDataSyncModule extends ApiSpongeModule {
+    private static class MSDataSyncModule extends SpongeModule {
         @Override
         protected void configure() {
             super.configure();
 
             bind(PlayerListener.class);
-
-            bind(SpongePluginInfo.class).to(MSDataSyncPluginInfo.class);
-
-            bind(ApiSpongeSnapshotOptimizationService.class);
-
-            bind(new TypeLiteral<ApiSpongeMemberRepository>() {
-            })
-                .to(new TypeLiteral<MSMemberRepository>() {
-                });
-
-            bind(new TypeLiteral<ApiSpongeSnapshotRepository>() {
-            })
-                .to(new TypeLiteral<MSSnapshotRepository>() {
-                });
-
-            bind(new TypeLiteral<ApiSerializationTaskService<Member, Snapshot, User>>() {
-            })
-                .to(new TypeLiteral<ApiSpongeSerializationTaskService<Member, Snapshot>>() {
-                });
 
         }
     }

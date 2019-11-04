@@ -21,7 +21,7 @@ jobs: # a collection of steps
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Run rocks.milspecsg.msdatasync.tests # See: https://circleci.com/docs/2.0/parallelism-faster-jobs/
-          # Use "./gradlew test" instead if rocks.milspecsg.msdatasync.tests are not run in parallel
+          # Use "./gradlew test" instead if tests are not run in parallel
           command: |
             # Get list of classnames of tests that should run on this node
             CLASSNAMES=$(circleci tests glob "**/src/test/java/rocks/milspecsg/msdatasync/**/*.java" \

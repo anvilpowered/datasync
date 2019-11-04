@@ -12,20 +12,25 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url 'https://jitpack.io' }
 }
-
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 
     implementation project(':api')
-    implementation project(':api-sponge')
-    implementation project(':msrepository:msr-api:api-config')
-    implementation project(':msrepository:msr-api:api-repository')
-    implementation project(':msrepository:msr-sponge:sponge-config')
-    implementation project(':msrepository:msr-sponge:sponge-repository')
+    implementation project(':common')
+    implementation project(':MSRepository:msr-api')
+    implementation project(':MSRepository:msr-api:api-config')
+    implementation project(':MSRepository:msr-api:api-repository')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+    implementation project(':MSRepository:msr-common:common-config')
+    implementation project(':MSRepository:msr-common:common-repository')
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
 
-    implementation 'com.google.inject:guice:4.0'
+    implementation project(':MSRepository:msr-sponge')
+
+    implementation 'com.google.inject:guice:4.1.0'
     compile 'com.google.guava:guava:28.1-jre'
     implementation 'org.mongodb:mongodb-driver-sync:3.11.0'
     implementation 'org.mongodb:mongo-java-driver:3.11.0'
@@ -33,8 +38,6 @@ dependencies {
     implementation 'org.mongodb.morphia:morphia:1.3.2'
 
     compileOnly('org.spongepowered:spongeapi:7.2.0-SNAPSHOT') {
-        exclude(module: 'configurate-core')
-        exclude(module: 'configurate-hocon')
         exclude(module: 'configurate-gson')
         exclude(module: 'configurate-yaml')
     }
@@ -49,12 +52,22 @@ shadowJar {
         include dependency('org.mongodb:mongodb-driver-sync:3.11.0')
         include dependency('org.mongodb.morphia:morphia:1.3.2')
         include dependency('org.mongodb:mongo-java-driver:3.11.0')
-        include project(':msrepository:msr-api:api-config')
-        include project(':msrepository:msr-api:api-repository')
-        include project(':msrepository:msr-sponge:sponge-config')
-        include project(':msrepository:msr-sponge:sponge-repository')
+        include dependency('org.reflections:reflections:0.9.10')
+        include dependency('org.javassist:javassist:3.26.0-GA')
+
+        relocate 'org.reflections', 'relocated.reflections.org.reflections'
+        relocate 'org.javassist', 'relocated.javassist.org.javassist'
+
         include project(':api')
-        include project(':api-sponge')
+        include project(':common')
+        include project(':MSRepository:msr-api')
+        include project(':MSRepository:msr-api:api-config')
+        include project(':MSRepository:msr-api:api-repository')
+        include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+        include project(':MSRepository:msr-common:common-config')
+        include project(':MSRepository:msr-common:common-repository')
+        include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
+        include project(':MSRepository:msr-sponge')
     }
 }
 

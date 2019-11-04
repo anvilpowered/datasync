@@ -1,3 +1,21 @@
+/*
+ *     MSDataSync - MilSpecSG
+ *     Copyright (C) 2019 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package rocks.milspecsg.msdatasync.commands.snapshot;
 
 import com.google.inject.Inject;
@@ -10,24 +28,17 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
-import rocks.milspecsg.msdatasync.api.member.MemberRepository;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
+import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
-import rocks.milspecsg.msdatasync.model.core.Member;
-import rocks.milspecsg.msdatasync.model.core.Snapshot;
+import rocks.milspecsg.msdatasync.model.core.member.Member;
+import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class SnapshotDeleteCommand implements CommandExecutor {
 
     @Inject
-    MemberRepository<Member, Snapshot, User> memberRepository;
-
-    @Inject
-    DateFormatService dateFormatService;
+    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -46,44 +57,7 @@ public class SnapshotDeleteCommand implements CommandExecutor {
             throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Date is required"));
         }
 
-        User targetUser = optionalUser.get();
-
-        Consumer<Optional<Snapshot>> afterFound = optionalSnapshot -> {
-            if (!optionalSnapshot.isPresent()) {
-                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Could not find snapshot for " + targetUser.getName()));
-                return;
-            }
-
-            memberRepository.deleteSnapshot(targetUser.getUniqueId(), optionalSnapshot.get().getId()).thenAcceptAsync(success -> {
-                if (success) {
-                    source.sendMessage(
-                        Text.of(
-                            MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW,
-                            "Successfully deleted snapshot ", TextColors.GOLD,
-                            dateFormatService.format(optionalSnapshot.get().getId().getDate()),
-                            TextColors.YELLOW, " for user ", targetUser.getName()
-                        )
-                    );
-                } else {
-                    source.sendMessage(
-                        Text.of(
-                            MSDataSyncPluginInfo.pluginPrefix, TextColors.RED,
-                            "An error occurred while deleting snapshot ",
-                            dateFormatService.format(optionalSnapshot.get().getId().getDate()),
-                            " for user ", TextColors.YELLOW, targetUser.getName()
-                        )
-                    );
-                }
-            });
-        };
-
-        Date date;
-        try {
-            date = dateFormatService.parse(optionalDate.get());
-        } catch (ParseException e) {
-            throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Invalid date format"));
-        }
-        memberRepository.getSnapshot(targetUser.getUniqueId(), date).thenAcceptAsync(afterFound);
+        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), optionalDate.get(), optionalUser.get().getName()).thenAcceptAsync(source::sendMessage);
 
         return CommandResult.success();
     }

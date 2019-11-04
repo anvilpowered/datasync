@@ -1,3 +1,21 @@
+/*
+ *     MSDataSync - MilSpecSG
+ *     Copyright (C) 2019 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package rocks.milspecsg.msdatasync.commands.snapshot;
 
 import com.google.inject.Inject;
@@ -10,20 +28,20 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
-import rocks.milspecsg.msdatasync.api.data.UserSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
-import rocks.milspecsg.msdatasync.model.core.Snapshot;
+import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
 import java.util.Optional;
 
 public class SnapshotCreateCommand implements CommandExecutor {
 
     @Inject
-    UserSerializer<Snapshot, User> userSerializer;
+    private UserSerializerManager<Snapshot<?>, User> userSerializer;
 
     @Inject
-    DateFormatService dateFormatService;
+    private DateFormatService dateFormatService;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -33,14 +51,14 @@ public class SnapshotCreateCommand implements CommandExecutor {
         Optional<User> optionalUser = context.getOne(Text.of("user"));
 
         if (optionalUser.isPresent()) {
-            userSerializer.serialize(optionalUser.get()).thenAcceptAsync(optionalSnapshot -> {
+            userSerializer.getPrimaryComponent().serialize(optionalUser.get()).thenAcceptAsync(optionalSnapshot -> {
                 if (optionalSnapshot.isPresent()) {
                     source.sendMessage(
                         Text.of(
                             MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW,
                             "Successfully serialized ", optionalUser.get().getName(),
                             " and uploaded snapshot ", TextColors.GOLD,
-                            dateFormatService.format(optionalSnapshot.get().getId().getDate())
+                            dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate())
                         )
                     );
                 } else {

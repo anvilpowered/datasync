@@ -1,13 +1,34 @@
+/*
+ */
+
 rootProject.name = 'MSDataSync'
-include 'sponge'
 include 'api'
-include 'api-sponge'
-include 'msrepository'
-include 'msrepository:msr-api'
-include 'msrepository:msr-sponge'
-include 'msrepository:msr-api:api-repository'
-include 'msrepository:msr-api:api-config'
-include 'msrepository:msr-sponge:sponge-repository'
-include 'msrepository:msr-sponge:sponge-config'
+include 'common'
+include 'sponge'
+
+include 'MSRepository'
+
+include 'MSRepository:msr-api'
+include 'MSRepository:msr-api:api-config'
+
+include 'MSRepository:msr-api:api-repository'
+include 'MSRepository:msr-api:api-repository:api-repository-mongodb'
+include 'MSRepository:msr-api:api-repository:api-repository-json'
+include 'MSRepository:msr-api:api-repository:api-repository-h2'
+include 'MSRepository:msr-api:api-repository:api-repository-mariadb'
+include 'MSRepository:msr-api:api-repository:api-repository-nitrite'
+
+include 'MSRepository:msr-common'
+include 'MSRepository:msr-common:common-config'
+include 'MSRepository:msr-common:common-repository'
+include 'MSRepository:msr-common:common-repository:common-repository-mongodb'
+include 'MSRepository:msr-common:common-repository:common-repository-json'
+include 'MSRepository:msr-common:common-repository:common-repository-h2'
+include 'MSRepository:msr-common:common-repository:common-repository-mariadb'
+include 'MSRepository:msr-common:common-repository:common-repository-nitrite'
+
+include 'MSRepository:msr-sponge'
+include 'MSRepository:msr-sponge:sponge-repository'
+
 
 

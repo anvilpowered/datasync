@@ -1,3 +1,21 @@
+/*
+ *     MSDataSync - MilSpecSG
+ *     Copyright (C) 2019 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package rocks.milspecsg.msdatasync.commands.snapshot;
 
 import com.google.inject.Inject;
@@ -13,7 +31,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
-import rocks.milspecsg.msdatasync.model.core.Snapshot;
+import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
 import java.util.Date;
 import java.util.Optional;
@@ -22,10 +40,10 @@ import java.util.function.Consumer;
 public class SnapshotInfoCommand implements CommandExecutor {
 
     @Inject
-    CommandUtils commandUtils;
+    private CommandUtils commandUtils;
 
     @Inject
-    DateFormatService dateFormatService;
+    private DateFormatService dateFormatService;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -39,15 +57,15 @@ public class SnapshotInfoCommand implements CommandExecutor {
 
         User targetPlayer = optionalUser.get();
 
-        Consumer<Optional<Snapshot>> afterFound = optionalSnapshot -> {
+        Consumer<Optional<Snapshot<?>>> afterFound = optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
                 source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Could not find snapshot for user " + targetPlayer.getName()));
                 return;
             }
-            Snapshot snapshot = optionalSnapshot.get();
+            Snapshot<?> snapshot = optionalSnapshot.get();
 
-            Date created = snapshot.getId().getDate();
-            Date updated = snapshot.getUpdatedUtc();
+            Date created = snapshot.getCreatedUtcDate();
+            Date updated = snapshot.getUpdatedUtcDate();
 
             source.sendMessage(
                 Text.builder()
@@ -75,8 +93,8 @@ public class SnapshotInfoCommand implements CommandExecutor {
                                 )))
                             .build()
                         ))
-                    .append(Text.of(TextColors.GRAY, "\n\nName: ", TextColors.YELLOW, snapshot.name))
-                    .append(Text.of(TextColors.GRAY, "\n\nServer: ", TextColors.YELLOW, snapshot.server, "\n\n"))
+                    .append(Text.of(TextColors.GRAY, "\n\nName: ", TextColors.YELLOW, snapshot.getName()))
+                    .append(Text.of(TextColors.GRAY, "\n\nServer: ", TextColors.YELLOW, snapshot.getServer(), "\n\n"))
                     .append(commandUtils.snapshotActions(targetPlayer, dateFormatService.format(created)))
                     .append(Text.of(" "))
                     .append(
