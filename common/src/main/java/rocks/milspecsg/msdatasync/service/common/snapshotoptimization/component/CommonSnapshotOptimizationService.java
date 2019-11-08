@@ -86,14 +86,11 @@ public abstract class CommonSnapshotOptimizationService<
     private volatile int snapshotsDeleted;
     private volatile int snapshotsUploaded;
 
-    protected volatile ConcurrentMap<TKey, Long> idTimeStampMap;
+    protected volatile ConcurrentMap<TKey, Integer> idTimeStampMap;
 
     //TODO: add time taken and estimated time left
 
     private ConfigurationService configurationService;
-
-
-
 
     @Inject
     public CommonSnapshotOptimizationService(ConfigurationService configurationService, DataStoreContext<TKey, TDataStore, TDataStoreConfig> dataStoreContext) {
@@ -259,6 +256,7 @@ public abstract class CommonSnapshotOptimizationService<
     }
 
     protected final boolean within(final long timeStamp, final int minutes) {
+
         return System.currentTimeMillis() <= ((timeStamp & 0xFFFFFFFFL) * 1000L) + (minutes * 60000L);
     }
 
@@ -284,14 +282,14 @@ public abstract class CommonSnapshotOptimizationService<
         });
     }
 
-    protected CompletableFuture<Long> getTimeStamp(TKey id) {
+    protected CompletableFuture<Integer> getTimeStamp(TKey id) {
         if (idTimeStampMap.containsKey(id)) {
             return CompletableFuture.completedFuture(idTimeStampMap.get(id));
         }
 
-        return snapshotRepository.getCreatedUtcTimeStamp(id).thenApplyAsync(timeStamp -> {
+        return snapshotRepository.getCreatedUtcTimeStampSeconds(id).thenApplyAsync(timeStamp -> {
             if (!timeStamp.isPresent()) {
-                return -1L;
+                return -1;
             }
             idTimeStampMap.put(id, timeStamp.get());
             return timeStamp.get();
