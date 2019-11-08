@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '4.0.4'
     id 'org.spongepowered.plugin' version '0.8.1'
+    id "net.kyori.blossom" version "1.1.0"
 }
 
 version = modVersion
@@ -69,6 +70,10 @@ shadowJar {
         include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
         include project(':MSRepository:msr-sponge')
     }
+}
+
+blossom {
+    replaceToken '$modVersion', modVersion
 }
 
 artifacts {
