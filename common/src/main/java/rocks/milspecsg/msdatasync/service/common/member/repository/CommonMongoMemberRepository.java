@@ -146,7 +146,7 @@ public abstract class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, Date date) {
-        return asQuery(userUUID).map(q -> deleteSnapshot(userUUID, date)).orElse(CompletableFuture.completedFuture(false));
+        return asQuery(userUUID).map(q -> deleteSnapshot(q, date)).orElse(CompletableFuture.completedFuture(false));
     }
 
     @Override
@@ -231,5 +231,4 @@ public abstract class CommonMongoMemberRepository<
     public CompletableFuture<List<ObjectId>> getClosestSnapshots(UUID userUUID, Date date) {
         return asQuery(userUUID).map(q -> getClosestSnapshots(q, date)).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
     }
-
 }
