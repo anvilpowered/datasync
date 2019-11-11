@@ -24,46 +24,18 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 
 import javax.inject.Inject;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class OptimizeInfoCommand implements CommandExecutor {
 
     @Inject
-    private SnapshotOptimizationManager<User, CommandSource> snapshotOptimizationManager;
-
-    private static NumberFormat formatter = new DecimalFormat("#0.00");
+    private SnapshotOptimizationManager<User, CommandSource, Text> snapshotOptimizationManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
-
-        int uploaded = snapshotOptimizationManager.getPrimaryComponent().getSnapshotsUploaded();
-        int deleted = snapshotOptimizationManager.getPrimaryComponent().getSnapshotsDeleted();
-        int completed = snapshotOptimizationManager.getPrimaryComponent().getMembersCompleted();
-        int total = snapshotOptimizationManager.getPrimaryComponent().getTotalMembers();
-
-        if (snapshotOptimizationManager.getPrimaryComponent().isOptimizationTaskRunning()) {
-            source.sendMessage(
-                Text.of(
-                    MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW,
-                    "Optimization task:\n",
-                    TextColors.GRAY, "Snapshots uploaded: ", TextColors.YELLOW, uploaded, "\n",
-                    TextColors.GRAY, "Snapshots deleted: ", TextColors.YELLOW, deleted, "\n",
-                    TextColors.GRAY, "Members processed: ", TextColors.YELLOW, completed, "/", total, "\n",
-                    TextColors.GRAY, "Progress: ", TextColors.YELLOW, formatter.format(completed * 100d / total), "%"
-                )
-            );
-        } else {
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "There is currently no optimization task running"));
-        }
-
+        snapshotOptimizationManager.info().thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
-
     }
 }

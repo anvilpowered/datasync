@@ -26,10 +26,8 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
@@ -38,10 +36,7 @@ import java.util.Optional;
 public class SnapshotCreateCommand implements CommandExecutor {
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User> userSerializer;
-
-    @Inject
-    private DateFormatService dateFormatService;
+    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -50,25 +45,11 @@ public class SnapshotCreateCommand implements CommandExecutor {
 
         Optional<User> optionalUser = context.getOne(Text.of("user"));
 
-        if (optionalUser.isPresent()) {
-            userSerializer.getPrimaryComponent().serialize(optionalUser.get()).thenAcceptAsync(optionalSnapshot -> {
-                if (optionalSnapshot.isPresent()) {
-                    source.sendMessage(
-                        Text.of(
-                            MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW,
-                            "Successfully serialized ", optionalUser.get().getName(),
-                            " and uploaded snapshot ", TextColors.GOLD,
-                            dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate())
-                        )
-                    );
-                } else {
-                    source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "An error occurred while serializing ", optionalUser.get().getName()));
-                }
-            });
-        } else {
+        if (!optionalUser.isPresent()) {
             throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "User is required"));
         }
 
+        userSerializer.serialize(optionalUser.get()).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

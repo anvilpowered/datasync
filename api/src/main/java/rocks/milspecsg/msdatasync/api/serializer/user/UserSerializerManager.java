@@ -22,9 +22,13 @@ import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerCo
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
+
 public interface UserSerializerManager<
     TSnapshot extends Snapshot<?>,
-    TUser>
+    TUser,
+    TString>
     extends Manager<UserSerializerComponent<?, TSnapshot, TUser, ?, ?>> {
 
     @Override
@@ -46,4 +50,9 @@ public interface UserSerializerManager<
     default String getDefaultIdentifierPluralLower() {
         return "user serializers";
     }
+
+    CompletableFuture<TString> serialize(Collection<? extends TUser> users);
+
+    CompletableFuture<TString> serialize(TUser user);
+
 }

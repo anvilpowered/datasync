@@ -31,7 +31,6 @@ import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.PluginPermissions;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 
 import java.util.Collection;
@@ -40,7 +39,7 @@ import java.util.Optional;
 public class OptimizeStartCommand implements CommandExecutor {
 
     @Inject
-    private SnapshotOptimizationManager<User, CommandSource> snapshotOptimizationManager;
+    private SnapshotOptimizationManager<User, CommandSource, Text> snapshotOptimizationManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

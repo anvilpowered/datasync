@@ -47,18 +47,32 @@ import rocks.milspecsg.msrepository.BasicPluginInfo;
 import rocks.milspecsg.msrepository.BindingExtensions;
 import rocks.milspecsg.msrepository.CommonBindingExtensions;
 import rocks.milspecsg.msrepository.PluginInfo;
+import rocks.milspecsg.msrepository.api.UserService;
 import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
+import rocks.milspecsg.msrepository.service.sponge.SpongeUserService;
 import rocks.milspecsg.msrepository.service.sponge.tools.resultbuilder.SpongeStringResult;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
-public class SpongeModule extends CommonModule<Member<ObjectId>, Snapshot<ObjectId>, Key<?>, Player, User, Text, Inventory, ItemStackSnapshot, CommandSource> {
+public class SpongeModule extends CommonModule<
+    Member<ObjectId>,
+    Snapshot<ObjectId>,
+    Key<?>,
+    Player,
+    User,
+    Text,
+    Inventory,
+    ItemStackSnapshot,
+    CommandSource> {
 
     @Override
     protected void configure() {
         super.configure();
 
         BindingExtensions be = new CommonBindingExtensions(binder());
+
+        bind(new TypeLiteral<UserService<User>>() {
+        }).to(SpongeUserService.class);
 
         bind(BasicPluginInfo.class).to(MSDataSyncPluginInfo.class);
 
@@ -126,7 +140,7 @@ public class SpongeModule extends CommonModule<Member<ObjectId>, Snapshot<Object
         );
 
         be.bind(
-            new TypeToken<CommonSerializationTaskService<User, CommandSource>>(getClass()) {
+            new TypeToken<CommonSerializationTaskService<User, CommandSource, Text>>(getClass()) {
             },
             new TypeToken<SpongeSerializationTaskService>(getClass()) {
             }

@@ -25,8 +25,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 
@@ -35,19 +33,12 @@ import javax.inject.Inject;
 public class OptimizeStopCommand implements CommandExecutor {
 
     @Inject
-    private SnapshotOptimizationManager<User, CommandSource> snapshotOptimizationManager;
+    private SnapshotOptimizationManager<User, CommandSource, Text> snapshotOptimizationManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-
         SyncLockCommand.assertUnlocked(source);
-
-        if (snapshotOptimizationManager.getPrimaryComponent().stopOptimizationTask()) {
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Successfully stopped optimization task"));
-        } else {
-            source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "There is currently no optimization task running"));
-        }
-
+        snapshotOptimizationManager.stop().thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

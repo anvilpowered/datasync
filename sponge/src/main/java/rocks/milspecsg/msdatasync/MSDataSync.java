@@ -98,7 +98,7 @@ public class MSDataSync {
     public void stop(GameStoppingEvent event) {
         Sponge.getServer().getConsole().sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.YELLOW, "Stopping..."));
         logger.info("Saving all players on server");
-        UserSerializerManager<Snapshot<?>, User> userSerializer = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<UserSerializerManager<Snapshot<?>, User>>() {
+        UserSerializerManager<Snapshot<?>, User, Text> userSerializer = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<UserSerializerManager<Snapshot<?>, User, Text>>() {
         }));
 
         Sponge.getServer().getOnlinePlayers().forEach(player -> userSerializer.getPrimaryComponent().serialize(player, "Server Stop"));

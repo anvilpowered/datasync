@@ -33,7 +33,6 @@ import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
-import rocks.milspecsg.msdatasync.model.core.snapshot.MongoSnapshot;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
 import java.util.Optional;
@@ -42,7 +41,7 @@ import java.util.function.Consumer;
 public class SnapshotRestoreCommand implements CommandExecutor {
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User> userSerializer;
+    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
 
     @Inject
     private CommandUtils commandUtils;

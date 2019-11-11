@@ -37,7 +37,8 @@ public class SyncHelpCommand implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
 
-        if (source instanceof Player && !source.hasPermission(PluginPermissions.SNAPSHOT_BASE)
+        if (source instanceof Player
+            && !source.hasPermission(PluginPermissions.SNAPSHOT_BASE)
             && !source.hasPermission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
             && !source.hasPermission(PluginPermissions.LOCK_COMMAND)
             && !source.hasPermission(PluginPermissions.RELOAD_COMMAND)) {

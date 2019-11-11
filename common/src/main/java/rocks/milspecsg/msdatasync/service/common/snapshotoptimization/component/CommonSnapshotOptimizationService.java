@@ -19,7 +19,6 @@
 package rocks.milspecsg.msdatasync.service.common.snapshotoptimization.component;
 
 import com.google.common.reflect.TypeToken;
-import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
@@ -92,8 +91,7 @@ public abstract class CommonSnapshotOptimizationService<
 
     private ConfigurationService configurationService;
 
-    @Inject
-    public CommonSnapshotOptimizationService(ConfigurationService configurationService, DataStoreContext<TKey, TDataStore, TDataStoreConfig> dataStoreContext) {
+    protected CommonSnapshotOptimizationService(ConfigurationService configurationService, DataStoreContext<TKey, TDataStore, TDataStoreConfig> dataStoreContext) {
         super(dataStoreContext);
         this.configurationService = configurationService;
         configurationService.addConfigLoadedListener(this::configLoaded);
@@ -256,7 +254,6 @@ public abstract class CommonSnapshotOptimizationService<
     }
 
     protected final boolean within(final long timeStamp, final int minutes) {
-
         return System.currentTimeMillis() <= ((timeStamp & 0xFFFFFFFFL) * 1000L) + (minutes * 60000L);
     }
 
@@ -266,7 +263,7 @@ public abstract class CommonSnapshotOptimizationService<
             for (int i = 2; i <= maxCount; i++) {
                 TKey allowed = null;
                 for (TKey snapshotId : snapshotIds) {
-                    if (within(snapshotId, intervalMinutes * i).join())  {
+                    if (within(snapshotId, intervalMinutes * i).join()) {
                         if (allowed == null) {
                             allowed = snapshotId;
                         } else {

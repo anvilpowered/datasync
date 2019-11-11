@@ -57,7 +57,7 @@ public class SnapshotDeleteCommand implements CommandExecutor {
             throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Date is required"));
         }
 
-        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), optionalDate.get(), optionalUser.get().getName()).thenAcceptAsync(source::sendMessage);
+        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), optionalDate.get()).thenAcceptAsync(source::sendMessage);
 
         return CommandResult.success();
     }

@@ -34,7 +34,7 @@ import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
-public class SpongeSerializationTaskService extends CommonSerializationTaskService<User, CommandSource> {
+public class SpongeSerializationTaskService extends CommonSerializationTaskService<User, CommandSource, Text> {
 
     private Task task = null;
 

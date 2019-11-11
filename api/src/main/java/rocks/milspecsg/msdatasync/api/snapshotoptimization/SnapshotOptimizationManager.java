@@ -21,9 +21,12 @@ package rocks.milspecsg.msdatasync.api.snapshotoptimization;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface SnapshotOptimizationManager<
     TUser,
-    TCommandSource>
+    TCommandSource,
+    TString>
     extends Manager<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>> {
 
     @Override
@@ -45,4 +48,8 @@ public interface SnapshotOptimizationManager<
     default String getDefaultIdentifierPluralLower() {
         return "snapshot optimizations";
     }
+
+    CompletableFuture<TString> info();
+
+    CompletableFuture<TString> stop();
 }

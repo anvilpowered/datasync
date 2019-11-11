@@ -43,7 +43,7 @@ public class PlayerListener {
     private ConfigurationService configurationService;
 
     @Inject
-    UserSerializerManager<Snapshot<?>, User> userSerializer;
+    UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
 
     private boolean enabled = true;
 

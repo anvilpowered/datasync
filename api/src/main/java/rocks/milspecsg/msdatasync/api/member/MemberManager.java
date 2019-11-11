@@ -53,5 +53,5 @@ public interface MemberManager<
         return "members";
     }
 
-    CompletableFuture<TString> deleteSnapshot(UUID userUUID, String date, String userName);
+    CompletableFuture<TString> deleteSnapshot(UUID userUUID, String date);
 }

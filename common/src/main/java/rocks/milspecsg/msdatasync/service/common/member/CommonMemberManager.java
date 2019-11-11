@@ -25,6 +25,7 @@ import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.PluginInfo;
+import rocks.milspecsg.msrepository.api.UserService;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
 import rocks.milspecsg.msrepository.service.common.manager.CommonManager;
@@ -51,6 +52,9 @@ public class CommonMemberManager<
     protected PluginInfo<TString> pluginInfo;
 
     @Inject
+    protected UserService<TUser> userService;
+
+    @Inject
     protected DateFormatService dateFormatService;
 
     @Inject
@@ -59,7 +63,7 @@ public class CommonMemberManager<
     }
 
     @Override
-    public CompletableFuture<TString> deleteSnapshot(UUID userUUID, String date, String userName) {
+    public CompletableFuture<TString> deleteSnapshot(UUID userUUID, String date) {
         return CompletableFuture.supplyAsync(() -> {
             Date parsedDate;
             try {
@@ -76,12 +80,12 @@ public class CommonMemberManager<
                         .append(pluginInfo.getPrefix())
                         .yellow().append("Successfully deleted snapshot ")
                         .gold().append(date)
-                        .yellow().append(" for user ", userName)
+                        .yellow().append(" for user ", userService.getUserName(userUUID).orElse("null"))
                         .build();
                 } else {
                     return stringResult.builder()
                         .append(pluginInfo.getPrefix())
-                        .red().append("An error occurred while deleting snapshot ", date, " for user ", userName)
+                        .red().append("An error occurred while deleting snapshot ", date, " for user ", userService.getUserName(userUUID).orElse("null"))
                         .build();
                 }
             }).join();

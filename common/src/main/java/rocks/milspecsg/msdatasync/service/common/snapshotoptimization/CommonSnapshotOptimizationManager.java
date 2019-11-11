@@ -21,16 +21,64 @@ package rocks.milspecsg.msdatasync.service.common.snapshotoptimization;
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
+import rocks.milspecsg.msrepository.PluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
+import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
 import rocks.milspecsg.msrepository.service.common.manager.CommonManager;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.concurrent.CompletableFuture;
+
 public class CommonSnapshotOptimizationManager<
-    TUser, TCommandSource>
+    TUser, TCommandSource, TString>
     extends CommonManager<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>
-    implements SnapshotOptimizationManager<TUser, TCommandSource> {
+    implements SnapshotOptimizationManager<TUser, TCommandSource, TString> {
+
+    @Inject
+    StringResult<TString> stringResult;
+
+    @Inject
+    PluginInfo<TString> pluginInfo;
+
+    private static NumberFormat formatter = new DecimalFormat("#0.00");
 
     @Inject
     public CommonSnapshotOptimizationManager(ConfigurationService configurationService) {
         super(configurationService);
+    }
+
+    @Override
+    public CompletableFuture<TString> info() {
+        return CompletableFuture.supplyAsync(() -> {
+            int uploaded = getPrimaryComponent().getSnapshotsUploaded();
+            int deleted = getPrimaryComponent().getSnapshotsDeleted();
+            int completed = getPrimaryComponent().getMembersCompleted();
+            int total = getPrimaryComponent().getTotalMembers();
+
+            return getPrimaryComponent().isOptimizationTaskRunning()
+                ? stringResult.builder()
+                .append(pluginInfo.getPrefix())
+                .yellow().append("Optimization task:\n")
+                .gray().append("Snapshots uploaded: ").yellow().append(uploaded, "\n")
+                .gray().append("Snapshots deleted: ").yellow().append(deleted, "\n")
+                .gray().append("Members processed: ").yellow().append(completed, "/", total, "\n")
+                .gray().append("Progress: ").yellow().append(formatter.format(completed * 100d / total), "%")
+                .build()
+                : stringResult.builder()
+                .append(pluginInfo.getPrefix())
+                .yellow().append("There is currently no optimization task running")
+                .build();
+        });
+    }
+
+    @Override
+    public CompletableFuture<TString> stop() {
+        return CompletableFuture.supplyAsync(() ->
+            stringResult.builder()
+                .append(pluginInfo.getPrefix())
+                .yellow().append(getPrimaryComponent().stopOptimizationTask() ? "Successfully stopped optimization task" : "There is currently no optimization task running")
+                .build()
+        );
     }
 }

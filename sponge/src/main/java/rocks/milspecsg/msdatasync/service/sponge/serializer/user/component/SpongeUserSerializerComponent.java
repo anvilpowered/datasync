@@ -23,12 +23,12 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.api.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.component.CommonUserSerializerComponent;
-import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 
@@ -45,34 +45,11 @@ public class SpongeUserSerializerComponent<
     extends CommonUserSerializerComponent<TKey, TMember, TSnapshot, User, Key<?>, TDataStore, TDataStoreConfig> {
 
     @Inject
-    private ConfigurationService configurationService;
-
-    @Inject
-    private SnapshotOptimizationManager<User, CommandSource> snapshotOptimizationManager;
+    private SnapshotOptimizationManager<User, CommandSource, Text> snapshotOptimizationManager;
 
     @Inject
     public SpongeUserSerializerComponent(DataStoreContext<TKey, TDataStore, TDataStoreConfig> dataStoreContext) {
         super(dataStoreContext);
-    }
-
-    @Override
-    public CompletableFuture<Optional<TSnapshot>> serialize(User user, String name) {
-        TSnapshot snapshot = snapshotRepository.generateEmpty();
-        snapshot.setName(name);
-        snapshot.setServer(configurationService.getConfigString(ConfigKeys.SERVER_NAME));
-        serialize(snapshot, user);
-        return snapshotRepository.insertOne(snapshot).thenApplyAsync(optionalSnapshot -> {
-            if (!optionalSnapshot.isPresent()) {
-                System.err.println("[MSDataSync] Snapshot upload failed for user " + user.getName() + "! Check your DB configuration!");
-                return Optional.empty();
-            }
-            return memberRepository.addSnapshot(user.getUniqueId(), optionalSnapshot.get().getId()).join() ? optionalSnapshot : Optional.empty();
-        });
-    }
-
-    @Override
-    public CompletableFuture<Optional<TSnapshot>> serialize(User user) {
-        return serialize(user, "Manual");
     }
 
     @Override
