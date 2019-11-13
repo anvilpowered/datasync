@@ -23,6 +23,8 @@ import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface UserSerializerManager<
@@ -54,5 +56,7 @@ public interface UserSerializerManager<
     CompletableFuture<TString> serialize(Collection<? extends TUser> users);
 
     CompletableFuture<TString> serialize(TUser user);
+
+    CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString, Object plugin);
 
 }

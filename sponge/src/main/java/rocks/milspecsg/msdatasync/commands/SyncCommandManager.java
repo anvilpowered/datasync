@@ -35,6 +35,9 @@ import java.util.*;
 public class SyncCommandManager implements CommandManager {
 
     @Inject
+    private SyncBaseCommand syncBaseCommand;
+
+    @Inject
     private SyncHelpCommand syncHelpCommand;
 
     @Inject
@@ -107,7 +110,7 @@ public class SyncCommandManager implements CommandManager {
             .permission(PluginPermissions.SNAPSHOT_DELETE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.string(Text.of("date"))
+                GenericArguments.string(Text.of("snapshot"))
             )
             .executor(snapshotDeleteCommand)
             .build()
@@ -118,7 +121,7 @@ public class SyncCommandManager implements CommandManager {
             .permission(PluginPermissions.SNAPSHOT_VIEW_BASE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.optional(GenericArguments.string(Text.of("date")))
+                GenericArguments.optional(GenericArguments.string(Text.of("snapshot")))
             )
             .executor(snapshotViewCommand)
             .build()
@@ -136,7 +139,7 @@ public class SyncCommandManager implements CommandManager {
             .permission(PluginPermissions.SNAPSHOT_BASE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.optional(GenericArguments.string(Text.of("date")))
+                GenericArguments.optional(GenericArguments.string(Text.of("snapshot")))
             )
             .executor(snapshotInfoCommand)
             .build()
@@ -157,7 +160,7 @@ public class SyncCommandManager implements CommandManager {
             .permission(PluginPermissions.SNAPSHOT_RESTORE)
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.optional(GenericArguments.string(Text.of("date")))
+                GenericArguments.optional(GenericArguments.string(Text.of("snapshot")))
             )
             .executor(snapshotRestoreCommand)
             .build()
@@ -249,7 +252,7 @@ public class SyncCommandManager implements CommandManager {
         //Build all commands
         CommandSpec mainCommand = CommandSpec.builder()
             .description(Text.of("Displays all available sync sub commands."))
-            .executor(syncHelpCommand)
+            .executor(syncBaseCommand)
             .children(subCommands)
             .build();
 

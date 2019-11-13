@@ -139,7 +139,7 @@ public class CommonModule<
             (TypeLiteral<SerializationTaskService>) TypeLiteral.get(new TypeToken<SerializationTaskService>(getClass()) {
             }.getType())
         ).to(
-            (TypeLiteral<CommonSerializationTaskService<TUser, TCommandSource, TString>>) TypeLiteral.get(new TypeToken<CommonSerializationTaskService<TUser, TCommandSource, TString>>(getClass()) {
+            (TypeLiteral<CommonSerializationTaskService<TUser, TString, TCommandSource>>) TypeLiteral.get(new TypeToken<CommonSerializationTaskService<TUser, TString, TCommandSource>>(getClass()) {
             }.getType())
         );
 
@@ -176,7 +176,7 @@ public class CommonModule<
         be.bind(
             new TypeToken<UserSerializerManager<Snapshot<?>, TUser, TString>>(getClass()) {
             },
-            new TypeToken<CommonUserSerializerManager<Snapshot<?>, TUser, TString>>(getClass()) {
+            new TypeToken<CommonUserSerializerManager<Member<?>, Snapshot<?>, TUser, TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -193,9 +193,9 @@ public class CommonModule<
         );
 
         be.bind(
-            new TypeToken<SnapshotOptimizationManager<TUser, TCommandSource, TString>>(getClass()) {
+            new TypeToken<SnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
             },
-            new TypeToken<CommonSnapshotOptimizationManager<TUser, TCommandSource, TString>>(getClass()) {
+            new TypeToken<CommonSnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -214,7 +214,7 @@ public class CommonModule<
         be.bind(
             new TypeToken<MemberManager<Member<?>, Snapshot<?>, TUser, TString>>(getClass()) {
             },
-            new TypeToken<CommonMemberManager<Member<?>, Snapshot<?>, TUser, TString>>(getClass()) {
+            new TypeToken<CommonMemberManager<Member<?>, Snapshot<?>, TUser, TString, TCommandSource>>(getClass()) {
             }
         );
 

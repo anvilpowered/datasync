@@ -23,10 +23,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.PluginPermissions;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
 
 public class SyncHelpCommand implements CommandExecutor {
@@ -36,18 +32,11 @@ public class SyncHelpCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
-
-        if (source instanceof Player
-            && !source.hasPermission(PluginPermissions.SNAPSHOT_BASE)
-            && !source.hasPermission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
-            && !source.hasPermission(PluginPermissions.LOCK_COMMAND)
-            && !source.hasPermission(PluginPermissions.RELOAD_COMMAND)) {
-            commandUtils.createInfoPage(source);
-            source.sendMessage(Text.of(TextColors.RED, "You do not have permission for any sub commands"));
-            return CommandResult.success();
+        if (commandUtils.hasPermissionForSubCommands(source)) {
+            commandUtils.createHelpPage(source, SyncCommandManager.subCommands, "");
+        } else {
+            commandUtils.createBasicInfoPage(source, false);
         }
-
-        commandUtils.createHelpPage(source, SyncCommandManager.subCommands, "");
         return CommandResult.success();
     }
 }

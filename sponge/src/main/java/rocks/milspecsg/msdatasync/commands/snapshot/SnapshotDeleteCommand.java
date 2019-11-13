@@ -26,7 +26,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
@@ -42,23 +41,12 @@ public class SnapshotDeleteCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-
         SyncLockCommand.assertUnlocked(source);
-
         Optional<User> optionalUser = context.getOne(Text.of("user"));
-
         if (!optionalUser.isPresent()) {
             throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "User is required"));
         }
-
-        Optional<String> optionalDate = context.getOne(Text.of("date"));
-
-        if (!optionalDate.isPresent()) {
-            throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Date is required"));
-        }
-
-        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), optionalDate.get()).thenAcceptAsync(source::sendMessage);
-
+        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), context.getOne(Text.of("snapshot"))).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

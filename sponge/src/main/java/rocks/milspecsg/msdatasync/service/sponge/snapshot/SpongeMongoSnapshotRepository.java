@@ -16,26 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package rocks.milspecsg.msdatasync.commands.optimize;
+package rocks.milspecsg.msdatasync.service.sponge.snapshot;
 
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.spec.CommandExecutor;
-import rocks.milspecsg.msdatasync.commands.SyncCommandManager;
-import rocks.milspecsg.msdatasync.misc.CommandUtils;
+import org.spongepowered.api.data.key.Key;
+import rocks.milspecsg.msdatasync.model.core.snapshot.MongoSnapshot;
+import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonMongoSnapshotRepository;
+import rocks.milspecsg.msrepository.datastore.mongodb.MongoContext;
 
-import javax.inject.Inject;
+public abstract class SpongeMongoSnapshotRepository extends CommonMongoSnapshotRepository<MongoSnapshot, Key<?>> {
 
-public class OptimizeHelpCommand implements CommandExecutor {
-
-    @Inject
-    private CommandUtils commandUtils;
-
-    @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-        commandUtils.createHelpPage(source, SyncCommandManager.optimizeSubCommands, "optimize");
-        return CommandResult.success();
+    protected SpongeMongoSnapshotRepository(MongoContext mongoContext) {
+        super(mongoContext);
     }
-
 }

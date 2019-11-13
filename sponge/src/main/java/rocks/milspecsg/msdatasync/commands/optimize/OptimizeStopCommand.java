@@ -33,7 +33,7 @@ import javax.inject.Inject;
 public class OptimizeStopCommand implements CommandExecutor {
 
     @Inject
-    private SnapshotOptimizationManager<User, CommandSource, Text> snapshotOptimizationManager;
+    private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

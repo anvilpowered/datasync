@@ -25,8 +25,8 @@ import java.util.concurrent.CompletableFuture;
 
 public interface SnapshotOptimizationManager<
     TUser,
-    TCommandSource,
-    TString>
+    TString,
+    TCommandSource>
     extends Manager<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>> {
 
     @Override

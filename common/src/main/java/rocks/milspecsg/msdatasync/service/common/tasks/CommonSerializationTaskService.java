@@ -26,12 +26,12 @@ import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
 public abstract class CommonSerializationTaskService<
     TUser,
-    TCommandSource,
-    TString>
+    TString,
+    TCommandSource>
     implements SerializationTaskService {
 
     @Inject
-    protected SnapshotOptimizationManager<TUser, TCommandSource, TString> snapshotOptimizationManager;
+    protected SnapshotOptimizationManager<TUser, TString, TCommandSource> snapshotOptimizationManager;
 
     protected ConfigurationService configurationService;
 

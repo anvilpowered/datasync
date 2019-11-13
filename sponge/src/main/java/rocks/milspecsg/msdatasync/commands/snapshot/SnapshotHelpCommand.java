@@ -19,7 +19,6 @@
 package rocks.milspecsg.msdatasync.commands.snapshot;
 
 import com.google.inject.Inject;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -33,7 +32,7 @@ public class SnapshotHelpCommand implements CommandExecutor {
     private CommandUtils commandUtils;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+    public CommandResult execute(CommandSource source, CommandContext context) {
         commandUtils.createHelpPage(source, SyncCommandManager.snapshotSubCommands, "snapshot");
         return CommandResult.success();
     }

@@ -32,12 +32,9 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
-import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
-import rocks.milspecsg.msdatasync.model.core.member.MongoMember;
-import rocks.milspecsg.msdatasync.model.core.snapshot.MongoSnapshot;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
 import java.util.*;
@@ -45,59 +42,25 @@ import java.util.*;
 public class SnapshotListCommand implements CommandExecutor {
 
     @Inject
-    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberRepository;
-
-    @Inject
-    private CommandUtils commandUtils;
-
-    @Inject
-    DateFormatService dateFormatService;
+    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-
         Optional<User> optionalUser = context.getOne(Text.of("user"));
         if (!optionalUser.isPresent()) {
             throw new CommandException(Text.of("User is required"));
         }
-
-        User player = optionalUser.get();
-
-        memberRepository.getPrimaryComponent().getSnapshotDates(player.getUniqueId()).thenAcceptAsync(dates -> {
-            List<Text> lines = new ArrayList<>();
-            dates.forEach(date -> {
-                String d = dateFormatService.format(date);
-                lines.add(Text.builder()
-                    .append(
-                        Text.builder()
-                            .append(Text.of(TextColors.YELLOW, d))
-                            .onHover(TextActions.showText(
-                                Text.of(
-                                    TextColors.YELLOW,
-                                    "Click for more info\n",
-                                    TextColors.AQUA,
-                                    dateFormatService.formatDiff(new Date(new Date().getTime() - date.getTime())),
-                                    " ago"
-                                )))
-                            .onClick(TextActions.suggestCommand("/sync snapshot info " + player.getName() + " " + d))
-                            .build())
-                    .append(Text.of(" "))
-                    .append(commandUtils.snapshotActions(player, d))
-                    .build()
-                );
-            });
-
+        memberManager.list(optionalUser.get().getUniqueId()).thenAcceptAsync(list -> {
             Optional<PaginationService> paginationService = Sponge.getServiceManager().provide(PaginationService.class);
             if (!paginationService.isPresent()) return;
             PaginationList.Builder paginationBuilder =
                 paginationService.get()
                     .builder()
-                    .title(Text.of(TextColors.GOLD, "Snapshots - ", player.getName()))
+                    .title(Text.of(TextColors.GOLD, "Snapshots - ", optionalUser.get().getName()))
                     .padding(Text.of(TextColors.DARK_GREEN, "-"))
-                    .contents(lines).linesPerPage(20);
+                    .contents(list).linesPerPage(20);
             paginationBuilder.build().sendTo(source);
         });
-
         return CommandResult.success();
     }
 }

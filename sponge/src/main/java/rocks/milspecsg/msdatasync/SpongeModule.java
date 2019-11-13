@@ -79,7 +79,7 @@ public class SpongeModule extends CommonModule<
         bind(new TypeLiteral<PluginInfo<Text>>() {
         }).to(MSDataSyncPluginInfo.class);
 
-        bind(new TypeLiteral<StringResult<Text>>() {
+        bind(new TypeLiteral<StringResult<Text, CommandSource>>() {
         }).to(new TypeLiteral<SpongeStringResult>() {
         });
 
@@ -140,7 +140,7 @@ public class SpongeModule extends CommonModule<
         );
 
         be.bind(
-            new TypeToken<CommonSerializationTaskService<User, CommandSource, Text>>(getClass()) {
+            new TypeToken<CommonSerializationTaskService<User, Text, CommandSource>>(getClass()) {
             },
             new TypeToken<SpongeSerializationTaskService>(getClass()) {
             }

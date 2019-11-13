@@ -16,18 +16,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package rocks.milspecsg.msdatasync.service.sponge.snapshot;
+package rocks.milspecsg.msdatasync.commands;
 
-import com.google.inject.Inject;
-import org.spongepowered.api.data.key.Key;
-import rocks.milspecsg.msdatasync.model.core.snapshot.MongoSnapshot;
-import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonMongoSnapshotRepository;
-import rocks.milspecsg.msrepository.datastore.mongodb.MongoContext;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import rocks.milspecsg.msdatasync.misc.CommandUtils;
 
-public abstract class CommonSpongeMongoSnapshotRepository extends CommonMongoSnapshotRepository<MongoSnapshot, Key> {
+import javax.inject.Inject;
+
+public class SyncBaseCommand implements CommandExecutor {
 
     @Inject
-    public CommonSpongeMongoSnapshotRepository(MongoContext mongoContext) {
-        super(mongoContext);
+    private CommandUtils commandUtils;
+
+    @Override
+    public CommandResult execute(CommandSource source, CommandContext context) {
+        commandUtils.createBasicInfoPage(source);
+        return CommandResult.success();
     }
 }

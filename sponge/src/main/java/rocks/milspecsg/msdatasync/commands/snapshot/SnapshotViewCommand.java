@@ -34,23 +34,28 @@ import org.spongepowered.api.item.inventory.InventoryArchetype;
 import org.spongepowered.api.item.inventory.InventoryArchetypes;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.property.InventoryCapacity;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSync;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.PluginPermissions;
+import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.serializer.InventorySerializer;
 import rocks.milspecsg.msdatasync.api.serializer.SnapshotSerializer;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 import rocks.milspecsg.msdatasync.commands.SyncLockCommand;
-import rocks.milspecsg.msdatasync.misc.CommandUtils;
+import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SnapshotViewCommand implements CommandExecutor {
+
+    @Inject
+    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
 
     @Inject
     private SnapshotManager<Snapshot<?>, Key<?>> snapshotRepository;
@@ -63,9 +68,6 @@ public class SnapshotViewCommand implements CommandExecutor {
 
     @Inject
     private DateFormatService dateFormatService;
-
-    @Inject
-    private CommandUtils commandUtils;
 
     private static InventoryArchetype inventoryArchetype =
         InventoryArchetype.builder()
@@ -148,7 +150,8 @@ public class SnapshotViewCommand implements CommandExecutor {
                 player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, dateFormatService.format(snapshot.getCreatedUtcDate())));
             };
 
-            commandUtils.parseDateOrGetLatest(source, context, targetUser, afterFound);
+            memberManager.getPrimaryComponent().getSnapshot(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))
+                .thenAcceptAsync(optionalSnapshot -> Task.builder().execute(() -> afterFound.accept(optionalSnapshot)).submit(MSDataSync.plugin));
 
             return CommandResult.success();
         } else {

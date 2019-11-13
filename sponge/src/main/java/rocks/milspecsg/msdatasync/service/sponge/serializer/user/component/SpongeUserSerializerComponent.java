@@ -45,7 +45,7 @@ public class SpongeUserSerializerComponent<
     extends CommonUserSerializerComponent<TKey, TMember, TSnapshot, User, Key<?>, TDataStore, TDataStoreConfig> {
 
     @Inject
-    private SnapshotOptimizationManager<User, CommandSource, Text> snapshotOptimizationManager;
+    private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
 
     @Inject
     public SpongeUserSerializerComponent(DataStoreContext<TKey, TDataStore, TDataStoreConfig> dataStoreContext) {

@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 public class CommonDateFormatService implements DateFormatService {
 
@@ -73,8 +74,18 @@ public class CommonDateFormatService implements DateFormatService {
     }
 
     @Override
-    public Date parse(String date) throws ParseException {
+    public Date parseUnsafe(String date) throws ParseException {
         return df.parse(date);
     }
 
+    @Override
+    public Optional<Date> parse(String date) {
+        Date result;
+        try {
+            result = parseUnsafe(date);
+        } catch (ParseException e) {
+            return Optional.empty();
+        }
+        return Optional.of(result);
+    }
 }

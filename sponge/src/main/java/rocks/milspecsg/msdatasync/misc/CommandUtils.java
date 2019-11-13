@@ -21,82 +21,27 @@ package rocks.milspecsg.msdatasync.misc;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.api.member.MemberManager;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
-import rocks.milspecsg.msdatasync.model.core.member.Member;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.PluginPermissions;
 import rocks.milspecsg.msrepository.PluginInfo;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class CommandUtils {
 
     @Inject
-    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
-
-    @Inject
-    private DateFormatService dateFormatService;
-
-    @Inject
     private PluginInfo<Text> pluginInfo;
-
-    public void parseDateOrGetLatest(CommandSource source, CommandContext context, User targetUser, Consumer<Optional<Snapshot<?>>> afterFound) throws CommandException {
-        Optional<String> optionalDate = context.getOne(Text.of("date"));
-        if (optionalDate.isPresent()) {
-            Date date;
-            try {
-                date = dateFormatService.parse(optionalDate.get());
-            } catch (ParseException e) {
-                throw new CommandException(Text.of(pluginInfo.getPrefix(), TextColors.RED, "Invalid date format"), e);
-            }
-            memberManager.getPrimaryComponent().getSnapshot(targetUser.getUniqueId(), date).thenAcceptAsync(afterFound);
-        } else {
-            source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "No date present... finding latest snapshot for " + targetUser.getName()));
-            memberManager.getPrimaryComponent().getLatestSnapshot(targetUser.getUniqueId()).thenAcceptAsync(afterFound);
-        }
-    }
-
-    public Text snapshotActions(User targetUser, String date) {
-        return Text.builder()
-            .append(
-                Text.builder()
-                    .append(Text.of(TextColors.GREEN, "[ Restore ]"))
-                    .onHover(TextActions.showText(Text.of(TextColors.GREEN, "Click to restore")))
-                    .onClick(TextActions.suggestCommand("/sync snapshot restore " + targetUser.getName() + " " + date))
-                    .build())
-            .append(Text.of(" "))
-            .append(
-                Text.builder()
-                    .append(Text.of(TextColors.GOLD, "[ Edit ]"))
-                    .onHover(TextActions.showText(Text.of(TextColors.GOLD, "Click to edit")))
-                    .onClick(TextActions.suggestCommand("/sync snapshot edit " + targetUser.getName() + " " + date))
-                    .build())
-            .append(Text.of(" "))
-            .append(
-                Text.builder()
-                    .append(Text.of(TextColors.RED, "[ Delete ]"))
-                    .onHover(TextActions.showText(Text.of(TextColors.RED, "Click to delete")))
-                    .onClick(TextActions.suggestCommand("/sync snapshot delete " + targetUser.getName() + " " + date))
-                    .build())
-            .build();
-    }
 
     public void createHelpPage(final CommandSource source, final Map<List<String>, CommandSpec> commands, final String commandName) {
         List<Text> helpList = Lists.newArrayList();
@@ -131,7 +76,7 @@ public class CommandUtils {
         paginationBuilder.build().sendTo(source);
     }
 
-    public void createInfoPage(final CommandSource source) {
+    public void createBasicInfoPage(final CommandSource source, final boolean hasPermissionForSubCommands) {
         try {
             source.sendMessage(
                 Text.of(
@@ -148,7 +93,11 @@ public class CommandUtils {
                         .append(Text.of(TextColors.AQUA, "[ MilSpecSG ]"))
                         .onHover(TextActions.showText(Text.of(TextColors.AQUA, "https://www.milspecsg.rocks/")))
                         .onClick(TextActions.openUrl(new URL("https://www.milspecsg.rocks/")))
-                        .build()
+                        .build(),
+                    "\n",
+                    hasPermissionForSubCommands
+                        ? Text.of(TextColors.GRAY, "Use /sync help for command help")
+                        : Text.of(TextColors.RED, "You do not have permission for any sub commands")
                 )
             );
         } catch (MalformedURLException e) {
@@ -156,4 +105,30 @@ public class CommandUtils {
         }
     }
 
+    public void createBasicInfoPage(final CommandSource source) {
+        createBasicInfoPage(source, hasPermissionForSubCommands(source));
+    }
+
+    public void createExtendedInfoPage(final CommandSource source, final boolean hasPermissionForSubCommands) {
+        createBasicInfoPage(source, hasPermissionForSubCommands);
+        if (hasPermissionForSubCommands) {
+            source.sendMessage(
+                Text.of(
+                    TextColors.GRAY, "Built: ", TextColors.AQUA, "$buildDate"
+                )
+            );
+        }
+    }
+
+    public void createExtendedInfoPage(final CommandSource source) {
+       createExtendedInfoPage(source, hasPermissionForSubCommands(source));
+    }
+
+    public boolean hasPermissionForSubCommands(CommandSource source) {
+        return source instanceof ConsoleSource
+            || source.hasPermission(PluginPermissions.SNAPSHOT_BASE)
+            || source.hasPermission(PluginPermissions.MANUAL_OPTIMIZATION_BASE)
+            || source.hasPermission(PluginPermissions.LOCK_COMMAND)
+            || source.hasPermission(PluginPermissions.RELOAD_COMMAND);
+    }
 }

@@ -31,12 +31,14 @@ import java.text.NumberFormat;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonSnapshotOptimizationManager<
-    TUser, TCommandSource, TString>
+    TUser,
+    TString,
+    TCommandSource>
     extends CommonManager<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>
-    implements SnapshotOptimizationManager<TUser, TCommandSource, TString> {
+    implements SnapshotOptimizationManager<TUser, TString, TCommandSource> {
 
     @Inject
-    StringResult<TString> stringResult;
+    StringResult<TString, TCommandSource> stringResult;
 
     @Inject
     PluginInfo<TString> pluginInfo;

@@ -82,6 +82,10 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<TSnapshot>> getSnapshot(UUID userUUID, Date date);
 
+    CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Optional<String> optionalString);
+
+    CompletableFuture<Optional<TSnapshot>> getSnapshot(UUID userUUID, Optional<String> optionalString);
+
     CompletableFuture<List<TKey>> getClosestSnapshots(TKey id, Date date);
 
     CompletableFuture<List<TKey>> getClosestSnapshots(UUID userUUID, Date date);
@@ -89,6 +93,18 @@ public interface MemberRepository<
     CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(TKey id);
 
     CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(UUID userUUID);
+
+    CompletableFuture<Optional<TSnapshot>> getPrevious(TKey id, TKey snapshotId);
+
+    CompletableFuture<Optional<TSnapshot>> getPrevious(UUID userUUID, TKey snapshotId);
+
+    CompletableFuture<Optional<TSnapshot>> getPrevious(UUID userUUID, Date date);
+
+    CompletableFuture<Optional<TSnapshot>> getNext(TKey id, TKey snapshotId);
+
+    CompletableFuture<Optional<TSnapshot>> getNext(UUID userUUID, TKey snapshotId);
+
+    CompletableFuture<Optional<TSnapshot>> getNext(UUID userUUID, Date date);
 
     CompletableFuture<Optional<TUser>> getUser(TKey id);
 

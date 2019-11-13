@@ -20,6 +20,7 @@ package rocks.milspecsg.msdatasync.api.misc;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Optional;
 
 public interface DateFormatService {
 
@@ -27,5 +28,7 @@ public interface DateFormatService {
 
     String formatDiff(Date date);
 
-    Date parse(String date) throws ParseException;
+    Date parseUnsafe(String date) throws ParseException;
+
+    Optional<Date> parse(String date);
 }

@@ -23,6 +23,7 @@ import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -53,5 +54,11 @@ public interface MemberManager<
         return "members";
     }
 
-    CompletableFuture<TString> deleteSnapshot(UUID userUUID, String date);
+    CompletableFuture<TString> deleteSnapshot(UUID userUUID, Optional<String> optionalString);
+
+    CompletableFuture<TString> info(UUID userUUID, TSnapshot snapshot);
+
+    CompletableFuture<TString> info(UUID userUUID, Optional<String> optionalString);
+
+    CompletableFuture<Iterable<TString>> list(UUID userUUID);
 }

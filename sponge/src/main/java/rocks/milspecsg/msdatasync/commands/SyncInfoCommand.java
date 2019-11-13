@@ -18,7 +18,6 @@
 
 package rocks.milspecsg.msdatasync.commands;
 
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -33,8 +32,8 @@ public class SyncInfoCommand implements CommandExecutor {
     private CommandUtils commandUtils;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-        commandUtils.createInfoPage(source);
+    public CommandResult execute(CommandSource source, CommandContext context) {
+        commandUtils.createExtendedInfoPage(source);
         return CommandResult.success();
     }
 }

@@ -29,8 +29,10 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.MSDataSyncPluginInfo;
+import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.misc.CommandUtils;
+import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
 import java.util.Date;
@@ -40,79 +42,15 @@ import java.util.function.Consumer;
 public class SnapshotInfoCommand implements CommandExecutor {
 
     @Inject
-    private CommandUtils commandUtils;
-
-    @Inject
-    private DateFormatService dateFormatService;
+    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-
-
         Optional<User> optionalUser = context.getOne(Text.of("user"));
-
         if (!optionalUser.isPresent()) {
             throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "User is required"));
         }
-
-        User targetPlayer = optionalUser.get();
-
-        Consumer<Optional<Snapshot<?>>> afterFound = optionalSnapshot -> {
-            if (!optionalSnapshot.isPresent()) {
-                source.sendMessage(Text.of(MSDataSyncPluginInfo.pluginPrefix, TextColors.RED, "Could not find snapshot for user " + targetPlayer.getName()));
-                return;
-            }
-            Snapshot<?> snapshot = optionalSnapshot.get();
-
-            Date created = snapshot.getCreatedUtcDate();
-            Date updated = snapshot.getUpdatedUtcDate();
-
-            source.sendMessage(
-                Text.builder()
-                    .append(Text.of(TextColors.DARK_GREEN, "======= ", TextColors.GOLD, "Snapshot - ", targetPlayer.getName(), TextColors.DARK_GREEN, " ======="))
-                    .append(Text.of(TextColors.GRAY, "\n\nId: ", TextColors.YELLOW, snapshot.getId()))
-                    .append(Text.of(TextColors.GRAY, "\n\nCreated: ", TextColors.YELLOW,
-                        Text.builder()
-                            .append(Text.of(TextColors.YELLOW, dateFormatService.format(created)))
-                            .onHover(TextActions.showText(
-                                Text.of(
-                                    TextColors.AQUA,
-                                    dateFormatService.formatDiff(new Date(System.currentTimeMillis() - created.getTime())),
-                                    " ago"
-                                )))
-                            .build()
-                        ))
-                    .append(Text.of(TextColors.GRAY, "\n\nUpdated: ", TextColors.YELLOW,
-                        Text.builder()
-                            .append(Text.of(TextColors.YELLOW, dateFormatService.format(updated)))
-                            .onHover(TextActions.showText(
-                                Text.of(
-                                    TextColors.AQUA,
-                                    dateFormatService.formatDiff(new Date(System.currentTimeMillis() - updated.getTime())),
-                                    " ago"
-                                )))
-                            .build()
-                        ))
-                    .append(Text.of(TextColors.GRAY, "\n\nName: ", TextColors.YELLOW, snapshot.getName()))
-                    .append(Text.of(TextColors.GRAY, "\n\nServer: ", TextColors.YELLOW, snapshot.getServer(), "\n\n"))
-                    .append(commandUtils.snapshotActions(targetPlayer, dateFormatService.format(created)))
-                    .append(Text.of(" "))
-                    .append(
-                        Text.builder()
-                            .append(Text.of(TextColors.AQUA, "[ Back ]"))
-                            .onHover(TextActions.showText(Text.of(TextColors.AQUA, "Click to go back to list")))
-                            .onClick(TextActions.suggestCommand("/sync snapshot list " + targetPlayer.getName()))
-                            .build()
-                    )
-                    .append(Text.of(TextColors.DARK_GREEN, "\n\n======= ", TextColors.GOLD, "Snapshot - ", targetPlayer.getName(), TextColors.DARK_GREEN, " ======="))
-                    .build()
-            );
-
-
-        };
-
-        commandUtils.parseDateOrGetLatest(source, context, targetPlayer, afterFound);
-
+        memberManager.info(optionalUser.get().getUniqueId(), context.getOne(Text.of("snapshot"))).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

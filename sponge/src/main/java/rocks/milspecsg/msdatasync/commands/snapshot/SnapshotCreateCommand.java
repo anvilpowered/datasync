@@ -40,15 +40,11 @@ public class SnapshotCreateCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-
         SyncLockCommand.assertUnlocked(source);
-
         Optional<User> optionalUser = context.getOne(Text.of("user"));
-
         if (!optionalUser.isPresent()) {
             throw new CommandException(Text.of(MSDataSyncPluginInfo.pluginPrefix, "User is required"));
         }
-
         userSerializer.serialize(optionalUser.get()).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
