@@ -150,7 +150,7 @@ public class MSConfigurationService extends CommonConfigurationService {
         nodeNameMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
         nodeNameMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, "snapshot.uploadInterval");
         nodeNameMap.put(ConfigKeys.SERVER_NAME, "serverName");
-        nodeNameMap.put(ConfigKeys.DATA_STORE_NAME, "dataStoreName");
+        nodeNameMap.put(ConfigKeys.DATA_STORE_NAME, "datastore.dataStoreName");
     }
 
     @Override
@@ -185,7 +185,6 @@ public class MSConfigurationService extends CommonConfigurationService {
                 "\t4) Delete all snapshots older than 7 days (keeping a minimum of minCount)"
         );
         nodeDescriptionMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, "\nInterval for automatic serialization task. Set to 0 to disable, min 1, max 60. Recommended range 3-15");
-
         nodeDescriptionMap.put(ConfigKeys.SERVER_NAME, "\nName of server. This value is attached with every snapshot made on this server");
         nodeDescriptionMap.put(ConfigKeys.DATA_STORE_NAME, "Data store name");
     }
