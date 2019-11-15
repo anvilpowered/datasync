@@ -69,7 +69,7 @@ public class MSConfigurationService extends CommonConfigurationService {
         nodeTypeMap.put(ConfigKeys.NITRITE_PASSWORD, stringTypeToken);
         nodeTypeMap.put(ConfigKeys.NITRITE_USE_AUTH, booleanTypeToken);
         nodeTypeMap.put(ConfigKeys.NITRITE_USE_COMPRESSION, booleanTypeToken);
-        nodeTypeMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, stringListTypeToken);
         nodeTypeMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, integerTypeToken);
         nodeTypeMap.put(ConfigKeys.SERVER_NAME, stringTypeToken);
         nodeTypeMap.put(ConfigKeys.DATA_STORE_NAME, stringTypeToken);
