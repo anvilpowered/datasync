@@ -24,15 +24,24 @@ public interface ConfigKeys extends rocks.milspecsg.msrepository.api.config.Conf
     int SERIALIZE_ENABLED_SERIALIZERS_LIST = 1;
     int SERIALIZE_ON_JOIN_LEAVE = 10;
     int SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN = 11;
-    int MONGODB_HOSTNAME = 20;
-    int MONGODB_PORT = 21;
-    int MONGODB_DBNAME = 22;
-    int MONGODB_USERNAME = 23;
-    int MONGODB_PASSWORD = 24;
-    int MONGODB_USE_AUTH = 25;
+
     int SNAPSHOT_MIN_COUNT = 30;
     int SNAPSHOT_OPTIMIZATION_STRATEGY = 31;
     int SNAPSHOT_UPLOAD_INTERVAL = 32;
     int SERVER_NAME = 49;
+
+
+
+    int MONGODB_HOSTNAME = 100;
+    int MONGODB_PORT = 101;
+    int MONGODB_DBNAME = 102;
+    int MONGODB_USERNAME = 103;
+    int MONGODB_PASSWORD = 104;
+    int MONGODB_USE_AUTH = 105;
+
+    int NITRITE_USERNAME = 110;
+    int NITRITE_PASSWORD = 111;
+    int NITRITE_USE_AUTH = 112;
+    int NITRITE_USE_COMPRESSION = 113;
 
 }

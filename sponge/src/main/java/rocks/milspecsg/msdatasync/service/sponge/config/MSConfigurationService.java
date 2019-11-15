@@ -43,36 +43,36 @@ public class MSConfigurationService extends CommonConfigurationService {
         super(configLoader);
     }
 
+    private static TypeToken<String> stringTypeToken = new TypeToken<String>() {
+    };
+    private static TypeToken<Integer> integerTypeToken = new TypeToken<Integer>() {
+    };
+    private static TypeToken<Boolean> booleanTypeToken = new TypeToken<Boolean>() {
+    };
+    private static TypeToken<List<String>> stringListTypeToken = new TypeToken<List<String>>() {
+    };
+
+
     @Override
     protected void initNodeTypeMap() {
-        nodeTypeMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, new TypeToken<List<String>>() {
-        });
-        nodeTypeMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, new TypeToken<Boolean>() {
-        });
-        nodeTypeMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, new TypeToken<Boolean>() {
-        });
-        nodeTypeMap.put(ConfigKeys.MONGODB_HOSTNAME, new TypeToken<String>() {
-        });
-        nodeTypeMap.put(ConfigKeys.MONGODB_PORT, new TypeToken<Integer>() {
-        });
-        nodeTypeMap.put(ConfigKeys.MONGODB_DBNAME, new TypeToken<String>() {
-        });
-        nodeTypeMap.put(ConfigKeys.MONGODB_USERNAME, new TypeToken<String>() {
-        });
-        nodeTypeMap.put(ConfigKeys.MONGODB_PASSWORD, new TypeToken<String>() {
-        });
-        nodeTypeMap.put(ConfigKeys.MONGODB_USE_AUTH, new TypeToken<Boolean>() {
-        });
-        nodeTypeMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, new TypeToken<Integer>() {
-        });
-        nodeTypeMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, new TypeToken<List<String>>() {
-        });
-        nodeTypeMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, new TypeToken<Integer>() {
-        });
-        nodeTypeMap.put(ConfigKeys.SERVER_NAME, new TypeToken<String>() {
-        });
-        nodeTypeMap.put(ConfigKeys.DATA_STORE_NAME, new TypeToken<String>() {
-        });
+        nodeTypeMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, stringListTypeToken);
+        nodeTypeMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, booleanTypeToken);
+        nodeTypeMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, booleanTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_HOSTNAME, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_PORT, integerTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_DBNAME, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_USERNAME, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_PASSWORD, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_USE_AUTH, booleanTypeToken);
+        nodeTypeMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, integerTypeToken);
+        nodeTypeMap.put(ConfigKeys.NITRITE_USERNAME, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.NITRITE_PASSWORD, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.NITRITE_USE_AUTH, booleanTypeToken);
+        nodeTypeMap.put(ConfigKeys.NITRITE_USE_COMPRESSION, booleanTypeToken);
+        nodeTypeMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, integerTypeToken);
+        nodeTypeMap.put(ConfigKeys.SERVER_NAME, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.DATA_STORE_NAME, stringTypeToken);
     }
 
     @Override
@@ -120,6 +120,10 @@ public class MSConfigurationService extends CommonConfigurationService {
         defaultStringMap.put(ConfigKeys.MONGODB_USERNAME, "admin");
         defaultStringMap.put(ConfigKeys.MONGODB_PASSWORD, "password");
         defaultBooleanMap.put(ConfigKeys.MONGODB_USE_AUTH, false);
+        defaultStringMap.put(ConfigKeys.NITRITE_USERNAME, "admin");
+        defaultStringMap.put(ConfigKeys.NITRITE_PASSWORD, "password");
+        defaultBooleanMap.put(ConfigKeys.NITRITE_USE_AUTH, false);
+        defaultBooleanMap.put(ConfigKeys.NITRITE_USE_COMPRESSION, false);
         defaultIntegerMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, 5);
         defaultListMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, Arrays.asList("60:24", "1440:7"));
         defaultIntegerMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, 5);
@@ -132,12 +136,16 @@ public class MSConfigurationService extends CommonConfigurationService {
         nodeNameMap.put(ConfigKeys.SERIALIZE_ENABLED_SERIALIZERS_LIST, "serialize.enabledSerializers");
         nodeNameMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "serialize.serializeOnJoinLeave");
         nodeNameMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, "serialize.waitForSnapshotOnJoin");
-        nodeNameMap.put(ConfigKeys.MONGODB_HOSTNAME, "mongodb.hostname");
-        nodeNameMap.put(ConfigKeys.MONGODB_PORT, "mongodb.port");
-        nodeNameMap.put(ConfigKeys.MONGODB_DBNAME, "mongodb.dbName");
-        nodeNameMap.put(ConfigKeys.MONGODB_USERNAME, "mongodb.username");
-        nodeNameMap.put(ConfigKeys.MONGODB_PASSWORD, "mongodb.password");
-        nodeNameMap.put(ConfigKeys.MONGODB_USE_AUTH, "mongodb.useAuth");
+        nodeNameMap.put(ConfigKeys.MONGODB_HOSTNAME, "datastore.mongodb.hostname");
+        nodeNameMap.put(ConfigKeys.MONGODB_PORT, "datastore.mongodb.port");
+        nodeNameMap.put(ConfigKeys.MONGODB_DBNAME, "datastore.mongodb.dbName");
+        nodeNameMap.put(ConfigKeys.MONGODB_USERNAME, "datastore.mongodb.username");
+        nodeNameMap.put(ConfigKeys.MONGODB_PASSWORD, "datastore.mongodb.password");
+        nodeNameMap.put(ConfigKeys.MONGODB_USE_AUTH, "datastore.mongodb.useAuth");
+        nodeNameMap.put(ConfigKeys.NITRITE_USERNAME, "datastore.nitrite.username");
+        nodeNameMap.put(ConfigKeys.NITRITE_PASSWORD, "datastore.nitrite.password");
+        nodeNameMap.put(ConfigKeys.NITRITE_USE_AUTH, "datastore.nitrite.useAuth");
+        nodeNameMap.put(ConfigKeys.NITRITE_USE_COMPRESSION, "datastore.nitrite.useCompression");
         nodeNameMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
         nodeNameMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
         nodeNameMap.put(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL, "snapshot.uploadInterval");
@@ -152,7 +160,7 @@ public class MSConfigurationService extends CommonConfigurationService {
         nodeDescriptionMap.put(ConfigKeys.SERIALIZE_ON_JOIN_LEAVE, "\nWhether MSDataSync should sync players to DB on join/leave");
         nodeDescriptionMap.put(ConfigKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
             "\nWhether MSDataSync should wait for snapshots to be uploaded before downloading them.\n" +
-            "Note: this option is highly recommended if you are running a multi-server environment like Velocity"
+                "Note: this option is highly recommended if you are running a multi-server environment like Velocity"
         );
         nodeDescriptionMap.put(ConfigKeys.MONGODB_HOSTNAME, "\nMongoDB hostname");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_PORT, "\nMongoDB port");
@@ -160,6 +168,10 @@ public class MSConfigurationService extends CommonConfigurationService {
         nodeDescriptionMap.put(ConfigKeys.MONGODB_USERNAME, "\nMongoDB username");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_PASSWORD, "\nMongoDB password");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_USE_AUTH, "\nWhether to use authentication (username/password) for MongoDB connection");
+        nodeDescriptionMap.put(ConfigKeys.NITRITE_USERNAME, "\nNitrite username");
+        nodeDescriptionMap.put(ConfigKeys.NITRITE_PASSWORD, "\nNitrite password");
+        nodeDescriptionMap.put(ConfigKeys.NITRITE_USE_AUTH, "\nWhether to use authentication (username/password) for Nitrite connection");
+        nodeDescriptionMap.put(ConfigKeys.NITRITE_USE_COMPRESSION, "\nWhether to use compression for nitrite.\nWill result in less data usage but is also slower.");
         nodeDescriptionMap.put(ConfigKeys.SNAPSHOT_MIN_COUNT, "\nMinimum number of snapshots to keep before deleting any");
         nodeDescriptionMap.put(ConfigKeys.SNAPSHOT_OPTIMIZATION_STRATEGY,
             "\nSnapshot optimization strategy. Format:\n" +
