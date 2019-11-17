@@ -27,18 +27,33 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-config')
     implementation project(':MSRepository:msr-api:api-repository')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
     implementation project(':MSRepository:msr-common:common-config')
     implementation project(':MSRepository:msr-common:common-repository')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
-
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
     implementation project(':MSRepository:msr-sponge')
 
-    implementation 'com.google.inject:guice:4.1.0'
-    compile 'com.google.guava:guava:28.1-jre'
-    implementation 'org.mongodb:mongodb-driver-sync:3.11.0'
-    implementation 'org.mongodb:mongo-java-driver:3.11.0'
+    implementation guice
+    implementation guava
+    implementation mongodb_driver_sync
+    implementation mongo_java_driver
 
-    implementation 'org.mongodb.morphia:morphia:1.3.2'
+    implementation objenesis
+    implementation morphia
+    implementation nitrite
+    implementation h2
+    implementation jasypt
+    implementation okhttp3
+
+    implementation jackson_annotations
+    implementation jackson_core
+    implementation jackson_databind
+    implementation podam
+    implementation reflections
+    implementation jxpath
+    implementation beanutils
+    implementation javasisst
 
     compileOnly('org.spongepowered:spongeapi:7.2.0-SNAPSHOT') {
         exclude(module: 'configurate-gson')
@@ -51,15 +66,37 @@ shadowJar {
     archiveName = "MSDataSync-Sponge-${modVersion}.jar"
 
     dependencies {
-        include dependency('org.mongodb:bson:3.10.1')
-        include dependency('org.mongodb:mongodb-driver-sync:3.11.0')
-        include dependency('org.mongodb.morphia:morphia:1.3.2')
-        include dependency('org.mongodb:mongo-java-driver:3.11.0')
-        include dependency('org.reflections:reflections:0.9.10')
-        include dependency('org.javassist:javassist:3.26.0-GA')
+        include dependency(bson)
+        include dependency(mongodb_driver_sync)
+        include dependency(morphia)
+        include dependency(mongo_java_driver)
+        include dependency(nitrite)
+        include dependency(objenesis)
+        include dependency(jackson_annotations)
+        include dependency(jackson_core)
+        include dependency(jackson_databind)
+        include dependency(podam)
+        include dependency(reflections)
+        include dependency(jxpath)
+        include dependency(beanutils)
+        include dependency(javasisst)
+        include dependency(h2)
+        include dependency(jasypt)
+        include dependency(okhttp3)
 
-        relocate 'org.reflections', 'relocated.reflections.org.reflections'
-        relocate 'org.javassist', 'relocated.javassist.org.javassist'
+        relocate 'com.fasterxml', 'relocated.com.fasterxml'
+        relocate 'org.reflections', 'relocated.org.reflections'
+        relocate 'org.javassist', 'relocated.org.javassist'
+        relocate 'org.objenesis', 'relocated.org.objenesis'
+        relocate 'org.apache', 'relocated.org.apache'
+        relocate 'org.bson', 'relocated.org.bson'
+        relocate 'org.dizitart', 'relocated.org.dizitart'
+        relocate 'org.h2', 'relocated.org.h2'
+        relocate 'org.mongodb', 'relocated.org.mongodb'
+        relocate 'com.mongodb', 'relocated.com.mongodb'
+        relocate 'javassist', 'relocated.javassist'
+        relocate 'okhttp3', 'relocated.okhttp3'
+        relocate 'org.jasypt', 'relocated.org.jasypt'
 
         include project(':api')
         include project(':common')
@@ -67,9 +104,12 @@ shadowJar {
         include project(':MSRepository:msr-api:api-config')
         include project(':MSRepository:msr-api:api-repository')
         include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+        include project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
+
         include project(':MSRepository:msr-common:common-config')
         include project(':MSRepository:msr-common:common-repository')
         include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
+        include project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
         include project(':MSRepository:msr-sponge')
     }
 }

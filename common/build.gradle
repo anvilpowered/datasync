@@ -20,11 +20,14 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-config')
     implementation project(':MSRepository:msr-api:api-repository')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
-    implementation project(':MSRepository:msr-api:api-repository:api-repository-json')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
+//    implementation project(':MSRepository:msr-api:api-repository:api-repository-json')
     implementation project(':MSRepository:msr-common')
     implementation project(':MSRepository:msr-common:common-repository')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
 
-    implementation 'org.mongodb.morphia:morphia:1.3.2'
-    implementation 'com.google.inject:guice:4.0'
+    implementation morphia
+    implementation nitrite
+    implementation guice
 }
