@@ -54,10 +54,6 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<UUID>> getUUID(TKey id);
 
-    Optional<TUser> getUser(UUID userUUID);
-
-    Optional<TUser> getUser(String lastKnownName);
-
     CompletableFuture<List<TKey>> getSnapshotIds(TKey id);
 
     CompletableFuture<List<TKey>> getSnapshotIds(UUID userUUID);
@@ -105,8 +101,6 @@ public interface MemberRepository<
     CompletableFuture<Optional<TSnapshot>> getNext(UUID userUUID, TKey snapshotId);
 
     CompletableFuture<Optional<TSnapshot>> getNext(UUID userUUID, Date date);
-
-    CompletableFuture<Optional<TUser>> getUser(TKey id);
 
     //TODO: move this method declaration to ApiRepository in repo MSRepository
 //    Optional<Member> getNext();

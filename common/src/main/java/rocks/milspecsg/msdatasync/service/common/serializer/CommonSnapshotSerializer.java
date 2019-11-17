@@ -20,7 +20,6 @@ package rocks.milspecsg.msdatasync.service.common.serializer;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import rocks.milspecsg.msdatasync.api.serializer.*;
 import rocks.milspecsg.msdatasync.api.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
@@ -145,13 +144,6 @@ public abstract class CommonSnapshotSerializer<
             return false;
         }
         boolean success = true;
-        if (snapshot.getModulesUsed() == null) {
-            snapshot.setModulesUsed(new ArrayList<>());
-        }
-
-        if (snapshot.getModulesFailed() == null) {
-            snapshot.setModulesFailed(new ArrayList<>());
-        }
 
         for (Serializer<TSnapshot, TUser> serializer : serializers) {
             // will still try to keep going even if one module fails

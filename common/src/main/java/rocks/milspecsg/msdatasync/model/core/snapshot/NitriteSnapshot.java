@@ -18,15 +18,17 @@
 
 package rocks.milspecsg.msdatasync.model.core.snapshot;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
+import org.dizitart.no2.Document;
+import org.dizitart.no2.NitriteId;
+import org.dizitart.no2.mapper.NitriteMapper;
 import rocks.milspecsg.msdatasync.model.core.serializeditemstack.SerializedItemStack;
-import rocks.milspecsg.msrepository.model.data.dbo.MongoDbo;
+import rocks.milspecsg.msrepository.datastore.nitrite.annotation.NitriteEntity;
+import rocks.milspecsg.msrepository.model.data.dbo.NitriteDbo;
 
 import java.util.*;
 
-@Entity("snapshots")
-public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
+@NitriteEntity
+public class NitriteSnapshot extends NitriteDbo implements Snapshot<NitriteId> {
 
     private String name;
 
@@ -110,5 +112,29 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
     @Override
     public void setItemStacks(List<SerializedItemStack> itemStacks) {
         this.itemStacks = Objects.requireNonNull(itemStacks, "itemStacks cannot be null");
+    }
+
+    @Override
+    public Document write(NitriteMapper mapper) {
+        Document document = super.write(mapper);
+        document.put("name", name);
+        document.put("server", server);
+        document.put("modulesUsed", getModulesUsed());
+        document.put("modulesFailed", getModulesFailed());
+        document.put("keys", getKeys());
+        document.put("itemStacks", getItemStacks());
+        return document;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void read(NitriteMapper mapper, Document document) {
+        super.read(mapper, document);
+        name = (String) document.get("name");
+        server = (String) document.get("server");
+        modulesUsed = (List<String>) document.get("modulesUsed");
+        modulesFailed = (List<String>) document.get("modulesFailed");
+        keys = (Map<String, Object>) document.get("keys");
+        itemStacks = (List<SerializedItemStack>) document.get("itemStacks");
     }
 }

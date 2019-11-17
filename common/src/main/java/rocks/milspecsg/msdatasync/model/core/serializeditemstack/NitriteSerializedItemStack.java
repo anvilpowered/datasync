@@ -18,14 +18,17 @@
 
 package rocks.milspecsg.msdatasync.model.core.serializeditemstack;
 
-import org.mongodb.morphia.annotations.Embedded;
+import org.dizitart.no2.Document;
+import org.dizitart.no2.mapper.Mappable;
+import org.dizitart.no2.mapper.NitriteMapper;
+import rocks.milspecsg.msrepository.datastore.nitrite.annotation.NitriteEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Embedded
-public class MongoSerializedItemStack implements SerializedItemStack {
+@NitriteEntity
+public class NitriteSerializedItemStack implements SerializedItemStack, Mappable {
 
     private Map<String, Object> properties;
 
@@ -40,5 +43,16 @@ public class MongoSerializedItemStack implements SerializedItemStack {
     @Override
     public void setProperties(Map<String, Object> properties) {
         this.properties = Objects.requireNonNull(properties, "properties cannot be null");
+    }
+
+    @Override
+    public Document write(NitriteMapper mapper) {
+        return Document.createDocument("properties", getProperties());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void read(NitriteMapper mapper, Document document) {
+        properties = (Map<String, Object>) document.get("properties");
     }
 }

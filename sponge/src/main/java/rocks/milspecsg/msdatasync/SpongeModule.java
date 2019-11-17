@@ -21,6 +21,8 @@ package rocks.milspecsg.msdatasync;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
 import org.bson.types.ObjectId;
+import org.dizitart.no2.Nitrite;
+import org.dizitart.no2.NitriteId;
 import org.mongodb.morphia.Datastore;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
@@ -32,13 +34,11 @@ import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.keys.CommonDataKeyService;
-import rocks.milspecsg.msdatasync.service.common.member.repository.CommonMongoMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.serializer.*;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.component.CommonUserSerializerComponent;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.service.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msdatasync.service.sponge.keys.CommonSpongeDataKeyService;
-import rocks.milspecsg.msdatasync.service.sponge.member.SpongeMongoMemberRepository;
 import rocks.milspecsg.msdatasync.service.sponge.serializer.*;
 import rocks.milspecsg.msdatasync.service.sponge.serializer.user.component.SpongeUserSerializerComponent;
 import rocks.milspecsg.msdatasync.service.sponge.snapshotoptimization.component.SpongeSnapshotOptimizationService;
@@ -50,13 +50,16 @@ import rocks.milspecsg.msrepository.PluginInfo;
 import rocks.milspecsg.msrepository.api.UserService;
 import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
+import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
 import rocks.milspecsg.msrepository.service.sponge.SpongeUserService;
 import rocks.milspecsg.msrepository.service.sponge.tools.resultbuilder.SpongeStringResult;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class SpongeModule extends CommonModule<
     Member<ObjectId>,
+    Member<NitriteId>,
     Snapshot<ObjectId>,
+    Snapshot<NitriteId>,
     Key<?>,
     Player,
     User,
@@ -154,6 +157,13 @@ public class SpongeModule extends CommonModule<
         );
 
         be.bind(
+            new TypeToken<CommonUserSerializerComponent<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, User, Key<?>, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            new TypeToken<SpongeUserSerializerComponent<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, Nitrite, NitriteConfig>>(getClass()) {
+            }
+        );
+
+        be.bind(
             new TypeToken<CommonSnapshotOptimizationService<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Player, User, CommandSource, Key<?>, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<SpongeSnapshotOptimizationService<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Datastore, MongoConfig>>(getClass()) {
@@ -161,9 +171,9 @@ public class SpongeModule extends CommonModule<
         );
 
         be.bind(
-            new TypeToken<CommonMongoMemberRepository<Member<ObjectId>, Snapshot<ObjectId>, User, Key<?>>>(getClass()) {
+            new TypeToken<CommonSnapshotOptimizationService<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, Player, User, CommandSource, Key<?>, Nitrite, NitriteConfig>>(getClass()) {
             },
-            new TypeToken<SpongeMongoMemberRepository<Member<ObjectId>, Snapshot<ObjectId>>>(getClass()) {
+            new TypeToken<SpongeSnapshotOptimizationService<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, Nitrite, NitriteConfig>>(getClass()) {
             }
         );
 

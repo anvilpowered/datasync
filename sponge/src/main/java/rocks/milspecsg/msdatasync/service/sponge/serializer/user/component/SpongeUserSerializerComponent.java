@@ -56,7 +56,6 @@ public class SpongeUserSerializerComponent<
     public CompletableFuture<Optional<TSnapshot>> deserialize(User user, Object plugin, TSnapshot snapshot) {
         if (snapshot == null) return CompletableFuture.completedFuture(Optional.empty());
         CompletableFuture<Optional<TSnapshot>> result = new CompletableFuture<>();
-        if (snapshot.getKeys() == null) snapshot.setKeys(new HashMap<>());
         Task.builder().execute(() -> result.complete(deserialize(snapshot, user) ? Optional.of(snapshot) : Optional.empty())).submit(plugin);
         return result;
     }

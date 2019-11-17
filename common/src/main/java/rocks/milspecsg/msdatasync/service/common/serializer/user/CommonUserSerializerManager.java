@@ -94,11 +94,11 @@ public class CommonUserSerializerManager<
                     StringResult.Builder<TString, TCommandSource> builder = stringResult.builder();
                     if (!successful.isEmpty()) {
                         String s = successful.stream().map(u -> userService.getUserName(user)).collect(Collectors.joining(", "));
-                        builder.yellow().append("The following players were successfully serialized: \n").green().append(s);
+                        builder.yellow().append("The following players were successfully serialized:\n").green().append(s);
                     }
                     if (!unsuccessful.isEmpty()) {
                         String s = unsuccessful.stream().map(u -> userService.getUserName(user)).collect(Collectors.joining(", "));
-                        builder.red().append("The following players were unsuccessfully serialized: \n").green().append(s);
+                        builder.red().append("The following players were unsuccessfully serialized:\n").green().append(s);
                     }
                     result.complete(builder.build());
                 }

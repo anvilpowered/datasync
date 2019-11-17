@@ -22,6 +22,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import org.bson.types.ObjectId;
+import org.dizitart.no2.Nitrite;
+import org.dizitart.no2.NitriteId;
 import org.mongodb.morphia.Datastore;
 import rocks.milspecsg.msdatasync.api.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
@@ -42,11 +44,13 @@ import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.member.CommonMemberManager;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonMongoMemberRepository;
+import rocks.milspecsg.msdatasync.service.common.member.repository.CommonNitriteMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.serializer.*;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.CommonUserSerializerManager;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.component.CommonUserSerializerComponent;
 import rocks.milspecsg.msdatasync.service.common.snapshot.CommonSnapshotManager;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonMongoSnapshotRepository;
+import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonNitriteSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.CommonSnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.service.common.keys.CommonDataKeyService;
@@ -56,14 +60,19 @@ import rocks.milspecsg.msdatasync.service.common.tasks.CommonSerializationTaskSe
 import rocks.milspecsg.msrepository.BindingExtensions;
 import rocks.milspecsg.msrepository.CommonBindingExtensions;
 import rocks.milspecsg.msrepository.api.manager.annotation.MongoDBComponent;
+import rocks.milspecsg.msrepository.api.manager.annotation.NitriteComponent;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoContext;
+import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
+import rocks.milspecsg.msrepository.datastore.nitrite.NitriteContext;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class CommonModule<
     TMongoMember extends Member<ObjectId>,
+    TNitriteMember extends Member<NitriteId>,
     TMongoSnapshot extends Snapshot<ObjectId>,
+    TNitriteSnapshot extends Snapshot<NitriteId>,
     TDataKey,
     TPlayer extends TUser,
     TUser,
@@ -72,6 +81,8 @@ public class CommonModule<
     TItemStackSnapshot,
     TCommandSource>
     extends AbstractModule {
+
+    private static final String BASE_SCAN_PACKAGE = "rocks.milspecsg.msdatasync.model.core";
 
     @Override
     protected void configure() {
@@ -150,7 +161,7 @@ public class CommonModule<
 
         bind(MongoConfig.class).toInstance(
             new MongoConfig(
-                "rocks.milspecsg.msdatasync.model.core",
+                BASE_SCAN_PACKAGE,
                 ConfigKeys.DATA_STORE_NAME,
                 ConfigKeys.MONGODB_HOSTNAME,
                 ConfigKeys.MONGODB_PORT,
@@ -158,6 +169,17 @@ public class CommonModule<
                 ConfigKeys.MONGODB_USERNAME,
                 ConfigKeys.MONGODB_PASSWORD,
                 ConfigKeys.MONGODB_USE_AUTH
+            )
+        );
+
+        bind(NitriteConfig.class).toInstance(
+            new NitriteConfig(
+                BASE_SCAN_PACKAGE,
+                ConfigKeys.DATA_STORE_NAME,
+                ConfigKeys.NITRITE_USERNAME,
+                ConfigKeys.NITRITE_PASSWORD,
+                ConfigKeys.NITRITE_USE_AUTH,
+                ConfigKeys.NITRITE_USE_COMPRESSION
             )
         );
 
@@ -171,6 +193,18 @@ public class CommonModule<
             new TypeToken<CommonUserSerializerComponent<ObjectId, TMongoMember, TMongoSnapshot, TUser, TDataKey, Datastore, MongoConfig>>(getClass()) {
             },
             MongoDBComponent.class
+        );
+
+        be.bind(
+            new TypeToken<UserSerializerComponent<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<UserSerializerComponent<?, Snapshot<?>, TUser, ?, ?>>(getClass()) {
+            },
+            new TypeToken<UserSerializerComponent<NitriteId, TNitriteSnapshot, TUser, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            new TypeToken<CommonUserSerializerComponent<NitriteId, TNitriteMember, TNitriteSnapshot, TUser, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            NitriteComponent.class
         );
 
         be.bind(
@@ -193,6 +227,18 @@ public class CommonModule<
         );
 
         be.bind(
+            new TypeToken<SnapshotOptimizationService<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotOptimizationService<NitriteId, TUser, TCommandSource, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            new TypeToken<CommonSnapshotOptimizationService<NitriteId, TNitriteMember, TNitriteSnapshot, TPlayer, TUser, TCommandSource, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            NitriteComponent.class
+        );
+
+        be.bind(
             new TypeToken<SnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
             },
             new TypeToken<CommonSnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
@@ -209,6 +255,18 @@ public class CommonModule<
             new TypeToken<CommonMongoMemberRepository<TMongoMember, TMongoSnapshot, TUser, TDataKey>>(getClass()) {
             },
             MongoDBComponent.class
+        );
+
+        be.bind(
+            new TypeToken<MemberRepository<?, ?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<MemberRepository<?, Member<?>, Snapshot<?>, TUser, ?, ?>>(getClass()) {
+            },
+            new TypeToken<MemberRepository<NitriteId, TNitriteMember, TNitriteSnapshot, TUser, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            new TypeToken<CommonNitriteMemberRepository<TNitriteMember, TNitriteSnapshot, TUser, TDataKey>>(getClass()) {
+            },
+            NitriteComponent.class
         );
 
         be.bind(
@@ -231,6 +289,18 @@ public class CommonModule<
         );
 
         be.bind(
+            new TypeToken<SnapshotRepository<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotRepository<NitriteId, TNitriteSnapshot, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
+            },
+            new TypeToken<CommonNitriteSnapshotRepository<TNitriteSnapshot, TDataKey>>(getClass()) {
+            },
+            NitriteComponent.class
+        );
+
+        be.bind(
             new TypeToken<SnapshotManager<Snapshot<?>, TDataKey>>(getClass()) {
             },
             new TypeToken<CommonSnapshotManager<Snapshot<?>, TDataKey>>(getClass()) {
@@ -239,6 +309,10 @@ public class CommonModule<
 
         bind(new TypeLiteral<DataStoreContext<ObjectId, Datastore, MongoConfig>>() {
         }).to(new TypeLiteral<MongoContext>() {
+        });
+
+        bind(new TypeLiteral<DataStoreContext<NitriteId, Nitrite, NitriteConfig>>() {
+        }).to(new TypeLiteral<NitriteContext>() {
         });
 
     }

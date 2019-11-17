@@ -61,9 +61,6 @@ public abstract class CommonSnapshotRepository<
         if (!optionalName.isPresent()) {
             return false;
         }
-        if (snapshot.getKeys() == null) {
-            snapshot.setKeys(new HashMap<>());
-        }
         snapshot.getKeys().put(optionalName.get(), optionalValue.get());
         return true;
     }
@@ -71,12 +68,6 @@ public abstract class CommonSnapshotRepository<
     @Override
     public Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key) {
         Optional<String> optionalName = dataKeyService.getName(key);
-        if (!optionalName.isPresent()) {
-            return Optional.empty();
-        }
-        if (snapshot.getKeys() == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(snapshot.getKeys().get(optionalName.get()));
+        return optionalName.map(s -> snapshot.getKeys().get(s));
     }
 }

@@ -58,6 +58,18 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
+    public CompletableFuture<Optional<TMember>> getOneOrGenerate(UUID userUUID) {
+        return CompletableFuture.supplyAsync(() -> {
+            Optional<TMember> optionalMember = getOne(userUUID).join();
+            if (optionalMember.isPresent()) return optionalMember;
+            // if there isn't one already, create a new one
+            TMember member = generateEmpty();
+            member.setUserUUID(userUUID);
+            return insertOne(member).join();
+        });
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public Class<TMember> getTClass() {
         return (Class<TMember>) getDataStoreContext().getEntityClassUnsafe("member");
@@ -102,7 +114,15 @@ public abstract class CommonMemberRepository<
 
     @Override
     public CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(TKey id) {
-        return getOne(id).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> snapshotRepository.getOne(member.getSnapshotIds().get(member.getSnapshotIds().size() - 1)).join()));
+        return getOne(id).thenApplyAsync(optionalMember ->
+            optionalMember.flatMap(member -> {
+                int size = member.getSnapshotIds().size();
+                if (size == 0) {
+                    return Optional.empty();
+                }
+                return snapshotRepository.getOne(member.getSnapshotIds().get(size - 1)).join();
+            })
+        );
     }
 
     @Override

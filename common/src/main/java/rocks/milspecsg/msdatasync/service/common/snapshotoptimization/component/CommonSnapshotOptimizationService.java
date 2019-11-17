@@ -28,6 +28,7 @@ import rocks.milspecsg.msdatasync.api.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msrepository.api.UserService;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
@@ -71,6 +72,9 @@ public abstract class CommonSnapshotOptimizationService<
 
     @Inject
     protected DateFormatService dateFormatService;
+
+    @Inject
+    protected UserService<TUser> userService;
 
     private List<int[]> optimizationStrategy;
 
@@ -187,7 +191,7 @@ public abstract class CommonSnapshotOptimizationService<
      */
     protected final CompletableFuture<Boolean> optimizeFull(final List<TKey> snapshotIds, final UUID userUUID, final TCommandSource source, final String name, final Object plugin) {
         int baseInterval = configurationService.getConfigInteger(ConfigKeys.SNAPSHOT_UPLOAD_INTERVAL);
-        Optional<TUser> optionalUser = memberRepository.getUser(userUUID);
+        Optional<TUser> optionalUser = userService.get(userUUID);
         if (!optionalUser.isPresent()) return CompletableFuture.completedFuture(null);
         Optional<TPlayer> optionalPlayer = getPlayer(optionalUser.get());
 

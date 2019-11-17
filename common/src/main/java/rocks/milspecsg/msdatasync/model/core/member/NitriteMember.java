@@ -18,18 +18,20 @@
 
 package rocks.milspecsg.msdatasync.model.core.member;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import rocks.milspecsg.msrepository.model.data.dbo.MongoDbo;
+import org.dizitart.no2.Document;
+import org.dizitart.no2.NitriteId;
+import org.dizitart.no2.mapper.NitriteMapper;
+import rocks.milspecsg.msrepository.datastore.nitrite.annotation.NitriteEntity;
+import rocks.milspecsg.msrepository.model.data.dbo.NitriteDbo;
 
 import java.util.*;
 
-@Entity("members")
-public class MongoMember extends MongoDbo implements Member<ObjectId> {
+@NitriteEntity
+public class NitriteMember extends NitriteDbo implements Member<NitriteId> {
 
     private UUID userUUID;
 
-    private List<ObjectId> snapshotIds;
+    private List<NitriteId> snapshotIds;
 
     @Override
     public UUID getUserUUID() {
@@ -42,7 +44,7 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
     }
 
     @Override
-    public List<ObjectId> getSnapshotIds() {
+    public List<NitriteId> getSnapshotIds() {
         if (snapshotIds == null) {
             snapshotIds = new ArrayList<>();
         }
@@ -50,7 +52,23 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
     }
 
     @Override
-    public void setSnapshotIds(List<ObjectId> snapshotIds) {
+    public void setSnapshotIds(List<NitriteId> snapshotIds) {
         this.snapshotIds = Objects.requireNonNull(snapshotIds, "snapshotIds cannot be null");
+    }
+
+    @Override
+    public Document write(NitriteMapper mapper) {
+        Document document = super.write(mapper);
+        document.put("userUUID", userUUID);
+        document.put("snapshotIds", getSnapshotIds());
+        return document;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void read(NitriteMapper mapper, Document document) {
+        super.read(mapper, document);
+        userUUID = (UUID) document.get("userUUID");
+        snapshotIds = (List<NitriteId>) document.get("snapshotIds");
     }
 }

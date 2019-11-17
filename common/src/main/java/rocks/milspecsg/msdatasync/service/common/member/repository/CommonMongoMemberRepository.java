@@ -18,6 +18,7 @@
 
 package rocks.milspecsg.msdatasync.service.common.member.repository;
 
+import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
@@ -35,7 +36,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public abstract class CommonMongoMemberRepository<
+public class CommonMongoMemberRepository<
     TMember extends Member<ObjectId>,
     TSnapshot extends Snapshot<ObjectId>,
     TUser,
@@ -44,20 +45,9 @@ public abstract class CommonMongoMemberRepository<
     implements CommonMongoRepository<TMember, RepositoryCacheService<ObjectId, TMember, Datastore, MongoConfig>>,
     MongoMemberRepository<TMember, TSnapshot, TUser> {
 
-    protected CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore, MongoConfig> dataStoreContext) {
+    @Inject
+    public CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore, MongoConfig> dataStoreContext) {
         super(dataStoreContext);
-    }
-
-    @Override
-    public CompletableFuture<Optional<TMember>> getOneOrGenerate(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> {
-            Optional<TMember> optionalMember = getOne(userUUID).join();
-            if (optionalMember.isPresent()) return optionalMember;
-            // if there isn't one already, create a new one
-            TMember member = generateEmpty();
-            member.setUserUUID(userUUID);
-            return insertOne(member).join();
-        });
     }
 
     @Override
@@ -74,11 +64,9 @@ public abstract class CommonMongoMemberRepository<
     public CompletableFuture<List<ObjectId>> getSnapshotIds(Query<TMember> query) {
         return CompletableFuture.supplyAsync(() -> {
             Member<ObjectId> member = query.project("snapshotIds", true).get();
-
-            if (member == null || member.getSnapshotIds() == null) {
-                return new ArrayList<>();
+            if (member == null) {
+                return Collections.emptyList();
             }
-
             return member.getSnapshotIds();
         });
     }
@@ -110,7 +98,7 @@ public abstract class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, ObjectId snapshotId) {
-        return CompletableFuture.supplyAsync(() -> removeSnapshotIds(query, snapshotId) && snapshotRepository.deleteOne(snapshotId).join());
+        return CompletableFuture.supplyAsync(() -> removeSnapshotId(query, snapshotId) && snapshotRepository.deleteOne(snapshotId).join());
     }
 
     @Override
@@ -119,12 +107,12 @@ public abstract class CommonMongoMemberRepository<
             .thenApplyAsync(objectIds -> objectIds.stream()
                 .filter(objectId -> objectId.getDate().equals(date))
                 .findFirst()
-                .map(snapshotId -> removeSnapshotIds(query, snapshotId) && snapshotRepository.deleteOne(snapshotId).join())
+                .map(snapshotId -> removeSnapshotId(query, snapshotId) && snapshotRepository.deleteOne(snapshotId).join())
                 .orElse(false)
             );
     }
 
-    private boolean removeSnapshotIds(Query<TMember> query, ObjectId snapshotId) {
+    private boolean removeSnapshotId(Query<TMember> query, ObjectId snapshotId) {
         Optional<UpdateOperations<TMember>> updateOperations = createUpdateOperations().map(u -> u.removeAll("snapshotIds", snapshotId));
         return updateOperations.isPresent() && getDataStoreContext().getDataStore().map(dataStore -> dataStore.update(query, updateOperations.get()).getUpdatedCount() > 0).orElse(false);
     }

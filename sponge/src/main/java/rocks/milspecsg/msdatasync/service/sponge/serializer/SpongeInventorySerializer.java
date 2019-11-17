@@ -32,11 +32,12 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.PlayerInventory;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.model.core.serializeditemstack.MongoSerializedItemStack;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 import rocks.milspecsg.msdatasync.model.core.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.serializer.CommonInventorySerializer;
 
+import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,9 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
 
     private static final char SEPARATOR = '_';
     private static final char PERIOD_REPLACEMENT = '-';
+
+    @Inject
+    SnapshotManager<Snapshot<?>, Key<?>> snapshotManager;
 
     @Override
     public boolean serializeInventory(Snapshot<?> snapshot, Inventory inventory, int maxSlots) {
@@ -55,7 +59,9 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
             for (int i = 0; i < maxSlots; i++) {
                 if (!iterator.hasNext()) break;
                 Inventory slot = iterator.next();
-                SerializedItemStack serializedItemStack = new MongoSerializedItemStack();
+                SerializedItemStack serializedItemStack =
+                    (SerializedItemStack) snapshotManager.getPrimaryComponent()
+                        .getDataStoreContext().getEntityClassUnsafe("serializeditemstack").newInstance();
                 ItemStack stack = slot.peek().orElse(ItemStack.empty());
                 DataContainer dc = stack.toContainer();
                 try {
@@ -70,7 +76,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
             }
             snapshot.setItemStacks(itemStacks);
             return success;
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return false;
         }
