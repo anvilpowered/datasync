@@ -32,12 +32,10 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.PlayerInventory;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 import rocks.milspecsg.msdatasync.model.core.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.serializer.CommonInventorySerializer;
 
-import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,23 +43,24 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
 
     private static final char SEPARATOR = '_';
     private static final char PERIOD_REPLACEMENT = '-';
-
-    @Inject
-    SnapshotManager<Snapshot<?>, Key<?>> snapshotManager;
+    private static final char PERIOD = '.';
+    private static final int INVENTORY_SLOTS = 41;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean serializeInventory(Snapshot<?> snapshot, Inventory inventory, int maxSlots) {
         try {
             boolean success = true;
             List<SerializedItemStack> itemStacks = new ArrayList<>();
             Iterator<Inventory> iterator = inventory.slots().iterator();
 
+            Class<SerializedItemStack> clazz = (Class<SerializedItemStack>) snapshotManager.getPrimaryComponent()
+                .getDataStoreContext().getEntityClassUnsafe("serializeditemstack");
+
             for (int i = 0; i < maxSlots; i++) {
                 if (!iterator.hasNext()) break;
                 Inventory slot = iterator.next();
-                SerializedItemStack serializedItemStack =
-                    (SerializedItemStack) snapshotManager.getPrimaryComponent()
-                        .getDataStoreContext().getEntityClassUnsafe("serializeditemstack").newInstance();
+                SerializedItemStack serializedItemStack = clazz.newInstance();
                 ItemStack stack = slot.peek().orElse(ItemStack.empty());
                 DataContainer dc = stack.toContainer();
                 try {
@@ -84,7 +83,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
 
     @Override
     public boolean serializeInventory(Snapshot<?> snapshot, Inventory inventory) {
-        return serializeInventory(snapshot, inventory, 41);
+        return serializeInventory(snapshot, inventory, INVENTORY_SLOTS);
     }
 
     @Override
@@ -138,7 +137,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
         Map<String, Object> result = new HashMap<>();
         values.forEach((dq, o) -> {
-            String s = dq.asString(SEPARATOR).replace('.', PERIOD_REPLACEMENT);
+            String s = dq.asString(SEPARATOR).replace(PERIOD, PERIOD_REPLACEMENT);
             if (o instanceof Map) {
                 Object m = serialize((Map<DataQuery, Object>) o);
                 result.put(s, m);
@@ -149,7 +148,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
                     if (li instanceof DataContainer) {
                         r1.add(serialize(((DataContainer) li).getValues(false)));
                     } else if (li instanceof String) {
-                        r1.add(((String) li).replace('.', PERIOD_REPLACEMENT));
+                        r1.add(((String) li).replace(PERIOD, PERIOD_REPLACEMENT));
                     }
                 });
                 result.put(s, r1);
@@ -168,7 +167,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
             if (o == null) {
                 continue;
             }
-            s = s.replace('-', '.');
+            s = s.replace(PERIOD_REPLACEMENT, PERIOD);
             DataQuery dq = DataQuery.of(SEPARATOR, s);
             if (o instanceof Map) {
                 Map<String, Object> m = (Map<String, Object>) o;
@@ -182,7 +181,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
                         m1 = ((List<?>) m1).stream().filter(Objects::nonNull).collect(Collectors.toList());
                     }
                     Object value = m1;
-                    s1 = s1.replace(PERIOD_REPLACEMENT, '.');
+                    s1 = s1.replace(PERIOD_REPLACEMENT, PERIOD);
                     if (m1 instanceof Map) {
                         try {
                             Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
@@ -200,7 +199,7 @@ public class SpongeInventorySerializer extends CommonInventorySerializer<Snapsho
                 }
                 result.put(dq, r1);
             } else if (!s.equals("ItemType") && o instanceof String) {
-                String n = o.toString().replace(PERIOD_REPLACEMENT, '.');
+                String n = o.toString().replace(PERIOD_REPLACEMENT, PERIOD);
                 result.put(dq, n);
             } else if (o instanceof List) {
                 result.put(dq, ((List<?>) o).stream().filter(Objects::nonNull).collect(Collectors.toList()));
