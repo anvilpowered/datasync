@@ -46,61 +46,61 @@ public interface MemberRepository<
      * @param userUUID Mojang issued {@code uuid} of {@code User} to getRequiredRankIndex corresponding {@code Member}
      * @return a ready-to-use {@code Member} that corresponds with the given {@code uuid}
      */
-    CompletableFuture<Optional<TMember>> getOneOrGenerate(UUID userUUID);
+    CompletableFuture<Optional<TMember>> getOneOrGenerateForUser(UUID userUUID);
 
-    CompletableFuture<Optional<TMember>> getOne(UUID userUUID);
+    CompletableFuture<Optional<TMember>> getOneForUser(UUID userUUID);
 
-    CompletableFuture<Optional<TKey>> getId(UUID userUUID);
+    CompletableFuture<Optional<TKey>> getIdForUser(UUID userUUID);
 
     CompletableFuture<Optional<UUID>> getUUID(TKey id);
 
     CompletableFuture<List<TKey>> getSnapshotIds(TKey id);
 
-    CompletableFuture<List<TKey>> getSnapshotIds(UUID userUUID);
+    CompletableFuture<List<TKey>> getSnapshotIdsForUser(UUID userUUID);
 
     CompletableFuture<List<Date>> getSnapshotDates(TKey id);
 
-    CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID);
+    CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID);
 
     CompletableFuture<Boolean> deleteSnapshot(TKey id, TKey snapshotId);
 
     CompletableFuture<Boolean> deleteSnapshot(TKey id, Date date);
 
-    CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, TKey snapshotId);
+    CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, Date date);
+    CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date);
 
     CompletableFuture<Boolean> addSnapshot(TKey id, TKey snapshotId);
 
-    CompletableFuture<Boolean> addSnapshot(UUID userUUID, TKey snapshotId);
+    CompletableFuture<Boolean> addSnapshotForUser(UUID userUUID, TKey snapshotId);
 
     CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Date date);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(UUID userUUID, Date date);
+    CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date);
 
     CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Optional<String> optionalString);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(UUID userUUID, Optional<String> optionalString);
+    CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString);
 
     CompletableFuture<List<TKey>> getClosestSnapshots(TKey id, Date date);
 
-    CompletableFuture<List<TKey>> getClosestSnapshots(UUID userUUID, Date date);
+    CompletableFuture<List<TKey>> getClosestSnapshotsForUser(UUID userUUID, Date date);
 
     CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(TKey id);
 
-    CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(UUID userUUID);
+    CompletableFuture<Optional<TSnapshot>> getLatestSnapshotForUser(UUID userUUID);
 
     CompletableFuture<Optional<TSnapshot>> getPrevious(TKey id, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getPrevious(UUID userUUID, TKey snapshotId);
+    CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getPrevious(UUID userUUID, Date date);
+    CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Date date);
 
     CompletableFuture<Optional<TSnapshot>> getNext(TKey id, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getNext(UUID userUUID, TKey snapshotId);
+    CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getNext(UUID userUUID, Date date);
+    CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Date date);
 
     //TODO: move this method declaration to ApiRepository in repo MSRepository
 //    Optional<Member> getNext();

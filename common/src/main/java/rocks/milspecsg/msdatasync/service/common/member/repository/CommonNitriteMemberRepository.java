@@ -75,7 +75,7 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TMember>> getOne(UUID userUUID) {
+    public CompletableFuture<Optional<TMember>> getOneForUser(UUID userUUID) {
         return CompletableFuture.supplyAsync(() -> asCursor(userUUID).map(RecordIterable::firstOrDefault));
     }
 
@@ -106,7 +106,7 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<NitriteId>> getSnapshotIds(UUID userUUID) {
+    public CompletableFuture<List<NitriteId>> getSnapshotIdsForUser(UUID userUUID) {
         return getSnapshotIds(asFilter(userUUID));
     }
 
@@ -124,7 +124,7 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID) {
+    public CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID) {
         return getSnapshotDates(asFilter(userUUID));
     }
 
@@ -155,12 +155,12 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, NitriteId snapshotId) {
+    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, NitriteId snapshotId) {
         return deleteSnapshot(asFilter(userUUID), snapshotId);
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, Date date) {
+    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date) {
         return deleteSnapshot(asFilter(userUUID), date);
     }
 
@@ -175,8 +175,8 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> addSnapshot(UUID userUUID, NitriteId snapshotId) {
-        return getOneOrGenerate(userUUID).thenApplyAsync(optionalMember -> optionalMember
+    public CompletableFuture<Boolean> addSnapshotForUser(UUID userUUID, NitriteId snapshotId) {
+        return getOneOrGenerateForUser(userUUID).thenApplyAsync(optionalMember -> optionalMember
             .filter(tMember -> addSnapshotId(asFilter(tMember.getId()), snapshotId)).isPresent());
     }
 
@@ -196,7 +196,7 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(UUID userUUID, Date date) {
+    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date) {
         return getSnapshot(asFilter(userUUID), date);
     }
 
@@ -241,7 +241,7 @@ public class CommonNitriteMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<NitriteId>> getClosestSnapshots(UUID userUUID, Date date) {
+    public CompletableFuture<List<NitriteId>> getClosestSnapshotsForUser(UUID userUUID, Date date) {
         return getClosestSnapshots(asFilter(userUUID), date);
     }
 }

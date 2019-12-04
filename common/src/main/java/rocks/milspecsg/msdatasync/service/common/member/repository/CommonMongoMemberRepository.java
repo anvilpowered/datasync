@@ -51,7 +51,7 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TMember>> getOne(UUID userUUID) {
+    public CompletableFuture<Optional<TMember>> getOneForUser(UUID userUUID) {
         return CompletableFuture.supplyAsync(() -> asQuery(userUUID).map(QueryResults::get));
     }
 
@@ -77,7 +77,7 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getSnapshotIds(UUID userUUID) {
+    public CompletableFuture<List<ObjectId>> getSnapshotIdsForUser(UUID userUUID) {
         return asQuery(userUUID).map(this::getSnapshotIds).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
     }
 
@@ -92,7 +92,7 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(UUID userUUID) {
+    public CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID) {
         return asQuery(userUUID).map(this::getSnapshotDates).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
     }
 
@@ -128,12 +128,12 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, ObjectId snapshotId) {
+    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, ObjectId snapshotId) {
         return asQuery(userUUID).map(q -> deleteSnapshot(q, snapshotId)).orElse(CompletableFuture.completedFuture(false));
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(UUID userUUID, Date date) {
+    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date) {
         return asQuery(userUUID).map(q -> deleteSnapshot(q, date)).orElse(CompletableFuture.completedFuture(false));
     }
 
@@ -154,8 +154,8 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> addSnapshot(UUID userUUID, ObjectId snapshotId) {
-        return getOneOrGenerate(userUUID).thenApplyAsync(optionalMember -> {
+    public CompletableFuture<Boolean> addSnapshotForUser(UUID userUUID, ObjectId snapshotId) {
+        return getOneOrGenerateForUser(userUUID).thenApplyAsync(optionalMember -> {
             if (!optionalMember.isPresent()) {
                 return false;
             }
@@ -179,7 +179,7 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(UUID userUUID, Date date) {
+    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date) {
         return asQuery(userUUID).map(q -> getSnapshot(q, date)).orElse(CompletableFuture.completedFuture(Optional.empty()));
     }
 
@@ -216,7 +216,7 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getClosestSnapshots(UUID userUUID, Date date) {
+    public CompletableFuture<List<ObjectId>> getClosestSnapshotsForUser(UUID userUUID, Date date) {
         return asQuery(userUUID).map(q -> getClosestSnapshots(q, date)).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
     }
 }
