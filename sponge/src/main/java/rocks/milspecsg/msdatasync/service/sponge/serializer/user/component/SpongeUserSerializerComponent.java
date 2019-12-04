@@ -32,7 +32,6 @@ import rocks.milspecsg.msdatasync.service.common.serializer.user.component.Commo
 import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -82,7 +81,7 @@ public class SpongeUserSerializerComponent<
         } else {
             waitForSnapshot = CompletableFuture.completedFuture(null);
         }
-        return waitForSnapshot.thenApplyAsync(v -> memberRepository.getLatestSnapshot(user.getUniqueId()).thenApplyAsync(optionalSnapshot -> {
+        return waitForSnapshot.thenApplyAsync(v -> memberRepository.getLatestSnapshotForUser(user.getUniqueId()).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
                 System.err.println("[MSDataSync] Could not find snapshot for user " + user.getName() + "! Check your DB configuration!");
                 return Optional.<TSnapshot>empty();

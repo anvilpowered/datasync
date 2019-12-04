@@ -235,7 +235,7 @@ public abstract class CommonSnapshotOptimizationService<
                 // do not delete latest snapshot
                 if (id.equals(latestSnapshotId)) break;
 
-                memberRepository.deleteSnapshot(userUUID, id).thenAcceptAsync(success -> {
+                memberRepository.deleteSnapshotForUser(userUUID, id).thenAcceptAsync(success -> {
                     if (success) {
                         deletedAnything[0] = true;
                         incrementDeleted();

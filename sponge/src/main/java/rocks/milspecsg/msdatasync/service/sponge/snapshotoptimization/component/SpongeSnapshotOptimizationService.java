@@ -86,7 +86,7 @@ public class SpongeSnapshotOptimizationService<
 
     private CompletableFuture<Boolean> optimize(final User user, final CommandSource source, final String name, final Object plugin) {
         if (lockedPlayers.contains(user.getUniqueId())) return CompletableFuture.completedFuture(false);
-        return memberRepository.getSnapshotIds(user.getUniqueId()).thenApplyAsync(snapshotIds -> optimizeFull(snapshotIds, user.getUniqueId(), source, name, plugin).join());
+        return memberRepository.getSnapshotIdsForUser(user.getUniqueId()).thenApplyAsync(snapshotIds -> optimizeFull(snapshotIds, user.getUniqueId(), source, name, plugin).join());
     }
 
     @Override

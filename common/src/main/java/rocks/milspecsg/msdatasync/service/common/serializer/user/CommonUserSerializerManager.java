@@ -36,7 +36,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class CommonUserSerializerManager<
@@ -124,7 +123,7 @@ public class CommonUserSerializerManager<
 
     @Override
     public CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString, Object plugin) {
-        return memberManager.getPrimaryComponent().getSnapshot(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
+        return memberManager.getPrimaryComponent().getSnapshotForUser(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
             Optional<TUser> optionalUser = userService.get(userUUID);
             if (!optionalUser.isPresent()) {
                 return stringResult.builder()

@@ -150,7 +150,7 @@ public class SnapshotViewCommand implements CommandExecutor {
                 player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, dateFormatService.format(snapshot.getCreatedUtcDate())));
             };
 
-            memberManager.getPrimaryComponent().getSnapshot(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))
+            memberManager.getPrimaryComponent().getSnapshotForUser(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))
                 .thenAcceptAsync(optionalSnapshot -> Task.builder().execute(() -> afterFound.accept(optionalSnapshot)).submit(MSDataSync.plugin));
 
             return CommandResult.success();

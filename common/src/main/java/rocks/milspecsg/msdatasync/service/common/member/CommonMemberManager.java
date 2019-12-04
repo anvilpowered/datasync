@@ -30,10 +30,8 @@ import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
 import rocks.milspecsg.msrepository.service.common.manager.CommonManager;
 
-import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class CommonMemberManager<
     TMember extends Member<?>,
@@ -63,7 +61,7 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> deleteSnapshot(UUID userUUID, Optional<String> optionalString) {
-        return getPrimaryComponent().getSnapshot(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
+        return getPrimaryComponent().getSnapshotForUser(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
             String userName = userService.getUserName(userUUID).orElse("null");
             if (!optionalSnapshot.isPresent()) {
                 return stringResult.builder()
@@ -75,7 +73,7 @@ public class CommonMemberManager<
             Date date = optionalSnapshot.get().getCreatedUtcDate();
             String formattedDate = dateFormatService.format(date);
 
-            return getPrimaryComponent().deleteSnapshot(userUUID, date).thenApplyAsync(success -> {
+            return getPrimaryComponent().deleteSnapshotForUser(userUUID, date).thenApplyAsync(success -> {
                 if (success) {
                     return stringResult.builder()
                         .append(pluginInfo.getPrefix())
@@ -157,7 +155,7 @@ public class CommonMemberManager<
                                 .aqua().append("[ < ]")
                                 .onHoverShowText(stringResult.builder().aqua().append("Previous"))
                                 .onClickExecuteCallback(cs -> {
-                                    getPrimaryComponent().getPrevious(userUUID, created).thenAcceptAsync(o -> {
+                                    getPrimaryComponent().getPreviousForUser(userUUID, created).thenAcceptAsync(o -> {
                                         if (o.isPresent()) {
                                             info(userUUID, o.get()).thenAcceptAsync(result -> stringResult.send(result, cs));
                                         } else {
@@ -177,7 +175,7 @@ public class CommonMemberManager<
                                 .aqua().append("[ > ]")
                                 .onHoverShowText(stringResult.builder().aqua().append("Next"))
                                 .onClickExecuteCallback(cs -> {
-                                    getPrimaryComponent().getNext(userUUID, created).thenAcceptAsync(o -> {
+                                    getPrimaryComponent().getNextForUser(userUUID, created).thenAcceptAsync(o -> {
                                         if (o.isPresent()) {
                                             info(userUUID, o.get()).thenAcceptAsync(result -> stringResult.send(result, cs));
                                         } else {
@@ -193,7 +191,7 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> info(UUID userUUID, Optional<String> optionalString) {
-        return getPrimaryComponent().getSnapshot(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
+        return getPrimaryComponent().getSnapshotForUser(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
             String userName = userService.getUserName(userUUID).orElse("null");
             if (!optionalSnapshot.isPresent()) {
                 return stringResult.builder()
@@ -207,7 +205,7 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<Iterable<TString>> list(UUID userUUID) {
-        return getPrimaryComponent().getSnapshotDates(userUUID).thenApplyAsync(dates -> {
+        return getPrimaryComponent().getSnapshotDatesForUser(userUUID).thenApplyAsync(dates -> {
             Collection<TString> lines = new ArrayList<>();
             String userName = userService.getUserName(userUUID).orElse("null");
             long currentTime = new Date().getTime();
