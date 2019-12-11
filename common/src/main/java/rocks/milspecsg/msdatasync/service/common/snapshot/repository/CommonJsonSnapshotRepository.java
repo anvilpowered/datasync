@@ -16,25 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package rocks.milspecsg.msdatasync.api.snapshot.repository;
+package rocks.milspecsg.msdatasync.service.common.snapshot.repository;
 
+import com.google.inject.Inject;
+import io.jsondb.JsonDBOperations;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.cache.CacheService;
-import rocks.milspecsg.msrepository.api.repository.Repository;
-import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
+import rocks.milspecsg.msrepository.datastore.DataStoreContext;
+import rocks.milspecsg.msrepository.datastore.json.JsonConfig;
+import rocks.milspecsg.msrepository.service.common.repository.CommonJsonRepository;
 
-import java.util.Optional;
+import java.util.UUID;
 
-public interface SnapshotRepository<
-    TKey,
-    TSnapshot extends Snapshot<TKey>,
-    TDataKey,
-    TDataStore,
-    TDataStoreConfig extends DataStoreConfig>
-    extends Repository<TKey, TSnapshot, CacheService<TKey, TSnapshot, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig> {
+public class CommonJsonSnapshotRepository<
+    TSnapshot extends Snapshot<UUID>,
+    TDataKey>
+    extends CommonSnapshotRepository<UUID, TSnapshot, TDataKey, JsonDBOperations, JsonConfig>
+    implements CommonJsonRepository<TSnapshot, CacheService<UUID, TSnapshot, JsonDBOperations, JsonConfig>> {
 
-    boolean setSnapshotValue(TSnapshot snapshot, TDataKey key, Optional<?> optionalValue);
-
-    Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key);
-
+    @Inject
+    protected CommonJsonSnapshotRepository(DataStoreContext<UUID, JsonDBOperations, JsonConfig> dataStoreContext) {
+        super(dataStoreContext);
+    }
 }

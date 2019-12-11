@@ -26,63 +26,72 @@ dependencies {
     implementation project(':MSRepository:msr-api')
     implementation project(':MSRepository:msr-api:api-config')
     implementation project(':MSRepository:msr-api:api-repository')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-json')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
     implementation project(':MSRepository:msr-common:common-config')
     implementation project(':MSRepository:msr-common:common-repository')
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-json')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
     implementation project(':MSRepository:msr-sponge')
 
     implementation guice
-    implementation guava
-    implementation mongodb_driver_sync
+//    implementation h2
+    implementation javasisst
+    implementation jsondb
     implementation mongo_java_driver
-
-    implementation objenesis
+    implementation mongodb_driver_sync
     implementation morphia
     implementation nitrite
-    implementation h2
-    implementation jasypt
-    implementation okhttp3
-
-    implementation jackson_annotations
-    implementation jackson_core
-    implementation jackson_databind
-    implementation podam
-    implementation reflections
-    implementation jxpath
-    implementation beanutils
-    implementation javasisst
 
     compileOnly('org.spongepowered:spongeapi:7.2.0-SNAPSHOT') {
         exclude(module: 'configurate-gson')
         exclude(module: 'configurate-yaml')
     }
-
 }
 
 shadowJar {
     archiveName = "MSDataSync-Sponge-${modVersion}.jar"
 
     dependencies {
+        include project(':api')
+        include project(':common')
+        include project(':MSRepository:msr-api')
+        include project(':MSRepository:msr-api:api-config')
+        include project(':MSRepository:msr-api:api-repository')
+        include project(':MSRepository:msr-api:api-repository:api-repository-json')
+        include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+        include project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
+
+        include project(':MSRepository:msr-common:common-config')
+        include project(':MSRepository:msr-common:common-repository')
+        include project(':MSRepository:msr-common:common-repository:common-repository-json')
+        include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
+        include project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
+        include project(':MSRepository:msr-sponge')
+
+        include dependency(beanutils)
         include dependency(bson)
-        include dependency(mongodb_driver_sync)
-        include dependency(morphia)
-        include dependency(mongo_java_driver)
-        include dependency(nitrite)
-        include dependency(objenesis)
+//        include dependency(h2)
         include dependency(jackson_annotations)
         include dependency(jackson_core)
         include dependency(jackson_databind)
+        include dependency(jackson_datatype_jdk8)
+        include dependency(jackson_datatype_jsr310)
+        include dependency(jackson_module)
+        include dependency(jasypt)
+        include dependency(javasisst)
+        include dependency(jsondb)
+        include dependency(jxpath)
+        include dependency(mongo_java_driver)
+        include dependency(mongodb_driver_sync)
+        include dependency(morphia)
+        include dependency(nitrite)
+        include dependency(objenesis)
+        include dependency(okhttp3)
         include dependency(podam)
         include dependency(reflections)
-        include dependency(jxpath)
-        include dependency(beanutils)
-        include dependency(javasisst)
-        include dependency(h2)
-        include dependency(jasypt)
-        include dependency(okhttp3)
 
         relocate 'com.fasterxml', 'relocated.com.fasterxml'
         relocate 'org.reflections', 'relocated.org.reflections'
@@ -97,20 +106,6 @@ shadowJar {
         relocate 'javassist', 'relocated.javassist'
         relocate 'okhttp3', 'relocated.okhttp3'
         relocate 'org.jasypt', 'relocated.org.jasypt'
-
-        include project(':api')
-        include project(':common')
-        include project(':MSRepository:msr-api')
-        include project(':MSRepository:msr-api:api-config')
-        include project(':MSRepository:msr-api:api-repository')
-        include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
-        include project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
-
-        include project(':MSRepository:msr-common:common-config')
-        include project(':MSRepository:msr-common:common-repository')
-        include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
-        include project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
-        include project(':MSRepository:msr-sponge')
     }
 }
 
@@ -129,4 +124,3 @@ artifacts {
 test {
     useJUnitPlatform()
 }
-
