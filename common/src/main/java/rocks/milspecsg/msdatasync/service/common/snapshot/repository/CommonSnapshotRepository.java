@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.service.common.repository.CommonRepository;
@@ -36,7 +36,7 @@ public abstract class CommonSnapshotRepository<
     TDataKey,
     TDataStore,
     TDataStoreConfig extends DataStoreConfig>
-    extends CommonRepository<TKey, TSnapshot, RepositoryCacheService<TKey, TSnapshot, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>
+    extends CommonRepository<TKey, TSnapshot, CacheService<TKey, TSnapshot, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>
     implements SnapshotRepository<TKey, TSnapshot, TDataKey, TDataStore, TDataStoreConfig> {
 
     @Inject

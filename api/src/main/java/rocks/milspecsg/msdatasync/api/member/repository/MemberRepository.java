@@ -20,7 +20,7 @@ package rocks.milspecsg.msdatasync.api.member.repository;
 
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.api.repository.Repository;
 import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 
@@ -37,7 +37,7 @@ public interface MemberRepository<
     TUser,
     TDataStore,
     TDataStoreConfig extends DataStoreConfig>
-    extends Repository<TKey, TMember, RepositoryCacheService<TKey, TMember, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>  {
+    extends Repository<TKey, TMember, CacheService<TKey, TMember, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>  {
 
     /**
      * Gets the corresponding {@code Member} from the database.

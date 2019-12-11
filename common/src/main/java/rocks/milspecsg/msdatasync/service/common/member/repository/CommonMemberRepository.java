@@ -24,7 +24,7 @@ import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.model.data.dbo.ObjectWithId;
@@ -41,7 +41,7 @@ public abstract class CommonMemberRepository<
     TDataKey,
     TDataStore,
     TDataStoreConfig extends DataStoreConfig>
-    extends CommonRepository<TKey, TMember, RepositoryCacheService<TKey, TMember, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>
+    extends CommonRepository<TKey, TMember, CacheService<TKey, TMember, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>
     implements MemberRepository<TKey, TMember, TSnapshot, TUser, TDataStore, TDataStoreConfig> {
 
     @Inject
@@ -57,12 +57,20 @@ public abstract class CommonMemberRepository<
     @Override
     public CompletableFuture<Optional<TMember>> getOneOrGenerateForUser(UUID userUUID) {
         return CompletableFuture.supplyAsync(() -> {
-            Optional<TMember> optionalMember = getOneForUser(userUUID).join();
-            if (optionalMember.isPresent()) return optionalMember;
-            // if there isn't one already, create a new one
-            TMember member = generateEmpty();
-            member.setUserUUID(userUUID);
-            return insertOne(member).join();
+            try {
+                Optional<TMember> optionalMember = getOneForUser(userUUID).join();
+                if (optionalMember.isPresent()) return optionalMember;
+                // if there isn't one already, create a new one
+                TMember member = generateEmpty();
+                member.setUserUUID(userUUID);
+                List<TKey> list = new ArrayList<>();
+                list.add((TKey) UUID.randomUUID());
+                member.setSnapshotIds(list);
+                return insertOne(member).join();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Optional.empty();
+            }
         });
     }
 

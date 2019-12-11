@@ -21,6 +21,7 @@ package rocks.milspecsg.msdatasync;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import io.jsondb.JsonDBOperations;
 import org.bson.types.ObjectId;
 import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.NitriteId;
@@ -43,12 +44,14 @@ import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.member.CommonMemberManager;
+import rocks.milspecsg.msdatasync.service.common.member.repository.CommonJsonMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonMongoMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonNitriteMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.serializer.*;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.CommonUserSerializerManager;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.component.CommonUserSerializerComponent;
 import rocks.milspecsg.msdatasync.service.common.snapshot.CommonSnapshotManager;
+import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonJsonSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonMongoSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonNitriteSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.CommonSnapshotOptimizationManager;
@@ -59,18 +62,25 @@ import rocks.milspecsg.msdatasync.service.common.misc.CommonSyncUtils;
 import rocks.milspecsg.msdatasync.service.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msrepository.BindingExtensions;
 import rocks.milspecsg.msrepository.CommonBindingExtensions;
+import rocks.milspecsg.msrepository.api.manager.annotation.JsonComponent;
 import rocks.milspecsg.msrepository.api.manager.annotation.MongoDBComponent;
 import rocks.milspecsg.msrepository.api.manager.annotation.NitriteComponent;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
+import rocks.milspecsg.msrepository.datastore.json.JsonConfig;
+import rocks.milspecsg.msrepository.datastore.json.JsonContext;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoContext;
 import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
 import rocks.milspecsg.msrepository.datastore.nitrite.NitriteContext;
 
+import java.util.UUID;
+
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class CommonModule<
+    TJsonMember extends Member<UUID>,
     TMongoMember extends Member<ObjectId>,
     TNitriteMember extends Member<NitriteId>,
+    TJsonSnapshot extends Snapshot<UUID>,
     TMongoSnapshot extends Snapshot<ObjectId>,
     TNitriteSnapshot extends Snapshot<NitriteId>,
     TDataKey,
@@ -159,6 +169,13 @@ public class CommonModule<
 
         bind(SyncUtils.class).to(CommonSyncUtils.class);
 
+        bind(JsonConfig.class).toInstance(
+            new JsonConfig(
+                BASE_SCAN_PACKAGE,
+                ConfigKeys.DATA_STORE_NAME
+            )
+        );
+
         bind(MongoConfig.class).toInstance(
             new MongoConfig(
                 BASE_SCAN_PACKAGE,
@@ -181,6 +198,18 @@ public class CommonModule<
                 ConfigKeys.NITRITE_USE_AUTH,
                 ConfigKeys.NITRITE_USE_COMPRESSION
             )
+        );
+
+        be.bind(
+            new TypeToken<UserSerializerComponent<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<UserSerializerComponent<?, Snapshot<?>, TUser, ?, ?>>(getClass()) {
+            },
+            new TypeToken<UserSerializerComponent<UUID, TJsonSnapshot, TUser, JsonDBOperations, JsonConfig>>(getClass()) {
+            },
+            new TypeToken<CommonUserSerializerComponent<UUID, TJsonMember, TJsonSnapshot, TUser, TDataKey, JsonDBOperations, JsonConfig>>(getClass()) {
+            },
+            JsonComponent.class
         );
 
         be.bind(
@@ -219,6 +248,18 @@ public class CommonModule<
             },
             new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
             },
+            new TypeToken<SnapshotOptimizationService<UUID, TUser, TCommandSource, JsonDBOperations, JsonConfig>>(getClass()) {
+            },
+            new TypeToken<CommonSnapshotOptimizationService<UUID, TJsonMember, TJsonSnapshot, TPlayer, TUser, TCommandSource, TDataKey, JsonDBOperations, JsonConfig>>(getClass()) {
+            },
+            JsonComponent.class
+        );
+
+        be.bind(
+            new TypeToken<SnapshotOptimizationService<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
+            },
             new TypeToken<SnapshotOptimizationService<ObjectId, TUser, TCommandSource, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<CommonSnapshotOptimizationService<ObjectId, TMongoMember, TMongoSnapshot, TPlayer, TUser, TCommandSource, TDataKey, Datastore, MongoConfig>>(getClass()) {
@@ -243,6 +284,18 @@ public class CommonModule<
             },
             new TypeToken<CommonSnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
             }
+        );
+
+        be.bind(
+            new TypeToken<MemberRepository<?, ?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<MemberRepository<?, Member<?>, Snapshot<?>, TUser, ?, ?>>(getClass()) {
+            },
+            new TypeToken<MemberRepository<UUID, TJsonMember, TJsonSnapshot, TUser, JsonDBOperations, JsonConfig>>(getClass()) {
+            },
+            new TypeToken<CommonJsonMemberRepository<TJsonMember, TJsonSnapshot, TUser, TDataKey>>(getClass()) {
+            },
+            JsonComponent.class
         );
 
         be.bind(
@@ -281,6 +334,18 @@ public class CommonModule<
             },
             new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
             },
+            new TypeToken<SnapshotRepository<UUID, TJsonSnapshot, TDataKey, JsonDBOperations, JsonConfig>>(getClass()) {
+            },
+            new TypeToken<CommonJsonSnapshotRepository<TJsonSnapshot, TDataKey>>(getClass()) {
+            },
+            JsonComponent.class
+        );
+
+        be.bind(
+            new TypeToken<SnapshotRepository<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
+            },
             new TypeToken<SnapshotRepository<ObjectId, TMongoSnapshot, TDataKey, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<CommonMongoSnapshotRepository<TMongoSnapshot, TDataKey>>(getClass()) {
@@ -306,6 +371,10 @@ public class CommonModule<
             new TypeToken<CommonSnapshotManager<Snapshot<?>, TDataKey>>(getClass()) {
             }
         );
+
+        bind(new TypeLiteral<DataStoreContext<UUID, JsonDBOperations, JsonConfig>>() {
+        }).to(new TypeLiteral<JsonContext>() {
+        });
 
         bind(new TypeLiteral<DataStoreContext<ObjectId, Datastore, MongoConfig>>() {
         }).to(new TypeLiteral<MongoContext>() {
