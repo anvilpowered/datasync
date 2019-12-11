@@ -28,7 +28,7 @@ import org.dizitart.no2.objects.filters.ObjectFilters;
 import rocks.milspecsg.msdatasync.api.member.repository.NitriteMemberRepository;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
 import rocks.milspecsg.msrepository.service.common.repository.CommonNitriteRepository;
@@ -46,7 +46,7 @@ public class CommonNitriteMemberRepository<
     TUser,
     TDataKey>
     extends CommonMemberRepository<NitriteId, TMember, TSnapshot, TUser, TDataKey, Nitrite, NitriteConfig>
-    implements CommonNitriteRepository<TMember, RepositoryCacheService<NitriteId, TMember, Nitrite, NitriteConfig>>,
+    implements CommonNitriteRepository<TMember, CacheService<NitriteId, TMember, Nitrite, NitriteConfig>>,
     NitriteMemberRepository<TMember, TSnapshot, TUser> {
 
     @Inject

@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 import rocks.milspecsg.msrepository.service.common.repository.CommonMongoRepository;
@@ -31,11 +31,10 @@ public class CommonMongoSnapshotRepository<
     TSnapshot extends Snapshot<ObjectId>,
     TDataKey>
     extends CommonSnapshotRepository<ObjectId, TSnapshot, TDataKey, Datastore, MongoConfig>
-    implements CommonMongoRepository<TSnapshot, RepositoryCacheService<ObjectId, TSnapshot, Datastore, MongoConfig>> {
+    implements CommonMongoRepository<TSnapshot, CacheService<ObjectId, TSnapshot, Datastore, MongoConfig>> {
 
     @Inject
     public CommonMongoSnapshotRepository(DataStoreContext<ObjectId, Datastore, MongoConfig> dataStoreContext) {
         super(dataStoreContext);
     }
-
 }

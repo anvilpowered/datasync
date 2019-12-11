@@ -27,7 +27,7 @@ import org.mongodb.morphia.query.UpdateOperations;
 import rocks.milspecsg.msdatasync.api.member.repository.MongoMemberRepository;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 import rocks.milspecsg.msrepository.service.common.repository.CommonMongoRepository;
@@ -42,7 +42,7 @@ public class CommonMongoMemberRepository<
     TUser,
     TDataKey>
     extends CommonMemberRepository<ObjectId, TMember, TSnapshot, TUser, TDataKey, Datastore, MongoConfig>
-    implements CommonMongoRepository<TMember, RepositoryCacheService<ObjectId, TMember, Datastore, MongoConfig>>,
+    implements CommonMongoRepository<TMember, CacheService<ObjectId, TMember, Datastore, MongoConfig>>,
     MongoMemberRepository<TMember, TSnapshot, TUser> {
 
     @Inject

@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.NitriteId;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.RepositoryCacheService;
+import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
 import rocks.milspecsg.msrepository.service.common.repository.CommonNitriteRepository;
@@ -31,7 +31,7 @@ public class CommonNitriteSnapshotRepository<
     TSnapshot extends Snapshot<NitriteId>,
     TDataKey>
     extends CommonSnapshotRepository<NitriteId, TSnapshot, TDataKey, Nitrite, NitriteConfig>
-    implements CommonNitriteRepository<TSnapshot, RepositoryCacheService<NitriteId, TSnapshot, Nitrite, NitriteConfig>> {
+    implements CommonNitriteRepository<TSnapshot, CacheService<NitriteId, TSnapshot, Nitrite, NitriteConfig>> {
 
     @Inject
     public CommonNitriteSnapshotRepository(DataStoreContext<NitriteId, Nitrite, NitriteConfig> dataStoreContext) {
