@@ -2,6 +2,13 @@
 
 <img src="icon.png" width="290" height="290" align="right">
 
+#### Quick Links
+[Join our development discord](https://discord.gg/9wnvCyy)
+
+[Ore page](https://ore.spongepowered.org/Cableguy20/MSDataSync)
+
+[Installation Guide](https://github.com/MilSpecSG/MSDataSync/wiki/Installation)
+
 Have you ever had problems with players losing items?
 
 Do you run a multi server network where every server needs to share inventories and other player data?
