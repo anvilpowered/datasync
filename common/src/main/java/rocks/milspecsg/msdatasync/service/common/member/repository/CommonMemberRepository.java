@@ -63,9 +63,6 @@ public abstract class CommonMemberRepository<
                 // if there isn't one already, create a new one
                 TMember member = generateEmpty();
                 member.setUserUUID(userUUID);
-                List<TKey> list = new ArrayList<>();
-                list.add((TKey) UUID.randomUUID());
-                member.setSnapshotIds(list);
                 return insertOne(member).join();
             } catch (Exception e) {
                 e.printStackTrace();
