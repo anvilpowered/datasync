@@ -129,7 +129,7 @@ public abstract class CommonMemberRepository<
 
     @Override
     public CompletableFuture<Optional<TSnapshot>> getLatestSnapshotForUser(UUID userUUID) {
-        return getOneForUser(userUUID).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> snapshotRepository.getOne(member.getSnapshotIds().get(member.getSnapshotIds().size() - 1)).join()));
+        return getOneOrGenerateForUser(userUUID).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> snapshotRepository.getOne(member.getSnapshotIds().get(member.getSnapshotIds().size() - 1)).join()));
     }
 
     @Override
