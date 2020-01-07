@@ -134,7 +134,7 @@ public class CommonXodusMemberRepository<
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date) {
-        return deleteSnapshot(query, id -> getSnapshot(query, date).join().map(s -> ((s.getCreatedUtcDate().getTime() / 1000L) * 1000L) == date.getTime()).orElse(false));
+        return deleteSnapshot(query, id -> getSnapshot(query, date).join().map(s -> checkDate(s.getCreatedUtcDate(), date)).orElse(false));
     }
 
     @Override
@@ -206,7 +206,7 @@ public class CommonXodusMemberRepository<
                 List<EntityId> ids = optionalList.get();
                 for (EntityId id : ids) {
                     Optional<TSnapshot> optionalSnapshot = snapshotRepository.getOne(id).join()
-                        .filter(s -> ((s.getCreatedUtcDate().getTime() / 1000L) * 1000L) == date.getTime());
+                        .filter(s -> checkDate(s.getCreatedUtcDate(), date));
                     if (optionalSnapshot.isPresent()) {
                         return optionalSnapshot;
                     }
@@ -243,5 +243,23 @@ public class CommonXodusMemberRepository<
     @Override
     public Function<? super StoreTransaction, ? extends Iterable<Entity>> asQuery(UUID userUUID) {
         return txn -> txn.find(getTClass().getSimpleName(), "userUUID", userUUID.toString());
+    }
+
+    private static boolean checkDate(Date a, Date b) {
+        long aTime = a.getTime();
+        long bTime = b.getTime();
+
+        if (aTime == bTime) {
+            return true;
+        }
+
+        long aRounded = (aTime / 1000L) * 1000L;
+        long bRounded = (bTime / 1000L) * 1000L;
+
+        // check if x -> x % 1000 == 0 is true for either
+        // at least one input is already rounded
+        // if neither input was rounded to begin with
+        // dont round them
+        return (aTime == aRounded || bTime == bRounded) && aRounded == bRounded;
     }
 }
