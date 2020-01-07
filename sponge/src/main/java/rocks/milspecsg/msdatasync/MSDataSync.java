@@ -28,6 +28,7 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStoppingEvent;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
@@ -51,7 +52,8 @@ import rocks.milspecsg.msrepository.service.common.config.CommonConfigurationSer
     version = MSDataSyncPluginInfo.version,
     description = MSDataSyncPluginInfo.description,
     authors = MSDataSyncPluginInfo.authors,
-    url = MSDataSyncPluginInfo.url
+    url = MSDataSyncPluginInfo.url,
+    dependencies = @Dependency(id = "spotlin", optional = true, version = "0.2.0")
 )
 public class MSDataSync {
 

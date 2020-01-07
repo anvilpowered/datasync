@@ -16,15 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package rocks.milspecsg.msdatasync.model.core.serializeditemstack;
+package rocks.milspecsg.msdatasync.model.core.snapshot;
 
-import java.io.Serializable;
-import java.util.Map;
+import rocks.milspecsg.msrepository.model.data.dbo.Mappable;
 
-public interface SerializedItemStack extends Serializable {
-
-    long serialVersionUID = 3108223915815471023L;
-
-    Map<String, Object> getProperties();
-    void setProperties(Map<String, Object> properties);
+public interface MappableSnapshot<TKey, T> extends Snapshot<TKey>, Mappable<T> {
 }
