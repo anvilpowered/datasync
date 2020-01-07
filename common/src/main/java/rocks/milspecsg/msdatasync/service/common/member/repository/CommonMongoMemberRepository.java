@@ -77,11 +77,6 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getSnapshotIdsForUser(UUID userUUID) {
-        return asQuery(userUUID).map(this::getSnapshotIds).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
-    }
-
-    @Override
     public CompletableFuture<List<Date>> getSnapshotDates(Query<TMember> query) {
         return getSnapshotIds(query).thenApplyAsync(objectIds -> objectIds.stream().map(ObjectId::getDate).collect(Collectors.toList()));
     }

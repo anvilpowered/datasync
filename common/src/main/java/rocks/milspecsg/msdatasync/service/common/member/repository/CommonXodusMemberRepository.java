@@ -82,11 +82,6 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getSnapshotIdsForUser(UUID userUUID) {
-        return getSnapshotIds(asQuery(userUUID));
-    }
-
-    @Override
     public CompletableFuture<List<Date>> getSnapshotDates(Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
         return getSnapshotIds(query).thenApplyAsync(ids -> ids.stream()
             .map(id -> snapshotRepository.getCreatedUtcDate(id).join().orElse(null))

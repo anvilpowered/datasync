@@ -88,6 +88,11 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
+    public CompletableFuture<List<TKey>> getSnapshotIdsForUser(UUID userUUID) {
+        return getOneOrGenerateForUser(userUUID).thenApplyAsync(o -> o.map(Member::getSnapshotIds).orElse(Collections.emptyList()));
+    }
+
+    @Override
     public CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Optional<String> optionalString) {
         return CompletableFuture.supplyAsync(() -> {
             if (optionalString.isPresent()) {
