@@ -117,13 +117,28 @@ public class CommonXodusMemberRepository<
                     return false;
                 }
                 List<EntityId> ids = optionalList.get();
-                ids.removeIf(idPredicate);
+                EntityId toRemove = null;
+                int indexToRemove = -1;
+                int size = ids.size();
+                for (int i = 0; i < size; i++) {
+                    EntityId id = ids.get(i);
+                    if (idPredicate.test(id)) {
+                        indexToRemove = i;
+                        toRemove = id;
+                        break;
+                    }
+                }
+                if (indexToRemove < 0) {
+                    txn.abort();
+                    return false;
+                }
+                ids.remove(indexToRemove);
                 try {
                     toEdit.setBlob("snapshotIds", new ByteArraySizedInputStream(Mappable.serializeUnsafe(ids)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return txn.commit();
+                return txn.commit() && snapshotRepository.deleteOne(toRemove).join();
             })).orElse(false));
     }
 
@@ -134,7 +149,7 @@ public class CommonXodusMemberRepository<
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date) {
-        return deleteSnapshot(query, id -> getSnapshot(query, date).join().map(s -> checkDate(s.getCreatedUtcDate(), date)).orElse(false));
+        return deleteSnapshot(query, id -> getSnapshot(query, date).join().map(s -> s.getId().equals(id)).orElse(false));
     }
 
     @Override
