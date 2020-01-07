@@ -22,18 +22,20 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import io.jsondb.JsonDBOperations;
+import jetbrains.exodus.entitystore.Entity;
+import jetbrains.exodus.entitystore.EntityId;
+import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.bson.types.ObjectId;
 import org.dizitart.no2.Nitrite;
 import org.dizitart.no2.NitriteId;
 import org.mongodb.morphia.Datastore;
 import rocks.milspecsg.msdatasync.api.config.ConfigKeys;
+import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msdatasync.api.serializer.*;
-import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
-import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.*;
 import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
@@ -43,10 +45,14 @@ import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOpt
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
 import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.service.common.keys.CommonDataKeyService;
 import rocks.milspecsg.msdatasync.service.common.member.CommonMemberManager;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonJsonMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonMongoMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonNitriteMemberRepository;
+import rocks.milspecsg.msdatasync.service.common.member.repository.CommonXodusMemberRepository;
+import rocks.milspecsg.msdatasync.service.common.misc.CommonDateFormatService;
+import rocks.milspecsg.msdatasync.service.common.misc.CommonSyncUtils;
 import rocks.milspecsg.msdatasync.service.common.serializer.*;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.CommonUserSerializerManager;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.component.CommonUserSerializerComponent;
@@ -54,17 +60,16 @@ import rocks.milspecsg.msdatasync.service.common.snapshot.CommonSnapshotManager;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonJsonSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonMongoSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonNitriteSnapshotRepository;
+import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonXodusSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.CommonSnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
-import rocks.milspecsg.msdatasync.service.common.keys.CommonDataKeyService;
-import rocks.milspecsg.msdatasync.service.common.misc.CommonDateFormatService;
-import rocks.milspecsg.msdatasync.service.common.misc.CommonSyncUtils;
 import rocks.milspecsg.msdatasync.service.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msrepository.BindingExtensions;
 import rocks.milspecsg.msrepository.CommonBindingExtensions;
 import rocks.milspecsg.msrepository.api.manager.annotation.JsonComponent;
 import rocks.milspecsg.msrepository.api.manager.annotation.MongoDBComponent;
 import rocks.milspecsg.msrepository.api.manager.annotation.NitriteComponent;
+import rocks.milspecsg.msrepository.api.manager.annotation.XodusComponent;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.datastore.json.JsonConfig;
 import rocks.milspecsg.msrepository.datastore.json.JsonContext;
@@ -72,6 +77,9 @@ import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoContext;
 import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
 import rocks.milspecsg.msrepository.datastore.nitrite.NitriteContext;
+import rocks.milspecsg.msrepository.datastore.xodus.XodusConfig;
+import rocks.milspecsg.msrepository.datastore.xodus.XodusContext;
+import rocks.milspecsg.msrepository.model.data.dbo.Mappable;
 
 import java.util.UUID;
 
@@ -80,9 +88,11 @@ public class CommonModule<
     TJsonMember extends Member<UUID>,
     TMongoMember extends Member<ObjectId>,
     TNitriteMember extends Member<NitriteId>,
+    TXodusMember extends Member<EntityId> & Mappable<Entity>,
     TJsonSnapshot extends Snapshot<UUID>,
     TMongoSnapshot extends Snapshot<ObjectId>,
     TNitriteSnapshot extends Snapshot<NitriteId>,
+    TXodusSnapshot extends Snapshot<EntityId> & Mappable<Entity>,
     TDataKey,
     TPlayer extends TUser,
     TUser,
@@ -200,6 +210,13 @@ public class CommonModule<
             )
         );
 
+        bind(XodusConfig.class).toInstance(
+            new XodusConfig(
+                BASE_SCAN_PACKAGE,
+                ConfigKeys.DATA_STORE_NAME
+            )
+        );
+
         be.bind(
             new TypeToken<UserSerializerComponent<?, ?, ?, ?, ?>>(getClass()) {
             },
@@ -234,6 +251,18 @@ public class CommonModule<
             new TypeToken<CommonUserSerializerComponent<NitriteId, TNitriteMember, TNitriteSnapshot, TUser, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
             },
             NitriteComponent.class
+        );
+
+        be.bind(
+            new TypeToken<UserSerializerComponent<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<UserSerializerComponent<?, Snapshot<?>, TUser, ?, ?>>(getClass()) {
+            },
+            new TypeToken<UserSerializerComponent<EntityId, TXodusSnapshot, TUser, PersistentEntityStore, XodusConfig>>(getClass()) {
+            },
+            new TypeToken<CommonUserSerializerComponent<EntityId, TXodusMember, TXodusSnapshot, TUser, TDataKey, PersistentEntityStore, XodusConfig>>(getClass()) {
+            },
+            XodusComponent.class
         );
 
         be.bind(
@@ -280,6 +309,18 @@ public class CommonModule<
         );
 
         be.bind(
+            new TypeToken<SnapshotOptimizationService<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotOptimizationService<EntityId, TUser, TCommandSource, PersistentEntityStore, XodusConfig>>(getClass()) {
+            },
+            new TypeToken<CommonSnapshotOptimizationService<EntityId, TXodusMember, TXodusSnapshot, TPlayer, TUser, TCommandSource, TDataKey, PersistentEntityStore, XodusConfig>>(getClass()) {
+            },
+            XodusComponent.class
+        );
+
+        be.bind(
             new TypeToken<SnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
             },
             new TypeToken<CommonSnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
@@ -320,6 +361,18 @@ public class CommonModule<
             new TypeToken<CommonNitriteMemberRepository<TNitriteMember, TNitriteSnapshot, TUser, TDataKey>>(getClass()) {
             },
             NitriteComponent.class
+        );
+
+        be.bind(
+            new TypeToken<MemberRepository<?, ?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<MemberRepository<?, Member<?>, Snapshot<?>, TUser, ?, ?>>(getClass()) {
+            },
+            new TypeToken<MemberRepository<EntityId, TXodusMember, TXodusSnapshot, TUser, PersistentEntityStore, XodusConfig>>(getClass()) {
+            },
+            new TypeToken<CommonXodusMemberRepository<TXodusMember, TXodusSnapshot, TUser, TDataKey>>(getClass()) {
+            },
+            XodusComponent.class
         );
 
         be.bind(
@@ -366,6 +419,18 @@ public class CommonModule<
         );
 
         be.bind(
+            new TypeToken<SnapshotRepository<?, ?, ?, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
+            },
+            new TypeToken<SnapshotRepository<EntityId, TXodusSnapshot, TDataKey, PersistentEntityStore, XodusConfig>>(getClass()) {
+            },
+            new TypeToken<CommonXodusSnapshotRepository<TXodusSnapshot, TDataKey>>(getClass()) {
+            },
+            XodusComponent.class
+        );
+
+        be.bind(
             new TypeToken<SnapshotManager<Snapshot<?>, TDataKey>>(getClass()) {
             },
             new TypeToken<CommonSnapshotManager<Snapshot<?>, TDataKey>>(getClass()) {
@@ -384,5 +449,8 @@ public class CommonModule<
         }).to(new TypeLiteral<NitriteContext>() {
         });
 
+        bind(new TypeLiteral<DataStoreContext<EntityId, PersistentEntityStore, XodusConfig>>() {
+        }).to(new TypeLiteral<XodusContext>() {
+        });
     }
 }

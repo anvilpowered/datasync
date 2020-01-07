@@ -21,9 +21,12 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-json')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-xodus')
     implementation project(':MSRepository:msr-api:api-config')
 
     implementation nitrite
     implementation guice
     implementation jsondb
+    implementation xodus
+    implementation xodus_entity_store
 }

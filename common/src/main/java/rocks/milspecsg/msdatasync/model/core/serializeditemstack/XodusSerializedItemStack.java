@@ -18,13 +18,27 @@
 
 package rocks.milspecsg.msdatasync.model.core.serializeditemstack;
 
-import java.io.Serializable;
+import rocks.milspecsg.msrepository.datastore.xodus.annotation.XodusEmbedded;
+
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public interface SerializedItemStack extends Serializable {
+@XodusEmbedded
+public class XodusSerializedItemStack implements SerializedItemStack {
 
-    long serialVersionUID = 3108223915815471023L;
+    private Map<String, Object> properties;
 
-    Map<String, Object> getProperties();
-    void setProperties(Map<String, Object> properties);
+    @Override
+    public Map<String, Object> getProperties() {
+        if (properties == null) {
+            properties = new HashMap<>();
+        }
+        return properties;
+    }
+
+    @Override
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = Objects.requireNonNull(properties, "properties cannot be null");
+    }
 }

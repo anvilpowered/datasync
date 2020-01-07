@@ -22,14 +22,18 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-json')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-xodus')
     implementation project(':MSRepository:msr-common')
     implementation project(':MSRepository:msr-common:common-repository')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-json')
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-xodus')
 
     implementation morphia
     implementation nitrite
     implementation jsondb
     implementation guice
+    implementation xodus
+    implementation xodus_entity_store
 }

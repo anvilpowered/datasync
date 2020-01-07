@@ -29,11 +29,13 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-repository:api-repository-json')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-xodus')
     implementation project(':MSRepository:msr-common:common-config')
     implementation project(':MSRepository:msr-common:common-repository')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-json')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-xodus')
     implementation project(':MSRepository:msr-sponge')
 
     implementation guice
@@ -44,6 +46,8 @@ dependencies {
     implementation mongodb_driver_sync
     implementation morphia
     implementation nitrite
+    implementation xodus
+    implementation xodus_entity_store
 
     compileOnly('org.spongepowered:spongeapi:7.2.0-SNAPSHOT') {
         exclude(module: 'configurate-gson')
@@ -63,12 +67,14 @@ shadowJar {
         include project(':MSRepository:msr-api:api-repository:api-repository-json')
         include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
         include project(':MSRepository:msr-api:api-repository:api-repository-nitrite')
+        include project(':MSRepository:msr-api:api-repository:api-repository-xodus')
 
         include project(':MSRepository:msr-common:common-config')
         include project(':MSRepository:msr-common:common-repository')
         include project(':MSRepository:msr-common:common-repository:common-repository-json')
         include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
         include project(':MSRepository:msr-common:common-repository:common-repository-nitrite')
+        include project(':MSRepository:msr-common:common-repository:common-repository-xodus')
         include project(':MSRepository:msr-sponge')
 
         include dependency(beanutils)
@@ -87,11 +93,16 @@ shadowJar {
         include dependency(mongo_java_driver)
         include dependency(mongodb_driver_sync)
         include dependency(morphia)
+        include dependency(microutils_logging)
         include dependency(nitrite)
         include dependency(objenesis)
         include dependency(okhttp3)
         include dependency(podam)
         include dependency(reflections)
+        include dependency(xodus)
+        include dependency(xodus_entity_store)
+        include dependency(xodus_environment)
+        include dependency(xodus_utils)
 
         relocate 'com.fasterxml', 'relocated.com.fasterxml'
         relocate 'org.reflections', 'relocated.org.reflections'
