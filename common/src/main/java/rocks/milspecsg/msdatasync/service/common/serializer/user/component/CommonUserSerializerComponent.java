@@ -76,7 +76,13 @@ public abstract class CommonUserSerializerComponent<
                 System.err.println("[MSDataSync] Snapshot upload failed for user " + userService.getUserName(user) + "! Check your DB configuration!");
                 return Optional.empty();
             }
-            return memberRepository.addSnapshotForUser(userService.getUUID(user), optionalSnapshot.get().getId()).join() ? optionalSnapshot : Optional.empty();
+            if (memberRepository.addSnapshotForUser(userService.getUUID(user), optionalSnapshot.get().getId()).join()) {
+                return optionalSnapshot;
+            } else {
+                // remove snapshot from DB because it was not added to the user successfully
+                snapshotRepository.deleteOne(optionalSnapshot.get().getId()).join();
+                return Optional.empty();
+            }
         });
     }
 
