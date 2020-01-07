@@ -30,7 +30,7 @@ import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 
-public class UploadStartCommand implements CommandExecutor {
+public class SyncUploadCommand implements CommandExecutor {
 
     @Inject
     private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;

@@ -44,7 +44,7 @@ public class SyncCommandManager implements CommandManager {
     private SyncInfoCommand syncInfoCommand;
 
     @Inject
-    private UploadStartCommand uploadStartCommand;
+    private SyncUploadCommand syncUploadCommand;
 
     @Inject
     private SyncLockCommand syncLockCommand;
@@ -236,7 +236,7 @@ public class SyncCommandManager implements CommandManager {
         subCommands.put(Arrays.asList("upload", "up"), CommandSpec.builder()
             .description(Text.of("Uploads all players on server."))
             .permission(PluginPermissions.SNAPSHOT_CREATE)
-            .executor(uploadStartCommand)
+            .executor(syncUploadCommand)
             .build());
 
         subCommands.put(Collections.singletonList("help"), CommandSpec.builder()
