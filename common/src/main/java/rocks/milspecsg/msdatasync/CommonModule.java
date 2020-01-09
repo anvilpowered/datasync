@@ -21,13 +21,10 @@ package rocks.milspecsg.msdatasync;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import io.jsondb.JsonDBOperations;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.bson.types.ObjectId;
-import org.dizitart.no2.Nitrite;
-import org.dizitart.no2.NitriteId;
 import org.mongodb.morphia.Datastore;
 import rocks.milspecsg.msdatasync.api.config.ConfigKeys;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
@@ -47,9 +44,7 @@ import rocks.milspecsg.msdatasync.model.core.member.Member;
 import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.service.common.keys.CommonDataKeyService;
 import rocks.milspecsg.msdatasync.service.common.member.CommonMemberManager;
-import rocks.milspecsg.msdatasync.service.common.member.repository.CommonJsonMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonMongoMemberRepository;
-import rocks.milspecsg.msdatasync.service.common.member.repository.CommonNitriteMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.member.repository.CommonXodusMemberRepository;
 import rocks.milspecsg.msdatasync.service.common.misc.CommonDateFormatService;
 import rocks.milspecsg.msdatasync.service.common.misc.CommonSyncUtils;
@@ -57,41 +52,27 @@ import rocks.milspecsg.msdatasync.service.common.serializer.*;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.CommonUserSerializerManager;
 import rocks.milspecsg.msdatasync.service.common.serializer.user.component.CommonUserSerializerComponent;
 import rocks.milspecsg.msdatasync.service.common.snapshot.CommonSnapshotManager;
-import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonJsonSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonMongoSnapshotRepository;
-import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonNitriteSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshot.repository.CommonXodusSnapshotRepository;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.CommonSnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.service.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.service.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msrepository.BindingExtensions;
 import rocks.milspecsg.msrepository.CommonBindingExtensions;
-import rocks.milspecsg.msrepository.api.manager.annotation.JsonComponent;
 import rocks.milspecsg.msrepository.api.manager.annotation.MongoDBComponent;
-import rocks.milspecsg.msrepository.api.manager.annotation.NitriteComponent;
 import rocks.milspecsg.msrepository.api.manager.annotation.XodusComponent;
 import rocks.milspecsg.msrepository.datastore.DataStoreContext;
-import rocks.milspecsg.msrepository.datastore.json.JsonConfig;
-import rocks.milspecsg.msrepository.datastore.json.JsonContext;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoContext;
-import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
-import rocks.milspecsg.msrepository.datastore.nitrite.NitriteContext;
 import rocks.milspecsg.msrepository.datastore.xodus.XodusConfig;
 import rocks.milspecsg.msrepository.datastore.xodus.XodusContext;
 import rocks.milspecsg.msrepository.model.data.dbo.Mappable;
 
-import java.util.UUID;
-
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class CommonModule<
-    TJsonMember extends Member<UUID>,
     TMongoMember extends Member<ObjectId>,
-    TNitriteMember extends Member<NitriteId>,
     TXodusMember extends Member<EntityId> & Mappable<Entity>,
-    TJsonSnapshot extends Snapshot<UUID>,
     TMongoSnapshot extends Snapshot<ObjectId>,
-    TNitriteSnapshot extends Snapshot<NitriteId>,
     TXodusSnapshot extends Snapshot<EntityId> & Mappable<Entity>,
     TDataKey,
     TPlayer extends TUser,
@@ -179,13 +160,6 @@ public class CommonModule<
 
         bind(SyncUtils.class).to(CommonSyncUtils.class);
 
-        bind(JsonConfig.class).toInstance(
-            new JsonConfig(
-                BASE_SCAN_PACKAGE,
-                ConfigKeys.DATA_STORE_NAME
-            )
-        );
-
         bind(MongoConfig.class).toInstance(
             new MongoConfig(
                 BASE_SCAN_PACKAGE,
@@ -196,17 +170,6 @@ public class CommonModule<
                 ConfigKeys.MONGODB_USERNAME,
                 ConfigKeys.MONGODB_PASSWORD,
                 ConfigKeys.MONGODB_USE_AUTH
-            )
-        );
-
-        bind(NitriteConfig.class).toInstance(
-            new NitriteConfig(
-                BASE_SCAN_PACKAGE,
-                ConfigKeys.DATA_STORE_NAME,
-                ConfigKeys.NITRITE_USERNAME,
-                ConfigKeys.NITRITE_PASSWORD,
-                ConfigKeys.NITRITE_USE_AUTH,
-                ConfigKeys.NITRITE_USE_COMPRESSION
             )
         );
 
@@ -222,35 +185,11 @@ public class CommonModule<
             },
             new TypeToken<UserSerializerComponent<?, Snapshot<?>, TUser, ?, ?>>(getClass()) {
             },
-            new TypeToken<UserSerializerComponent<UUID, TJsonSnapshot, TUser, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            new TypeToken<CommonUserSerializerComponent<UUID, TJsonMember, TJsonSnapshot, TUser, TDataKey, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            JsonComponent.class
-        );
-
-        be.bind(
-            new TypeToken<UserSerializerComponent<?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<UserSerializerComponent<?, Snapshot<?>, TUser, ?, ?>>(getClass()) {
-            },
             new TypeToken<UserSerializerComponent<ObjectId, TMongoSnapshot, TUser, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<CommonUserSerializerComponent<ObjectId, TMongoMember, TMongoSnapshot, TUser, TDataKey, Datastore, MongoConfig>>(getClass()) {
             },
             MongoDBComponent.class
-        );
-
-        be.bind(
-            new TypeToken<UserSerializerComponent<?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<UserSerializerComponent<?, Snapshot<?>, TUser, ?, ?>>(getClass()) {
-            },
-            new TypeToken<UserSerializerComponent<NitriteId, TNitriteSnapshot, TUser, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            new TypeToken<CommonUserSerializerComponent<NitriteId, TNitriteMember, TNitriteSnapshot, TUser, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            NitriteComponent.class
         );
 
         be.bind(
@@ -277,35 +216,11 @@ public class CommonModule<
             },
             new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
             },
-            new TypeToken<SnapshotOptimizationService<UUID, TUser, TCommandSource, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            new TypeToken<CommonSnapshotOptimizationService<UUID, TJsonMember, TJsonSnapshot, TPlayer, TUser, TCommandSource, TDataKey, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            JsonComponent.class
-        );
-
-        be.bind(
-            new TypeToken<SnapshotOptimizationService<?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
-            },
             new TypeToken<SnapshotOptimizationService<ObjectId, TUser, TCommandSource, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<CommonSnapshotOptimizationService<ObjectId, TMongoMember, TMongoSnapshot, TPlayer, TUser, TCommandSource, TDataKey, Datastore, MongoConfig>>(getClass()) {
             },
             MongoDBComponent.class
-        );
-
-        be.bind(
-            new TypeToken<SnapshotOptimizationService<?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>>(getClass()) {
-            },
-            new TypeToken<SnapshotOptimizationService<NitriteId, TUser, TCommandSource, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            new TypeToken<CommonSnapshotOptimizationService<NitriteId, TNitriteMember, TNitriteSnapshot, TPlayer, TUser, TCommandSource, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            NitriteComponent.class
         );
 
         be.bind(
@@ -332,35 +247,11 @@ public class CommonModule<
             },
             new TypeToken<MemberRepository<?, Member<?>, Snapshot<?>, TUser, ?, ?>>(getClass()) {
             },
-            new TypeToken<MemberRepository<UUID, TJsonMember, TJsonSnapshot, TUser, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            new TypeToken<CommonJsonMemberRepository<TJsonMember, TJsonSnapshot, TUser, TDataKey>>(getClass()) {
-            },
-            JsonComponent.class
-        );
-
-        be.bind(
-            new TypeToken<MemberRepository<?, ?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<MemberRepository<?, Member<?>, Snapshot<?>, TUser, ?, ?>>(getClass()) {
-            },
             new TypeToken<MemberRepository<ObjectId, TMongoMember, TMongoSnapshot, TUser, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<CommonMongoMemberRepository<TMongoMember, TMongoSnapshot, TUser, TDataKey>>(getClass()) {
             },
             MongoDBComponent.class
-        );
-
-        be.bind(
-            new TypeToken<MemberRepository<?, ?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<MemberRepository<?, Member<?>, Snapshot<?>, TUser, ?, ?>>(getClass()) {
-            },
-            new TypeToken<MemberRepository<NitriteId, TNitriteMember, TNitriteSnapshot, TUser, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            new TypeToken<CommonNitriteMemberRepository<TNitriteMember, TNitriteSnapshot, TUser, TDataKey>>(getClass()) {
-            },
-            NitriteComponent.class
         );
 
         be.bind(
@@ -387,35 +278,11 @@ public class CommonModule<
             },
             new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
             },
-            new TypeToken<SnapshotRepository<UUID, TJsonSnapshot, TDataKey, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            new TypeToken<CommonJsonSnapshotRepository<TJsonSnapshot, TDataKey>>(getClass()) {
-            },
-            JsonComponent.class
-        );
-
-        be.bind(
-            new TypeToken<SnapshotRepository<?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
-            },
             new TypeToken<SnapshotRepository<ObjectId, TMongoSnapshot, TDataKey, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<CommonMongoSnapshotRepository<TMongoSnapshot, TDataKey>>(getClass()) {
             },
             MongoDBComponent.class
-        );
-
-        be.bind(
-            new TypeToken<SnapshotRepository<?, ?, ?, ?, ?>>(getClass()) {
-            },
-            new TypeToken<SnapshotRepository<?, Snapshot<?>, TDataKey, ?, ?>>(getClass()) {
-            },
-            new TypeToken<SnapshotRepository<NitriteId, TNitriteSnapshot, TDataKey, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            new TypeToken<CommonNitriteSnapshotRepository<TNitriteSnapshot, TDataKey>>(getClass()) {
-            },
-            NitriteComponent.class
         );
 
         be.bind(
@@ -437,16 +304,8 @@ public class CommonModule<
             }
         );
 
-        bind(new TypeLiteral<DataStoreContext<UUID, JsonDBOperations, JsonConfig>>() {
-        }).to(new TypeLiteral<JsonContext>() {
-        });
-
         bind(new TypeLiteral<DataStoreContext<ObjectId, Datastore, MongoConfig>>() {
         }).to(new TypeLiteral<MongoContext>() {
-        });
-
-        bind(new TypeLiteral<DataStoreContext<NitriteId, Nitrite, NitriteConfig>>() {
-        }).to(new TypeLiteral<NitriteContext>() {
         });
 
         bind(new TypeLiteral<DataStoreContext<EntityId, PersistentEntityStore, XodusConfig>>() {

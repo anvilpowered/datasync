@@ -20,13 +20,10 @@ package rocks.milspecsg.msdatasync;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
-import io.jsondb.JsonDBOperations;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.bson.types.ObjectId;
-import org.dizitart.no2.Nitrite;
-import org.dizitart.no2.NitriteId;
 import org.mongodb.morphia.Datastore;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
@@ -55,24 +52,16 @@ import rocks.milspecsg.msrepository.CommonBindingExtensions;
 import rocks.milspecsg.msrepository.PluginInfo;
 import rocks.milspecsg.msrepository.api.UserService;
 import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
-import rocks.milspecsg.msrepository.datastore.json.JsonConfig;
 import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
-import rocks.milspecsg.msrepository.datastore.nitrite.NitriteConfig;
 import rocks.milspecsg.msrepository.datastore.xodus.XodusConfig;
 import rocks.milspecsg.msrepository.service.sponge.SpongeUserService;
 import rocks.milspecsg.msrepository.service.sponge.tools.resultbuilder.SpongeStringResult;
 
-import java.util.UUID;
-
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class SpongeModule extends CommonModule<
-    Member<UUID>,
     Member<ObjectId>,
-    Member<NitriteId>,
     MappableMember<EntityId, Entity>,
-    Snapshot<UUID>,
     Snapshot<ObjectId>,
-    Snapshot<NitriteId>,
     MappableSnapshot<EntityId, Entity>,
     Key<?>,
     Player,
@@ -164,23 +153,9 @@ public class SpongeModule extends CommonModule<
         );
 
         be.bind(
-            new TypeToken<CommonUserSerializerComponent<UUID, Member<UUID>, Snapshot<UUID>, User, Key<?>, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            new TypeToken<SpongeUserSerializerComponent<UUID, Member<UUID>, Snapshot<UUID>, JsonDBOperations, JsonConfig>>(getClass()) {
-            }
-        );
-
-        be.bind(
             new TypeToken<CommonUserSerializerComponent<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, User, Key<?>, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<SpongeUserSerializerComponent<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Datastore, MongoConfig>>(getClass()) {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonUserSerializerComponent<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, User, Key<?>, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            new TypeToken<SpongeUserSerializerComponent<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, Nitrite, NitriteConfig>>(getClass()) {
             }
         );
 
@@ -192,23 +167,9 @@ public class SpongeModule extends CommonModule<
         );
 
         be.bind(
-            new TypeToken<CommonSnapshotOptimizationService<UUID, Member<UUID>, Snapshot<UUID>, Player, User, CommandSource, Key<?>, JsonDBOperations, JsonConfig>>(getClass()) {
-            },
-            new TypeToken<SpongeSnapshotOptimizationService<UUID, Member<UUID>, Snapshot<UUID>, JsonDBOperations, JsonConfig>>(getClass()) {
-            }
-        );
-
-        be.bind(
             new TypeToken<CommonSnapshotOptimizationService<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Player, User, CommandSource, Key<?>, Datastore, MongoConfig>>(getClass()) {
             },
             new TypeToken<SpongeSnapshotOptimizationService<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Datastore, MongoConfig>>(getClass()) {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonSnapshotOptimizationService<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, Player, User, CommandSource, Key<?>, Nitrite, NitriteConfig>>(getClass()) {
-            },
-            new TypeToken<SpongeSnapshotOptimizationService<NitriteId, Member<NitriteId>, Snapshot<NitriteId>, Nitrite, NitriteConfig>>(getClass()) {
             }
         );
 
