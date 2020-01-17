@@ -18,11 +18,9 @@
 
 package rocks.milspecsg.msdatasync.api.member.repository;
 
-import rocks.milspecsg.msdatasync.model.core.member.Member;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.CacheService;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.repository.Repository;
-import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 
 import java.util.Date;
 import java.util.List;
@@ -35,9 +33,8 @@ public interface MemberRepository<
     TMember extends Member<TKey>,
     TSnapshot extends Snapshot<TKey>,
     TUser,
-    TDataStore,
-    TDataStoreConfig extends DataStoreConfig>
-    extends Repository<TKey, TMember, CacheService<TKey, TMember, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>  {
+    TDataStore>
+    extends Repository<TKey, TMember, TDataStore>  {
 
     /**
      * Gets the corresponding {@code Member} from the database.

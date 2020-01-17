@@ -18,10 +18,8 @@
 
 package rocks.milspecsg.msdatasync.api.snapshot.repository;
 
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.CacheService;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.repository.Repository;
-import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 
 import java.util.Optional;
 
@@ -29,12 +27,10 @@ public interface SnapshotRepository<
     TKey,
     TSnapshot extends Snapshot<TKey>,
     TDataKey,
-    TDataStore,
-    TDataStoreConfig extends DataStoreConfig>
-    extends Repository<TKey, TSnapshot, CacheService<TKey, TSnapshot, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig> {
+    TDataStore>
+    extends Repository<TKey, TSnapshot, TDataStore> {
 
     boolean setSnapshotValue(TSnapshot snapshot, TDataKey key, Optional<?> optionalValue);
 
     Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key);
-
 }

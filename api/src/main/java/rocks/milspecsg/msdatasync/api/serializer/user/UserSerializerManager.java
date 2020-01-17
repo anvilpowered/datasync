@@ -19,7 +19,7 @@
 package rocks.milspecsg.msdatasync.api.serializer.user;
 
 import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
 import java.util.Collection;
@@ -31,7 +31,7 @@ public interface UserSerializerManager<
     TSnapshot extends Snapshot<?>,
     TUser,
     TString>
-    extends Manager<UserSerializerComponent<?, TSnapshot, TUser, ?, ?>> {
+    extends Manager<UserSerializerComponent<?, TSnapshot, TUser, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {

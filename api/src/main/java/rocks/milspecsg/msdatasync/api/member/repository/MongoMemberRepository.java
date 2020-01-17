@@ -21,9 +21,9 @@ package rocks.milspecsg.msdatasync.api.member.repository;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
-import rocks.milspecsg.msdatasync.model.core.member.Member;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msrepository.api.repository.MongoRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -35,7 +35,8 @@ public interface MongoMemberRepository<
     TMember extends Member<ObjectId>,
     TSnapshot extends Snapshot<ObjectId>,
     TUser>
-    extends MemberRepository<ObjectId, TMember, TSnapshot, TUser, Datastore, MongoConfig> {
+    extends MemberRepository<ObjectId, TMember, TSnapshot, TUser, Datastore>,
+    MongoRepository<TMember> {
 
     CompletableFuture<List<ObjectId>> getSnapshotIds(Query<TMember> query);
 

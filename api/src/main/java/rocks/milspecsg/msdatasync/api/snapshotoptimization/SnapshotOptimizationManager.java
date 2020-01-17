@@ -27,7 +27,7 @@ public interface SnapshotOptimizationManager<
     TUser,
     TString,
     TCommandSource>
-    extends Manager<SnapshotOptimizationService<?, TUser, TCommandSource, ?, ?>> {
+    extends Manager<SnapshotOptimizationService<?, TUser, TCommandSource, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {

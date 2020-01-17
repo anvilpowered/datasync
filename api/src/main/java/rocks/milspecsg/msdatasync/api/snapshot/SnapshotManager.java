@@ -19,12 +19,12 @@
 package rocks.milspecsg.msdatasync.api.snapshot;
 
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
 public interface SnapshotManager<
     TSnapshot extends Snapshot<?>,
-    TDataKey> extends Manager<SnapshotRepository<?, TSnapshot, TDataKey, ?, ?>> {
+    TDataKey> extends Manager<SnapshotRepository<?, TSnapshot, TDataKey, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {

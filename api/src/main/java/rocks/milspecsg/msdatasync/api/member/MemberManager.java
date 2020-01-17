@@ -19,8 +19,8 @@
 package rocks.milspecsg.msdatasync.api.member;
 
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msdatasync.model.core.member.Member;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.model.member.*;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
 import java.util.Optional;
@@ -32,7 +32,7 @@ public interface MemberManager<
     TSnapshot extends Snapshot<?>,
     TUser,
     TString>
-    extends Manager<MemberRepository<?, TMember, TSnapshot, TUser, ?, ?>> {
+    extends Manager<MemberRepository<?, TMember, TSnapshot, TUser, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {

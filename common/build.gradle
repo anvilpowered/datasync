@@ -1,15 +1,18 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
+    id "net.kyori.blossom" version "1.1.0"
 }
 
-group 'rocks.milspecsg'
-version '0.1.0-dev'
+group modGroup
+version modVersion
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.spongepowered.org/maven' }
 }
 
 dependencies {
@@ -22,12 +25,22 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-xodus')
     implementation project(':MSRepository:msr-common')
+    implementation project(':MSRepository:msr-common:common-config')
     implementation project(':MSRepository:msr-common:common-repository')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-xodus')
 
+    implementation 'org.spongepowered:configurate-core:3.6'
     implementation morphia
     implementation guice
     implementation xodus
     implementation xodus_entity_store
+}
+
+blossom {
+    replaceToken '$modVersion', modVersion
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss z")
+    format.setTimeZone(TimeZone.getTimeZone("UTC"))
+    String buildDate = format.format(new Date())
+    replaceToken '$buildDate', buildDate
 }

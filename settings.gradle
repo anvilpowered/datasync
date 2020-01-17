@@ -1,6 +1,3 @@
-/*
- */
-
 rootProject.name = 'MSDataSync'
 include 'api'
 include 'common'
@@ -29,8 +26,13 @@ include 'MSRepository:msr-common:common-repository:common-repository-mariadb'
 include 'MSRepository:msr-common:common-repository:common-repository-nitrite'
 include 'MSRepository:msr-common:common-repository:common-repository-xodus'
 
+include 'MSRepository:msr-core'
+include 'MSRepository:msr-core:core-api'
+include 'MSRepository:msr-core:core-common'
+include 'MSRepository:msr-core:core-sponge'
+include 'MSRepository:msr-core:core-velocity'
+
 include 'MSRepository:msr-sponge'
 include 'MSRepository:msr-sponge:sponge-repository'
 
-
-
+include 'MSRepository:msr-velocity'

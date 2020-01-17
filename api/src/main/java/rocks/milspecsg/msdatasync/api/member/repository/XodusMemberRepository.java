@@ -22,12 +22,10 @@ import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.entitystore.StoreTransaction;
-import rocks.milspecsg.msdatasync.model.core.member.Member;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.cache.CacheService;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.repository.XodusRepository;
-import rocks.milspecsg.msrepository.datastore.xodus.XodusConfig;
-import rocks.milspecsg.msrepository.model.data.dbo.Mappable;
+import rocks.milspecsg.msrepository.api.model.Mappable;
 
 import java.util.Date;
 import java.util.List;
@@ -40,8 +38,8 @@ public interface XodusMemberRepository<
     TMember extends Member<EntityId> & Mappable<Entity>,
     TSnapshot extends Snapshot<EntityId>,
     TUser>
-    extends MemberRepository<EntityId, TMember, TSnapshot, TUser, PersistentEntityStore, XodusConfig>,
-    XodusRepository<TMember, CacheService<EntityId, TMember, PersistentEntityStore, XodusConfig>> {
+    extends MemberRepository<EntityId, TMember, TSnapshot, TUser, PersistentEntityStore>,
+    XodusRepository<TMember> {
 
     CompletableFuture<List<EntityId>> getSnapshotIds(Function<? super StoreTransaction, ? extends Iterable<Entity>> query);
 

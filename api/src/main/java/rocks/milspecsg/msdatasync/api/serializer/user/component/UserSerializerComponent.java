@@ -19,9 +19,8 @@
 package rocks.milspecsg.msdatasync.api.serializer.user.component;
 
 import rocks.milspecsg.msdatasync.api.serializer.Serializer;
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.component.Component;
-import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -30,9 +29,8 @@ public interface UserSerializerComponent<
     TKey,
     TSnapshot extends Snapshot<TKey>,
     TUser,
-    TDataStore,
-    TDataStoreConfig extends DataStoreConfig>
-    extends Component<TKey, TDataStore, TDataStoreConfig>,
+    TDataStore>
+    extends Component<TKey, TDataStore>,
     Serializer<TSnapshot, TUser> {
 
     CompletableFuture<Optional<TSnapshot>> serialize(TUser user, String name);

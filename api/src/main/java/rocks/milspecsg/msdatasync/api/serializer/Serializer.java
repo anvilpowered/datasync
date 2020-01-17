@@ -18,7 +18,7 @@
 
 package rocks.milspecsg.msdatasync.api.serializer;
 
-import rocks.milspecsg.msdatasync.model.core.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 
 public interface Serializer<
     TSnapshot extends Snapshot<?>,
@@ -48,5 +48,4 @@ public interface Serializer<
      * @return Whether deserialization was successful
      */
     boolean deserialize(TSnapshot snapshot, TUser user);
-
 }

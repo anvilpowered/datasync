@@ -19,7 +19,6 @@
 package rocks.milspecsg.msdatasync.api.snapshotoptimization.component;
 
 import rocks.milspecsg.msrepository.api.component.Component;
-import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -28,9 +27,8 @@ public interface SnapshotOptimizationService<
     TKey,
     TUser,
     TCommandSource,
-    TDataStore,
-    TDataStoreConfig extends DataStoreConfig>
-    extends Component<TKey, TDataStore, TDataStoreConfig> {
+    TDataStore>
+    extends Component<TKey, TDataStore> {
 
     int getTotalMembers();
 
@@ -51,5 +49,4 @@ public interface SnapshotOptimizationService<
     boolean optimize(final Collection<? extends TUser> users, final TCommandSource source, final String name, final Object plugin);
 
     boolean optimize(final TCommandSource source, final Object plugin);
-
 }

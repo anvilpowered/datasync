@@ -1,10 +1,7 @@
-import java.text.SimpleDateFormat
-
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'org.spongepowered.plugin' version '0.8.1'
-    id "net.kyori.blossom" version "1.1.0"
 }
 
 version = modVersion
@@ -28,6 +25,7 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-repository')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-xodus')
+    implementation project(':MSRepository:msr-common')
     implementation project(':MSRepository:msr-common:common-config')
     implementation project(':MSRepository:msr-common:common-repository')
     implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
@@ -46,6 +44,7 @@ dependencies {
         exclude(module: 'configurate-gson')
         exclude(module: 'configurate-yaml')
     }
+    annotationProcessor 'org.spongepowered:spongeapi:7.2.0-SNAPSHOT'
 }
 
 shadowJar {
@@ -54,52 +53,7 @@ shadowJar {
     dependencies {
         include project(':api')
         include project(':common')
-        include project(':MSRepository:msr-api')
-        include project(':MSRepository:msr-api:api-config')
-        include project(':MSRepository:msr-api:api-repository')
-        include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
-        include project(':MSRepository:msr-api:api-repository:api-repository-xodus')
-
-        include project(':MSRepository:msr-common:common-config')
-        include project(':MSRepository:msr-common:common-repository')
-        include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
-        include project(':MSRepository:msr-common:common-repository:common-repository-xodus')
-        include project(':MSRepository:msr-sponge')
-
-        include dependency(bson)
-        include dependency(javasisst)
-        include dependency(mongo_java_driver)
-        include dependency(mongodb_driver_sync)
-        include dependency(morphia)
-        include dependency(microutils_logging)
-        include dependency(reflections)
-        include dependency(xodus)
-        include dependency(xodus_entity_store)
-        include dependency(xodus_environment)
-        include dependency(xodus_utils)
-
-        relocate 'com.fasterxml', 'relocated.com.fasterxml'
-        relocate 'org.reflections', 'relocated.org.reflections'
-        relocate 'org.javassist', 'relocated.org.javassist'
-        relocate 'org.objenesis', 'relocated.org.objenesis'
-        relocate 'org.apache', 'relocated.org.apache'
-        relocate 'org.bson', 'relocated.org.bson'
-        relocate 'org.dizitart', 'relocated.org.dizitart'
-        relocate 'org.h2', 'relocated.org.h2'
-        relocate 'org.mongodb', 'relocated.org.mongodb'
-        relocate 'com.mongodb', 'relocated.com.mongodb'
-        relocate 'javassist', 'relocated.javassist'
-        relocate 'okhttp3', 'relocated.okhttp3'
-        relocate 'org.jasypt', 'relocated.org.jasypt'
     }
-}
-
-blossom {
-    replaceToken '$modVersion', modVersion
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss z")
-    format.setTimeZone(TimeZone.getTimeZone("UTC"))
-    String buildDate = format.format(new Date())
-    replaceToken '$buildDate', buildDate
 }
 
 artifacts {
