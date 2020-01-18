@@ -29,7 +29,6 @@ import org.mongodb.morphia.Datastore;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
 import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
 import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
 import rocks.milspecsg.msdatasync.api.serializer.GameModeSerializer;
@@ -52,7 +51,6 @@ import rocks.milspecsg.msdatasync.common.keys.CommonDataKeyService;
 import rocks.milspecsg.msdatasync.common.member.CommonMemberManager;
 import rocks.milspecsg.msdatasync.common.member.repository.CommonMongoMemberRepository;
 import rocks.milspecsg.msdatasync.common.member.repository.CommonXodusMemberRepository;
-import rocks.milspecsg.msdatasync.common.misc.CommonDateFormatService;
 import rocks.milspecsg.msdatasync.common.misc.CommonSyncUtils;
 import rocks.milspecsg.msdatasync.common.plugin.MSDataSyncPluginInfo;
 import rocks.milspecsg.msdatasync.common.serializer.CommonExperienceSerializer;
@@ -102,73 +100,61 @@ public class CommonModule<
 
         BindingExtensions be = new CommonBindingExtensions(binder());
 
-        bind(
-            (TypeLiteral<ExperienceSerializer<Snapshot<?>, TUser>>) TypeLiteral.get(new TypeToken<ExperienceSerializer<Snapshot<?>, TUser>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonExperienceSerializer<Snapshot<?>, TDataKey, TUser>>) TypeLiteral.get(new TypeToken<CommonExperienceSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<ExperienceSerializer<Snapshot<?>, TUser>>(getClass()) {
+            },
+            new TypeToken<CommonExperienceSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
+            }
         );
 
-        bind(
-            (TypeLiteral<GameModeSerializer<Snapshot<?>, TUser>>) TypeLiteral.get(new TypeToken<GameModeSerializer<Snapshot<?>, TUser>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonGameModeSerializer<Snapshot<?>, TDataKey, TUser>>) TypeLiteral.get(new TypeToken<CommonGameModeSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<GameModeSerializer<Snapshot<?>, TUser>>(getClass()) {
+            },
+            new TypeToken<CommonGameModeSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
+            }
         );
 
-        bind(
-            (TypeLiteral<HealthSerializer<Snapshot<?>, TUser>>) TypeLiteral.get(new TypeToken<HealthSerializer<Snapshot<?>, TUser>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonHealthSerializer<Snapshot<?>, TDataKey, TUser>>) TypeLiteral.get(new TypeToken<CommonHealthSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<HealthSerializer<Snapshot<?>, TUser>>(getClass()) {
+            },
+            new TypeToken<CommonHealthSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
+            }
         );
 
-        bind(
-            (TypeLiteral<HungerSerializer<Snapshot<?>, TUser>>) TypeLiteral.get(new TypeToken<HungerSerializer<Snapshot<?>, TUser>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonHungerSerializer<Snapshot<?>, TDataKey, TUser>>) TypeLiteral.get(new TypeToken<CommonHungerSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<HungerSerializer<Snapshot<?>, TUser>>(getClass()) {
+            },
+            new TypeToken<CommonHungerSerializer<Snapshot<?>, TDataKey, TUser>>(getClass()) {
+            }
         );
 
-        bind(
-            (TypeLiteral<InventorySerializer<Snapshot<?>, TUser, TInventory, TItemStackSnapshot>>) TypeLiteral.get(new TypeToken<InventorySerializer<Snapshot<?>, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonInventorySerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>) TypeLiteral.get(new TypeToken<CommonInventorySerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<InventorySerializer<Snapshot<?>, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
+            },
+            new TypeToken<CommonInventorySerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
+            }
         );
 
-
-        bind(
-            (TypeLiteral<SnapshotSerializer<Snapshot<?>, TUser>>) TypeLiteral.get(new TypeToken<SnapshotSerializer<Snapshot<?>, TUser>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonSnapshotSerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>) TypeLiteral.get(new TypeToken<CommonSnapshotSerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<SnapshotSerializer<Snapshot<?>, TUser>>(getClass()) {
+            },
+            new TypeToken<CommonSnapshotSerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
+            }
         );
 
-        bind(
-            (TypeLiteral<DataKeyService<TDataKey>>) TypeLiteral.get(new TypeToken<DataKeyService<TDataKey>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonDataKeyService<TDataKey>>) TypeLiteral.get(new TypeToken<CommonDataKeyService<TDataKey>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<DataKeyService<TDataKey>>(getClass()) {
+            },
+            new TypeToken<CommonDataKeyService<TDataKey>>(getClass()) {
+            }
         );
 
-        bind(
-            (TypeLiteral<SerializationTaskService>) TypeLiteral.get(new TypeToken<SerializationTaskService>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<CommonSerializationTaskService<TUser, TString, TCommandSource>>) TypeLiteral.get(new TypeToken<CommonSerializationTaskService<TUser, TString, TCommandSource>>(getClass()) {
-            }.getType())
+        be.bind(
+            new TypeToken<SerializationTaskService>(getClass()) {
+            },
+            new TypeToken<CommonSerializationTaskService<TUser, TString, TCommandSource>>(getClass()) {
+            }
         );
-
-
-        bind(DateFormatService.class).to(CommonDateFormatService.class);
 
         bind(SyncUtils.class).to(CommonSyncUtils.class);
 
@@ -177,16 +163,16 @@ public class CommonModule<
         bind(Registry.class).to(MSDataSyncRegistry.class);
 
         be.bind(
-            new TypeToken<BasicPluginInfo>(getClass()){
+            new TypeToken<BasicPluginInfo>(getClass()) {
             },
-            new TypeToken<MSDataSyncPluginInfo<TString, TCommandSource>>(getClass()){
+            new TypeToken<MSDataSyncPluginInfo<TString, TCommandSource>>(getClass()) {
             }
         );
 
         be.bind(
-            new TypeToken<PluginInfo<TString>>(getClass()){
+            new TypeToken<PluginInfo<TString>>(getClass()) {
             },
-            new TypeToken<MSDataSyncPluginInfo<TString, TCommandSource>>(getClass()){
+            new TypeToken<MSDataSyncPluginInfo<TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -217,7 +203,7 @@ public class CommonModule<
         be.bind(
             new TypeToken<UserSerializerManager<Snapshot<?>, TUser, TString>>(getClass()) {
             },
-            new TypeToken<CommonUserSerializerManager<Member<?>, Snapshot<?>, TUser, TPlayer,TString, TCommandSource>>(getClass()) {
+            new TypeToken<CommonUserSerializerManager<Member<?>, Snapshot<?>, TUser, TPlayer, TString, TCommandSource>>(getClass()) {
             }
         );
 

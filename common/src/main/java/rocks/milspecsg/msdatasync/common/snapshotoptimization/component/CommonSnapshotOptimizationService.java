@@ -19,7 +19,7 @@
 package rocks.milspecsg.msdatasync.common.snapshotoptimization.component;
 
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
+import rocks.milspecsg.msrepository.api.util.DateFormatService;
 import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
 import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;

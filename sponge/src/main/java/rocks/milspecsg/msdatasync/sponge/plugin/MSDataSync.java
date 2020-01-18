@@ -46,6 +46,7 @@ import rocks.milspecsg.msdatasync.sponge.serializer.SpongeSnapshotSerializer;
 import rocks.milspecsg.msrepository.api.MSRepository;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
 
 @Plugin(
     id = MSDataSyncPluginInfo.id,
@@ -84,7 +85,7 @@ public class MSDataSync {
     @Listener
     public void onServerInitialization(GameInitializationEvent event) {
         plugin = this;
-        injector = spongeRootInjector.createChildInjector(new SpongeModule());
+        injector = spongeRootInjector.createChildInjector(new SpongeModule(), new ApiSpongeModule());
         MSRepository.createEnvironment(MSDataSyncPluginInfo.id, injector);
         pluginInfo = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<PluginInfo<Text>>() {
         }));

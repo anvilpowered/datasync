@@ -20,7 +20,7 @@ package rocks.milspecsg.msdatasync.common.serializer.user;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
+import rocks.milspecsg.msrepository.api.util.DateFormatService;
 import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msdatasync.api.model.member.Member;

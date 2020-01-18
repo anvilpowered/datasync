@@ -21,7 +21,7 @@ package rocks.milspecsg.msdatasync.common.member;
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msdatasync.api.misc.DateFormatService;
+import rocks.milspecsg.msrepository.api.util.DateFormatService;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;

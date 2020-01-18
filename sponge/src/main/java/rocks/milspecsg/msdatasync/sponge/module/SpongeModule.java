@@ -38,23 +38,29 @@ import rocks.milspecsg.msdatasync.api.model.snapshot.MappableSnapshot;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.common.data.config.MSDataSyncConfigurationService;
 import rocks.milspecsg.msdatasync.common.keys.CommonDataKeyService;
-import rocks.milspecsg.msdatasync.common.module.*;
-import rocks.milspecsg.msdatasync.common.serializer.*;
+import rocks.milspecsg.msdatasync.common.module.CommonModule;
+import rocks.milspecsg.msdatasync.common.serializer.CommonExperienceSerializer;
+import rocks.milspecsg.msdatasync.common.serializer.CommonGameModeSerializer;
+import rocks.milspecsg.msdatasync.common.serializer.CommonHealthSerializer;
+import rocks.milspecsg.msdatasync.common.serializer.CommonHungerSerializer;
+import rocks.milspecsg.msdatasync.common.serializer.CommonInventorySerializer;
+import rocks.milspecsg.msdatasync.common.serializer.CommonSnapshotSerializer;
 import rocks.milspecsg.msdatasync.common.serializer.user.component.CommonUserSerializerComponent;
 import rocks.milspecsg.msdatasync.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msdatasync.sponge.data.config.MSDataSyncSpongeConfigurationService;
 import rocks.milspecsg.msdatasync.sponge.keys.CommonSpongeDataKeyService;
-import rocks.milspecsg.msdatasync.sponge.serializer.*;
+import rocks.milspecsg.msdatasync.sponge.serializer.SpongeExperienceSerializer;
+import rocks.milspecsg.msdatasync.sponge.serializer.SpongeGameModeSerializer;
+import rocks.milspecsg.msdatasync.sponge.serializer.SpongeHealthSerializer;
+import rocks.milspecsg.msdatasync.sponge.serializer.SpongeHungerSerializer;
+import rocks.milspecsg.msdatasync.sponge.serializer.SpongeInventorySerializer;
+import rocks.milspecsg.msdatasync.sponge.serializer.SpongeSnapshotSerializer;
 import rocks.milspecsg.msdatasync.sponge.serializer.user.component.SpongeUserSerializerComponent;
 import rocks.milspecsg.msdatasync.sponge.snapshotoptimization.component.SpongeSnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.sponge.tasks.SpongeSerializationTaskService;
 import rocks.milspecsg.msrepository.api.misc.BindingExtensions;
 import rocks.milspecsg.msrepository.common.misc.CommonBindingExtensions;
-import rocks.milspecsg.msrepository.api.util.UserService;
-import rocks.milspecsg.msrepository.api.util.StringResult;
-import rocks.milspecsg.msrepository.sponge.util.SpongeUserService;
-import rocks.milspecsg.msrepository.sponge.util.SpongeStringResult;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class SpongeModule extends CommonModule<
@@ -77,13 +83,6 @@ public class SpongeModule extends CommonModule<
         BindingExtensions be = new CommonBindingExtensions(binder());
 
         bind(MSDataSyncConfigurationService.class).to(MSDataSyncSpongeConfigurationService.class);
-
-        bind(new TypeLiteral<UserService<User, Player>>() {
-        }).to(SpongeUserService.class);
-
-        bind(new TypeLiteral<StringResult<Text, CommandSource>>() {
-        }).to(new TypeLiteral<SpongeStringResult>() {
-        });
 
         bind(
             (TypeLiteral<CommonExperienceSerializer<Snapshot<?>, Key<?>, User>>) TypeLiteral.get(new TypeToken<CommonExperienceSerializer<Snapshot<?>, Key<?>, User>>(getClass()) {
