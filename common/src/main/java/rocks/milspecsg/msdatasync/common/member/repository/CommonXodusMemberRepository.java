@@ -65,13 +65,18 @@ public class CommonXodusMemberRepository<
 
     @Override
     public CompletableFuture<List<EntityId>> getSnapshotIds(Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
-        return CompletableFuture.supplyAsync(() -> getDataStoreContext().getDataStore().flatMap(dataStore ->
-            dataStore.computeInExclusiveTransaction(txn -> {
+        return CompletableFuture.supplyAsync(() ->
+            getDataStoreContext().getDataStore().computeInExclusiveTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
-                return iterator.hasNext()
-                    ? Mappable.<List<EntityId>>deserialize(iterator.next().getBlob("snapshotIds"))
-                    : Optional.empty();
-            })).orElse(Collections.emptyList()));
+                if (iterator.hasNext()) {
+                    Optional<List<EntityId>> optionalList = Mappable.deserialize(iterator.next().getBlob("snapshotIds"));
+                    if (optionalList.isPresent()) {
+                        return optionalList.get();
+                    }
+                }
+                return Collections.emptyList();
+            })
+        );
     }
 
     @Override
@@ -98,8 +103,8 @@ public class CommonXodusMemberRepository<
     }
 
     private CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Predicate<? super EntityId> idPredicate) {
-        return CompletableFuture.supplyAsync(() -> getDataStoreContext().getDataStore().map(dataStore ->
-            dataStore.computeInTransaction(txn -> {
+        return CompletableFuture.supplyAsync(() ->
+            getDataStoreContext().getDataStore().computeInTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
                 if (!iterator.hasNext()) {
                     return false;
@@ -132,7 +137,8 @@ public class CommonXodusMemberRepository<
                     e.printStackTrace();
                 }
                 return txn.commit() && snapshotRepository.deleteOne(toRemove).join();
-            })).orElse(false));
+            })
+        );
     }
 
     @Override
@@ -167,8 +173,8 @@ public class CommonXodusMemberRepository<
 
     @Override
     public CompletableFuture<Boolean> addSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, EntityId snapshotId) {
-        return CompletableFuture.supplyAsync(() -> getDataStoreContext().getDataStore().map(dataStore ->
-            dataStore.computeInTransaction(txn -> {
+        return CompletableFuture.supplyAsync(() ->
+            getDataStoreContext().getDataStore().computeInTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
                 if (!iterator.hasNext()) {
                     return false;
@@ -186,7 +192,8 @@ public class CommonXodusMemberRepository<
                     e.printStackTrace();
                 }
                 return txn.commit();
-            })).orElse(false));
+            })
+        );
     }
 
     @Override
@@ -201,8 +208,8 @@ public class CommonXodusMemberRepository<
 
     @Override
     public CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date) {
-        return CompletableFuture.supplyAsync(() -> getDataStoreContext().getDataStore().flatMap(dataStore ->
-            dataStore.computeInReadonlyTransaction(txn -> {
+        return CompletableFuture.supplyAsync(() ->
+            getDataStoreContext().getDataStore().computeInReadonlyTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
                 if (!iterator.hasNext()) {
                     return Optional.empty();
@@ -220,7 +227,8 @@ public class CommonXodusMemberRepository<
                     }
                 }
                 return Optional.empty();
-            })));
+            })
+        );
     }
 
     @Override

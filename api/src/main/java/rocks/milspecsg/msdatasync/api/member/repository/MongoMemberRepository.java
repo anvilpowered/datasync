@@ -52,5 +52,5 @@ public interface MongoMemberRepository<
 
     CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<TMember> query, Date date);
 
-    Optional<Query<TMember>> asQuery(UUID userUUID);
+    Query<TMember> asQuery(UUID userUUID);
 }

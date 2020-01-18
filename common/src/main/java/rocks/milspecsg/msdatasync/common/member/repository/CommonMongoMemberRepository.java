@@ -50,12 +50,12 @@ public class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<Optional<TMember>> getOneForUser(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> asQuery(userUUID).map(QueryResults::get));
+        return CompletableFuture.supplyAsync(() -> Optional.ofNullable(asQuery(userUUID).get()));
     }
 
     @Override
-    public Optional<Query<TMember>> asQuery(UUID userUUID) {
-        return asQuery().map(q -> q.field("userUUID").equal(userUUID));
+    public Query<TMember> asQuery(UUID userUUID) {
+        return asQuery().field("userUUID").equal(userUUID);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<List<ObjectId>> getSnapshotIds(ObjectId id) {
-        return asQuery(id).map(this::getSnapshotIds).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
+        return getSnapshotIds(asQuery(id));
     }
 
     @Override
@@ -81,12 +81,12 @@ public class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<List<Date>> getSnapshotDates(ObjectId id) {
-        return asQuery(id).map(this::getSnapshotDates).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
+        return getSnapshotDates(asQuery(id));
     }
 
     @Override
     public CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID) {
-        return asQuery(userUUID).map(this::getSnapshotDates).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
+        return getSnapshotDates(asQuery(userUUID));
     }
 
     @Override
@@ -106,44 +106,37 @@ public class CommonMongoMemberRepository<
     }
 
     private boolean removeSnapshotId(Query<TMember> query, ObjectId snapshotId) {
-        Optional<UpdateOperations<TMember>> updateOperations = createUpdateOperations().map(u -> u.removeAll("snapshotIds", snapshotId));
-        return updateOperations.isPresent() && getDataStoreContext().getDataStore().map(dataStore -> dataStore.update(query, updateOperations.get()).getUpdatedCount() > 0).orElse(false);
+        return CompletableFuture.supplyAsync(() -> update(query, createUpdateOperations().removeAll("snapshotIds", snapshotId))).join();
     }
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshot(ObjectId id, ObjectId snapshotId) {
-        return asQuery(id).map(q -> deleteSnapshot(q, snapshotId)).orElse(CompletableFuture.completedFuture(false));
+        return deleteSnapshot(asQuery(id), snapshotId);
     }
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshot(ObjectId id, Date date) {
-        return asQuery(id).map(q -> deleteSnapshot(id, date)).orElse(CompletableFuture.completedFuture(false));
+        return deleteSnapshot(asQuery(id), date);
     }
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, ObjectId snapshotId) {
-        return asQuery(userUUID).map(q -> deleteSnapshot(q, snapshotId)).orElse(CompletableFuture.completedFuture(false));
+        return deleteSnapshot(asQuery(userUUID), snapshotId);
     }
 
     @Override
     public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date) {
-        return asQuery(userUUID).map(q -> deleteSnapshot(q, date)).orElse(CompletableFuture.completedFuture(false));
+        return deleteSnapshot(asQuery(userUUID), date);
     }
 
     @Override
     public CompletableFuture<Boolean> addSnapshot(Query<TMember> query, ObjectId snapshotId) {
-        return CompletableFuture.supplyAsync(() -> {
-            Optional<UpdateOperations<TMember>> updateOperations = createUpdateOperations().map(u -> u.addToSet("snapshotIds", snapshotId));
-            return updateOperations
-                .map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-                    .map(dataStore -> dataStore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)
-                ).orElse(false);
-        });
+        return CompletableFuture.supplyAsync(() -> update(query, createUpdateOperations().set("snapshotIds", snapshotId)));
     }
 
     @Override
     public CompletableFuture<Boolean> addSnapshot(ObjectId id, ObjectId snapshotId) {
-        return asQuery(id).map(q -> addSnapshot(q, snapshotId)).orElse(CompletableFuture.completedFuture(false));
+        return addSnapshot(asQuery(id), snapshotId);
     }
 
     @Override
@@ -152,7 +145,7 @@ public class CommonMongoMemberRepository<
             if (!optionalMember.isPresent()) {
                 return false;
             }
-            return asQuery(userUUID).map(q -> addSnapshot(q, snapshotId).join()).orElse(false);
+            return addSnapshot(asQuery(userUUID), snapshotId).join();
         });
     }
 
@@ -168,12 +161,12 @@ public class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<Optional<TSnapshot>> getSnapshot(ObjectId id, Date date) {
-        return asQuery(id).map(q -> getSnapshot(q, date)).orElse(CompletableFuture.completedFuture(Optional.empty()));
+        return getSnapshot(asQuery(id), date);
     }
 
     @Override
     public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date) {
-        return asQuery(userUUID).map(q -> getSnapshot(q, date)).orElse(CompletableFuture.completedFuture(Optional.empty()));
+        return getSnapshot(asQuery(userUUID), date);
     }
 
     @Override
@@ -205,11 +198,11 @@ public class CommonMongoMemberRepository<
 
     @Override
     public CompletableFuture<List<ObjectId>> getClosestSnapshots(ObjectId id, Date date) {
-        return asQuery(id).map(q -> getClosestSnapshots(q, date)).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
+        return getClosestSnapshots(asQuery(id), date);
     }
 
     @Override
     public CompletableFuture<List<ObjectId>> getClosestSnapshotsForUser(UUID userUUID, Date date) {
-        return asQuery(userUUID).map(q -> getClosestSnapshots(q, date)).orElse(CompletableFuture.completedFuture(Collections.emptyList()));
+        return getClosestSnapshots(asQuery(userUUID), date);
     }
 }
