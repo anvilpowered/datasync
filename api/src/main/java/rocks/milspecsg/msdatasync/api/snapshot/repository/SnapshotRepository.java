@@ -18,10 +18,13 @@
 
 package rocks.milspecsg.msdatasync.api.snapshot.repository;
 
+import rocks.milspecsg.msdatasync.api.model.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.repository.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public interface SnapshotRepository<
     TKey,
@@ -33,4 +36,8 @@ public interface SnapshotRepository<
     boolean setSnapshotValue(TSnapshot snapshot, TDataKey key, Optional<?> optionalValue);
 
     Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key);
+
+    CompletableFuture<Boolean> setItemStacks(TKey id, List<SerializedItemStack> itemStacks);
+
+    CompletableFuture<Boolean> parseAndSetItemStacks(Object id, List<SerializedItemStack> itemStacks);
 }

@@ -21,9 +21,13 @@ package rocks.milspecsg.msdatasync.common.snapshot.repository;
 import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
+import rocks.milspecsg.msdatasync.api.model.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.common.repository.CommonMongoRepository;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoSnapshotRepository<
     TSnapshot extends Snapshot<ObjectId>,
@@ -34,5 +38,10 @@ public class CommonMongoSnapshotRepository<
     @Inject
     public CommonMongoSnapshotRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {
         super(dataStoreContext);
+    }
+
+    @Override
+    public CompletableFuture<Boolean> setItemStacks(ObjectId id, List<SerializedItemStack> itemStacks) {
+        return update(asQuery(id), set("itemStacks", itemStacks));
     }
 }

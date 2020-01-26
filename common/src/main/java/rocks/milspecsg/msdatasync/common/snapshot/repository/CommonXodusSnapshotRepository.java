@@ -22,10 +22,16 @@ import com.google.inject.Inject;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
+import jetbrains.exodus.util.ByteArraySizedInputStream;
+import rocks.milspecsg.msdatasync.api.model.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.api.model.Mappable;
 import rocks.milspecsg.msrepository.common.repository.CommonXodusRepository;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class CommonXodusSnapshotRepository<
     TSnapshot extends Snapshot<EntityId> & Mappable<Entity>,
@@ -36,5 +42,16 @@ public class CommonXodusSnapshotRepository<
     @Inject
     public CommonXodusSnapshotRepository(DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
         super(dataStoreContext);
+    }
+
+    @Override
+    public CompletableFuture<Boolean> setItemStacks(EntityId id, List<SerializedItemStack> itemStacks) {
+        return update(asQuery(id), entity -> {
+            try {
+                entity.setBlob("itemStacks", new ByteArraySizedInputStream(Mappable.serializeUnsafe(itemStacks)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

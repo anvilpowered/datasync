@@ -125,7 +125,7 @@ public class SpongeModule extends CommonModule<
         );
 
         bind(
-            (TypeLiteral<CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot>>) TypeLiteral.get(new TypeToken<CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot>>(getClass()) {
+            (TypeLiteral<CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot>>) TypeLiteral.get(new TypeToken<CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot>>(getClass()) {
             }.getType())
         ).to(
             (TypeLiteral<SpongeSnapshotSerializer>) TypeLiteral.get(new TypeToken<SpongeSnapshotSerializer>(getClass()) {

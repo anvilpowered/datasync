@@ -118,8 +118,8 @@ public class SnapshotViewCommand implements CommandExecutor {
                     }
                     // wait until player closes inventory
                     inventorySerializer.serializeInventory(snapshot, e.getTargetInventory());
-                    snapshotRepository.getPrimaryComponent().insertOne(snapshot).thenAcceptAsync(optionalS -> {
-                        if (optionalS.isPresent()) {
+                    snapshotRepository.getPrimaryComponent().parseAndSetItemStacks(snapshot.getId(), snapshot.getItemStacks()).thenAcceptAsync(b -> {
+                        if (b) {
                             source.sendMessage(
                                 Text.of(
                                     pluginInfo.getPrefix(), TextColors.YELLOW,

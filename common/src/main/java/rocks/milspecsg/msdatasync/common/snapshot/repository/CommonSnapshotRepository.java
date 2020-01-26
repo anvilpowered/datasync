@@ -20,12 +20,15 @@ package rocks.milspecsg.msdatasync.common.snapshot.repository;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
+import rocks.milspecsg.msdatasync.api.model.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.common.repository.CommonRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class CommonSnapshotRepository<
     TKey,
@@ -65,5 +68,10 @@ public abstract class CommonSnapshotRepository<
     public Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key) {
         Optional<String> optionalName = dataKeyService.getName(key);
         return optionalName.map(s -> snapshot.getKeys().get(s));
+    }
+
+    @Override
+    public CompletableFuture<Boolean> parseAndSetItemStacks(Object id, List<SerializedItemStack> itemStacks) {
+        return parse(id).map(i -> setItemStacks(i, itemStacks)).orElse(CompletableFuture.completedFuture(false));
     }
 }
