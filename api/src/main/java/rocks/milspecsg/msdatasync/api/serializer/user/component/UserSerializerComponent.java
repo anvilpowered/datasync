@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.api.serializer.user.component;
 
-import rocks.milspecsg.msdatasync.api.serializer.Serializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.Serializer;
 import rocks.milspecsg.msrepository.api.component.Component;
 
 import java.util.Optional;
@@ -40,6 +40,4 @@ public interface UserSerializerComponent<
     CompletableFuture<Optional<TSnapshot>> deserialize(TUser user, Object plugin, TSnapshot snapshot);
 
     CompletableFuture<Optional<TSnapshot>> deserialize(TUser user, Object plugin);
-
-    CompletableFuture<Optional<TSnapshot>> sync(TUser user, Object plugin);
 }

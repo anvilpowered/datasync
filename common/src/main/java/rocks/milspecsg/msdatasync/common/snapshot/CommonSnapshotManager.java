@@ -19,9 +19,9 @@
 package rocks.milspecsg.msdatasync.common.snapshot;
 
 import com.google.inject.Inject;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
-import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
 import rocks.milspecsg.msrepository.common.manager.CommonManager;
 

@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.api.snapshot;
 
-import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 
 public interface SnapshotManager<

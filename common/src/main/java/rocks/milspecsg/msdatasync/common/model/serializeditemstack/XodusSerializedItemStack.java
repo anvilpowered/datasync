@@ -18,7 +18,7 @@
 
 package rocks.milspecsg.msdatasync.common.model.serializeditemstack;
 
-import rocks.milspecsg.msdatasync.api.model.serializeditemstack.*;
+import rocks.milspecsg.msdatasync.api.model.serializeditemstack.SerializedItemStack;
 import rocks.milspecsg.msrepository.api.datastore.annotation.XodusEmbedded;
 
 import java.util.HashMap;

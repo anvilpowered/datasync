@@ -37,17 +37,17 @@ import org.spongepowered.api.item.inventory.property.InventoryCapacity;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
-import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.serializer.InventorySerializer;
 import rocks.milspecsg.msdatasync.api.serializer.SnapshotSerializer;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
+import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msdatasync.sponge.commands.SyncLockCommand;
-import rocks.milspecsg.msdatasync.api.model.member.Member;
-import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.util.DateFormatService;
+import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.util.TimeFormatService;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -67,7 +67,7 @@ public class SnapshotViewCommand implements CommandExecutor {
     private InventorySerializer<Snapshot<?>, User, Inventory, ItemStackSnapshot> inventorySerializer;
 
     @Inject
-    private DateFormatService dateFormatService;
+    private TimeFormatService timeFormatService;
 
     @Inject
     private PluginInfo<Text> pluginInfo;
@@ -97,11 +97,11 @@ public class SnapshotViewCommand implements CommandExecutor {
 
             Consumer<Optional<Snapshot<?>>> afterFound = optionalSnapshot -> {
                 if (!optionalSnapshot.isPresent()) {
-                    source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "Could not find snapshot for user " + targetUser.getName()));
+                    source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "Could not find snapshot for " + targetUser.getName()));
                     return;
                 }
                 Snapshot<?> snapshot = optionalSnapshot.get();
-                source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Editing snapshot ", TextColors.GOLD, dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate())));
+                source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Editing snapshot ", TextColors.GOLD, timeFormatService.format(optionalSnapshot.get().getCreatedUtc())));
                 final boolean[] closeData = {false};
                 final boolean permissionToEdit = player.hasPermission(MSDataSyncKeys.SNAPSHOT_VIEW_EDIT_PERMISSION.getFallbackValue());
                 Inventory inventory = Inventory.builder().of(inventoryArchetype).listener(InteractInventoryEvent.Close.class, e -> {
@@ -110,7 +110,7 @@ public class SnapshotViewCommand implements CommandExecutor {
                             Text.of(
                                 pluginInfo.getPrefix(), TextColors.YELLOW,
                                 "Closed snapshot ", TextColors.GOLD,
-                                dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate()),
+                                timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
                                 TextColors.YELLOW, " without saving"
                             )
                         );
@@ -124,8 +124,8 @@ public class SnapshotViewCommand implements CommandExecutor {
                                 Text.of(
                                     pluginInfo.getPrefix(), TextColors.YELLOW,
                                     "Successfully edited snapshot ", TextColors.GOLD,
-                                    dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate()),
-                                    TextColors.YELLOW, " for user ", optionalUser.get().getName()
+                                    timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
+                                    TextColors.YELLOW, " for ", optionalUser.get().getName()
                                 )
                             );
                         } else {
@@ -150,7 +150,7 @@ public class SnapshotViewCommand implements CommandExecutor {
 
                 }).build(MSDataSync.plugin);
                 inventorySerializer.deserializeInventory(snapshot, inventory);
-                player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, dateFormatService.format(snapshot.getCreatedUtcDate())));
+                player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, timeFormatService.format(snapshot.getCreatedUtc())));
             };
 
             memberManager.getPrimaryComponent().getSnapshotForUser(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))

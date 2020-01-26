@@ -24,8 +24,8 @@ import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.entity.living.player.gamemode.GameMode;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 
 import java.util.Optional;
 

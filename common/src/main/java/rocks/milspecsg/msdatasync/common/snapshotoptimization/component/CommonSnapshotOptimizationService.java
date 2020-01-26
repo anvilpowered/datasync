@@ -19,21 +19,24 @@
 package rocks.milspecsg.msdatasync.common.snapshotoptimization.component;
 
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msrepository.api.util.DateFormatService;
 import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
-import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
-import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msdatasync.common.data.key.*;
-import rocks.milspecsg.msrepository.api.util.UserService;
+import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
+import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
+import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
+import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msrepository.api.data.key.Keys;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
+import rocks.milspecsg.msrepository.api.util.TimeFormatService;
+import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.common.component.CommonComponent;
 
 import javax.inject.Inject;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +72,7 @@ public abstract class CommonSnapshotOptimizationService<
     protected SyncUtils syncUtils;
 
     @Inject
-    protected DateFormatService dateFormatService;
+    protected TimeFormatService timeFormatService;
 
     @Inject
     protected UserService<TUser, TPlayer> userService;
@@ -87,7 +90,7 @@ public abstract class CommonSnapshotOptimizationService<
     private volatile int snapshotsDeleted;
     private volatile int snapshotsUploaded;
 
-    protected volatile ConcurrentMap<TKey, Integer> idTimeStampMap;
+    protected volatile ConcurrentMap<TKey, Instant> idCreatedUtcMap;
 
     //TODO: add time taken and estimated time left
 
@@ -98,7 +101,7 @@ public abstract class CommonSnapshotOptimizationService<
         this.registry = registry;
         registry.addRegistryLoadedListener(this::registryLoaded);
         lockedPlayers = new ConcurrentLinkedQueue<>();
-        idTimeStampMap = new ConcurrentHashMap<>();
+        idCreatedUtcMap = new ConcurrentHashMap<>();
     }
 
     private void registryLoaded(final Object plugin) {
@@ -234,7 +237,7 @@ public abstract class CommonSnapshotOptimizationService<
                         incrementDeleted();
                     } else {
                         String[] dateOrId = {id.toString()};
-                        snapshotRepository.getCreatedUtcDate(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = dateFormatService.format(date)));
+                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = timeFormatService.format(date)));
                         sendError(source, "There was an error removing snapshot " + dateOrId[0] + " from " + userService.getUserName(user));
                     }
                 }).join();
@@ -243,12 +246,8 @@ public abstract class CommonSnapshotOptimizationService<
         });
     }
 
-    protected final CompletableFuture<Boolean> within(final TKey id, final int minutes) {
-        return getTimeStamp(id).thenApplyAsync(timestamp -> within(timestamp, minutes));
-    }
-
-    protected final boolean within(final long timeStamp, final int minutes) {
-        return System.currentTimeMillis() <= ((timeStamp & 0xFFFFFFFFL) * 1000L) + (minutes * 60000L);
+    protected final CompletableFuture<Boolean> within(final TKey id, final long minutes) {
+        return getCreatedUtc(id).thenApplyAsync(createdUtc -> OffsetDateTime.now(ZoneOffset.UTC).toInstant().isBefore(createdUtc.plusSeconds(minutes * 60L)));
     }
 
     protected final CompletableFuture<Void> filter(final List<TKey> snapshotIds, final List<TKey> toDelete, final int intervalMinutes, final int maxCount) {
@@ -273,16 +272,16 @@ public abstract class CommonSnapshotOptimizationService<
         });
     }
 
-    protected CompletableFuture<Integer> getTimeStamp(TKey id) {
-        if (idTimeStampMap.containsKey(id)) {
-            return CompletableFuture.completedFuture(idTimeStampMap.get(id));
+    protected CompletableFuture<Instant> getCreatedUtc(TKey id) {
+        if (idCreatedUtcMap.containsKey(id)) {
+            return CompletableFuture.completedFuture(idCreatedUtcMap.get(id));
         }
 
-        return snapshotRepository.getCreatedUtcTimeStampSeconds(id).thenApplyAsync(timeStamp -> {
+        return snapshotRepository.getCreatedUtc(id).thenApplyAsync(timeStamp -> {
             if (!timeStamp.isPresent()) {
-                return -1;
+                return Instant.MIN;
             }
-            idTimeStampMap.put(id, timeStamp.get());
+            idCreatedUtcMap.put(id, timeStamp.get());
             return timeStamp.get();
         });
     }

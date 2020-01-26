@@ -34,7 +34,7 @@ import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 
-import java.util.*;
+import java.util.Optional;
 
 public class SnapshotListCommand implements CommandExecutor {
 

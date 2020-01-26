@@ -22,7 +22,7 @@ import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.repository.Repository;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +34,7 @@ public interface MemberRepository<
     TSnapshot extends Snapshot<TKey>,
     TUser,
     TDataStore>
-    extends Repository<TKey, TMember, TDataStore>  {
+    extends Repository<TKey, TMember, TDataStore> {
 
     /**
      * Gets the corresponding {@code Member} from the database.
@@ -55,33 +55,33 @@ public interface MemberRepository<
 
     CompletableFuture<List<TKey>> getSnapshotIdsForUser(UUID userUUID);
 
-    CompletableFuture<List<Date>> getSnapshotDates(TKey id);
+    CompletableFuture<List<Instant>> getSnapshotCreationTimes(TKey id);
 
-    CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID);
+    CompletableFuture<List<Instant>> getSnapshotCreationTimesForUser(UUID userUUID);
 
     CompletableFuture<Boolean> deleteSnapshot(TKey id, TKey snapshotId);
 
-    CompletableFuture<Boolean> deleteSnapshot(TKey id, Date date);
+    CompletableFuture<Boolean> deleteSnapshot(TKey id, Instant createdUtc);
 
     CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date);
+    CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Instant createdUtc);
 
     CompletableFuture<Boolean> addSnapshot(TKey id, TKey snapshotId);
 
     CompletableFuture<Boolean> addSnapshotForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Date date);
+    CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Instant createdUtc);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date);
+    CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Instant createdUtc);
 
     CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Optional<String> optionalString);
 
     CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString);
 
-    CompletableFuture<List<TKey>> getClosestSnapshots(TKey id, Date date);
+    CompletableFuture<List<TKey>> getClosestSnapshots(TKey id, Instant createdUtc);
 
-    CompletableFuture<List<TKey>> getClosestSnapshotsForUser(UUID userUUID, Date date);
+    CompletableFuture<List<TKey>> getClosestSnapshotsForUser(UUID userUUID, Instant createdUtc);
 
     CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(TKey id);
 
@@ -91,15 +91,11 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Date date);
+    CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Instant createdUtc);
 
     CompletableFuture<Optional<TSnapshot>> getNext(TKey id, TKey snapshotId);
 
     CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Date date);
-
-    //TODO: move this method declaration to ApiRepository in repo MSRepository
-//    Optional<Member> getNext();
-
+    CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Instant createdUtc);
 }

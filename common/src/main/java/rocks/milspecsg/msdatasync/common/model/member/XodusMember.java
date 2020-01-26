@@ -21,12 +21,12 @@ package rocks.milspecsg.msdatasync.common.model.member;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
-import rocks.milspecsg.msdatasync.api.model.member.*;
+import rocks.milspecsg.msdatasync.api.model.member.MappableMember;
 import rocks.milspecsg.msrepository.api.datastore.annotation.XodusEntity;
 import rocks.milspecsg.msrepository.api.model.Mappable;
 import rocks.milspecsg.msrepository.common.model.XodusDbo;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

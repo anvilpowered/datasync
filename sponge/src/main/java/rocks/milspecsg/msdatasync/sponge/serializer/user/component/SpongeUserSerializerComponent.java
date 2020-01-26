@@ -25,9 +25,9 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msdatasync.common.serializer.user.component.CommonUserSerializerComponent;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
@@ -82,7 +82,7 @@ public class SpongeUserSerializerComponent<
         }
         return waitForSnapshot.thenApplyAsync(v -> memberRepository.getLatestSnapshotForUser(user.getUniqueId()).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
-                System.err.println("[MSDataSync] Could not find snapshot for user " + user.getName() + "! Check your DB configuration!");
+                System.err.println("[MSDataSync] Could not find snapshot for " + user.getName() + "! Check your DB configuration!");
                 return Optional.<TSnapshot>empty();
             }
             return deserialize(user, plugin, optionalSnapshot.get()).join();
@@ -90,10 +90,5 @@ public class SpongeUserSerializerComponent<
             snapshotOptimizationManager.getPrimaryComponent().removeLockedPlayer(user.getUniqueId());
             return s;
         });
-    }
-
-    @Override
-    public CompletableFuture<Optional<TSnapshot>> sync(User user, Object plugin) {
-        return null;
     }
 }

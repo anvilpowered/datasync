@@ -24,10 +24,10 @@ import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.entitystore.StoreTransaction;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.repository.XodusRepository;
 import rocks.milspecsg.msrepository.api.model.Mappable;
+import rocks.milspecsg.msrepository.api.repository.XodusRepository;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,17 +43,17 @@ public interface XodusMemberRepository<
 
     CompletableFuture<List<EntityId>> getSnapshotIds(Function<? super StoreTransaction, ? extends Iterable<Entity>> query);
 
-    CompletableFuture<List<Date>> getSnapshotDates(Function<? super StoreTransaction, ? extends Iterable<Entity>> query);
+    CompletableFuture<List<Instant>> getSnapshotCreationTimes(Function<? super StoreTransaction, ? extends Iterable<Entity>> query);
 
     CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, EntityId snapshotId);
 
-    CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date);
+    CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc);
 
     CompletableFuture<Boolean> addSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, EntityId snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date);
+    CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc);
 
-    CompletableFuture<List<EntityId>> getClosestSnapshots(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date);
+    CompletableFuture<List<EntityId>> getClosestSnapshots(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc);
 
     Function<? super StoreTransaction, ? extends Iterable<Entity>> asQuery(UUID userUUID);
 }

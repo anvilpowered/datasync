@@ -20,15 +20,15 @@ package rocks.milspecsg.msdatasync.common.serializer.user.component;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.serializer.SnapshotSerializer;
 import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
-import rocks.milspecsg.msdatasync.api.model.member.Member;
-import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.api.data.key.Keys;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
+import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.common.component.CommonComponent;
 
 import java.util.Optional;
@@ -72,7 +72,7 @@ public abstract class CommonUserSerializerComponent<
         serialize(snapshot, user);
         return snapshotRepository.insertOne(snapshot).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
-                System.err.println("[MSDataSync] Snapshot upload failed for user " + userService.getUserName(user) + "! Check your DB configuration!");
+                System.err.println("[MSDataSync] Snapshot upload failed for " + userService.getUserName(user) + "! Check your DB configuration!");
                 return Optional.empty();
             }
             if (memberRepository.addSnapshotForUser(userService.getUUID(user), optionalSnapshot.get().getId()).join()) {

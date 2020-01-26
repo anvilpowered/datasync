@@ -19,7 +19,7 @@
 package rocks.milspecsg.msdatasync.api.member;
 
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msdatasync.api.model.member.*;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.manager.Manager;
 

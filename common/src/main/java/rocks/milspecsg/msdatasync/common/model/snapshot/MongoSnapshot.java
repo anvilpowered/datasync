@@ -20,8 +20,8 @@ package rocks.milspecsg.msdatasync.common.model.snapshot;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import rocks.milspecsg.msdatasync.api.model.snapshot.*;
 import rocks.milspecsg.msdatasync.api.model.serializeditemstack.SerializedItemStack;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.common.model.MongoDbo;
 
 import java.util.ArrayList;

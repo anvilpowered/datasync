@@ -28,9 +28,19 @@ import rocks.milspecsg.msdatasync.sponge.commands.optimize.OptimizeHelpCommand;
 import rocks.milspecsg.msdatasync.sponge.commands.optimize.OptimizeInfoCommand;
 import rocks.milspecsg.msdatasync.sponge.commands.optimize.OptimizeStartCommand;
 import rocks.milspecsg.msdatasync.sponge.commands.optimize.OptimizeStopCommand;
-import rocks.milspecsg.msdatasync.sponge.commands.snapshot.*;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotCreateCommand;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotDeleteCommand;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotHelpCommand;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotInfoCommand;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotListCommand;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotRestoreCommand;
+import rocks.milspecsg.msdatasync.sponge.commands.snapshot.SnapshotViewCommand;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SyncCommandManager implements CommandManager {
 

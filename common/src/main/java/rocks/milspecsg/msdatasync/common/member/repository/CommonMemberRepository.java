@@ -20,15 +20,19 @@ package rocks.milspecsg.msdatasync.common.member.repository;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msrepository.api.util.DateFormatService;
-import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.api.model.ObjectWithId;
+import rocks.milspecsg.msrepository.api.util.TimeFormatService;
 import rocks.milspecsg.msrepository.common.repository.CommonRepository;
 
-import java.util.*;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class CommonMemberRepository<
@@ -45,7 +49,7 @@ public abstract class CommonMemberRepository<
     protected SnapshotRepository<TKey, TSnapshot, TDataKey, TDataStore> snapshotRepository;
 
     @Inject
-    protected DateFormatService dateFormatService;
+    protected TimeFormatService timeFormatService;
 
     public CommonMemberRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {
         super(dataStoreContext);
@@ -99,7 +103,7 @@ public abstract class CommonMemberRepository<
                     return snapshotRepository.getOne(optionalId.get()).join();
                 }
 
-                Optional<Date> date = dateFormatService.parse(optionalString.get());
+                Optional<Instant> date = timeFormatService.parseInstant(optionalString.get());
                 if (date.isPresent()) {
                     return getSnapshot(id, date.get()).join();
                 }
@@ -156,8 +160,8 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Date date) {
-        return getSnapshotForUser(userUUID, date).thenApplyAsync(o -> o.flatMap(s -> getPreviousForUser(userUUID, s.getId()).join()));
+    public CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Instant createdUtc) {
+        return getSnapshotForUser(userUUID, createdUtc).thenApplyAsync(o -> o.flatMap(s -> getPreviousForUser(userUUID, s.getId()).join()));
     }
 
     @Override
@@ -182,7 +186,7 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Date date) {
-        return getSnapshotForUser(userUUID, date).thenApplyAsync(o -> o.flatMap(s -> getNextForUser(userUUID, s.getId()).join()));
+    public CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Instant createdUtc) {
+        return getSnapshotForUser(userUUID, createdUtc).thenApplyAsync(o -> o.flatMap(s -> getNextForUser(userUUID, s.getId()).join()));
     }
 }

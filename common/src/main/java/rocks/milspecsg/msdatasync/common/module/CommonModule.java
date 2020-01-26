@@ -30,6 +30,8 @@ import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
 import rocks.milspecsg.msdatasync.api.misc.SyncUtils;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
 import rocks.milspecsg.msdatasync.api.serializer.GameModeSerializer;
 import rocks.milspecsg.msdatasync.api.serializer.HealthSerializer;
@@ -43,8 +45,6 @@ import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 import rocks.milspecsg.msdatasync.api.tasks.SerializationTaskService;
-import rocks.milspecsg.msdatasync.api.model.member.Member;
-import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.common.data.config.MSDataSyncConfigurationService;
 import rocks.milspecsg.msdatasync.common.data.registry.MSDataSyncRegistry;
 import rocks.milspecsg.msdatasync.common.keys.CommonDataKeyService;
@@ -69,16 +69,16 @@ import rocks.milspecsg.msdatasync.common.snapshotoptimization.component.CommonSn
 import rocks.milspecsg.msdatasync.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.misc.BindingExtensions;
-import rocks.milspecsg.msrepository.api.util.BasicPluginInfo;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
-import rocks.milspecsg.msrepository.common.misc.CommonBindingExtensions;
-import rocks.milspecsg.msrepository.api.manager.annotation.MongoDBComponent;
-import rocks.milspecsg.msrepository.api.manager.annotation.XodusComponent;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.api.datastore.MongoContext;
 import rocks.milspecsg.msrepository.api.datastore.XodusContext;
+import rocks.milspecsg.msrepository.api.manager.annotation.MongoDBComponent;
+import rocks.milspecsg.msrepository.api.manager.annotation.XodusComponent;
+import rocks.milspecsg.msrepository.api.misc.BindingExtensions;
 import rocks.milspecsg.msrepository.api.model.Mappable;
+import rocks.milspecsg.msrepository.api.util.BasicPluginInfo;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.common.misc.CommonBindingExtensions;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class CommonModule<
@@ -138,7 +138,7 @@ public class CommonModule<
         be.bind(
             new TypeToken<SnapshotSerializer<Snapshot<?>, TUser>>(getClass()) {
             },
-            new TypeToken<CommonSnapshotSerializer<Snapshot<?>, TDataKey, TUser, TInventory, TItemStackSnapshot>>(getClass()) {
+            new TypeToken<CommonSnapshotSerializer<Snapshot<?>, TDataKey, TUser, TPlayer, TInventory, TItemStackSnapshot>>(getClass()) {
             }
         );
 

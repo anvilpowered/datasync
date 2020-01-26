@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.common.serializer;
 
-import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
 
 public abstract class CommonExperienceSerializer<
     TSnapshot extends Snapshot<?>,

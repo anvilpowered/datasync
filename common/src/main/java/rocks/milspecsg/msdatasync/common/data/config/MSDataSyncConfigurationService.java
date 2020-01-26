@@ -51,7 +51,7 @@ public class MSDataSyncConfigurationService extends CommonConfigurationService {
                 "\t1) not remove any snapshots within the last hour\n" +
                 "\t2) keep one snapshot per hour (not including first hour) for 24 hours\n" +
                 "\t3) keep one snapshot per day (not including first day) for 7 days\n" +
-                "\t4) Delete all snapshots older than 7 days (keeping a minimum of minCount)"
+                "\t4) delete all snapshots older than 7 days (keeping a minimum of minCount)"
         );
         nodeDescriptionMap.put(MSDataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "\nInterval for automatic serialization task. Set to 0 to disable, min 1, max 60. Recommended range 3-15");
         nodeDescriptionMap.put(MSDataSyncKeys.SERVER_NAME, "\nName of server. This value is attached with every snapshot made on this server");

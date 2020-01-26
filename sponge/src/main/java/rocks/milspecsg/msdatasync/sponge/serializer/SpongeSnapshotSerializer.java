@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
@@ -30,14 +31,14 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.sponge.events.SerializerInitializationEvent;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.common.serializer.CommonSnapshotSerializer;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msdatasync.sponge.events.SerializerInitializationEvent;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
 @Singleton
-public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot> {
+public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot> {
 
     @Inject
     public SpongeSnapshotSerializer(ConfigurationService configurationService) {
@@ -59,10 +60,4 @@ public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<
     protected void announceEnabled(String name) {
         Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Enabling ", name, " serializer"));
     }
-
-    @Override
-    protected String getUsername(User user) {
-        return user.getName();
-    }
-
 }

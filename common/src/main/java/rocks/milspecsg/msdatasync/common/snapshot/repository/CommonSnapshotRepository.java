@@ -20,8 +20,8 @@ package rocks.milspecsg.msdatasync.common.snapshot.repository;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.keys.DataKeyService;
-import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.snapshot.repository.SnapshotRepository;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.common.repository.CommonRepository;
 

@@ -32,8 +32,8 @@ import rocks.milspecsg.msrepository.api.model.Mappable;
 import rocks.milspecsg.msrepository.common.repository.CommonXodusRepository;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -85,21 +85,21 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimes(Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
         return getSnapshotIds(query).thenApplyAsync(ids -> ids.stream()
-            .map(id -> snapshotRepository.getCreatedUtcDate(id).join().orElse(null))
+            .map(id -> snapshotRepository.getCreatedUtc(id).join().orElse(null))
             .filter(Objects::nonNull)
             .collect(Collectors.toList()));
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(EntityId id) {
-        return getSnapshotDates(asQuery(id));
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimes(EntityId id) {
+        return getSnapshotCreationTimes(asQuery(id));
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID) {
-        return getSnapshotDates(asQuery(userUUID));
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimesForUser(UUID userUUID) {
+        return getSnapshotCreationTimes(asQuery(userUUID));
     }
 
     private CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Predicate<? super EntityId> idPredicate) {
@@ -147,8 +147,8 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date) {
-        return deleteSnapshot(query, id -> getSnapshot(query, date).join().map(s -> s.getId().equals(id)).orElse(false));
+    public CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
+        return deleteSnapshot(query, id -> getSnapshot(query, createdUtc).join().map(s -> s.getId().equals(id)).orElse(false));
     }
 
     @Override
@@ -157,8 +157,8 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(EntityId id, Date date) {
-        return deleteSnapshot(asQuery(id), date);
+    public CompletableFuture<Boolean> deleteSnapshot(EntityId id, Instant createdUtc) {
+        return deleteSnapshot(asQuery(id), createdUtc);
     }
 
     @Override
@@ -167,8 +167,8 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date) {
-        return deleteSnapshot(asQuery(userUUID), date);
+    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Instant createdUtc) {
+        return deleteSnapshot(asQuery(userUUID), createdUtc);
     }
 
     @Override
@@ -207,7 +207,7 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date) {
+    public CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
         return CompletableFuture.supplyAsync(() ->
             getDataStoreContext().getDataStore().computeInReadonlyTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
@@ -221,7 +221,7 @@ public class CommonXodusMemberRepository<
                 List<EntityId> ids = optionalList.get();
                 for (EntityId id : ids) {
                     Optional<TSnapshot> optionalSnapshot = snapshotRepository.getOne(id).join()
-                        .filter(s -> checkDate(s.getCreatedUtcDate(), date));
+                        .filter(s -> checkInstant(s.getCreatedUtc(), createdUtc));
                     if (optionalSnapshot.isPresent()) {
                         return optionalSnapshot;
                     }
@@ -232,27 +232,27 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(EntityId id, Date date) {
-        return getSnapshot(asQuery(id), date);
+    public CompletableFuture<Optional<TSnapshot>> getSnapshot(EntityId id, Instant createdUtc) {
+        return getSnapshot(asQuery(id), createdUtc);
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date) {
-        return getSnapshot(asQuery(userUUID), date);
+    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Instant createdUtc) {
+        return getSnapshot(asQuery(userUUID), createdUtc);
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getClosestSnapshots(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Date date) {
+    public CompletableFuture<List<EntityId>> getClosestSnapshots(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
         return null;
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getClosestSnapshots(EntityId id, Date date) {
+    public CompletableFuture<List<EntityId>> getClosestSnapshots(EntityId id, Instant createdUtc) {
         return null;
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getClosestSnapshotsForUser(UUID userUUID, Date date) {
+    public CompletableFuture<List<EntityId>> getClosestSnapshotsForUser(UUID userUUID, Instant createdUtc) {
         return null;
     }
 
@@ -261,21 +261,21 @@ public class CommonXodusMemberRepository<
         return txn -> txn.find(getTClass().getSimpleName(), "userUUID", userUUID.toString());
     }
 
-    private static boolean checkDate(Date a, Date b) {
-        long aTime = a.getTime();
-        long bTime = b.getTime();
+    private static boolean checkInstant(Instant a, Instant b) {
+        long aSeconds = a.getEpochSecond();
+        long bSeconds = b.getEpochSecond();
 
-        if (aTime == bTime) {
+        long aNanos = a.getNano();
+        long bNanos = b.getNano();
+
+        if (aSeconds == bSeconds && aNanos == bNanos) {
             return true;
         }
 
-        long aRounded = (aTime / 1000L) * 1000L;
-        long bRounded = (bTime / 1000L) * 1000L;
-
-        // check if x -> x % 1000 == 0 is true for either
+        // check if nanos is 0 for either
         // at least one input is already rounded
         // if neither input was rounded to begin with
         // dont round them
-        return (aTime == aRounded || bTime == bRounded) && aRounded == bRounded;
+        return (aNanos == 0 || bNanos == 0) && aSeconds == bSeconds;
     }
 }

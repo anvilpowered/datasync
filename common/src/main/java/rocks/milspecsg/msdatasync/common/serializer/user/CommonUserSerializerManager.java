@@ -20,15 +20,15 @@ package rocks.milspecsg.msdatasync.common.serializer.user;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
-import rocks.milspecsg.msrepository.api.util.DateFormatService;
-import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
-import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
-import rocks.milspecsg.msrepository.api.util.UserService;
+import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
+import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 import rocks.milspecsg.msrepository.api.util.StringResult;
+import rocks.milspecsg.msrepository.api.util.TimeFormatService;
+import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.common.manager.CommonManager;
 
 import java.util.Collection;
@@ -61,7 +61,7 @@ public class CommonUserSerializerManager<
     UserService<TUser, TPlayer> userService;
 
     @Inject
-    DateFormatService dateFormatService;
+    TimeFormatService timeFormatService;
 
     @Inject
     public CommonUserSerializerManager(Registry registry) {
@@ -114,7 +114,7 @@ public class CommonUserSerializerManager<
                 ? stringResult.builder()
                 .append(pluginInfo.getPrefix())
                 .yellow().append("Successfully serialized ", userService.getUserName(user), " and uploaded snapshot ")
-                .gold().append(dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate()))
+                .gold().append(timeFormatService.format(optionalSnapshot.get().getCreatedUtc()))
                 .build()
                 : stringResult.builder()
                 .append(pluginInfo.getPrefix())
@@ -139,7 +139,7 @@ public class CommonUserSerializerManager<
                     .red().append("Could not find snapshot for ", userName)
                     .build();
             }
-            String createdString = dateFormatService.format(optionalSnapshot.get().getCreatedUtcDate());
+            String createdString = timeFormatService.format(optionalSnapshot.get().getCreatedUtc());
             getPrimaryComponent().deserialize(optionalUser.get(), plugin, optionalSnapshot.get());
             return stringResult.builder()
                 .append(pluginInfo.getPrefix())

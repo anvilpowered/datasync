@@ -26,8 +26,8 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msdatasync.common.tasks.CommonSerializationTaskService;
+import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
 

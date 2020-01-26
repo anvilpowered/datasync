@@ -25,7 +25,7 @@ import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.repository.MongoRepository;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,17 +40,17 @@ public interface MongoMemberRepository<
 
     CompletableFuture<List<ObjectId>> getSnapshotIds(Query<TMember> query);
 
-    CompletableFuture<List<Date>> getSnapshotDates(Query<TMember> query);
+    CompletableFuture<List<Instant>> getSnapshotCreationTimes(Query<TMember> query);
 
     CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, ObjectId snapshotId);
 
-    CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, Date date);
+    CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, Instant createdUtc);
 
     CompletableFuture<Boolean> addSnapshot(Query<TMember> query, ObjectId snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(Query<TMember> query, Date date);
+    CompletableFuture<Optional<TSnapshot>> getSnapshot(Query<TMember> query, Instant createdUtc);
 
-    CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<TMember> query, Date date);
+    CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<TMember> query, Instant createdUtc);
 
     Query<TMember> asQuery(UUID userUUID);
 }

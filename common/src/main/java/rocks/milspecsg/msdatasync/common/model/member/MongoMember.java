@@ -20,10 +20,13 @@ package rocks.milspecsg.msdatasync.common.model.member;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import rocks.milspecsg.msdatasync.api.model.member.*;
+import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msrepository.common.model.MongoDbo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity("members")
 public class MongoMember extends MongoDbo implements Member<ObjectId> {

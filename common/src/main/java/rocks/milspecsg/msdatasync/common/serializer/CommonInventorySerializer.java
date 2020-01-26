@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.common.serializer;
 
-import rocks.milspecsg.msdatasync.api.serializer.InventorySerializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.InventorySerializer;
 
 public abstract class CommonInventorySerializer<
     TSnapshot extends Snapshot<?>,

@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.common.serializer;
 
-import rocks.milspecsg.msdatasync.api.serializer.HungerSerializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.HungerSerializer;
 
 public abstract class CommonHungerSerializer<
     TSnapshot extends Snapshot<?>,

@@ -22,9 +22,9 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
+import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.serializer.SnapshotSerializer;
 import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
-import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 
 public class SerializerInitializationEvent<S extends Snapshot<?>> extends AbstractEvent {
 

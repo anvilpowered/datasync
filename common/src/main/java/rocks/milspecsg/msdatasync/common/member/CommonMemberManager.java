@@ -21,18 +21,21 @@ package rocks.milspecsg.msdatasync.common.member;
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.member.MemberManager;
 import rocks.milspecsg.msdatasync.api.member.repository.MemberRepository;
-import rocks.milspecsg.msrepository.api.util.DateFormatService;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
-import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.api.util.StringResult;
+import rocks.milspecsg.msrepository.api.util.TimeFormatService;
+import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.common.manager.CommonManager;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -57,7 +60,7 @@ public class CommonMemberManager<
     protected UserService<TUser, TPlayer> userService;
 
     @Inject
-    protected DateFormatService dateFormatService;
+    protected TimeFormatService timeFormatService;
 
     @Inject
     public CommonMemberManager(Registry registry) {
@@ -75,21 +78,21 @@ public class CommonMemberManager<
                     .build();
             }
 
-            Date date = optionalSnapshot.get().getCreatedUtcDate();
-            String formattedDate = dateFormatService.format(date);
+            Instant createdUtc = optionalSnapshot.get().getCreatedUtc();
+            String formattedInstant = timeFormatService.format(createdUtc);
 
-            return getPrimaryComponent().deleteSnapshotForUser(userUUID, date).thenApplyAsync(success -> {
+            return getPrimaryComponent().deleteSnapshotForUser(userUUID, createdUtc).thenApplyAsync(success -> {
                 if (success) {
                     return stringResult.builder()
                         .append(pluginInfo.getPrefix())
                         .yellow().append("Successfully deleted snapshot ")
-                        .gold().append(formattedDate)
+                        .gold().append(formattedInstant)
                         .yellow().append(" for ", userService.getUserName(userUUID).orElse("null"))
                         .build();
                 } else {
                     return stringResult.builder()
                         .append(pluginInfo.getPrefix())
-                        .red().append("An error occurred while deleting snapshot ", formattedDate, " for ", userName)
+                        .red().append("An error occurred while deleting snapshot ", formattedInstant, " for ", userName)
                         .build();
                 }
             }).join();
@@ -123,15 +126,14 @@ public class CommonMemberManager<
         return CompletableFuture.supplyAsync(() -> {
             String userName = userService.getUserName(userUUID).orElse("null");
 
-            Date created = snapshot.getCreatedUtcDate();
-            Date updated = snapshot.getUpdatedUtcDate();
+            Instant created = snapshot.getCreatedUtc();
+            Instant updated = snapshot.getUpdatedUtc();
 
-            String createdString = dateFormatService.format(created);
-            String updatedString = dateFormatService.format(updated);
+            String createdString = timeFormatService.format(created);
+            String updatedString = timeFormatService.format(updated);
 
-            long currentTime = new Date().getTime();
-            String diffCreatedString = dateFormatService.formatDiff(new Date(currentTime - created.getTime())) + " ago";
-            String diffUpdatedString = dateFormatService.formatDiff(new Date(currentTime - updated.getTime())) + " ago";
+            String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
+            String diffUpdatedString = timeFormatService.format(Duration.between(updated, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
 
             return stringResult.builder()
                 .append(stringResult.builder().dark_green().append("======= ").gold().append("Snapshot - ", userName).dark_green().append(" ======="))
@@ -210,13 +212,12 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<Iterable<TString>> list(UUID userUUID) {
-        return getPrimaryComponent().getSnapshotDatesForUser(userUUID).thenApplyAsync(dates -> {
+        return getPrimaryComponent().getSnapshotCreationTimesForUser(userUUID).thenApplyAsync(createdUtcs -> {
             Collection<TString> lines = new ArrayList<>();
             String userName = userService.getUserName(userUUID).orElse("null");
-            long currentTime = new Date().getTime();
-            dates.forEach(created -> {
-                String createdString = dateFormatService.format(created);
-                String diffCreatedString = dateFormatService.formatDiff(new Date(currentTime - created.getTime())) + " ago";
+            createdUtcs.forEach(created -> {
+                String createdString = timeFormatService.format(created);
+                String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
                 lines.add(stringResult.builder()
                     .append(
                         stringResult.builder()

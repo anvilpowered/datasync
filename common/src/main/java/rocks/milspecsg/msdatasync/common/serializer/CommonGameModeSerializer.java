@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.common.serializer;
 
-import rocks.milspecsg.msdatasync.api.serializer.GameModeSerializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.GameModeSerializer;
 
 public abstract class CommonGameModeSerializer<
     TSnapshot extends Snapshot<?>,

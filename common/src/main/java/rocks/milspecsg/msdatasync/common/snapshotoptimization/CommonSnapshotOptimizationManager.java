@@ -21,8 +21,8 @@ package rocks.milspecsg.msdatasync.common.snapshotoptimization;
 import com.google.inject.Inject;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import rocks.milspecsg.msdatasync.api.snapshotoptimization.component.SnapshotOptimizationService;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 import rocks.milspecsg.msrepository.api.util.StringResult;
 import rocks.milspecsg.msrepository.common.manager.CommonManager;
 

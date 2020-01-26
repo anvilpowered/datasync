@@ -19,9 +19,9 @@
 package rocks.milspecsg.msdatasync.common.serializer;
 
 import com.google.inject.Inject;
-import rocks.milspecsg.msdatasync.api.serializer.*;
-import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.Serializer;
+import rocks.milspecsg.msdatasync.api.snapshot.SnapshotManager;
 
 public abstract class CommonSerializer<
     TSnapshot extends Snapshot<?>,

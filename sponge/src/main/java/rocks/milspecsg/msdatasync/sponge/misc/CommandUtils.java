@@ -29,7 +29,7 @@ import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.common.data.key.*;
+import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
 import java.net.MalformedURLException;

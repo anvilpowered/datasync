@@ -19,11 +19,17 @@
 package rocks.milspecsg.msdatasync.common.serializer;
 
 import com.google.inject.Inject;
-import rocks.milspecsg.msdatasync.api.serializer.*;
-import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.ExperienceSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.GameModeSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.HealthSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.HungerSerializer;
+import rocks.milspecsg.msdatasync.api.serializer.InventorySerializer;
+import rocks.milspecsg.msdatasync.api.serializer.Serializer;
+import rocks.milspecsg.msdatasync.api.serializer.SnapshotSerializer;
 import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
+import rocks.milspecsg.msrepository.api.util.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +37,10 @@ import java.util.List;
 public abstract class CommonSnapshotSerializer<
     TSnapshot extends Snapshot<?>,
     TDataKey,
-    TUser, TInventory, TItemStackSnapshot>
+    TUser,
+    TPlayer,
+    TInventory,
+    TItemStackSnapshot>
     extends CommonSerializer<TSnapshot, TDataKey, TUser>
     implements SnapshotSerializer<TSnapshot, TUser> {
 
@@ -58,6 +67,9 @@ public abstract class CommonSnapshotSerializer<
 
     @Inject
     private InventorySerializer<TSnapshot, TUser, TInventory, TItemStackSnapshot> inventorySerializer;
+
+    @Inject
+    private UserService<TUser, TPlayer> userService;
 
     protected Registry registry;
 
@@ -133,8 +145,6 @@ public abstract class CommonSnapshotSerializer<
 
     protected abstract void announceEnabled(String name);
 
-    protected abstract String getUsername(TUser user);
-
     @Override
     public boolean serialize(TSnapshot snapshot, TUser user) {
         if (serializers.isEmpty()) {
@@ -148,7 +158,7 @@ public abstract class CommonSnapshotSerializer<
             try {
                 snapshot.getModulesUsed().add(serializer.getName());
                 if (!serializer.serialize(snapshot, user)) {
-                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for user " + getUsername(user) + "! All valid data was still uploaded!");
+                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for " + userService.getUserName(user) + "! All valid data was still uploaded!");
                     success = false;
                     snapshot.getModulesFailed().add(serializer.getName());
                 }
@@ -173,11 +183,11 @@ public abstract class CommonSnapshotSerializer<
                 if (serializersToUse.remove(serializer.getName())) {
                     // only use modules that were used to upload
                     if (!serializer.deserialize(snapshot, user)) {
-                        System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for user " + getUsername(user));
+                        System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for " + userService.getUserName(user));
                         success = false;
                     }
                 } else {
-                    System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for user " + getUsername(user) + " but it is enabled in the config, skipping!");
+                    System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for " + userService.getUserName(user) + " but it is enabled in the config, skipping!");
                 }
             } catch (Exception e) {
                 success = false;
@@ -190,7 +200,7 @@ public abstract class CommonSnapshotSerializer<
                 "\" was used in snapshot "
                 + snapshot.getId() +
                 " but it is not enabled in the config! Not all data from snapshot could be added to user "
-                + getUsername(user)
+                + userService.getUserName(user)
         ));
         return success;
     }

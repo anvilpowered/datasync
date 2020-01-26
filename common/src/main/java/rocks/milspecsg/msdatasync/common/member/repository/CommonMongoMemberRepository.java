@@ -22,15 +22,18 @@ import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
-import org.mongodb.morphia.query.QueryResults;
-import org.mongodb.morphia.query.UpdateOperations;
 import rocks.milspecsg.msdatasync.api.member.repository.MongoMemberRepository;
 import rocks.milspecsg.msdatasync.api.model.member.Member;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.common.repository.CommonMongoRepository;
 
-import java.util.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -75,18 +78,18 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(Query<TMember> query) {
-        return getSnapshotIds(query).thenApplyAsync(objectIds -> objectIds.stream().map(ObjectId::getDate).collect(Collectors.toList()));
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimes(Query<TMember> query) {
+        return getSnapshotIds(query).thenApplyAsync(objectIds -> objectIds.stream().map(o -> Instant.ofEpochSecond(o.getTimestamp())).collect(Collectors.toList()));
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDates(ObjectId id) {
-        return getSnapshotDates(asQuery(id));
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimes(ObjectId id) {
+        return getSnapshotCreationTimes(asQuery(id));
     }
 
     @Override
-    public CompletableFuture<List<Date>> getSnapshotDatesForUser(UUID userUUID) {
-        return getSnapshotDates(asQuery(userUUID));
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimesForUser(UUID userUUID) {
+        return getSnapshotCreationTimes(asQuery(userUUID));
     }
 
     @Override
@@ -95,10 +98,10 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, Date date) {
+    public CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, Instant createdUtc) {
         return getSnapshotIds(query)
             .thenApplyAsync(objectIds -> objectIds.stream()
-                .filter(objectId -> objectId.getDate().equals(date))
+                .filter(objectId -> Instant.ofEpochSecond(objectId.getTimestamp()).equals(createdUtc))
                 .findFirst()
                 .map(snapshotId -> removeSnapshotId(query, snapshotId) && snapshotRepository.deleteOne(snapshotId).join())
                 .orElse(false)
@@ -106,7 +109,7 @@ public class CommonMongoMemberRepository<
     }
 
     private boolean removeSnapshotId(Query<TMember> query, ObjectId snapshotId) {
-        return CompletableFuture.supplyAsync(() -> update(query, createUpdateOperations().removeAll("snapshotIds", snapshotId))).join();
+        return getDataStoreContext().getDataStore().update(query, createUpdateOperations().removeAll("snapshotIds", snapshotId)).getUpdatedCount() > 0;
     }
 
     @Override
@@ -115,8 +118,8 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(ObjectId id, Date date) {
-        return deleteSnapshot(asQuery(id), date);
+    public CompletableFuture<Boolean> deleteSnapshot(ObjectId id, Instant createdUtc) {
+        return deleteSnapshot(asQuery(id), createdUtc);
     }
 
     @Override
@@ -125,13 +128,13 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Date date) {
-        return deleteSnapshot(asQuery(userUUID), date);
+    public CompletableFuture<Boolean> deleteSnapshotForUser(UUID userUUID, Instant createdUtc) {
+        return deleteSnapshot(asQuery(userUUID), createdUtc);
     }
 
     @Override
     public CompletableFuture<Boolean> addSnapshot(Query<TMember> query, ObjectId snapshotId) {
-        return CompletableFuture.supplyAsync(() -> update(query, createUpdateOperations().set("snapshotIds", snapshotId)));
+        return update(query, createUpdateOperations().addToSet("snapshotIds", snapshotId));
     }
 
     @Override
@@ -150,40 +153,41 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(Query<TMember> query, Date date) {
+    public CompletableFuture<Optional<TSnapshot>> getSnapshot(Query<TMember> query, Instant createdUtc) {
         return getSnapshotIds(query)
             .thenApplyAsync(objectIds -> objectIds.stream()
-                .filter(objectId -> objectId.getDate().equals(date))
+                .filter(objectId -> Instant.ofEpochSecond(objectId.getTimestamp()).equals(createdUtc))
                 .findFirst()
                 .flatMap(objectId -> snapshotRepository.getOne(objectId).join())
             );
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(ObjectId id, Date date) {
-        return getSnapshot(asQuery(id), date);
+    public CompletableFuture<Optional<TSnapshot>> getSnapshot(ObjectId id, Instant createdUtc) {
+        return getSnapshot(asQuery(id), createdUtc);
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Date date) {
-        return getSnapshot(asQuery(userUUID), date);
+    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Instant createdUtc) {
+        return getSnapshot(asQuery(userUUID), createdUtc);
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<TMember> query, Date date) {
+    public CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<TMember> query, Instant createdUtc) {
+        final long seconds = createdUtc.getEpochSecond();
         return getSnapshotIds(query).thenApplyAsync(objectIds -> {
             Optional<ObjectId> closestBefore = Optional.empty();
             Optional<ObjectId> closestAfter = Optional.empty();
             Optional<ObjectId> same = Optional.empty();
 
             for (ObjectId objectId : objectIds) {
-                Date toTest = objectId.getDate();
+                long toTest = objectId.getTimestamp();
 
-                if (toTest.equals(date)) {
+                if (toTest == seconds) {
                     same = Optional.of(objectId);
-                } else if (toTest.before(date) && (!closestBefore.isPresent() || toTest.after(closestBefore.get().getDate()))) {
+                } else if (toTest < seconds && (!closestBefore.isPresent() || toTest > closestBefore.get().getTimestamp())) {
                     closestBefore = Optional.of(objectId);
-                } else if (toTest.after(date) && (!closestAfter.isPresent() || toTest.before(closestAfter.get().getDate()))) {
+                } else if (toTest > seconds && (!closestAfter.isPresent() || toTest < closestAfter.get().getTimestamp())) {
                     closestAfter = Optional.of(objectId);
                 }
             }
@@ -197,12 +201,12 @@ public class CommonMongoMemberRepository<
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getClosestSnapshots(ObjectId id, Date date) {
-        return getClosestSnapshots(asQuery(id), date);
+    public CompletableFuture<List<ObjectId>> getClosestSnapshots(ObjectId id, Instant createdUtc) {
+        return getClosestSnapshots(asQuery(id), createdUtc);
     }
 
     @Override
-    public CompletableFuture<List<ObjectId>> getClosestSnapshotsForUser(UUID userUUID, Date date) {
-        return getClosestSnapshots(asQuery(userUUID), date);
+    public CompletableFuture<List<ObjectId>> getClosestSnapshotsForUser(UUID userUUID, Instant createdUtc) {
+        return getClosestSnapshots(asQuery(userUUID), createdUtc);
     }
 }

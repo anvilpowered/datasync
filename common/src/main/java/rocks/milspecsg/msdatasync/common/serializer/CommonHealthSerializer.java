@@ -18,8 +18,8 @@
 
 package rocks.milspecsg.msdatasync.common.serializer;
 
-import rocks.milspecsg.msdatasync.api.serializer.HealthSerializer;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
+import rocks.milspecsg.msdatasync.api.serializer.HealthSerializer;
 
 public abstract class CommonHealthSerializer<
     TSnapshot extends Snapshot<?>,
