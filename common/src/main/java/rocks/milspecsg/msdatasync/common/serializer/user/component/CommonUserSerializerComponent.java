@@ -86,11 +86,6 @@ public abstract class CommonUserSerializerComponent<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> serialize(TUser user) {
-        return serialize(user, "Manual");
-    }
-
-    @Override
     public String getName() {
         return "msdatasync:player";
     }

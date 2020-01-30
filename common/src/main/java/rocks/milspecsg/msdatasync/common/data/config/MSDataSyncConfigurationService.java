@@ -21,7 +21,9 @@ public class MSDataSyncConfigurationService extends CommonConfigurationService {
     protected void initNodeNameMap() {
         super.initNodeNameMap();
         nodeNameMap.put(MSDataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS, "serialize.enabledSerializers");
-        nodeNameMap.put(MSDataSyncKeys.SERIALIZE_ON_JOIN_LEAVE, "serialize.serializeOnJoinLeave");
+        nodeNameMap.put(MSDataSyncKeys.DESERIALIZE_ON_JOIN, "serialize.deserializeOnJoin");
+        nodeNameMap.put(MSDataSyncKeys.SERIALIZE_ON_DEATH, "serialize.serializeOnDeath");
+        nodeNameMap.put(MSDataSyncKeys.SERIALIZE_ON_DISCONNECT, "serialize.serializeOnDisconnect");
         nodeNameMap.put(MSDataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, "serialize.waitForSnapshotOnJoin");
         nodeNameMap.put(MSDataSyncKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
         nodeNameMap.put(MSDataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
@@ -36,7 +38,9 @@ public class MSDataSyncConfigurationService extends CommonConfigurationService {
             "\nThings to sync to DB." +
                 "\nAvailable: msdatasync:experience, msdatasync:gameMode, msdatasync:health, msdatasync:hunger, msdatasync:inventory"
         );
-        nodeDescriptionMap.put(MSDataSyncKeys.SERIALIZE_ON_JOIN_LEAVE, "\nWhether MSDataSync should sync players to DB on join/leave");
+        nodeDescriptionMap.put(MSDataSyncKeys.DESERIALIZE_ON_JOIN, "\nWhether MSDataSync should deserialize players on join");
+        nodeDescriptionMap.put(MSDataSyncKeys.SERIALIZE_ON_DEATH, "\nWhether MSDataSync should serialize players to DB on death");
+        nodeDescriptionMap.put(MSDataSyncKeys.SERIALIZE_ON_DISCONNECT, "\nWhether MSDataSync should serialize players to DB on disconnect");
         nodeDescriptionMap.put(MSDataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
             "\nWhether MSDataSync should wait for snapshots to be uploaded before downloading them.\n" +
                 "Note: this option is highly recommended if you are running a multi-server environment like Velocity"

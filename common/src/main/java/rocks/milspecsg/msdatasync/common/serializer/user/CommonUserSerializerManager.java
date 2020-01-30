@@ -84,7 +84,7 @@ public class CommonUserSerializerManager<
         CompletableFuture<TString> result = new CompletableFuture<>();
 
         for (TUser user : users) {
-            getPrimaryComponent().serialize(user).thenAcceptAsync(optionalSnapshot -> {
+            getPrimaryComponent().serialize(user, "Manual").thenAcceptAsync(optionalSnapshot -> {
                 if (optionalSnapshot.isPresent()) {
                     successful.add(user);
                 } else {
@@ -108,18 +108,45 @@ public class CommonUserSerializerManager<
     }
 
     @Override
-    public CompletableFuture<TString> serialize(TUser user) {
-        return getPrimaryComponent().serialize(user).thenApplyAsync(optionalSnapshot ->
+    public CompletableFuture<TString> serialize(TUser user, String name) {
+        return getPrimaryComponent().serialize(user, name).thenApplyAsync(optionalSnapshot ->
             optionalSnapshot.isPresent()
                 ? stringResult.builder()
                 .append(pluginInfo.getPrefix())
-                .yellow().append("Successfully serialized ", userService.getUserName(user), " and uploaded snapshot ")
-                .gold().append(timeFormatService.format(optionalSnapshot.get().getCreatedUtc()))
+                .yellow().append("Successfully uploaded snapshot ")
+                .gold().append(timeFormatService.format(optionalSnapshot.get().getCreatedUtc()), " (", name, ")")
+                .yellow().append(" for ", userService.getUserName(user), "!")
                 .build()
                 : stringResult.builder()
                 .append(pluginInfo.getPrefix())
-                .red().append("An error occurred while serializing ", userService.getUserName(user))
+                .red().append("An error occurred while serializing ", name, " for ", userService.getUserName(user), "!")
                 .build());
+    }
+
+    @Override
+    public CompletableFuture<TString> serialize(TUser user) {
+        return serialize(user, "Manual");
+    }
+
+    @Override
+    public CompletableFuture<TString> deserialize(TUser user, Object plugin, String event) {
+        return getPrimaryComponent().deserialize(user, plugin).thenApplyAsync(optionalSnapshot ->
+            optionalSnapshot.isPresent()
+                ? stringResult.builder()
+                .append(pluginInfo.getPrefix())
+                .yellow().append("Successfully downloaded snapshot ")
+                .gold().append(timeFormatService.format(optionalSnapshot.get().getCreatedUtc()), " (", optionalSnapshot.get().getName(), ")")
+                .yellow().append(" for ", userService.getUserName(user), " on ", event, "!")
+                .build()
+                : stringResult.builder()
+                .append(pluginInfo.getPrefix())
+                .red().append("An error occurred while deserializing ", userService.getUserName(user), " on ", event, "!")
+                .build());
+    }
+
+    @Override
+    public CompletableFuture<TString> deserialize(TUser user, Object plugin) {
+        return deserialize(user, plugin, "N/A");
     }
 
     @Override

@@ -18,7 +18,11 @@ public final class MSDataSyncKeys {
     ) {
     };
 
-    public static final Key<Boolean> SERIALIZE_ON_JOIN_LEAVE = new Key<Boolean>("SERIALIZE_ON_JOIN_LEAVE", false) {
+    public static final Key<Boolean> DESERIALIZE_ON_JOIN = new Key<Boolean>("DESERIALIZE_ON_JOIN", false) {
+    };
+    public static final Key<Boolean> SERIALIZE_ON_DEATH = new Key<Boolean>("SERIALIZE_ON_DEATH", true) {
+    };
+    public static final Key<Boolean> SERIALIZE_ON_DISCONNECT = new Key<Boolean>("SERIALIZE_ON_DISCONNECT", true) {
     };
     public static final Key<Boolean> SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", false) {
     };
@@ -53,7 +57,9 @@ public final class MSDataSyncKeys {
 
     static {
         Keys.registerKey(SERIALIZE_ENABLED_SERIALIZERS);
-        Keys.registerKey(SERIALIZE_ON_JOIN_LEAVE);
+        Keys.registerKey(DESERIALIZE_ON_JOIN);
+        Keys.registerKey(SERIALIZE_ON_DEATH);
+        Keys.registerKey(SERIALIZE_ON_DISCONNECT);
         Keys.registerKey(SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN);
         Keys.registerKey(SNAPSHOT_MIN_COUNT);
         Keys.registerKey(SNAPSHOT_OPTIMIZATION_STRATEGY);

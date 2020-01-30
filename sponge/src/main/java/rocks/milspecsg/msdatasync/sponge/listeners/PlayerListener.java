@@ -24,6 +24,9 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.DestructEntityEvent;
+import org.spongepowered.api.event.filter.Getter;
+import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -35,8 +38,6 @@ import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
-import java.util.concurrent.CompletableFuture;
-
 @Singleton
 public class PlayerListener {
 
@@ -46,9 +47,11 @@ public class PlayerListener {
     private PluginInfo<Text> pluginInfo;
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
+    private UserSerializerManager<Snapshot<?>, User, Text> userSerializerManager;
 
-    private boolean enabled;
+    private boolean joinSerializationEnabled;
+    private boolean disconnectSerializationEnabled;
+    private boolean deathSerializationEnabled;
 
     @Inject
     public PlayerListener(Registry registry) {
@@ -57,52 +60,50 @@ public class PlayerListener {
     }
 
     private void registryLoaded(Object plugin) {
-        enabled = registry.getOrDefault(MSDataSyncKeys.SERIALIZE_ON_JOIN_LEAVE);
-        if (!enabled) {
-            Sponge.getServer().getConsole().sendMessage(
-                Text.of(pluginInfo.getPrefix(), TextColors.RED,
-                    "Attention! You have opted to disable join/leave syncing.\n" +
-                        "If you would like to enable this, set `serializeOnJoinLeave=true` in the config and restart your server or run /sync reload")
-            );
+        joinSerializationEnabled = registry.getOrDefault(MSDataSyncKeys.DESERIALIZE_ON_JOIN);
+        if (!joinSerializationEnabled) {
+            sendWarning("serialize.deserializeOnJoin");
+        }
+        disconnectSerializationEnabled = registry.getOrDefault(MSDataSyncKeys.SERIALIZE_ON_DISCONNECT);
+        if (!disconnectSerializationEnabled) {
+            sendWarning("serialize.serializeOnDisconnect");
+        }
+        deathSerializationEnabled = registry.getOrDefault(MSDataSyncKeys.SERIALIZE_ON_DEATH);
+        if (!deathSerializationEnabled) {
+            sendWarning("serialize.serializeOnDeath");
+        }
+    }
+
+    private void sendWarning(String name) {
+        Sponge.getServer().getConsole().sendMessage(
+            Text.of(pluginInfo.getPrefix(), TextColors.RED,
+                "Attention! You have opted to disable ", name, ".\n" +
+                    "If you would like to enable this, set `", name, "=true` in the config and restart your server or run /sync reload")
+        );
+    }
+
+    @Listener
+    public void onPlayerJoin(ClientConnectionEvent.Join joinEvent, @Root Player player) {
+        if (joinSerializationEnabled) {
+            userSerializerManager.deserialize(player, MSDataSync.plugin, "Join")
+                .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }
 
     @Listener
-    public void onPlayerJoin(ClientConnectionEvent.Join joinEvent) {
-        if (enabled) {
-            Player player = joinEvent.getTargetEntity();
-            CompletableFuture.runAsync(() -> {
-                userSerializer.getPrimaryComponent().deserialize(player, MSDataSync.plugin).thenAcceptAsync(optionalSnapshot -> {
-                    if (optionalSnapshot.isPresent()) {
-                        Sponge.getServer().getConsole().sendMessage(
-                            Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Successfully deserialized ", player.getName(), " on join!")
-                        );
-                    } else {
-                        Sponge.getServer().getConsole().sendMessage(
-                            Text.of(pluginInfo.getPrefix(), TextColors.RED, "An error occurred while deserializing ", player.getName(), " on join!")
-                        );
-                    }
-                }).join();
-            });
+    public void onPlayerDisconnect(ClientConnectionEvent.Disconnect disconnectEvent, @Root Player player) {
+        SyncLockCommand.lockPlayer(player);
+        if (disconnectSerializationEnabled) {
+            userSerializerManager.serialize(player, "Disconnect")
+                .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }
 
     @Listener
-    public void onPlayerDisconnect(ClientConnectionEvent.Disconnect disconnectEvent) {
-        SyncLockCommand.lockPlayer(disconnectEvent.getTargetEntity());
-        if (enabled) {
-            Player player = disconnectEvent.getTargetEntity();
-            userSerializer.getPrimaryComponent().serialize(player, "Disconnect").thenAcceptAsync(optionalSnapshot -> {
-                if (optionalSnapshot.isPresent()) {
-                    Sponge.getServer().getConsole().sendMessage(
-                        Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Successfully serialized ", player.getName(), " on disconnect!")
-                    );
-                } else {
-                    Sponge.getServer().getConsole().sendMessage(
-                        Text.of(pluginInfo.getPrefix(), TextColors.RED, "An error occurred while serializing ", player.getName(), " on disconnect!")
-                    );
-                }
-            });
+    public void onPlayerDeath(DestructEntityEvent.Death deathEvent, @Getter("getTargetEntity") Player player) {
+        if (deathSerializationEnabled) {
+            userSerializerManager.serialize(player, "Death")
+                .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }
 }
