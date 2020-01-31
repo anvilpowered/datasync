@@ -4,10 +4,7 @@ plugins {
     id 'org.spongepowered.plugin' version '0.8.1'
 }
 
-version = modVersion
-group = modGroup
-
-sourceCompatibility = 1.8
+jar.enabled = false // we only want shadowJar
 
 repositories {
     mavenCentral()
@@ -48,7 +45,9 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = "MSDataSync-Sponge-${modVersion}.jar"
+    String jarName = "MSDataSync-Sponge-${modVersion}.jar"
+    println "Building: " + jarName
+    archiveFileName = jarName
 
     dependencies {
         include project(':api')

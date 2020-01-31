@@ -2,16 +2,11 @@ plugins {
     id 'java'
 }
 
-group 'rocks.milspecsg'
-version '0.1.0-dev'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+subprojects {
+    if (project.hasProperty("buildNumber") && modVersion.contains("-SNAPSHOT")) {
+        modVersion = modVersion.replace("-SNAPSHOT", "-RC${buildNumber}")
+    }
+    group modGroup
+    version modVersion
+    sourceCompatibility = 1.8
 }
