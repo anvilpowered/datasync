@@ -20,7 +20,7 @@ package rocks.milspecsg.msdatasync.common.plugin;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 import rocks.milspecsg.msrepository.api.util.StringResult;
 
 @Singleton
@@ -30,7 +30,9 @@ public final class MSDataSyncPluginInfo<TString, TCommandSource> implements Plug
     public static final String version = "$modVersion";
     public static final String description = "A plugin to synchronize player inventories with a database";
     public static final String url = "https://github.com/MilSpecSG/MSDataSync";
-    public static final String authors = "Cableguy20";
+    public static final String[] authors = {"Cableguy20"};
+    public static final String organizationName = "MilSpecSG";
+    public static final String buildDate = "$buildDate";
     public TString pluginPrefix;
 
     @Inject
@@ -59,13 +61,23 @@ public final class MSDataSyncPluginInfo<TString, TCommandSource> implements Plug
     }
 
     @Override
-    public String getURL() {
+    public String getUrl() {
         return url;
     }
 
     @Override
-    public String getAuthors() {
+    public String[] getAuthors() {
         return authors;
+    }
+
+    @Override
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    @Override
+    public String getBuildDate() {
+        return buildDate;
     }
 
     @Override

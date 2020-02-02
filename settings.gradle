@@ -27,6 +27,5 @@ include 'MSRepository:msr-core:core-sponge'
 include 'MSRepository:msr-core:core-velocity'
 
 include 'MSRepository:msr-sponge'
-include 'MSRepository:msr-sponge:sponge-repository'
 
 include 'MSRepository:msr-velocity'

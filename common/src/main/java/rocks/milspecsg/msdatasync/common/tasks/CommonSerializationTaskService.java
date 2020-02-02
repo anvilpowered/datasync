@@ -42,7 +42,7 @@ public abstract class CommonSerializationTaskService<
         this.registry.addRegistryLoadedListener(this::registryLoaded);
     }
 
-    private void registryLoaded(Object plugin) {
+    private void registryLoaded() {
         baseInterval = registry.getOrDefault(MSDataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES);
         stopSerializationTask();
         startSerializationTask();

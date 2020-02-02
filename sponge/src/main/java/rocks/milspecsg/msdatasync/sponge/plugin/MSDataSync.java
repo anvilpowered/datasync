@@ -18,6 +18,7 @@
 
 package rocks.milspecsg.msdatasync.sponge.plugin;
 
+import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
@@ -45,7 +46,8 @@ import rocks.milspecsg.msdatasync.sponge.module.SpongeModule;
 import rocks.milspecsg.msdatasync.sponge.serializer.SpongeSnapshotSerializer;
 import rocks.milspecsg.msrepository.api.MSRepository;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.misc.BindingExtensions;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
 
 @Plugin(
@@ -53,7 +55,7 @@ import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
     name = MSDataSyncPluginInfo.name,
     version = MSDataSyncPluginInfo.version,
     description = MSDataSyncPluginInfo.description,
-    authors = MSDataSyncPluginInfo.authors,
+    authors = {"Cableguy20"},
     url = MSDataSyncPluginInfo.url,
     dependencies = {
         @Dependency(id = "mscore", version = "1.0.0-SNAPSHOT"),
@@ -86,7 +88,8 @@ public class MSDataSync {
     public void onServerInitialization(GameInitializationEvent event) {
         plugin = this;
         injector = spongeRootInjector.createChildInjector(new SpongeModule(), new ApiSpongeModule());
-        MSRepository.createEnvironment(MSDataSyncPluginInfo.id, injector);
+        MSRepository.registerEnvironment(MSDataSyncPluginInfo.id, injector, BindingExtensions.getKey(new TypeToken<PluginInfo<Text>>() {
+        }));
         pluginInfo = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<PluginInfo<Text>>() {
         }));
         Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Loading..."));
@@ -123,7 +126,7 @@ public class MSDataSync {
     }
 
     private void loadRegistry() {
-        injector.getInstance(Registry.class).load(this);
+        injector.getInstance(Registry.class).load();
     }
 
     private void initSingletonServices() {

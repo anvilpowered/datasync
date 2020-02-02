@@ -89,9 +89,9 @@ public abstract class CommonSnapshotSerializer<
         externalSerializers.add(serializer);
     }
 
-    private void registryLoaded(Object plugin) {
+    private void registryLoaded() {
 
-        postLoadedEvent(plugin);
+        postLoadedEvent();
 
         verifyExternalSerializers();
 
@@ -128,7 +128,7 @@ public abstract class CommonSnapshotSerializer<
             .forEach(serializer -> serializers.add(serializer));
     }
 
-    protected abstract void postLoadedEvent(Object plugin);
+    protected abstract void postLoadedEvent();
 
     private void verifyExternalSerializers() {
         List<Serializer<TSnapshot, TUser>> externalSerializersToRemove = new ArrayList<>();

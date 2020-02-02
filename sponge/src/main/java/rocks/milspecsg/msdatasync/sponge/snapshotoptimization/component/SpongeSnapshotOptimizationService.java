@@ -33,7 +33,7 @@ import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 import javax.inject.Singleton;
 import java.util.Collection;

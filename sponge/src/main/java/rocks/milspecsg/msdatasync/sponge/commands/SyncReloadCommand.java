@@ -27,7 +27,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 public class SyncReloadCommand implements CommandExecutor {
 
@@ -39,7 +39,7 @@ public class SyncReloadCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
-        registry.load(MSDataSync.plugin);
+        registry.load();
         source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.GREEN, "Successfully reloaded!"));
         return CommandResult.success();
     }

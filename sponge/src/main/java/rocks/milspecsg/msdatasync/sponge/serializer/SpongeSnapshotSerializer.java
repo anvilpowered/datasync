@@ -34,8 +34,9 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.common.serializer.CommonSnapshotSerializer;
 import rocks.milspecsg.msdatasync.sponge.events.SerializerInitializationEvent;
+import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 @Singleton
 public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot> {
@@ -48,11 +49,14 @@ public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<
     @Inject
     private PluginInfo<Text> pluginInfo;
 
+    @Inject
+    private MSDataSync msDataSync;
+
     @Override
-    protected void postLoadedEvent(Object plugin) {
-        Sponge.getPluginManager().fromInstance(plugin).ifPresent(container -> {
+    protected void postLoadedEvent() {
+        Sponge.getPluginManager().fromInstance(msDataSync).ifPresent(container -> {
             EventContext eventContext = EventContext.builder().add(EventContextKeys.PLUGIN, container).build();
-            Sponge.getEventManager().post(new SerializerInitializationEvent<>(this, snapshotManager, Cause.of(eventContext, plugin)));
+            Sponge.getEventManager().post(new SerializerInitializationEvent<>(this, snapshotManager, Cause.of(eventContext, msDataSync)));
         });
     }
 

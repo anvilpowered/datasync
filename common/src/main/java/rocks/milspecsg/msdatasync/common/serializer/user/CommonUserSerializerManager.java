@@ -25,7 +25,7 @@ import rocks.milspecsg.msdatasync.api.model.snapshot.Snapshot;
 import rocks.milspecsg.msdatasync.api.serializer.user.UserSerializerManager;
 import rocks.milspecsg.msdatasync.api.serializer.user.component.UserSerializerComponent;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 import rocks.milspecsg.msrepository.api.util.StringResult;
 import rocks.milspecsg.msrepository.api.util.TimeFormatService;
 import rocks.milspecsg.msrepository.api.util.UserService;

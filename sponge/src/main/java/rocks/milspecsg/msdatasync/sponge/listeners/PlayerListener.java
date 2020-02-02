@@ -36,7 +36,7 @@ import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msdatasync.sponge.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 @Singleton
 public class PlayerListener {
@@ -59,7 +59,7 @@ public class PlayerListener {
         registry.addRegistryLoadedListener(this::registryLoaded);
     }
 
-    private void registryLoaded(Object plugin) {
+    private void registryLoaded() {
         joinSerializationEnabled = registry.getOrDefault(MSDataSyncKeys.DESERIALIZE_ON_JOIN);
         if (!joinSerializationEnabled) {
             sendWarning("serialize.deserializeOnJoin");

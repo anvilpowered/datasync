@@ -104,8 +104,8 @@ public abstract class CommonSnapshotOptimizationService<
         idCreatedUtcMap = new ConcurrentHashMap<>();
     }
 
-    private void registryLoaded(final Object plugin) {
-        Optional<List<int[]>> optional = syncUtils.decodeOptimizationStrategy(registry.getOrDefault(Keys.resolveUnsafe("SNAPSHOT_OPTIMIZATION_STRATEGY")));
+    private void registryLoaded() {
+        Optional<List<int[]>> optional = syncUtils.decodeOptimizationStrategy(registry.getOrDefault(MSDataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY));
         optimizationStrategy = optional.orElse(null);
     }
 

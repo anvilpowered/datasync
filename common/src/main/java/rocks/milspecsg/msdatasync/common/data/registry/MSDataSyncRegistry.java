@@ -9,5 +9,6 @@ public class MSDataSyncRegistry extends CommonExtendedRegistry {
 
     public MSDataSyncRegistry() {
         defaultMap.put(Keys.BASE_SCAN_PACKAGE, "rocks.milspecsg.msdatasync.common.model");
+        defaultMap.put(Keys.DATA_DIRECTORY, "msdatasync");
     }
 }

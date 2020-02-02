@@ -29,7 +29,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msdatasync.common.tasks.CommonSerializationTaskService;
 import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 import java.util.concurrent.TimeUnit;
 

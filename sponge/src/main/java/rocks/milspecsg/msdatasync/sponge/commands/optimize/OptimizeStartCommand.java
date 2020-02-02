@@ -31,7 +31,7 @@ import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationM
 import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
 import rocks.milspecsg.msdatasync.sponge.commands.SyncLockCommand;
 import rocks.milspecsg.msdatasync.sponge.plugin.MSDataSync;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 import java.util.Collection;
 import java.util.Optional;
