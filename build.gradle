@@ -6,7 +6,7 @@ subprojects {
     if (project.hasProperty("buildNumber") && modVersion.contains("-SNAPSHOT")) {
         modVersion = modVersion.replace("-SNAPSHOT", "-RC${buildNumber}")
     }
-    group modGroup
-    version modVersion
+    group "org.anvilpowered"
+    version "A1.0-1.0.0-SNAPSHOT"
     sourceCompatibility = 1.8
 }

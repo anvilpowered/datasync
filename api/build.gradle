@@ -11,13 +11,12 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 
-    implementation morphia
-    implementation project(':MSRepository:msr-api:api-repository')
-    implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
-    implementation project(':MSRepository:msr-api:api-repository:api-repository-xodus')
-    implementation project(':MSRepository:msr-api:api-config')
+    implementation project(':Anvil:anvil-api')
+    implementation project(':Anvil:anvil-api:anvil-api-mongodb')
+    implementation project(':Anvil:anvil-api:anvil-api-xodus')
 
     implementation guice
+    implementation morphia
     implementation xodus
     implementation xodus_entity_store
 }

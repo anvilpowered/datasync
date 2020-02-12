@@ -1,6 +1,5 @@
 /*
- *     MSDataSync - MilSpecSG
- *     Copyright (C) 2019 Cableguy20
+ *   Copyright (C) 2020 Cableguy20
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
