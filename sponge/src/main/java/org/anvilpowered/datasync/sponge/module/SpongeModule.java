@@ -29,6 +29,8 @@ import org.anvilpowered.datasync.api.model.member.MappableMember;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.MappableSnapshot;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.common.data.config.CommonConfigurationService;
+import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
 import org.anvilpowered.datasync.common.module.CommonModule;
 import org.anvilpowered.datasync.common.serializer.CommonExperienceSerializer;
 import org.anvilpowered.datasync.common.serializer.CommonGameModeSerializer;
@@ -38,10 +40,18 @@ import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
 import org.anvilpowered.datasync.common.serializer.CommonSnapshotSerializer;
 import org.anvilpowered.datasync.common.serializer.user.component.CommonUserSerializerComponent;
 import org.anvilpowered.datasync.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
+import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
+import org.anvilpowered.datasync.sponge.data.config.SpongeConfigurationService;
+import org.anvilpowered.datasync.sponge.keys.CommonSpongeDataKeyService;
+import org.anvilpowered.datasync.sponge.serializer.SpongeExperienceSerializer;
+import org.anvilpowered.datasync.sponge.serializer.SpongeGameModeSerializer;
+import org.anvilpowered.datasync.sponge.serializer.SpongeHealthSerializer;
 import org.anvilpowered.datasync.sponge.serializer.SpongeHungerSerializer;
 import org.anvilpowered.datasync.sponge.serializer.SpongeInventorySerializer;
+import org.anvilpowered.datasync.sponge.serializer.SpongeSnapshotSerializer;
 import org.anvilpowered.datasync.sponge.serializer.user.component.SpongeUserSerializerComponent;
 import org.anvilpowered.datasync.sponge.snapshotoptimization.component.SpongeSnapshotOptimizationService;
+import org.anvilpowered.datasync.sponge.tasks.SpongeSerializationTaskService;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.spongepowered.api.command.CommandSource;
@@ -51,16 +61,6 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
-import org.anvilpowered.datasync.common.data.config.DataSyncConfigurationService;
-import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
-import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
-import org.anvilpowered.datasync.sponge.data.config.DataSyncSpongeConfigurationService;
-import org.anvilpowered.datasync.sponge.keys.CommonSpongeDataKeyService;
-import org.anvilpowered.datasync.sponge.serializer.SpongeExperienceSerializer;
-import org.anvilpowered.datasync.sponge.serializer.SpongeGameModeSerializer;
-import org.anvilpowered.datasync.sponge.serializer.SpongeHealthSerializer;
-import org.anvilpowered.datasync.sponge.serializer.SpongeSnapshotSerializer;
-import org.anvilpowered.datasync.sponge.tasks.SpongeSerializationTaskService;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class SpongeModule extends CommonModule<
@@ -82,7 +82,7 @@ public class SpongeModule extends CommonModule<
 
         BindingExtensions be = Anvil.getBindingExtensions(binder());
 
-        bind(DataSyncConfigurationService.class).to(DataSyncSpongeConfigurationService.class);
+        bind(CommonConfigurationService.class).to(SpongeConfigurationService.class);
 
         bind(
             (TypeLiteral<CommonExperienceSerializer<Snapshot<?>, Key<?>, User>>) TypeLiteral.get(new TypeToken<CommonExperienceSerializer<Snapshot<?>, Key<?>, User>>(getClass()) {

@@ -16,9 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands;
+package org.anvilpowered.datasync.sponge.command;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -27,7 +28,6 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class SyncLockCommand implements CommandExecutor {
     @Inject
     PluginInfo<Text> pluginInfo;
 
-    private static List<UUID> unlockedPlayers = new ArrayList<>();
+    private static final List<UUID> unlockedPlayers = new ArrayList<>();
 
     public static void assertUnlocked(CommandSource source) throws CommandException {
         if (source instanceof Player && !unlockedPlayers.contains(((Player) source).getUniqueId())) {

@@ -1,31 +1,12 @@
 import java.text.SimpleDateFormat
 
 plugins {
-    id 'java'
     id "net.kyori.blossom" version "1.1.0"
 }
 
-repositories {
-    mavenCentral()
-    maven { url 'https://repo.spongepowered.org/maven' }
-}
-
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-
     implementation project(':api')
-    implementation project(':Anvil:anvil-api')
-    implementation project(':Anvil:anvil-api:anvil-api-mongodb')
-    implementation project(':Anvil:anvil-api:anvil-api-xodus')
-    implementation project(':Anvil:anvil-base')
-    implementation project(':Anvil:anvil-base:anvil-base-mongodb')
-    implementation project(':Anvil:anvil-base:anvil-base-xodus')
-
-    implementation configurate_core
-    implementation guice
-    implementation morphia
-    implementation xodus
-    implementation xodus_entity_store
+    implementation configurate_hocon
 }
 
 blossom {

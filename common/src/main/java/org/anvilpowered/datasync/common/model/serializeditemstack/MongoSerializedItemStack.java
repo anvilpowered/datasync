@@ -18,8 +18,8 @@
 
 package org.anvilpowered.datasync.common.model.serializeditemstack;
 
-import org.mongodb.morphia.annotations.Embedded;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
+import org.mongodb.morphia.annotations.Embedded;
 
 import java.util.HashMap;
 import java.util.Map;

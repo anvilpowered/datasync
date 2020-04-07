@@ -19,18 +19,18 @@
 package org.anvilpowered.datasync.common.snapshot;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.base.manager.BaseManager;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
-import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
-import rocks.milspecsg.msrepository.common.manager.CommonManager;
 
 public class CommonSnapshotManager<TSnapshot extends Snapshot<?>, TDataKey>
-    extends CommonManager<SnapshotRepository<?, TSnapshot, TDataKey, ?>>
+    extends BaseManager<SnapshotRepository<?, TSnapshot, TDataKey, ?>>
     implements SnapshotManager<TSnapshot, TDataKey> {
 
     @Inject
-    public CommonSnapshotManager(ConfigurationService configurationService) {
-        super(configurationService);
+    public CommonSnapshotManager(Registry registry) {
+        super(registry);
     }
 }

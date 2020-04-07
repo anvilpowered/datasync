@@ -35,7 +35,7 @@ public interface UserSerializerComponent<
 
     CompletableFuture<Optional<TSnapshot>> serialize(TUser user, String name);
 
-    CompletableFuture<Optional<TSnapshot>> deserialize(TUser user, Object plugin, TSnapshot snapshot);
+    CompletableFuture<Optional<TSnapshot>> deserialize(TUser user, TSnapshot snapshot);
 
-    CompletableFuture<Optional<TSnapshot>> deserialize(TUser user, Object plugin);
+    CompletableFuture<Optional<TSnapshot>> deserialize(TUser user);
 }

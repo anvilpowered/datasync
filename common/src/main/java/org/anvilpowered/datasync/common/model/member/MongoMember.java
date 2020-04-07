@@ -19,9 +19,9 @@
 package org.anvilpowered.datasync.common.model.member;
 
 import org.anvilpowered.anvil.base.model.MongoDbo;
+import org.anvilpowered.datasync.api.model.member.Member;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import org.anvilpowered.datasync.api.model.member.Member;
 
 import java.util.ArrayList;
 import java.util.List;

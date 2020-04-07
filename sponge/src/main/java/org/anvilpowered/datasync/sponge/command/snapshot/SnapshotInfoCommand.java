@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.snapshot;
+package org.anvilpowered.datasync.sponge.command.snapshot;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;

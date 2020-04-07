@@ -36,18 +36,6 @@ import org.anvilpowered.anvil.api.misc.BindingExtensions;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.api.plugin.BasicPluginInfo;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
-import org.anvilpowered.datasync.common.serializer.CommonExperienceSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonGameModeSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonHealthSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonHungerSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
-import org.anvilpowered.datasync.common.serializer.CommonSnapshotSerializer;
-import org.anvilpowered.datasync.common.snapshot.CommonSnapshotManager;
-import org.anvilpowered.datasync.common.snapshot.repository.CommonMongoSnapshotRepository;
-import org.anvilpowered.datasync.common.snapshot.repository.CommonXodusSnapshotRepository;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
 import org.anvilpowered.datasync.api.keys.DataKeyService;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
@@ -67,18 +55,30 @@ import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 import org.anvilpowered.datasync.api.tasks.SerializationTaskService;
-import org.anvilpowered.datasync.common.data.config.DataSyncConfigurationService;
+import org.anvilpowered.datasync.common.data.config.CommonConfigurationService;
 import org.anvilpowered.datasync.common.data.registry.DataSyncRegistry;
 import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
 import org.anvilpowered.datasync.common.member.CommonMemberManager;
 import org.anvilpowered.datasync.common.member.repository.CommonMongoMemberRepository;
 import org.anvilpowered.datasync.common.member.repository.CommonXodusMemberRepository;
 import org.anvilpowered.datasync.common.misc.CommonSyncUtils;
+import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
+import org.anvilpowered.datasync.common.serializer.CommonExperienceSerializer;
+import org.anvilpowered.datasync.common.serializer.CommonGameModeSerializer;
+import org.anvilpowered.datasync.common.serializer.CommonHealthSerializer;
+import org.anvilpowered.datasync.common.serializer.CommonHungerSerializer;
+import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
+import org.anvilpowered.datasync.common.serializer.CommonSnapshotSerializer;
 import org.anvilpowered.datasync.common.serializer.user.CommonUserSerializerManager;
 import org.anvilpowered.datasync.common.serializer.user.component.CommonUserSerializerComponent;
+import org.anvilpowered.datasync.common.snapshot.CommonSnapshotManager;
+import org.anvilpowered.datasync.common.snapshot.repository.CommonMongoSnapshotRepository;
+import org.anvilpowered.datasync.common.snapshot.repository.CommonXodusSnapshotRepository;
 import org.anvilpowered.datasync.common.snapshotoptimization.CommonSnapshotOptimizationManager;
 import org.anvilpowered.datasync.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class CommonModule<
@@ -158,7 +158,7 @@ public class CommonModule<
 
         bind(SyncUtils.class).to(CommonSyncUtils.class);
 
-        bind(ConfigurationService.class).to(DataSyncConfigurationService.class);
+        bind(ConfigurationService.class).to(CommonConfigurationService.class);
 
         bind(Registry.class).to(DataSyncRegistry.class);
 

@@ -19,8 +19,8 @@
 package org.anvilpowered.datasync.api.snapshot;
 
 import org.anvilpowered.anvil.api.manager.Manager;
-import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 
 public interface SnapshotManager<
     TSnapshot extends Snapshot<?>,

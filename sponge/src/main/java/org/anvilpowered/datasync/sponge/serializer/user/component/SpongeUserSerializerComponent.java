@@ -24,13 +24,14 @@ import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
+import org.anvilpowered.datasync.common.serializer.user.component.CommonUserSerializerComponent;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import org.anvilpowered.datasync.common.serializer.user.component.CommonUserSerializerComponent;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -43,6 +44,9 @@ public class SpongeUserSerializerComponent<
     extends CommonUserSerializerComponent<TKey, TMember, TSnapshot, User, Player, Key<?>, TDataStore> {
 
     @Inject
+    private PluginContainer pluginContainer;
+
+    @Inject
     private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
 
     @Inject
@@ -51,15 +55,19 @@ public class SpongeUserSerializerComponent<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> deserialize(User user, Object plugin, TSnapshot snapshot) {
+    public CompletableFuture<Optional<TSnapshot>> deserialize(User user, TSnapshot snapshot) {
         if (snapshot == null) return CompletableFuture.completedFuture(Optional.empty());
         CompletableFuture<Optional<TSnapshot>> result = new CompletableFuture<>();
-        Task.builder().execute(() -> result.complete(deserialize(snapshot, user) ? Optional.of(snapshot) : Optional.empty())).submit(plugin);
+        Task.builder().execute(() -> result.complete(
+            deserialize(snapshot, user)
+                ? Optional.of(snapshot)
+                : Optional.empty())
+        ).submit(pluginContainer);
         return result;
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> deserialize(final User user, final Object plugin) {
+    public CompletableFuture<Optional<TSnapshot>> deserialize(final User user) {
         snapshotOptimizationManager.getPrimaryComponent().addLockedPlayer(user.getUniqueId());
         CompletableFuture<Void> waitForSnapshot;
         if (registry.getOrDefault(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN)) {
@@ -85,7 +93,7 @@ public class SpongeUserSerializerComponent<
                 System.err.println("[MSDataSync] Could not find snapshot for " + user.getName() + "! Check your DB configuration!");
                 return Optional.<TSnapshot>empty();
             }
-            return deserialize(user, plugin, optionalSnapshot.get()).join();
+            return deserialize(user, optionalSnapshot.get()).join();
         }).join()).thenApplyAsync(s -> {
             snapshotOptimizationManager.getPrimaryComponent().removeLockedPlayer(user.getUniqueId());
             return s;

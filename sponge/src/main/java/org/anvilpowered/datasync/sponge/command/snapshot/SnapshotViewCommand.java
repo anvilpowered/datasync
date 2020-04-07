@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.snapshot;
+package org.anvilpowered.datasync.sponge.command.snapshot;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
@@ -28,6 +28,8 @@ import org.anvilpowered.datasync.api.serializer.InventorySerializer;
 import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
+import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
+import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -43,11 +45,10 @@ import org.spongepowered.api.item.inventory.InventoryArchetype;
 import org.spongepowered.api.item.inventory.InventoryArchetypes;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.property.InventoryCapacity;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.anvilpowered.datasync.sponge.commands.SyncLockCommand;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -70,12 +71,15 @@ public class SnapshotViewCommand implements CommandExecutor {
     private TimeFormatService timeFormatService;
 
     @Inject
+    private PluginContainer pluginContainer;
+
+    @Inject
     private PluginInfo<Text> pluginInfo;
 
     private static final InventoryArchetype inventoryArchetype =
         InventoryArchetype.builder()
             .with(InventoryArchetypes.CHEST).property(new InventoryCapacity(45))
-            .build("msdatasyncinv", "MSDataSync Inventory");
+            .build("datasyncinv", "DataSync Inventory");
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
@@ -148,13 +152,13 @@ public class SnapshotViewCommand implements CommandExecutor {
                         player.closeInventory();
                     }
 
-                }).build(DataSyncSponge.plugin);
+                }).build(pluginContainer);
                 inventorySerializer.deserializeInventory(snapshot, inventory);
                 player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, timeFormatService.format(snapshot.getCreatedUtc())));
             };
 
             memberManager.getPrimaryComponent().getSnapshotForUser(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))
-                .thenAcceptAsync(optionalSnapshot -> Task.builder().execute(() -> afterFound.accept(optionalSnapshot)).submit(DataSyncSponge.plugin));
+                .thenAcceptAsync(optionalSnapshot -> Task.builder().execute(() -> afterFound.accept(optionalSnapshot)).submit(pluginContainer));
 
             return CommandResult.success();
         } else {

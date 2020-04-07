@@ -16,26 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.optimize;
+package org.anvilpowered.datasync.sponge.command.optimize;
 
+import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.anvilpowered.datasync.sponge.commands.SyncCommandManager;
-import org.anvilpowered.datasync.sponge.misc.CommandUtils;
+import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.text.Text;
 
 import javax.inject.Inject;
 
-public class OptimizeHelpCommand implements CommandExecutor {
+public class OptimizeInfoCommand implements CommandExecutor {
 
     @Inject
-    private CommandUtils commandUtils;
+    private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
-        commandUtils.createHelpPage(source, SyncCommandManager.optimizeSubCommands, "optimize");
+        snapshotOptimizationManager.info().thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
-
 }

@@ -21,12 +21,12 @@ package org.anvilpowered.datasync.common.plugin;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.anvil.api.util.StringResult;
+import org.anvilpowered.anvil.api.util.TextService;
 
 @Singleton
 public final class DataSyncPluginInfo<TString, TCommandSource> implements PluginInfo<TString> {
-    public static final String id = "msdatasync";
-    public static final String name = "MSDataSync";
+    public static final String id = "datasync";
+    public static final String name = "DataSync";
     public static final String version = "$modVersion";
     public static final String description = "A plugin to synchronize player inventories with a database";
     public static final String url = "https://github.com/AnvilPowered/DataSync";
@@ -36,8 +36,8 @@ public final class DataSyncPluginInfo<TString, TCommandSource> implements Plugin
     public TString pluginPrefix;
 
     @Inject
-    public void setPluginPrefix(StringResult<TString, TCommandSource> stringResult) {
-        pluginPrefix = stringResult.builder().green().append("[", name, "] ").build();
+    public void setPluginPrefix(TextService<TString, TCommandSource> textService) {
+        pluginPrefix = textService.builder().green().append("[", name, "] ").build();
     }
 
     @Override

@@ -1,13 +1,13 @@
-# MSDataSync [![CircleCI](https://circleci.com/gh/MilSpecSG/MSDataSync.svg?style=svg)](https://circleci.com/gh/MilSpecSG/MSDataSync)
+# MSDataSync
 
 <img src="icon.png" width="290" height="290" align="right">
 
 #### Quick Links
-[Join our development discord](https://discord.gg/9wnvCyy)
+[Join our development discord](https://discord.gg/8RUzuwu)
 
-[Ore page](https://ore.spongepowered.org/Cableguy20/MSDataSync)
+[Ore page](https://ore.spongepowered.org/Cableguy20/DataSync)
 
-[Installation Guide](https://github.com/MilSpecSG/MSDataSync/wiki/Installation)
+[Installation Guide](https://github.com/AnvilPowered/DataSync/wiki/Installation)
 
 Have you ever had problems with players losing items?
 

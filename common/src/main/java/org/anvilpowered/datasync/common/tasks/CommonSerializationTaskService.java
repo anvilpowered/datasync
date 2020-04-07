@@ -39,7 +39,7 @@ public abstract class CommonSerializationTaskService<
 
     protected CommonSerializationTaskService(Registry registry) {
         this.registry = registry;
-        this.registry.addRegistryLoadedListener(this::registryLoaded);
+        registry.whenLoaded(this::registryLoaded);
     }
 
     private void registryLoaded() {

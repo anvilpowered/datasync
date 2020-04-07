@@ -21,6 +21,7 @@ package org.anvilpowered.datasync.sponge.serializer;
 import com.google.common.collect.ImmutableList;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
@@ -34,7 +35,6 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.PlayerInventory;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,10 +44,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SpongeInventorySerializer extends CommonInventorySerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot> {
+public class SpongeInventorySerializer
+    extends CommonInventorySerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot> {
 
     private static final char SEPARATOR = '_';
-    private static final char PERIOD_REPLACEMENT = '-';
+    private static final char PERIOD_REPLACEMENT = '~';
     private static final char PERIOD = '.';
     private static final int INVENTORY_SLOTS = 41;
 

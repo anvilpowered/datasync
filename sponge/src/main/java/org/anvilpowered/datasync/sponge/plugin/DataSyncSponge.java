@@ -18,32 +18,21 @@
 
 package org.anvilpowered.datasync.sponge.plugin;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.TypeLiteral;
-import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
-import org.anvilpowered.datasync.api.tasks.SerializationTaskService;
+import org.anvilpowered.anvil.api.Environment;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.datasync.common.plugin.DataSync;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
-import org.anvilpowered.datasync.sponge.commands.SyncCommandManager;
-import org.anvilpowered.datasync.sponge.keys.CommonSpongeDataKeyService;
 import org.anvilpowered.datasync.sponge.listeners.PlayerListener;
 import org.anvilpowered.datasync.sponge.module.SpongeModule;
-import org.anvilpowered.datasync.sponge.serializer.SpongeSnapshotSerializer;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
-import org.spongepowered.api.event.game.state.GameInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStoppingEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 
 @Plugin(
     id = DataSyncPluginInfo.id,
@@ -56,60 +45,20 @@ import org.spongepowered.api.text.format.TextColors;
 )
 public class DataSyncSponge extends DataSync<PluginContainer, Key<?>> {
 
+    @Inject
     public DataSyncSponge(Injector injector) {
-        super(injector, new SpongeModule(), PlayerListener.class);
+        super(injector, new SpongeModule());
+
     }
 
-    @Listener
-    public void onServerInitialization(GameInitializationEvent event) {
-        initSingletonServices();
-        initListeners();
-        initCommands();
-
-        loadRegistry();
-        Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Done"));
+    @Override
+    protected void applyToBuilder(Environment.Builder builder) {
+        super.applyToBuilder(builder);
+        builder.addEarlyServices(PlayerListener.class);
     }
 
     @Listener
     public void reload(GameReloadEvent event) {
         environment.reload();
-    }
-
-    @Listener
-    public void stop(GameStoppingEvent event) {
-        Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Stopping..."));
-        logger.info("Saving all players on server");
-        UserSerializerManager<Snapshot<?>, User, Text> userSerializer = injector.getInstance(com.google.inject.Key.get(new TypeLiteral<UserSerializerManager<Snapshot<?>, User, Text>>() {
-        }));
-
-        Sponge.getServer().getOnlinePlayers().forEach(player -> userSerializer.getPrimaryComponent().serialize(player, "Server Stop"));
-
-        removeListeners();
-        logger.info("Unregistered listeners");
-
-        stopTasks();
-        logger.info("Stopped tasks");
-
-        Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Done"));
-    }
-
-    private void initListeners() {
-        Sponge.getEventManager().registerListeners(this, injector.getInstance());
-    }
-
-    private void initCommands() {
-        if (!alreadyLoadedOnce) {
-            injector.getInstance(com.google.inject.Key.get(new TypeLiteral<SyncCommandManager>() {
-            })).register(this);
-            alreadyLoadedOnce = true;
-        }
-    }
-
-    private void removeListeners() {
-        Sponge.getEventManager().un*registerPluginListeners(this);
-    }
-
-    private void stopTasks() {
-        Sponge.getScheduler().getScheduledTasks(this).forEach(Task::cancel);
     }
 }

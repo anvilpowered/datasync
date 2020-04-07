@@ -19,12 +19,12 @@
 package org.anvilpowered.datasync.common.snapshot.repository;
 
 import com.google.inject.Inject;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
+import org.anvilpowered.anvil.api.datastore.DataStoreContext;
+import org.anvilpowered.anvil.base.repository.BaseMongoRepository;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
-import rocks.milspecsg.msrepository.common.repository.CommonMongoRepository;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -33,7 +33,7 @@ public class CommonMongoSnapshotRepository<
     TSnapshot extends Snapshot<ObjectId>,
     TDataKey>
     extends CommonSnapshotRepository<ObjectId, TSnapshot, TDataKey, Datastore>
-    implements CommonMongoRepository<TSnapshot> {
+    implements BaseMongoRepository<TSnapshot> {
 
     @Inject
     public CommonMongoSnapshotRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {

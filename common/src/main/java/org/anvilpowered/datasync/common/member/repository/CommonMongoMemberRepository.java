@@ -19,14 +19,14 @@
 package org.anvilpowered.datasync.common.member.repository;
 
 import com.google.inject.Inject;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
+import org.anvilpowered.anvil.api.datastore.DataStoreContext;
+import org.anvilpowered.anvil.base.repository.BaseMongoRepository;
 import org.anvilpowered.datasync.api.member.repository.MongoMemberRepository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
-import rocks.milspecsg.msrepository.common.repository.CommonMongoRepository;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Query;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class CommonMongoMemberRepository<
     TUser,
     TDataKey>
     extends CommonMemberRepository<ObjectId, TMember, TSnapshot, TUser, TDataKey, Datastore>
-    implements CommonMongoRepository<TMember>,
+    implements BaseMongoRepository<TMember>,
     MongoMemberRepository<TMember, TSnapshot, TUser> {
 
     @Inject

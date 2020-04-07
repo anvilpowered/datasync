@@ -75,7 +75,7 @@ public abstract class CommonSnapshotSerializer<
 
     protected CommonSnapshotSerializer(Registry registry) {
         this.registry = registry;
-        registry.addRegistryLoadedListener(this::registryLoaded);
+        registry.whenLoaded(this::registryLoaded);
         externalSerializers = new ArrayList<>();
     }
 

@@ -19,10 +19,10 @@
 package org.anvilpowered.datasync.common.model.snapshot;
 
 import org.anvilpowered.anvil.base.model.MongoDbo;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

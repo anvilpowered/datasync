@@ -16,29 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.optimize;
+package org.anvilpowered.datasync.sponge.command;
 
-import org.spongepowered.api.command.CommandException;
+import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
-import org.anvilpowered.datasync.sponge.commands.SyncLockCommand;
+import org.spongepowered.api.text.format.TextColors;
 
-import javax.inject.Inject;
-
-public class OptimizeStopCommand implements CommandExecutor {
+public class SyncReloadCommand implements CommandExecutor {
 
     @Inject
-    private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
+    private Registry registry;
+
+    @Inject
+    private PluginInfo<Text> pluginInfo;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
-        SyncLockCommand.assertUnlocked(source);
-        snapshotOptimizationManager.stop().thenAcceptAsync(source::sendMessage);
+    public CommandResult execute(CommandSource source, CommandContext context) {
+        registry.load();
+        source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.GREEN, "Successfully reloaded!"));
         return CommandResult.success();
     }
 }

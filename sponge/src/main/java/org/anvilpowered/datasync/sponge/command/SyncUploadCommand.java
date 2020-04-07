@@ -16,24 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands;
+package org.anvilpowered.datasync.sponge.command;
 
+import com.google.inject.Inject;
+import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.anvilpowered.datasync.sponge.misc.CommandUtils;
+import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.text.Text;
 
-import javax.inject.Inject;
-
-public class SyncInfoCommand implements CommandExecutor {
+public class SyncUploadCommand implements CommandExecutor {
 
     @Inject
-    private CommandUtils commandUtils;
+    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-        commandUtils.createExtendedInfoPage(source);
+    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+        SyncLockCommand.assertUnlocked(source);
+        // serialize everyone on the server
+        userSerializer.serialize(Sponge.getServer().getOnlinePlayers()).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

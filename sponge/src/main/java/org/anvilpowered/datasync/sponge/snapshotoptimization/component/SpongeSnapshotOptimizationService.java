@@ -31,6 +31,7 @@ import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -53,6 +54,9 @@ public class SpongeSnapshotOptimizationService<
     protected PluginInfo<Text> pluginInfo;
 
     @Inject
+    protected PluginContainer pluginContainer;
+
+    @Inject
     public SpongeSnapshotOptimizationService(Registry registry, DataStoreContext<TKey, TDataStore> dataStoreContext) {
         super(registry, dataStoreContext);
     }
@@ -70,23 +74,23 @@ public class SpongeSnapshotOptimizationService<
     }
 
     @Override
-    protected void submitTask(Runnable runnable, Object plugin) {
-        Task.builder().execute(runnable).submit(plugin);
+    protected void submitTask(Runnable runnable) {
+        Task.builder().execute(runnable).submit(pluginContainer);
     }
 
-    private CompletableFuture<Boolean> optimize(final User user, final CommandSource source, final String name, final Object plugin) {
+    private CompletableFuture<Boolean> optimize(final User user, final CommandSource source, final String name) {
         if (lockedPlayers.contains(user.getUniqueId())) return CompletableFuture.completedFuture(false);
-        return memberRepository.getSnapshotIdsForUser(user.getUniqueId()).thenApplyAsync(snapshotIds -> optimizeFull(snapshotIds, user.getUniqueId(), source, name, plugin).join());
+        return memberRepository.getSnapshotIdsForUser(user.getUniqueId()).thenApplyAsync(snapshotIds -> optimizeFull(snapshotIds, user.getUniqueId(), source, name).join());
     }
 
     @Override
-    public boolean optimize(final Collection<? extends User> users, final CommandSource source, final String name, final Object plugin) {
+    public boolean optimize(final Collection<? extends User> users, final CommandSource source, final String name) {
         if (isOptimizationTaskRunning()) {
             return false;
         }
         CompletableFuture.runAsync(() -> {
             for (User user : users) {
-                optimize(user, source, name, plugin).join();
+                optimize(user, source, name).join();
                 incrementCompleted();
 
                 if (requestCancelOptimizationTask) {
@@ -102,7 +106,7 @@ public class SpongeSnapshotOptimizationService<
     }
 
     @Override
-    public boolean optimize(final CommandSource source, final Object plugin) {
+    public boolean optimize(final CommandSource source) {
         if (optimizationTaskRunning) {
             return false;
         }
@@ -115,7 +119,7 @@ public class SpongeSnapshotOptimizationService<
                 if (!optionalMember.isPresent()) continue;
                 TMember member = optionalMember.get();
                 if (!lockedPlayers.contains(member.getUserUUID())) {
-                    optimizeFull(member.getSnapshotIds(), member.getUserUUID(), source, "Manual", plugin).join();
+                    optimizeFull(member.getSnapshotIds(), member.getUserUUID(), source, "Manual").join();
                 }
                 incrementCompleted();
 

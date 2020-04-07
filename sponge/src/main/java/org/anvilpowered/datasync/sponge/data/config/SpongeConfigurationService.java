@@ -16,24 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.snapshot;
+package org.anvilpowered.datasync.sponge.data.config;
 
 import com.google.inject.Inject;
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.spec.CommandExecutor;
-import org.anvilpowered.datasync.sponge.commands.SyncCommandManager;
-import org.anvilpowered.datasync.sponge.misc.CommandUtils;
+import com.google.inject.Singleton;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.anvilpowered.datasync.common.data.config.CommonConfigurationService;
+import org.anvilpowered.anvil.api.Anvil;
+import org.anvilpowered.anvil.base.component.BaseComponent;
+import org.spongepowered.api.config.DefaultConfig;
 
-public class SnapshotHelpCommand implements CommandExecutor {
+@Singleton
+public class SpongeConfigurationService extends CommonConfigurationService {
+
+    Anvil a;
+
+    BaseComponent b;
 
     @Inject
-    private CommandUtils commandUtils;
-
-    @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-        commandUtils.createHelpPage(source, SyncCommandManager.snapshotSubCommands, "snapshot");
-        return CommandResult.success();
+    public SpongeConfigurationService(
+        @DefaultConfig(sharedRoot = false)
+            ConfigurationLoader<CommentedConfigurationNode> configLoader) {
+        super(configLoader);
     }
 }

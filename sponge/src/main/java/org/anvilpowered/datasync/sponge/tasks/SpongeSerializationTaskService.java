@@ -22,14 +22,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
+import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +37,10 @@ import java.util.concurrent.TimeUnit;
 public class SpongeSerializationTaskService extends CommonSerializationTaskService<User, Text, CommandSource> {
 
     @Inject
-    PluginInfo<Text> pluginInfo;
+    private PluginContainer pluginContainer;
+
+    @Inject
+    private PluginInfo<Text> pluginInfo;
 
     private Task task = null;
 
@@ -49,10 +52,14 @@ public class SpongeSerializationTaskService extends CommonSerializationTaskServi
     @Override
     public void startSerializationTask() {
         if (baseInterval > 0) {
-            Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Submitting sync task! Upload interval: ", baseInterval, " minutes"));
-            task = Task.builder().async().interval(30, TimeUnit.SECONDS).execute(getSerializationTask()).submit(DataSyncSponge.plugin);
+            Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(),
+                TextColors.YELLOW, "Submitting sync task! Upload interval: ",
+                baseInterval, " minutes"));
+            task = Task.builder().async().interval(30, TimeUnit.SECONDS)
+                .execute(getSerializationTask()).submit(pluginContainer);
         } else {
-            Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "Sync task has been disabled from config!"));
+            Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(),
+                TextColors.RED, "Sync task has been disabled from config!"));
         }
     }
 
@@ -65,9 +72,16 @@ public class SpongeSerializationTaskService extends CommonSerializationTaskServi
     public Runnable getSerializationTask() {
         return () -> {
             if (snapshotOptimizationManager.getPrimaryComponent().isOptimizationTaskRunning()) {
-                Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "Optimization task already running! Task will skip"));
+                Sponge.getServer().getConsole()
+                    .sendMessage(Text.of(pluginInfo.getPrefix(),
+                        TextColors.RED, "Optimization task already running! Task will skip"));
             } else {
-                snapshotOptimizationManager.getPrimaryComponent().optimize(Sponge.getServer().getOnlinePlayers(), Sponge.getServer().getConsole(), "Auto", DataSyncSponge.plugin);
+                snapshotOptimizationManager.getPrimaryComponent()
+                    .optimize(
+                        Sponge.getServer().getOnlinePlayers(),
+                        Sponge.getServer().getConsole(),
+                        "Auto"
+                    );
             }
         };
     }

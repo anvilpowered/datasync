@@ -26,7 +26,7 @@ import org.anvilpowered.anvil.base.data.registry.BaseExtendedRegistry;
 public class DataSyncRegistry extends BaseExtendedRegistry {
 
     public DataSyncRegistry() {
-        defaultMap.put(Keys.BASE_SCAN_PACKAGE, "rocks.milspecsg.msdatasync.common.model");
-        defaultMap.put(Keys.DATA_DIRECTORY, "msdatasync");
+        setDefault(Keys.BASE_SCAN_PACKAGE, "org.anvilpowered.datasync.common.model");
+        setDefault(Keys.DATA_DIRECTORY, "datasync");
     }
 }

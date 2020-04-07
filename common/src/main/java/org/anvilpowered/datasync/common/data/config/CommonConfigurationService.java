@@ -27,43 +27,43 @@ import org.anvilpowered.anvil.base.data.config.BaseConfigurationService;
 import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
 
 @Singleton
-public class DataSyncConfigurationService extends BaseConfigurationService {
+public class CommonConfigurationService extends BaseConfigurationService {
 
     @Inject
-    public DataSyncConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
+    public CommonConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
         super(configLoader);
-        defaultMap.put(Keys.MONGODB_DBNAME, "datasync");
+        setDefault(Keys.MONGODB_DBNAME, "datasync");
     }
 
     @Override
     protected void initNodeNameMap() {
         super.initNodeNameMap();
-        nodeNameMap.put(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS, "serialize.enabledSerializers");
-        nodeNameMap.put(DataSyncKeys.DESERIALIZE_ON_JOIN, "serialize.deserializeOnJoin");
-        nodeNameMap.put(DataSyncKeys.SERIALIZE_ON_DEATH, "serialize.serializeOnDeath");
-        nodeNameMap.put(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "serialize.serializeOnDisconnect");
-        nodeNameMap.put(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, "serialize.waitForSnapshotOnJoin");
-        nodeNameMap.put(DataSyncKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
-        nodeNameMap.put(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
-        nodeNameMap.put(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "snapshot.uploadInterval");
+        setName(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS, "serialize.enabledSerializers");
+        setName(DataSyncKeys.DESERIALIZE_ON_JOIN, "serialize.deserializeOnJoin");
+        setName(DataSyncKeys.SERIALIZE_ON_DEATH, "serialize.serializeOnDeath");
+        setName(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "serialize.serializeOnDisconnect");
+        setName(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, "serialize.waitForSnapshotOnJoin");
+        setName(DataSyncKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
+        setName(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
+        setName(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "snapshot.uploadInterval");
     }
 
     @Override
     protected void initNodeDescriptionMap() {
         super.initNodeDescriptionMap();
-        nodeDescriptionMap.put(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS,
+        setDescription(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS,
             "\nThings to sync to DB." +
-                "\nAvailable: msdatasync:experience, msdatasync:gameMode, msdatasync:health, msdatasync:hunger, msdatasync:inventory"
+                "\nAvailable: datasync:experience, datasync:gameMode, datasync:health, datasync:hunger, datasync:inventory"
         );
-        nodeDescriptionMap.put(DataSyncKeys.DESERIALIZE_ON_JOIN, "\nWhether MSDataSync should deserialize players on join");
-        nodeDescriptionMap.put(DataSyncKeys.SERIALIZE_ON_DEATH, "\nWhether MSDataSync should serialize players to DB on death");
-        nodeDescriptionMap.put(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "\nWhether MSDataSync should serialize players to DB on disconnect");
-        nodeDescriptionMap.put(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
+        setDescription(DataSyncKeys.DESERIALIZE_ON_JOIN, "\nWhether MSDataSync should deserialize players on join");
+        setDescription(DataSyncKeys.SERIALIZE_ON_DEATH, "\nWhether MSDataSync should serialize players to DB on death");
+        setDescription(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "\nWhether MSDataSync should serialize players to DB on disconnect");
+        setDescription(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
             "\nWhether MSDataSync should wait for snapshots to be uploaded before downloading them.\n" +
                 "Note: this option is highly recommended if you are running a multi-server environment like Velocity"
         );
-        nodeDescriptionMap.put(DataSyncKeys.SNAPSHOT_MIN_COUNT, "\nMinimum number of snapshots to keep before deleting any");
-        nodeDescriptionMap.put(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY,
+        setDescription(DataSyncKeys.SNAPSHOT_MIN_COUNT, "\nMinimum number of snapshots to keep before deleting any");
+        setDescription(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY,
             "\nSnapshot optimization strategy. Format:\n" +
                 "Must be \"x:y\" where\n" +
                 "\t1) x and y are positive integers (x is minutes)\n" +
@@ -74,6 +74,6 @@ public class DataSyncConfigurationService extends BaseConfigurationService {
                 "\t3) keep one snapshot per day (not including first day) for 7 days\n" +
                 "\t4) delete all snapshots older than 7 days (keeping a minimum of minCount)"
         );
-        nodeDescriptionMap.put(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "\nInterval for automatic serialization task. Set to 0 to disable, min 1, max 60. Recommended range 3-15");
+        setDescription(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "\nInterval for automatic serialization task. Set to 0 to disable, min 1, max 60. Recommended range 3-15");
     }
 }

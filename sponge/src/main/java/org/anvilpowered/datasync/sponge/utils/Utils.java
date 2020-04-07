@@ -26,6 +26,7 @@ import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.entity.living.player.gamemode.GameMode;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+
 import java.util.Optional;
 
 public class Utils {

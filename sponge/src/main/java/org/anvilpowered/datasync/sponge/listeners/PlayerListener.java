@@ -25,6 +25,8 @@ import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
+import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
+import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
@@ -35,8 +37,6 @@ import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.anvilpowered.datasync.sponge.commands.SyncLockCommand;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 
 @Singleton
 public class PlayerListener {
@@ -56,7 +56,7 @@ public class PlayerListener {
     @Inject
     public PlayerListener(Registry registry) {
         this.registry = registry;
-        registry.addRegistryLoadedListener(this::registryLoaded);
+        registry.whenLoaded(this::registryLoaded);
     }
 
     private void registryLoaded() {
@@ -85,7 +85,7 @@ public class PlayerListener {
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent, @Root Player player) {
         if (joinSerializationEnabled) {
-            userSerializerManager.deserialize(player, DataSyncSponge.plugin, "Join")
+            userSerializerManager.deserialize(player, "Join")
                 .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }

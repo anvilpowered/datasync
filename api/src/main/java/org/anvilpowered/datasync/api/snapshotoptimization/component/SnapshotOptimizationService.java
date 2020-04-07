@@ -46,7 +46,7 @@ public interface SnapshotOptimizationService<
 
     void removeLockedPlayer(final UUID uuid);
 
-    boolean optimize(final Collection<? extends TUser> users, final TCommandSource source, final String name, final Object plugin);
+    boolean optimize(final Collection<? extends TUser> users, final TCommandSource source, final String name);
 
-    boolean optimize(final TCommandSource source, final Object plugin);
+    boolean optimize(final TCommandSource source);
 }

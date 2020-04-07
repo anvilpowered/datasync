@@ -20,9 +20,9 @@ package org.anvilpowered.datasync.sponge.keys;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
-import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
 
 @Singleton
 public class CommonSpongeDataKeyService extends CommonDataKeyService<Key<?>> {

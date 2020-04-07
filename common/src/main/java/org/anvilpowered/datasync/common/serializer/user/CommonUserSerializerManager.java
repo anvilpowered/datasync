@@ -19,17 +19,17 @@
 package org.anvilpowered.datasync.common.serializer.user;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.anvil.api.util.TextService;
+import org.anvilpowered.anvil.api.util.TimeFormatService;
+import org.anvilpowered.anvil.api.util.UserService;
+import org.anvilpowered.anvil.base.manager.BaseManager;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
-import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
-import rocks.milspecsg.msrepository.api.util.StringResult;
-import rocks.milspecsg.msrepository.api.util.TimeFormatService;
-import rocks.milspecsg.msrepository.api.util.UserService;
-import rocks.milspecsg.msrepository.common.manager.CommonManager;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -45,23 +45,23 @@ public class CommonUserSerializerManager<
     TPlayer,
     TString,
     TCommandSource>
-    extends CommonManager<UserSerializerComponent<?, TSnapshot, TUser, ?>>
+    extends BaseManager<UserSerializerComponent<?, TSnapshot, TUser, ?>>
     implements UserSerializerManager<TSnapshot, TUser, TString> {
 
     @Inject
-    MemberManager<TMember, TSnapshot, TUser, TString> memberManager;
+    protected MemberManager<TMember, TSnapshot, TUser, TString> memberManager;
 
     @Inject
-    StringResult<TString, TCommandSource> stringResult;
+    protected TextService<TString, TCommandSource> textService;
 
     @Inject
-    PluginInfo<TString> pluginInfo;
+    protected PluginInfo<TString> pluginInfo;
 
     @Inject
-    UserService<TUser, TPlayer> userService;
+    protected UserService<TUser, TPlayer> userService;
 
     @Inject
-    TimeFormatService timeFormatService;
+    protected TimeFormatService timeFormatService;
 
     @Inject
     public CommonUserSerializerManager(Registry registry) {
@@ -72,7 +72,7 @@ public class CommonUserSerializerManager<
     public CompletableFuture<TString> serialize(Collection<? extends TUser> users) {
         if (users.isEmpty()) {
             return CompletableFuture.completedFuture(
-                stringResult.builder()
+                textService.builder()
                     .append(pluginInfo.getPrefix())
                     .red().append("There are no players currently online")
                     .build()
@@ -91,7 +91,7 @@ public class CommonUserSerializerManager<
                     unsuccessful.add(user);
                 }
                 if (successful.size() + unsuccessful.size() >= users.size()) {
-                    StringResult.Builder<TString, TCommandSource> builder = stringResult.builder();
+                    TextService.Builder<TString, TCommandSource> builder = textService.builder();
                     if (!successful.isEmpty()) {
                         String s = successful.stream().map(u -> userService.getUserName(user)).collect(Collectors.joining(", "));
                         builder.yellow().append("The following players were successfully serialized:\n").green().append(s);
@@ -109,18 +109,26 @@ public class CommonUserSerializerManager<
 
     @Override
     public CompletableFuture<TString> serialize(TUser user, String name) {
-        return getPrimaryComponent().serialize(user, name).thenApplyAsync(optionalSnapshot ->
-            optionalSnapshot.isPresent()
-                ? stringResult.builder()
+        return getPrimaryComponent().serialize(user, name).thenApplyAsync(optionalSnapshot -> {
+            if (optionalSnapshot.isPresent()) {
+                return textService.builder()
+                    .append(pluginInfo.getPrefix())
+                    .yellow().append("Successfully uploaded snapshot ")
+                    .gold().append(
+                        timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
+                        " (", name, ")"
+                    )
+                    .yellow().append(" for ", userService.getUserName(user), "!")
+                    .build();
+            }
+            return textService.builder()
                 .append(pluginInfo.getPrefix())
-                .yellow().append("Successfully uploaded snapshot ")
-                .gold().append(timeFormatService.format(optionalSnapshot.get().getCreatedUtc()), " (", name, ")")
-                .yellow().append(" for ", userService.getUserName(user), "!")
-                .build()
-                : stringResult.builder()
-                .append(pluginInfo.getPrefix())
-                .red().append("An error occurred while serializing ", name, " for ", userService.getUserName(user), "!")
-                .build());
+                .red().append(
+                    "An error occurred while serializing ", name, " for ",
+                    userService.getUserName(user), "!"
+                )
+                .build();
+        });
     }
 
     @Override
@@ -129,49 +137,59 @@ public class CommonUserSerializerManager<
     }
 
     @Override
-    public CompletableFuture<TString> deserialize(TUser user, Object plugin, String event) {
-        return getPrimaryComponent().deserialize(user, plugin).thenApplyAsync(optionalSnapshot ->
-            optionalSnapshot.isPresent()
-                ? stringResult.builder()
-                .append(pluginInfo.getPrefix())
-                .yellow().append("Successfully downloaded snapshot ")
-                .gold().append(timeFormatService.format(optionalSnapshot.get().getCreatedUtc()), " (", optionalSnapshot.get().getName(), ")")
-                .yellow().append(" for ", userService.getUserName(user), " on ", event, "!")
-                .build()
-                : stringResult.builder()
-                .append(pluginInfo.getPrefix())
-                .red().append("An error occurred while deserializing ", userService.getUserName(user), " on ", event, "!")
-                .build());
-    }
-
-    @Override
-    public CompletableFuture<TString> deserialize(TUser user, Object plugin) {
-        return deserialize(user, plugin, "N/A");
-    }
-
-    @Override
-    public CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString, Object plugin) {
-        return memberManager.getPrimaryComponent().getSnapshotForUser(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
-            Optional<TUser> optionalUser = userService.get(userUUID);
-            if (!optionalUser.isPresent()) {
-                return stringResult.builder()
+    public CompletableFuture<TString> deserialize(TUser user, String event) {
+        return getPrimaryComponent().deserialize(user).thenApplyAsync(optionalSnapshot -> {
+            if (optionalSnapshot.isPresent()) {
+                return textService.builder()
                     .append(pluginInfo.getPrefix())
-                    .red().append("Could not find ", userUUID)
+                    .yellow().append("Successfully downloaded snapshot ")
+                    .gold().append(
+                        timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
+                        " (", optionalSnapshot.get().getName(), ")"
+                    )
+                    .yellow().append(" for ", userService.getUserName(user), " on ", event, "!")
                     .build();
             }
-            String userName = userService.getUserName(optionalUser.get());
-            if (!optionalSnapshot.isPresent()) {
-                return stringResult.builder()
-                    .append(pluginInfo.getPrefix())
-                    .red().append("Could not find snapshot for ", userName)
-                    .build();
-            }
-            String createdString = timeFormatService.format(optionalSnapshot.get().getCreatedUtc());
-            getPrimaryComponent().deserialize(optionalUser.get(), plugin, optionalSnapshot.get());
-            return stringResult.builder()
+            return textService.builder()
                 .append(pluginInfo.getPrefix())
-                .yellow().append("Restored snapshot ", createdString, " for ", userName)
+                .red().append(
+                    "An error occurred while deserializing ",
+                    userService.getUserName(user), " on ", event, "!"
+                )
                 .build();
         });
+    }
+
+    @Override
+    public CompletableFuture<TString> deserialize(TUser user) {
+        return deserialize(user, "N/A");
+    }
+
+    @Override
+    public CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString) {
+        return memberManager.getPrimaryComponent()
+            .getSnapshotForUser(userUUID, optionalString)
+            .thenApplyAsync(optionalSnapshot -> {
+                Optional<TUser> optionalUser = userService.get(userUUID);
+                if (!optionalUser.isPresent()) {
+                    return textService.builder()
+                        .append(pluginInfo.getPrefix())
+                        .red().append("Could not find ", userUUID)
+                        .build();
+                }
+                String userName = userService.getUserName(optionalUser.get());
+                if (!optionalSnapshot.isPresent()) {
+                    return textService.builder()
+                        .append(pluginInfo.getPrefix())
+                        .red().append("Could not find snapshot for ", userName)
+                        .build();
+                }
+                String createdString = timeFormatService.format(optionalSnapshot.get().getCreatedUtc());
+                getPrimaryComponent().deserialize(optionalUser.get(), optionalSnapshot.get());
+                return textService.builder()
+                    .append(pluginInfo.getPrefix())
+                    .yellow().append("Restored snapshot ", createdString, " for ", userName)
+                    .build();
+            });
     }
 }

@@ -19,12 +19,12 @@
 package org.anvilpowered.datasync.common.snapshotoptimization;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.anvil.api.util.TextService;
+import org.anvilpowered.anvil.base.manager.BaseManager;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
-import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
-import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
-import rocks.milspecsg.msrepository.api.util.StringResult;
-import rocks.milspecsg.msrepository.common.manager.CommonManager;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -34,20 +34,20 @@ public class CommonSnapshotOptimizationManager<
     TUser,
     TString,
     TCommandSource>
-    extends CommonManager<SnapshotOptimizationService<?, TUser, TCommandSource, ?>>
+    extends BaseManager<SnapshotOptimizationService<?, TUser, TCommandSource, ?>>
     implements SnapshotOptimizationManager<TUser, TString, TCommandSource> {
 
     @Inject
-    StringResult<TString, TCommandSource> stringResult;
+    TextService<TString, TCommandSource> textService;
 
     @Inject
     PluginInfo<TString> pluginInfo;
 
-    private static NumberFormat formatter = new DecimalFormat("#0.00");
+    private static final NumberFormat formatter = new DecimalFormat("#0.00");
 
     @Inject
-    public CommonSnapshotOptimizationManager(ConfigurationService configurationService) {
-        super(configurationService);
+    public CommonSnapshotOptimizationManager(Registry registry) {
+        super(registry);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CommonSnapshotOptimizationManager<
             int total = getPrimaryComponent().getTotalMembers();
 
             return getPrimaryComponent().isOptimizationTaskRunning()
-                ? stringResult.builder()
+                ? textService.builder()
                 .append(pluginInfo.getPrefix())
                 .yellow().append("Optimization task:\n")
                 .gray().append("Snapshots uploaded: ").yellow().append(uploaded, "\n")
@@ -67,7 +67,7 @@ public class CommonSnapshotOptimizationManager<
                 .gray().append("Members processed: ").yellow().append(completed, "/", total, "\n")
                 .gray().append("Progress: ").yellow().append(formatter.format(completed * 100d / total), "%")
                 .build()
-                : stringResult.builder()
+                : textService.builder()
                 .append(pluginInfo.getPrefix())
                 .yellow().append("There is currently no optimization task running")
                 .build();
@@ -77,7 +77,7 @@ public class CommonSnapshotOptimizationManager<
     @Override
     public CompletableFuture<TString> stop() {
         return CompletableFuture.supplyAsync(() ->
-            stringResult.builder()
+            textService.builder()
                 .append(pluginInfo.getPrefix())
                 .yellow().append(getPrimaryComponent().stopOptimizationTask() ? "Successfully stopped optimization task" : "There is currently no optimization task running")
                 .build()

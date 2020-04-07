@@ -98,7 +98,7 @@ public abstract class CommonSnapshotOptimizationService<
     protected CommonSnapshotOptimizationService(Registry registry, DataStoreContext<TKey, TDataStore> dataStoreContext) {
         super(dataStoreContext);
         this.registry = registry;
-        registry.addRegistryLoadedListener(this::registryLoaded);
+        registry.whenLoaded(this::registryLoaded);
         lockedPlayers = new ConcurrentLinkedQueue<>();
         idCreatedUtcMap = new ConcurrentHashMap<>();
     }
@@ -179,12 +179,12 @@ public abstract class CommonSnapshotOptimizationService<
 
     protected abstract void sendError(final TCommandSource source, final String message);
 
-    protected abstract void submitTask(final Runnable runnable, final Object plugin);
+    protected abstract void submitTask(final Runnable runnable);
 
     /**
      * @return true if something was deleted
      */
-    protected final CompletableFuture<Boolean> optimizeFull(final List<TKey> snapshotIds, final UUID userUUID, final TCommandSource source, final String name, final Object plugin) {
+    protected final CompletableFuture<Boolean> optimizeFull(final List<TKey> snapshotIds, final UUID userUUID, final TCommandSource source, final String name) {
         int baseInterval = registry.getOrDefault(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES);
         Optional<TPlayer> optionalPlayer = userService.getPlayer(userUUID);
         if (!optionalPlayer.isPresent()) {
@@ -204,7 +204,7 @@ public abstract class CommonSnapshotOptimizationService<
                         sendError(source, "There was an error serializing user " + user);
                     }
                     uploadFuture.complete(null);
-                }), plugin);
+                }));
             } else {
                 uploadFuture.complete(null);
             }

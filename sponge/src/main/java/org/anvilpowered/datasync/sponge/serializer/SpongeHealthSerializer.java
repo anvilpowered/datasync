@@ -19,11 +19,11 @@
 package org.anvilpowered.datasync.sponge.serializer;
 
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.common.serializer.CommonHealthSerializer;
 import org.anvilpowered.datasync.sponge.utils.Utils;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.User;
-import org.anvilpowered.datasync.common.serializer.CommonHealthSerializer;
 
 public class SpongeHealthSerializer extends CommonHealthSerializer<Snapshot<?>, Key<?>, User> {
 

@@ -21,7 +21,7 @@ package org.anvilpowered.datasync.common.plugin;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import org.anvilpowered.anvil.api.Anvil;
+import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.base.plugin.BasePlugin;
 import org.anvilpowered.datasync.api.keys.DataKeyService;
 import org.anvilpowered.datasync.api.tasks.SerializationTaskService;
@@ -29,22 +29,15 @@ import org.anvilpowered.datasync.api.tasks.SerializationTaskService;
 @SuppressWarnings("UnstableApiUsage")
 public abstract class DataSync<TPluginContainer, TDataKey> extends BasePlugin<TPluginContainer> {
 
-    protected DataSync(Injector rootInjector, Module module) {
-        super(DataSyncPluginInfo.id);
-        Anvil.getEnvironmentBuilder()
-            .setRootInjector(rootInjector)
-            .addModules(module)
-            .addEarlyServices(
-                new TypeToken<DataKeyService<TDataKey>>(getClass()) {
-                }
-            )
-            .addEarlyServices(SerializationTaskService.class)
-            .whenReady(e -> environment = e)
-            .whenReady(this::whenReady)
-            .register(this);
+    protected DataSync(Injector injector, Module module) {
+        super(DataSyncPluginInfo.id, injector, module);
     }
 
-    protected void onStop() {
-
+    protected void applyToBuilder(Environment.Builder builder) {
+        builder.addEarlyServices(
+            new TypeToken<DataKeyService<TDataKey>>(getClass()) {
+            })
+            .addEarlyServices(SerializationTaskService.class)
+            .withRootCommand();
     }
 }

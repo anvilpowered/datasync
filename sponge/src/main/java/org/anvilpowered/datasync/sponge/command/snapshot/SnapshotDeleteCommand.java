@@ -16,12 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands;
+package org.anvilpowered.datasync.sponge.command.snapshot;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.datasync.api.member.MemberManager;
+import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
-import org.spongepowered.api.Sponge;
+import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -30,16 +32,24 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 
-public class SyncUploadCommand implements CommandExecutor {
+import java.util.Optional;
+
+public class SnapshotDeleteCommand implements CommandExecutor {
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
+    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
+
+    @Inject
+    private PluginInfo<Text> pluginInfo;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
         SyncLockCommand.assertUnlocked(source);
-        // serialize everyone on the server
-        userSerializer.serialize(Sponge.getServer().getOnlinePlayers()).thenAcceptAsync(source::sendMessage);
+        Optional<User> optionalUser = context.getOne(Text.of("user"));
+        if (!optionalUser.isPresent()) {
+            throw new CommandException(Text.of(pluginInfo.getPrefix(), "User is required"));
+        }
+        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), context.getOne(Text.of("snapshot"))).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

@@ -16,9 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.optimize;
+package org.anvilpowered.datasync.sponge.command.optimize;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
+import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
+import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -27,11 +31,6 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
-import rocks.milspecsg.msdatasync.common.data.key.MSDataSyncKeys;
-import org.anvilpowered.datasync.sponge.commands.SyncLockCommand;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
-import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -57,18 +56,18 @@ public class OptimizeStartCommand implements CommandExecutor {
         }
 
         if (optionalMode.get().equals("all")) {
-            if (!source.hasPermission(MSDataSyncKeys.MANUAL_OPTIMIZATION_ALL_PERMISSION.getFallbackValue())) {
+            if (!source.hasPermission(DataSyncKeys.MANUAL_OPTIMIZATION_ALL_PERMISSION.getFallbackValue())) {
                 throw new CommandException(Text.of(pluginInfo.getPrefix(), "You do not have permission to start optimization task: all"));
-            } else if (snapshotOptimizationManager.getPrimaryComponent().optimize(source, DataSyncSponge.plugin)) {
+            } else if (snapshotOptimizationManager.getPrimaryComponent().optimize(source)) {
                 source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Successfully started optimization task: all"));
             } else {
                 throw new CommandException(Text.of(pluginInfo.getPrefix(), "Optimizer already running! Use /sync optimize info"));
             }
-            snapshotOptimizationManager.getPrimaryComponent().optimize(source, DataSyncSponge.plugin);
+            snapshotOptimizationManager.getPrimaryComponent().optimize(source);
         } else {
             if (users.isEmpty()) {
                 throw new CommandException(Text.of(pluginInfo.getPrefix(), "No users were selected by your query"));
-            } else if (snapshotOptimizationManager.getPrimaryComponent().optimize(users, source, "Manual", DataSyncSponge.plugin)) {
+            } else if (snapshotOptimizationManager.getPrimaryComponent().optimize(users, source, "Manual")) {
                 source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Successfully started optimization task: user"));
             } else {
                 throw new CommandException(Text.of(pluginInfo.getPrefix(), "Optimizer already running! Use /sync optimize info"));

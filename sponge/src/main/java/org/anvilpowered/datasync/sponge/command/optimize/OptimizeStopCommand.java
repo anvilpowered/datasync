@@ -16,27 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands;
+package org.anvilpowered.datasync.sponge.command.optimize;
 
-import com.google.inject.Inject;
+import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
+import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.anvilpowered.datasync.sponge.misc.CommandUtils;
+import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.text.Text;
 
-public class SyncHelpCommand implements CommandExecutor {
+import javax.inject.Inject;
+
+public class OptimizeStopCommand implements CommandExecutor {
 
     @Inject
-    private CommandUtils commandUtils;
+    private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-        if (commandUtils.hasPermissionForSubCommands(source)) {
-            commandUtils.createHelpPage(source, SyncCommandManager.subCommands, "");
-        } else {
-            commandUtils.createBasicInfoPage(source, false);
-        }
+    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+        SyncLockCommand.assertUnlocked(source);
+        snapshotOptimizationManager.stop().thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

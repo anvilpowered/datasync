@@ -16,26 +16,39 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.commands.optimize;
+package org.anvilpowered.datasync.sponge.command.snapshot;
 
+import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
+import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import rocks.milspecsg.msdatasync.api.snapshotoptimization.SnapshotOptimizationManager;
 
-import javax.inject.Inject;
+import java.util.Optional;
 
-public class OptimizeInfoCommand implements CommandExecutor {
+public class SnapshotCreateCommand implements CommandExecutor {
 
     @Inject
-    private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
+    private PluginInfo<Text> pluginInfo;
+
+    @Inject
+    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-        snapshotOptimizationManager.info().thenAcceptAsync(source::sendMessage);
+    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+        SyncLockCommand.assertUnlocked(source);
+        Optional<User> optionalUser = context.getOne(Text.of("user"));
+        if (!optionalUser.isPresent()) {
+            throw new CommandException(Text.of(pluginInfo.getPrefix(), "User is required"));
+        }
+        userSerializer.serialize(optionalUser.get()).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }
