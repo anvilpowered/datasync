@@ -25,10 +25,16 @@ import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.anvilpowered.anvil.api.Anvil;
 import org.anvilpowered.anvil.api.misc.BindingExtensions;
-import org.anvilpowered.datasync.api.model.member.MappableMember;
 import org.anvilpowered.datasync.api.model.member.Member;
-import org.anvilpowered.datasync.api.model.snapshot.MappableSnapshot;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.api.serializer.ExperienceSerializer;
+import org.anvilpowered.datasync.api.serializer.GameModeSerializer;
+import org.anvilpowered.datasync.api.serializer.HealthSerializer;
+import org.anvilpowered.datasync.api.serializer.HungerSerializer;
+import org.anvilpowered.datasync.api.serializer.InventorySerializer;
+import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
+import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
+import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 import org.anvilpowered.datasync.common.data.config.CommonConfigurationService;
 import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
 import org.anvilpowered.datasync.common.module.CommonModule;
@@ -64,16 +70,10 @@ import org.spongepowered.api.text.Text;
 
 @SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class SpongeModule extends CommonModule<
-    Member<ObjectId>,
-    MappableMember<EntityId, Entity>,
-    Snapshot<ObjectId>,
-    MappableSnapshot<EntityId, Entity>,
     Key<?>,
     Player,
     User,
     Text,
-    Inventory,
-    ItemStackSnapshot,
     CommandSource> {
 
     @Override
@@ -84,95 +84,39 @@ public class SpongeModule extends CommonModule<
 
         bind(CommonConfigurationService.class).to(SpongeConfigurationService.class);
 
-        bind(
-            (TypeLiteral<CommonExperienceSerializer<Snapshot<?>, Key<?>, User>>) TypeLiteral.get(new TypeToken<CommonExperienceSerializer<Snapshot<?>, Key<?>, User>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<SpongeExperienceSerializer>) TypeLiteral.get(new TypeToken<SpongeExperienceSerializer>(getClass()) {
-            }.getType())
-        );
+        bind(new TypeLiteral<ExperienceSerializer<User>>() {
+        }).to(SpongeExperienceSerializer.class);
+        bind(new TypeLiteral<GameModeSerializer<User>>() {
+        }).to(SpongeGameModeSerializer.class);
+        bind(new TypeLiteral<HealthSerializer<User>>() {
+        }).to(SpongeHealthSerializer.class);
+        bind(new TypeLiteral<HealthSerializer<User>>() {
+        }).to(SpongeHealthSerializer.class);
+        bind(new TypeLiteral<HungerSerializer<User>>() {
+        }).to(SpongeHungerSerializer.class);
+        bind(new TypeLiteral<InventorySerializer<User, Inventory, ItemStackSnapshot>>() {
+        }).to(SpongeInventorySerializer.class);
+        bind(new TypeLiteral<SnapshotSerializer<User>>() {
+        }).to(SpongeSnapshotSerializer.class);
+        bind(new TypeLiteral<CommonDataKeyService<Key<?>>>() {
+        }).to(CommonSpongeDataKeyService.class);
+        bind(new TypeLiteral<CommonSerializationTaskService<User, Text, CommandSource>>() {
+        }).to(SpongeSerializationTaskService.class);
 
-        bind(
-            (TypeLiteral<CommonGameModeSerializer<Snapshot<?>, Key<?>, User>>) TypeLiteral.get(new TypeToken<CommonGameModeSerializer<Snapshot<?>, Key<?>, User>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<SpongeGameModeSerializer>) TypeLiteral.get(new TypeToken<SpongeGameModeSerializer>(getClass()) {
-            }.getType())
-        );
+        bind(new TypeLiteral<UserSerializerComponent<ObjectId, User, Datastore>>() {
+        }).to(new TypeLiteral<SpongeUserSerializerComponent<ObjectId, Datastore>>() {
+        });
 
-        bind(
-            (TypeLiteral<CommonHealthSerializer<Snapshot<?>, Key<?>, User>>) TypeLiteral.get(new TypeToken<CommonHealthSerializer<Snapshot<?>, Key<?>, User>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<SpongeHealthSerializer>) TypeLiteral.get(new TypeToken<SpongeHealthSerializer>(getClass()) {
-            }.getType())
-        );
+        bind(new TypeLiteral<UserSerializerComponent<EntityId, User, PersistentEntityStore>>() {
+        }).to(new TypeLiteral<SpongeUserSerializerComponent<EntityId, PersistentEntityStore>>() {
+        });
 
-        bind(
-            (TypeLiteral<CommonHungerSerializer<Snapshot<?>, Key<?>, User>>) TypeLiteral.get(new TypeToken<CommonHungerSerializer<Snapshot<?>, Key<?>, User>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<SpongeHungerSerializer>) TypeLiteral.get(new TypeToken<SpongeHungerSerializer>(getClass()) {
-            }.getType())
-        );
+        bind(new TypeLiteral<SnapshotOptimizationService<ObjectId, User, CommandSource, Datastore>>() {
+        }).to(new TypeLiteral<SpongeSnapshotOptimizationService<ObjectId, Datastore>>() {
+        });
 
-        bind(
-            (TypeLiteral<CommonInventorySerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot>>) TypeLiteral.get(new TypeToken<CommonInventorySerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<SpongeInventorySerializer>) TypeLiteral.get(new TypeToken<SpongeInventorySerializer>(getClass()) {
-            }.getType())
-        );
-
-        bind(
-            (TypeLiteral<CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot>>) TypeLiteral.get(new TypeToken<CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot>>(getClass()) {
-            }.getType())
-        ).to(
-            (TypeLiteral<SpongeSnapshotSerializer>) TypeLiteral.get(new TypeToken<SpongeSnapshotSerializer>(getClass()) {
-            }.getType())
-        );
-
-        bind(
-            new TypeLiteral<CommonDataKeyService<Key<?>>>() {
-            }
-        ).to(
-            new TypeLiteral<CommonSpongeDataKeyService>() {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonSerializationTaskService<User, Text, CommandSource>>(getClass()) {
-            },
-            new TypeToken<SpongeSerializationTaskService>(getClass()) {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonUserSerializerComponent<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, User, Player, Key<?>, Datastore>>(getClass()) {
-            },
-            new TypeToken<SpongeUserSerializerComponent<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Datastore>>(getClass()) {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonUserSerializerComponent<EntityId, MappableMember<EntityId, Entity>, MappableSnapshot<EntityId, Entity>, User, Player, Key<?>, PersistentEntityStore>>(getClass()) {
-            },
-            new TypeToken<SpongeUserSerializerComponent<EntityId, MappableMember<EntityId, Entity>, MappableSnapshot<EntityId, Entity>, PersistentEntityStore>>(getClass()) {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonSnapshotOptimizationService<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Player, User, CommandSource, Key<?>, Datastore>>(getClass()) {
-            },
-            new TypeToken<SpongeSnapshotOptimizationService<ObjectId, Member<ObjectId>, Snapshot<ObjectId>, Datastore>>(getClass()) {
-            }
-        );
-
-        be.bind(
-            new TypeToken<CommonSnapshotOptimizationService<EntityId, MappableMember<EntityId, Entity>, MappableSnapshot<EntityId, Entity>, Player, User, CommandSource, Key<?>, PersistentEntityStore>>(getClass()) {
-            },
-            new TypeToken<SpongeSnapshotOptimizationService<EntityId, MappableMember<EntityId, Entity>, MappableSnapshot<EntityId, Entity>, PersistentEntityStore>>(getClass()) {
-            }
-        );
+        bind(new TypeLiteral<SnapshotOptimizationService<EntityId, User, CommandSource, PersistentEntityStore>>() {
+        }).to(new TypeLiteral<SpongeSnapshotOptimizationService<EntityId, PersistentEntityStore>>() {
+        });
     }
 }

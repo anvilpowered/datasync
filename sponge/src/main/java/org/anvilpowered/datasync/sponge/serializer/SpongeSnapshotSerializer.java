@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.common.serializer.CommonSnapshotSerializer;
 import org.anvilpowered.datasync.sponge.events.SerializerInitializationEvent;
 import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
@@ -39,7 +38,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 @Singleton
-public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<?>, Key<?>, User, Player, Inventory, ItemStackSnapshot> {
+public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Key<?>, User, Player, Inventory, ItemStackSnapshot> {
 
     @Inject
     public SpongeSnapshotSerializer(Registry registry) {
@@ -56,7 +55,7 @@ public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Snapshot<
     protected void postLoadedEvent() {
         Sponge.getPluginManager().fromInstance(dataSyncSponge).ifPresent(container -> {
             EventContext eventContext = EventContext.builder().add(EventContextKeys.PLUGIN, container).build();
-            Sponge.getEventManager().post(new SerializerInitializationEvent<>(this, snapshotManager, Cause.of(eventContext, dataSyncSponge)));
+            Sponge.getEventManager().post(new SerializerInitializationEvent(this, snapshotManager, Cause.of(eventContext, dataSyncSponge)));
         });
     }
 

@@ -20,19 +20,14 @@ package org.anvilpowered.datasync.api.member;
 
 import org.anvilpowered.anvil.api.manager.Manager;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
-import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public interface MemberManager<
-    TMember extends Member<?>,
-    TSnapshot extends Snapshot<?>,
-    TUser,
-    TString>
-    extends Manager<MemberRepository<?, TMember, TSnapshot, TUser, ?>> {
+public interface MemberManager<TString>
+    extends Manager<MemberRepository<?, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {
@@ -56,7 +51,7 @@ public interface MemberManager<
 
     CompletableFuture<TString> deleteSnapshot(UUID userUUID, Optional<String> optionalString);
 
-    CompletableFuture<TString> info(UUID userUUID, TSnapshot snapshot);
+    TString info(UUID userUUID, Snapshot<?> snapshot);
 
     CompletableFuture<TString> info(UUID userUUID, Optional<String> optionalString);
 

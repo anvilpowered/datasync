@@ -30,11 +30,8 @@ import java.util.concurrent.CompletableFuture;
 
 public interface MemberRepository<
     TKey,
-    TMember extends Member<TKey>,
-    TSnapshot extends Snapshot<TKey>,
-    TUser,
     TDataStore>
-    extends Repository<TKey, TMember, TDataStore> {
+    extends Repository<TKey, Member<TKey>, TDataStore> {
 
     /**
      * Gets the corresponding {@code Member} from the database.
@@ -43,9 +40,9 @@ public interface MemberRepository<
      * @param userUUID Mojang issued {@code uuid} of {@code User} to getRequiredRankIndex corresponding {@code Member}
      * @return a ready-to-use {@code Member} that corresponds with the given {@code uuid}
      */
-    CompletableFuture<Optional<TMember>> getOneOrGenerateForUser(UUID userUUID);
+    CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
 
-    CompletableFuture<Optional<TMember>> getOneForUser(UUID userUUID);
+    CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 
     CompletableFuture<Optional<TKey>> getIdForUser(UUID userUUID);
 
@@ -71,31 +68,31 @@ public interface MemberRepository<
 
     CompletableFuture<Boolean> addSnapshotForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Instant createdUtc);
+    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id, Instant createdUtc);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Instant createdUtc);
+    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID, Instant createdUtc);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Optional<String> optionalString);
+    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id, Optional<String> optionalString);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString);
+    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString);
 
     CompletableFuture<List<TKey>> getClosestSnapshots(TKey id, Instant createdUtc);
 
     CompletableFuture<List<TKey>> getClosestSnapshotsForUser(UUID userUUID, Instant createdUtc);
 
-    CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(TKey id);
+    CompletableFuture<Optional<Snapshot<TKey>>> getLatestSnapshot(TKey id);
 
-    CompletableFuture<Optional<TSnapshot>> getLatestSnapshotForUser(UUID userUUID);
+    CompletableFuture<Optional<Snapshot<TKey>>> getLatestSnapshotForUser(UUID userUUID);
 
-    CompletableFuture<Optional<TSnapshot>> getPrevious(TKey id, TKey snapshotId);
+    CompletableFuture<Optional<Snapshot<TKey>>> getPrevious(TKey id, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, TKey snapshotId);
+    CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Instant createdUtc);
+    CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID, Instant createdUtc);
 
-    CompletableFuture<Optional<TSnapshot>> getNext(TKey id, TKey snapshotId);
+    CompletableFuture<Optional<Snapshot<TKey>>> getNext(TKey id, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, TKey snapshotId);
+    CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID, TKey snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Instant createdUtc);
+    CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID, Instant createdUtc);
 }

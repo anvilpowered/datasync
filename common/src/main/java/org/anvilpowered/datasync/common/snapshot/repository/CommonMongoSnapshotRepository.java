@@ -29,11 +29,9 @@ import org.mongodb.morphia.Datastore;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class CommonMongoSnapshotRepository<
-    TSnapshot extends Snapshot<ObjectId>,
-    TDataKey>
-    extends CommonSnapshotRepository<ObjectId, TSnapshot, TDataKey, Datastore>
-    implements BaseMongoRepository<TSnapshot> {
+public class CommonMongoSnapshotRepository<TDataKey>
+    extends CommonSnapshotRepository<ObjectId, TDataKey, Datastore>
+    implements BaseMongoRepository<Snapshot<ObjectId>> {
 
     @Inject
     public CommonMongoSnapshotRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {

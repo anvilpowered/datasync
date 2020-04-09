@@ -34,12 +34,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-public interface XodusMemberRepository<
-    TMember extends Member<EntityId> & Mappable<Entity>,
-    TSnapshot extends Snapshot<EntityId>,
-    TUser>
-    extends MemberRepository<EntityId, TMember, TSnapshot, TUser, PersistentEntityStore>,
-    XodusRepository<TMember> {
+public interface XodusMemberRepository
+    extends MemberRepository<EntityId, PersistentEntityStore>,
+    XodusRepository<Member<EntityId>> {
 
     CompletableFuture<List<EntityId>> getSnapshotIds(Function<? super StoreTransaction, ? extends Iterable<Entity>> query);
 
@@ -51,7 +48,7 @@ public interface XodusMemberRepository<
 
     CompletableFuture<Boolean> addSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, EntityId snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc);
+    CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc);
 
     CompletableFuture<List<EntityId>> getClosestSnapshots(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc);
 

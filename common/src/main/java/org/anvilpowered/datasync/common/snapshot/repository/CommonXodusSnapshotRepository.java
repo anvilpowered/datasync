@@ -33,11 +33,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class CommonXodusSnapshotRepository<
-    TSnapshot extends Snapshot<EntityId> & Mappable<Entity>,
-    TDataKey>
-    extends CommonSnapshotRepository<EntityId, TSnapshot, TDataKey, PersistentEntityStore>
-    implements BaseXodusRepository<TSnapshot> {
+public class CommonXodusSnapshotRepository<TDataKey>
+    extends CommonSnapshotRepository<EntityId, TDataKey, PersistentEntityStore>
+    implements BaseXodusRepository<Snapshot<EntityId>> {
 
     @Inject
     public CommonXodusSnapshotRepository(DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {

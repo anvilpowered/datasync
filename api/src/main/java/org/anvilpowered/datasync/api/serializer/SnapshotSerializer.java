@@ -18,14 +18,10 @@
 
 package org.anvilpowered.datasync.api.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+public interface SnapshotSerializer<TUser>
+    extends Serializer<TUser> {
 
-public interface SnapshotSerializer<
-    TSnapshot extends Snapshot<?>,
-    TUser>
-    extends Serializer<TSnapshot, TUser> {
-
-    void registerSerializer(Serializer<TSnapshot, TUser> serializer);
+    void registerSerializer(Serializer<TUser> serializer);
 
     boolean isSerializerEnabled(String name);
 

@@ -18,20 +18,18 @@
 
 package org.anvilpowered.datasync.common.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.InventorySerializer;
 
 public abstract class CommonInventorySerializer<
-    TSnapshot extends Snapshot<?>,
     TDataKey,
     TUser,
     TInventory,
     TItemStackSnapshot>
-    extends CommonSerializer<TSnapshot, TDataKey, TUser>
-    implements InventorySerializer<TSnapshot, TUser, TInventory, TItemStackSnapshot> {
+    extends CommonSerializer<TDataKey, TUser>
+    implements InventorySerializer<TUser, TInventory, TItemStackSnapshot> {
 
     @Override
     public String getName() {
-        return "msdatasync:inventory";
+        return "datasync:inventory";
     }
 }

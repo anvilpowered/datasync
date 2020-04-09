@@ -32,11 +32,10 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class CommonSnapshotRepository<
     TKey,
-    TSnapshot extends Snapshot<TKey>,
     TDataKey,
     TDataStore>
-    extends BaseRepository<TKey, TSnapshot, TDataStore>
-    implements SnapshotRepository<TKey, TSnapshot, TDataKey, TDataStore> {
+    extends BaseRepository<TKey, Snapshot<TKey>, TDataStore>
+    implements SnapshotRepository<TKey, TDataKey, TDataStore> {
 
     @Inject
     DataKeyService<TDataKey> dataKeyService;
@@ -47,12 +46,12 @@ public abstract class CommonSnapshotRepository<
 
     @Override
     @SuppressWarnings("unchecked")
-    public Class<TSnapshot> getTClass() {
-        return (Class<TSnapshot>) getDataStoreContext().getEntityClassUnsafe("snapshot");
+    public Class<Snapshot<TKey>> getTClass() {
+        return (Class<Snapshot<TKey>>) getDataStoreContext().getEntityClassUnsafe("snapshot");
     }
 
     @Override
-    public boolean setSnapshotValue(TSnapshot snapshot, TDataKey key, Optional<?> optionalValue) {
+    public boolean setSnapshotValue(Snapshot<TKey> snapshot, TDataKey key, Optional<?> optionalValue) {
         if (!optionalValue.isPresent()) {
             return false;
         }
@@ -65,7 +64,7 @@ public abstract class CommonSnapshotRepository<
     }
 
     @Override
-    public Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key) {
+    public Optional<?> getSnapshotValue(Snapshot<TKey> snapshot, TDataKey key) {
         Optional<String> optionalName = dataKeyService.getName(key);
         return optionalName.map(s -> snapshot.getKeys().get(s));
     }

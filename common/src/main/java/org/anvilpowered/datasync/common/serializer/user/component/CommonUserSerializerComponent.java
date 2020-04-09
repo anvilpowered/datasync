@@ -36,23 +36,21 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class CommonUserSerializerComponent<
     TKey,
-    TMember extends Member<TKey>,
-    TSnapshot extends Snapshot<TKey>,
     TUser,
     TPlayer,
     TDataKey,
     TDataStore>
     extends BaseComponent<TKey, TDataStore>
-    implements UserSerializerComponent<TKey, TSnapshot, TUser, TDataStore> {
+    implements UserSerializerComponent<TKey, TUser, TDataStore> {
 
     @Inject
-    protected MemberRepository<TKey, TMember, TSnapshot, TUser, TDataStore> memberRepository;
+    protected MemberRepository<TKey, TDataStore> memberRepository;
 
     @Inject
-    protected SnapshotRepository<TKey, TSnapshot, TDataKey, TDataStore> snapshotRepository;
+    protected SnapshotRepository<TKey, TDataKey, TDataStore> snapshotRepository;
 
     @Inject
-    protected SnapshotSerializer<Snapshot<?>, TUser> snapshotSerializer;
+    protected SnapshotSerializer<TUser> snapshotSerializer;
 
     @Inject
     protected Registry registry;
@@ -65,8 +63,8 @@ public abstract class CommonUserSerializerComponent<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> serialize(TUser user, String name) {
-        TSnapshot snapshot = snapshotRepository.generateEmpty();
+    public CompletableFuture<Optional<Snapshot<TKey>>> serialize(TUser user, String name) {
+        Snapshot<TKey> snapshot = snapshotRepository.generateEmpty();
         snapshot.setName(name);
         snapshot.setServer(registry.getOrDefault(Keys.SERVER_NAME));
         serialize(snapshot, user);
@@ -87,16 +85,11 @@ public abstract class CommonUserSerializerComponent<
 
     @Override
     public String getName() {
-        return "msdatasync:player";
+        return "datasync:player";
     }
 
     @Override
-    public boolean serialize(TSnapshot snapshot, TUser user) {
+    public boolean serialize(Snapshot<?> snapshot, TUser user) {
         return snapshotSerializer.serialize(snapshot, user);
-    }
-
-    @Override
-    public boolean deserialize(TSnapshot snapshot, TUser user) {
-        return snapshotSerializer.deserialize(snapshot, user);
     }
 }

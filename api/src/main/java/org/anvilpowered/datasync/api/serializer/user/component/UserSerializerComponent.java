@@ -27,15 +27,12 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UserSerializerComponent<
     TKey,
-    TSnapshot extends Snapshot<TKey>,
     TUser,
     TDataStore>
     extends Component<TKey, TDataStore>,
-    Serializer<TSnapshot, TUser> {
+    Serializer<TUser> {
 
-    CompletableFuture<Optional<TSnapshot>> serialize(TUser user, String name);
+    CompletableFuture<Optional<Snapshot<TKey>>> serialize(TUser user, String name);
 
-    CompletableFuture<Optional<TSnapshot>> deserialize(TUser user, TSnapshot snapshot);
-
-    CompletableFuture<Optional<TSnapshot>> deserialize(TUser user);
+    CompletableFuture<Optional<Snapshot<TKey>>> deserialize(TUser user);
 }

@@ -21,8 +21,6 @@ package org.anvilpowered.datasync.api.snapshotoptimization;
 import org.anvilpowered.anvil.api.manager.Manager;
 import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 
-import java.util.concurrent.CompletableFuture;
-
 public interface SnapshotOptimizationManager<
     TUser,
     TString,
@@ -49,7 +47,7 @@ public interface SnapshotOptimizationManager<
         return "snapshot optimizations";
     }
 
-    CompletableFuture<TString> info();
+    TString info();
 
-    CompletableFuture<TString> stop();
+    TString stop();
 }

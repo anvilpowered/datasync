@@ -31,11 +31,11 @@ import java.util.Optional;
 
 public class Utils {
 
-    public static <E, S extends Snapshot<?>> boolean serialize(SnapshotManager<S, Key<?>> snapshotManager, S snapshot, User user, Key<? extends BaseValue<E>> key) {
+    public static <E> boolean serialize(SnapshotManager<Key<?>> snapshotManager, Snapshot<?> snapshot, User user, Key<? extends BaseValue<E>> key) {
         return snapshotManager.getPrimaryComponent().setSnapshotValue(snapshot, key, user.get(key));
     }
 
-    public static <E, S extends Snapshot<?>> boolean deserialize(SnapshotManager<S, Key<?>> snapshotManager, S snapshot, User user, Key<? extends BaseValue<E>> key) {
+    public static <E> boolean deserialize(SnapshotManager< Key<?>> snapshotManager, Snapshot<?> snapshot, User user, Key<? extends BaseValue<E>> key) {
 
         Optional<?> optionalSnapshot = snapshotManager.getPrimaryComponent().getSnapshotValue(snapshot, key);
         if (!optionalSnapshot.isPresent()) {

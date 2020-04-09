@@ -27,7 +27,6 @@ import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.anvil.base.manager.BaseManager;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
-import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
 import java.time.Duration;
@@ -41,14 +40,12 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonMemberManager<
-    TMember extends Member<?>,
-    TSnapshot extends Snapshot<?>,
     TUser,
-    TPlayer extends TCommandSource,
+    TPlayer,
     TString,
     TCommandSource>
-    extends BaseManager<MemberRepository<?, TMember, TSnapshot, TUser, ?>>
-    implements MemberManager<TMember, TSnapshot, TUser, TString> {
+    extends BaseManager<MemberRepository<?, ?>>
+    implements MemberManager<TString> {
 
     @Inject
     protected TextService<TString, TCommandSource> textService;
@@ -122,78 +119,76 @@ public class CommonMemberManager<
     }
 
     @Override
-    public CompletableFuture<TString> info(UUID userUUID, TSnapshot snapshot) {
-        return CompletableFuture.supplyAsync(() -> {
-            String userName = userService.getUserName(userUUID).orElse("null");
+    public TString info(UUID userUUID, Snapshot<?> snapshot) {
+        String userName = userService.getUserName(userUUID).orElse("null");
 
-            Instant created = snapshot.getCreatedUtc();
-            Instant updated = snapshot.getUpdatedUtc();
+        Instant created = snapshot.getCreatedUtc();
+        Instant updated = snapshot.getUpdatedUtc();
 
-            String createdString = timeFormatService.format(created);
-            String updatedString = timeFormatService.format(updated);
+        String createdString = timeFormatService.format(created);
+        String updatedString = timeFormatService.format(updated);
 
-            String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
-            String diffUpdatedString = timeFormatService.format(Duration.between(updated, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
+        String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
+        String diffUpdatedString = timeFormatService.format(Duration.between(updated, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
 
-            return textService.builder()
-                .append(textService.builder().dark_green().append("======= ").gold().append("Snapshot - ", userName).dark_green().append(" ======="))
-                .append(textService.builder().gray().append("\n\nId: ").yellow().append(snapshot.getId()))
-                .append(textService.builder().gray().append("\n\nCreated: ")
-                    .append(
-                        textService.builder().yellow().append(createdString).onHoverShowText(
-                            textService.builder().aqua().append(diffCreatedString)
-                        )
-                    )
-                ).append(textService.builder().gray().append("\n\nUpdated: ")
-                    .append(
-                        textService.builder().yellow().append(updatedString).onHoverShowText(
-                            textService.builder().aqua().append(diffUpdatedString)
-                        )
-                    )
-                ).append(textService.builder().gray().append("\n\nName: ").yellow().append(snapshot.getName()))
-                .append(textService.builder().gray().append("\n\nServer: ")).yellow().append(snapshot.getServer())
-                .append("\n\n")
-                .append(getSnapshotActions(userName, createdString))
-                .append("\n\n        ")
+        return textService.builder()
+            .append(textService.builder().dark_green().append("======= ").gold().append("Snapshot - ", userName).dark_green().append(" ======="))
+            .append(textService.builder().gray().append("\n\nId: ").yellow().append(snapshot.getId()))
+            .append(textService.builder().gray().append("\n\nCreated: ")
                 .append(
-                    textService.builder()
-                        .append(
-                            textService.builder()
-                                .aqua().append("[ < ]")
-                                .onHoverShowText(textService.builder().aqua().append("Previous"))
-                                .onClickExecuteCallback(cs -> {
-                                    getPrimaryComponent().getPreviousForUser(userUUID, created).thenAcceptAsync(o -> {
-                                        if (o.isPresent()) {
-                                            info(userUUID, o.get()).thenAcceptAsync(result -> textService.send(result, cs));
-                                        } else {
-                                            textService.builder().red().append(pluginInfo.getPrefix(), "No previous snapshot exists for ", userName, "!").sendTo(cs);
-                                        }
-                                    });
-                                })
-                        ).append(" ")
-                        .append(
-                            textService.builder()
-                                .aqua().append("[ List ]")
-                                .onHoverShowText(textService.builder().aqua().append("Go back to list"))
-                                .onClickRunCommand("/sync snapshot list " + userName)
-                        ).append(" ")
-                        .append(
-                            textService.builder()
-                                .aqua().append("[ > ]")
-                                .onHoverShowText(textService.builder().aqua().append("Next"))
-                                .onClickExecuteCallback(cs -> {
-                                    getPrimaryComponent().getNextForUser(userUUID, created).thenAcceptAsync(o -> {
-                                        if (o.isPresent()) {
-                                            info(userUUID, o.get()).thenAcceptAsync(result -> textService.send(result, cs));
-                                        } else {
-                                            textService.builder().red().append(pluginInfo.getPrefix(), "No next snapshot exists for ", userName, "!").sendTo(cs);
-                                        }
-                                    });
-                                })
-                        ).append("\n\n")
-                ).append(textService.builder().dark_green().append("======= ").gold().append("Snapshot - ", userName).dark_green().append(" ======="))
-                .build();
-        });
+                    textService.builder().yellow().append(createdString).onHoverShowText(
+                        textService.builder().aqua().append(diffCreatedString)
+                    )
+                )
+            ).append(textService.builder().gray().append("\n\nUpdated: ")
+                .append(
+                    textService.builder().yellow().append(updatedString).onHoverShowText(
+                        textService.builder().aqua().append(diffUpdatedString)
+                    )
+                )
+            ).append(textService.builder().gray().append("\n\nName: ").yellow().append(snapshot.getName()))
+            .append(textService.builder().gray().append("\n\nServer: ")).yellow().append(snapshot.getServer())
+            .append("\n\n")
+            .append(getSnapshotActions(userName, createdString))
+            .append("\n\n        ")
+            .append(
+                textService.builder()
+                    .append(
+                        textService.builder()
+                            .aqua().append("[ < ]")
+                            .onHoverShowText(textService.builder().aqua().append("Previous"))
+                            .onClickExecuteCallback(cs -> {
+                                getPrimaryComponent().getPreviousForUser(userUUID, created).thenAcceptAsync(o -> {
+                                    if (o.isPresent()) {
+                                        textService.send(info(userUUID, o.get()), cs);
+                                    } else {
+                                        textService.builder().red().append(pluginInfo.getPrefix(), "No previous snapshot exists for ", userName, "!").sendTo(cs);
+                                    }
+                                });
+                            })
+                    ).append(" ")
+                    .append(
+                        textService.builder()
+                            .aqua().append("[ List ]")
+                            .onHoverShowText(textService.builder().aqua().append("Go back to list"))
+                            .onClickRunCommand("/sync snapshot list " + userName)
+                    ).append(" ")
+                    .append(
+                        textService.builder()
+                            .aqua().append("[ > ]")
+                            .onHoverShowText(textService.builder().aqua().append("Next"))
+                            .onClickExecuteCallback(cs -> {
+                                getPrimaryComponent().getNextForUser(userUUID, created).thenAcceptAsync(o -> {
+                                    if (o.isPresent()) {
+                                        textService.send(info(userUUID, o.get()), cs);
+                                    } else {
+                                        textService.builder().red().append(pluginInfo.getPrefix(), "No next snapshot exists for ", userName, "!").sendTo(cs);
+                                    }
+                                });
+                            })
+                    ).append("\n\n")
+            ).append(textService.builder().dark_green().append("======= ").gold().append("Snapshot - ", userName).dark_green().append(" ======="))
+            .build();
     }
 
     @Override
@@ -206,7 +201,7 @@ public class CommonMemberManager<
                     .red().append("Could not find snapshot for ", userName)
                     .build();
             }
-            return info(userUUID, optionalSnapshot.get()).join();
+            return info(userUUID, optionalSnapshot.get());
         });
     }
 

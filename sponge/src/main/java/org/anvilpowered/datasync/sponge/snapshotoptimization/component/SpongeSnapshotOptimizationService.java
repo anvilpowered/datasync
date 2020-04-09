@@ -45,10 +45,8 @@ import java.util.concurrent.CompletableFuture;
 @Singleton
 public class SpongeSnapshotOptimizationService<
     TKey,
-    TMember extends Member<TKey>,
-    TSnapshot extends Snapshot<TKey>,
     TDataStore>
-    extends CommonSnapshotOptimizationService<TKey, TMember, TSnapshot, Player, User, CommandSource, Key<?>, TDataStore> {
+    extends CommonSnapshotOptimizationService<TKey, User, Player, CommandSource, Key<?>, TDataStore> {
 
     @Inject
     protected PluginInfo<Text> pluginInfo;
@@ -115,9 +113,9 @@ public class SpongeSnapshotOptimizationService<
             List<TKey> memberIds = memberRepository.getAllIds().join();
             setTotalMembers(memberIds.size());
             for (TKey memberId : memberIds) {
-                Optional<TMember> optionalMember = memberRepository.getOne(memberId).join();
+                Optional<Member<TKey>> optionalMember = memberRepository.getOne(memberId).join();
                 if (!optionalMember.isPresent()) continue;
-                TMember member = optionalMember.get();
+                Member<TKey> member = optionalMember.get();
                 if (!lockedPlayers.contains(member.getUserUUID())) {
                     optimizeFull(member.getSnapshotIds(), member.getUserUUID(), source, "Manual").join();
                 }

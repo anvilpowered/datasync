@@ -21,11 +21,10 @@ package org.anvilpowered.datasync.api.serializer;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
 public interface InventorySerializer<
-    TSnapshot extends Snapshot<?>,
     TUser,
     TInventory,
     TItemStackSnapshot>
-    extends Serializer<TSnapshot, TUser> {
+    extends Serializer<TUser> {
 
     /**
      * Moves data from {@code inventory} into {@code member}
@@ -35,7 +34,7 @@ public interface InventorySerializer<
      * @param maxSlots Maximum number of slots that will get serialized
      * @return Whether serialization was successful
      */
-    boolean serializeInventory(TSnapshot snapshot, TInventory inventory, int maxSlots);
+    boolean serializeInventory(Snapshot<?> snapshot, TInventory inventory, int maxSlots);
 
     /**
      * Moves data from {@code inventory} into {@code member}
@@ -44,7 +43,7 @@ public interface InventorySerializer<
      * @param inventory Player to get data from
      * @return Whether serialization was successful
      */
-    boolean serializeInventory(TSnapshot snapshot, TInventory inventory);
+    boolean serializeInventory(Snapshot<?> snapshot, TInventory inventory);
 
     /**
      * Moves data from {@code member} into {@code inventory}
@@ -54,7 +53,7 @@ public interface InventorySerializer<
      * @param fallbackItemStackSnapshot Item stack to put into unused slots. To be made uneditable
      * @return Whether deserialization was successful
      */
-    boolean deserializeInventory(TSnapshot snapshot, TInventory inventory, TItemStackSnapshot fallbackItemStackSnapshot);
+    boolean deserializeInventory(Snapshot<?> snapshot, TInventory inventory, TItemStackSnapshot fallbackItemStackSnapshot);
 
     /**
      * Moves data from {@code member} into {@code inventory}
@@ -63,7 +62,7 @@ public interface InventorySerializer<
      * @param inventory Player to add data to
      * @return Whether deserialization was successful
      */
-    boolean deserializeInventory(TSnapshot snapshot, TInventory inventory);
+    boolean deserializeInventory(Snapshot<?> snapshot, TInventory inventory);
 
     TItemStackSnapshot getDefaultFallbackItemStackSnapshot();
 

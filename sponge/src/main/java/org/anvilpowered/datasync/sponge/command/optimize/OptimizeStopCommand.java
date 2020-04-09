@@ -38,7 +38,7 @@ public class OptimizeStopCommand implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
         SyncLockCommand.assertUnlocked(source);
-        snapshotOptimizationManager.stop().thenAcceptAsync(source::sendMessage);
+        source.sendMessage(snapshotOptimizationManager.stop());
         return CommandResult.success();
     }
 }

@@ -51,36 +51,41 @@ public class CommonSnapshotOptimizationManager<
     }
 
     @Override
-    public CompletableFuture<TString> info() {
-        return CompletableFuture.supplyAsync(() -> {
-            int uploaded = getPrimaryComponent().getSnapshotsUploaded();
-            int deleted = getPrimaryComponent().getSnapshotsDeleted();
-            int completed = getPrimaryComponent().getMembersCompleted();
-            int total = getPrimaryComponent().getTotalMembers();
+    public TString info() {
+        int uploaded = getPrimaryComponent().getSnapshotsUploaded();
+        int deleted = getPrimaryComponent().getSnapshotsDeleted();
+        int completed = getPrimaryComponent().getMembersCompleted();
+        int total = getPrimaryComponent().getTotalMembers();
 
-            return getPrimaryComponent().isOptimizationTaskRunning()
-                ? textService.builder()
+        if (getPrimaryComponent().isOptimizationTaskRunning()) {
+            return textService.builder()
                 .append(pluginInfo.getPrefix())
                 .yellow().append("Optimization task:\n")
-                .gray().append("Snapshots uploaded: ").yellow().append(uploaded, "\n")
-                .gray().append("Snapshots deleted: ").yellow().append(deleted, "\n")
-                .gray().append("Members processed: ").yellow().append(completed, "/", total, "\n")
-                .gray().append("Progress: ").yellow().append(formatter.format(completed * 100d / total), "%")
-                .build()
-                : textService.builder()
-                .append(pluginInfo.getPrefix())
-                .yellow().append("There is currently no optimization task running")
+                .gray().append("Snapshots uploaded: ")
+                .yellow().append(uploaded, "\n")
+                .gray().append("Snapshots deleted: ")
+                .yellow().append(deleted, "\n")
+                .gray().append("Members processed: ")
+                .yellow().append(completed, "/", total, "\n")
+                .gray().append("Progress: ")
+                .yellow().append(formatter.format(completed * 100d / total), "%")
                 .build();
-        });
+        }
+        return textService.builder()
+            .append(pluginInfo.getPrefix())
+            .yellow().append("There is currently no optimization task running")
+            .build();
     }
 
     @Override
-    public CompletableFuture<TString> stop() {
-        return CompletableFuture.supplyAsync(() ->
-            textService.builder()
-                .append(pluginInfo.getPrefix())
-                .yellow().append(getPrimaryComponent().stopOptimizationTask() ? "Successfully stopped optimization task" : "There is currently no optimization task running")
-                .build()
-        );
+    public TString stop() {
+        TextService.Builder<TString, TCommandSource> builder = textService.builder()
+            .append(pluginInfo.getPrefix()).yellow();
+        if (getPrimaryComponent().stopOptimizationTask()) {
+            builder.append("Successfully stopped optimization task");
+        } else {
+            builder.append("There is currently no optimization task running");
+        }
+        return builder.build();
     }
 }

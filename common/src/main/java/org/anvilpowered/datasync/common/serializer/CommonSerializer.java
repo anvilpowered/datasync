@@ -19,16 +19,14 @@
 package org.anvilpowered.datasync.common.serializer;
 
 import com.google.inject.Inject;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.Serializer;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 
 public abstract class CommonSerializer<
-    TSnapshot extends Snapshot<?>,
     TDataKey,
     TUser>
-    implements Serializer<TSnapshot, TUser> {
+    implements Serializer<TUser> {
 
     @Inject
-    protected SnapshotManager<TSnapshot, TDataKey> snapshotManager;
+    protected SnapshotManager<TDataKey> snapshotManager;
 }

@@ -25,8 +25,6 @@ import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.anvil.base.component.BaseComponent;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
-import org.anvilpowered.datasync.api.model.member.Member;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
@@ -48,10 +46,8 @@ import java.util.stream.Collectors;
 
 public abstract class CommonSnapshotOptimizationService<
     TKey,
-    TMember extends Member<TKey>,
-    TSnapshot extends Snapshot<TKey>,
-    TPlayer extends TCommandSource,
     TUser,
+    TPlayer,
     TCommandSource,
     TDataKey,
     TDataStore>
@@ -59,13 +55,13 @@ public abstract class CommonSnapshotOptimizationService<
     implements SnapshotOptimizationService<TKey, TUser, TCommandSource, TDataStore> {
 
     @Inject
-    protected MemberRepository<TKey, TMember, TSnapshot, TUser, TDataStore> memberRepository;
+    protected MemberRepository<TKey,TDataStore> memberRepository;
 
     @Inject
-    protected SnapshotRepository<TKey, TSnapshot, TDataKey, TDataStore> snapshotRepository;
+    protected SnapshotRepository<TKey, TDataKey, TDataStore> snapshotRepository;
 
     @Inject
-    protected UserSerializerComponent<TKey, TSnapshot, TUser, TDataStore> userSerializer;
+    protected UserSerializerComponent<TKey, TUser, TDataStore> userSerializer;
 
     @Inject
     protected SyncUtils syncUtils;

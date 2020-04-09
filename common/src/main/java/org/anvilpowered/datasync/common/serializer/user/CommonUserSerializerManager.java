@@ -39,17 +39,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class CommonUserSerializerManager<
-    TMember extends Member<?>,
-    TSnapshot extends Snapshot<?>,
     TUser,
     TPlayer,
     TString,
     TCommandSource>
-    extends BaseManager<UserSerializerComponent<?, TSnapshot, TUser, ?>>
-    implements UserSerializerManager<TSnapshot, TUser, TString> {
+    extends BaseManager<UserSerializerComponent<?, TUser, ?>>
+    implements UserSerializerManager<TUser, TString> {
 
     @Inject
-    protected MemberManager<TMember, TSnapshot, TUser, TString> memberManager;
+    protected MemberManager<TString> memberManager;
 
     @Inject
     protected TextService<TString, TCommandSource> textService;
@@ -185,7 +183,7 @@ public class CommonUserSerializerManager<
                         .build();
                 }
                 String createdString = timeFormatService.format(optionalSnapshot.get().getCreatedUtc());
-                getPrimaryComponent().deserialize(optionalUser.get(), optionalSnapshot.get());
+                getPrimaryComponent().deserialize(optionalSnapshot.get(), optionalUser.get());
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .yellow().append("Restored snapshot ", createdString, " for ", userName)

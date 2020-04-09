@@ -18,10 +18,6 @@
 
 package org.anvilpowered.datasync.api.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-
-public interface GameModeSerializer<
-    TSnapshot extends Snapshot<?>,
-    TUser>
-    extends Serializer<TSnapshot, TUser> {
+public interface GameModeSerializer<TUser>
+    extends Serializer<TUser> {
 }

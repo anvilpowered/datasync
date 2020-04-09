@@ -31,26 +31,23 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public interface MongoMemberRepository<
-    TMember extends Member<ObjectId>,
-    TSnapshot extends Snapshot<ObjectId>,
-    TUser>
-    extends MemberRepository<ObjectId, TMember, TSnapshot, TUser, Datastore>,
-    MongoRepository<TMember> {
+public interface MongoMemberRepository
+    extends MemberRepository<ObjectId, Datastore>,
+    MongoRepository<Member<ObjectId>> {
 
-    CompletableFuture<List<ObjectId>> getSnapshotIds(Query<TMember> query);
+    CompletableFuture<List<ObjectId>> getSnapshotIds(Query<Member<ObjectId>> query);
 
-    CompletableFuture<List<Instant>> getSnapshotCreationTimes(Query<TMember> query);
+    CompletableFuture<List<Instant>> getSnapshotCreationTimes(Query<Member<ObjectId>> query);
 
-    CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, ObjectId snapshotId);
+    CompletableFuture<Boolean> deleteSnapshot(Query<Member<ObjectId>> query, ObjectId snapshotId);
 
-    CompletableFuture<Boolean> deleteSnapshot(Query<TMember> query, Instant createdUtc);
+    CompletableFuture<Boolean> deleteSnapshot(Query<Member<ObjectId>> query, Instant createdUtc);
 
-    CompletableFuture<Boolean> addSnapshot(Query<TMember> query, ObjectId snapshotId);
+    CompletableFuture<Boolean> addSnapshot(Query<Member<ObjectId>> query, ObjectId snapshotId);
 
-    CompletableFuture<Optional<TSnapshot>> getSnapshot(Query<TMember> query, Instant createdUtc);
+    CompletableFuture<Optional<Snapshot<ObjectId>>> getSnapshot(Query<Member<ObjectId>> query, Instant createdUtc);
 
-    CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<TMember> query, Instant createdUtc);
+    CompletableFuture<List<ObjectId>> getClosestSnapshots(Query<Member<ObjectId>> query, Instant createdUtc);
 
-    Query<TMember> asQuery(UUID userUUID);
+    Query<Member<ObjectId>> asQuery(UUID userUUID);
 }

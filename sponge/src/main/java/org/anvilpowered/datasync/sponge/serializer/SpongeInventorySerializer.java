@@ -45,7 +45,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SpongeInventorySerializer
-    extends CommonInventorySerializer<Snapshot<?>, Key<?>, User, Inventory, ItemStackSnapshot> {
+    extends CommonInventorySerializer<Key<?>, User, Inventory, ItemStackSnapshot> {
 
     private static final char SEPARATOR = '_';
     private static final char PERIOD_REPLACEMENT = '~';

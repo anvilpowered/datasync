@@ -35,7 +35,7 @@ public class OptimizeInfoCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) {
-        snapshotOptimizationManager.info().thenAcceptAsync(source::sendMessage);
+        source.sendMessage(snapshotOptimizationManager.info());
         return CommandResult.success();
     }
 }

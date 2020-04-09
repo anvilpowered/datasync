@@ -18,10 +18,6 @@
 
 package org.anvilpowered.datasync.api.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-
-public interface HungerSerializer<
-    TSnapshot extends Snapshot<?>,
-    TUser>
-    extends Serializer<TSnapshot, TUser> {
+public interface HungerSerializer<TUser>
+    extends Serializer<TUser> {
 }

@@ -72,7 +72,7 @@ public class CommandUtils {
 
         Optional<PaginationService> paginationService = Sponge.getServiceManager().provide(PaginationService.class);
         if (!paginationService.isPresent()) return;
-        PaginationList.Builder paginationBuilder = paginationService.get().builder().title(Text.of(TextColors.GOLD, "MSDataSync " + (commandName != null && commandName.length() > 1 ? commandName.substring(0, 1).toUpperCase() + commandName.substring(1) : "") + " - MilspecSG")).padding(Text.of(TextColors.DARK_GREEN, "-")).contents(helpList).linesPerPage(20);
+        PaginationList.Builder paginationBuilder = paginationService.get().builder().title(Text.of(TextColors.GOLD, "datasync " + (commandName != null && commandName.length() > 1 ? commandName.substring(0, 1).toUpperCase() + commandName.substring(1) : "") + " - MilspecSG")).padding(Text.of(TextColors.DARK_GREEN, "-")).contents(helpList).linesPerPage(20);
         paginationBuilder.build().sendTo(source);
     }
 

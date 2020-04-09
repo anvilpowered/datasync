@@ -20,14 +20,12 @@ package org.anvilpowered.datasync.api.serializer;
 
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
-public interface Serializer<
-    TSnapshot extends Snapshot<?>,
-    TUser> {
+public interface Serializer<TUser> {
 
     /**
      * @return Name of {@link Serializer}.
      * Should follow format "plugin:name"
-     * For example "msdatasync:inventory"
+     * For example "datasync:inventory"
      */
     String getName();
 
@@ -38,7 +36,7 @@ public interface Serializer<
      * @param user     User to get data from
      * @return Whether serialization was successful
      */
-    boolean serialize(TSnapshot snapshot, TUser user);
+    boolean serialize(Snapshot<?> snapshot, TUser user);
 
     /**
      * Moves data from {@code member} into {@code player}
@@ -47,5 +45,5 @@ public interface Serializer<
      * @param user     User to add data to
      * @return Whether deserialization was successful
      */
-    boolean deserialize(TSnapshot snapshot, TUser user);
+    boolean deserialize(Snapshot<?> snapshot, TUser user);
 }

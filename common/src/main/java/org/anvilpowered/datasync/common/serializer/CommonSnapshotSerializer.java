@@ -35,38 +35,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CommonSnapshotSerializer<
-    TSnapshot extends Snapshot<?>,
     TDataKey,
     TUser,
     TPlayer,
     TInventory,
     TItemStackSnapshot>
-    extends CommonSerializer<TSnapshot, TDataKey, TUser>
-    implements SnapshotSerializer<TSnapshot, TUser> {
+    extends CommonSerializer<TDataKey, TUser>
+    implements SnapshotSerializer<TUser> {
 
     @Override
     public String getName() {
-        return "msdatasync:snapshot";
+        return "datasync:snapshot";
     }
 
-    private List<Serializer<TSnapshot, TUser>> serializers;
+    private List<Serializer<TUser>> serializers;
 
-    private List<Serializer<TSnapshot, TUser>> externalSerializers;
-
-    @Inject
-    private ExperienceSerializer<TSnapshot, TUser> experienceSerializer;
+    private List<Serializer<TUser>> externalSerializers;
 
     @Inject
-    private GameModeSerializer<TSnapshot, TUser> gameModeSerializer;
+    private ExperienceSerializer<TUser> experienceSerializer;
 
     @Inject
-    private HealthSerializer<TSnapshot, TUser> healthSerializer;
+    private GameModeSerializer<TUser> gameModeSerializer;
 
     @Inject
-    private HungerSerializer<TSnapshot, TUser> hungerSerializer;
+    private HealthSerializer<TUser> healthSerializer;
 
     @Inject
-    private InventorySerializer<TSnapshot, TUser, TInventory, TItemStackSnapshot> inventorySerializer;
+    private HungerSerializer<TUser> hungerSerializer;
+
+    @Inject
+    private InventorySerializer<TUser, TInventory, TItemStackSnapshot> inventorySerializer;
 
     @Inject
     private UserService<TUser, TPlayer> userService;
@@ -85,7 +84,7 @@ public abstract class CommonSnapshotSerializer<
     }
 
     @Override
-    public void registerSerializer(Serializer<TSnapshot, TUser> serializer) {
+    public void registerSerializer(Serializer<TUser> serializer) {
         externalSerializers.add(serializer);
     }
 
@@ -98,28 +97,28 @@ public abstract class CommonSnapshotSerializer<
         List<String> enabledSerializers = new ArrayList<>(registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS));
         serializers = new ArrayList<>();
 
-        if (enabledSerializers.remove("msdatasync:experience")) {
-            announceEnabled("msdatasync:experience");
+        if (enabledSerializers.remove("datasync:experience")) {
+            announceEnabled("datasync:experience");
             serializers.add(experienceSerializer);
         }
 
-        if (enabledSerializers.remove("msdatasync:gameMode")) {
-            announceEnabled("msdatasync:gameMode");
+        if (enabledSerializers.remove("datasync:gameMode")) {
+            announceEnabled("datasync:gameMode");
             serializers.add(gameModeSerializer);
         }
 
-        if (enabledSerializers.remove("msdatasync:health")) {
-            announceEnabled("msdatasync:health");
+        if (enabledSerializers.remove("datasync:health")) {
+            announceEnabled("datasync:health");
             serializers.add(healthSerializer);
         }
 
-        if (enabledSerializers.remove("msdatasync:hunger")) {
-            announceEnabled("msdatasync:hunger");
+        if (enabledSerializers.remove("datasync:hunger")) {
+            announceEnabled("datasync:hunger");
             serializers.add(hungerSerializer);
         }
 
-        if (enabledSerializers.remove("msdatasync:inventory")) {
-            announceEnabled("msdatasync:inventory");
+        if (enabledSerializers.remove("datasync:inventory")) {
+            announceEnabled("datasync:inventory");
             serializers.add(inventorySerializer);
         }
 
@@ -131,10 +130,10 @@ public abstract class CommonSnapshotSerializer<
     protected abstract void postLoadedEvent();
 
     private void verifyExternalSerializers() {
-        List<Serializer<TSnapshot, TUser>> externalSerializersToRemove = new ArrayList<>();
+        List<Serializer<TUser>> externalSerializersToRemove = new ArrayList<>();
         externalSerializers.forEach(serializer -> {
             String name = serializer.getName();
-            if (name.startsWith("msdatasync") || name.split(":").length != 2) {
+            if (name.startsWith("datasync") || name.split(":").length != 2) {
                 System.err.println("[MSDataSync] External serialization module name \"" + serializer.getName() + "\" is invalid. Ignoring!");
                 externalSerializersToRemove.add(serializer);
             }
@@ -146,14 +145,14 @@ public abstract class CommonSnapshotSerializer<
     protected abstract void announceEnabled(String name);
 
     @Override
-    public boolean serialize(TSnapshot snapshot, TUser user) {
+    public boolean serialize(Snapshot<?> snapshot, TUser user) {
         if (serializers.isEmpty()) {
             System.err.println("[MSDataSync] No enabled serializers");
             return false;
         }
         boolean success = true;
 
-        for (Serializer<TSnapshot, TUser> serializer : serializers) {
+        for (Serializer<TUser> serializer : serializers) {
             // will still try to keep going even if one module fails
             try {
                 snapshot.getModulesUsed().add(serializer.getName());
@@ -170,14 +169,14 @@ public abstract class CommonSnapshotSerializer<
     }
 
     @Override
-    public boolean deserialize(TSnapshot snapshot, TUser user) {
+    public boolean deserialize(Snapshot<?> snapshot, TUser user) {
         if (serializers.isEmpty()) {
             System.err.println("[MSDataSync] No enabled deserializers");
             return false;
         }
         boolean success = true;
         List<String> serializersToUse = new ArrayList<>(snapshot.getModulesUsed());
-        for (Serializer<TSnapshot, TUser> serializer : serializers) {
+        for (Serializer<TUser> serializer : serializers) {
             // will still try to keep going even if one module fails
             try {
                 if (serializersToUse.remove(serializer.getName())) {

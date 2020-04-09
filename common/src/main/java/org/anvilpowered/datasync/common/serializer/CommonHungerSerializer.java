@@ -18,18 +18,16 @@
 
 package org.anvilpowered.datasync.common.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.HungerSerializer;
 
 public abstract class CommonHungerSerializer<
-    TSnapshot extends Snapshot<?>,
     TDataKey,
     TUser>
-    extends CommonSerializer<TSnapshot, TDataKey, TUser>
-    implements HungerSerializer<TSnapshot, TUser> {
+    extends CommonSerializer<TDataKey, TUser>
+    implements HungerSerializer<TUser> {
 
     @Override
     public String getName() {
-        return "msdatasync:hunger";
+        return "datasync:hunger";
     }
 }

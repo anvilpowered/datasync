@@ -25,7 +25,6 @@ import org.anvilpowered.anvil.api.datastore.annotation.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
-import org.anvilpowered.datasync.api.model.snapshot.MappableSnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @XodusEntity
-public class XodusSnapshot extends XodusDbo implements MappableSnapshot<EntityId, Entity> {
+public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync.api.model.snapshot.Snapshot<EntityId>, Mappable<Entity> {
 
     private String name;
 

@@ -18,10 +18,6 @@
 
 package org.anvilpowered.datasync.api.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-
-public interface ExperienceSerializer<
-    TSnapshot extends Snapshot<?>,
-    TUser>
-    extends Serializer<TSnapshot, TUser> {
+public interface ExperienceSerializer<TUser>
+    extends Serializer<TUser> {
 }

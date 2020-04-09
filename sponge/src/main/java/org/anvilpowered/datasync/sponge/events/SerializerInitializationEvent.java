@@ -18,7 +18,6 @@
 
 package org.anvilpowered.datasync.sponge.events;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.spongepowered.api.data.key.Key;
@@ -26,15 +25,15 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
 
-public class SerializerInitializationEvent<S extends Snapshot<?>> extends AbstractEvent {
+public class SerializerInitializationEvent extends AbstractEvent {
 
     private final Cause cause;
-    private final SnapshotSerializer<S, User> snapshotSerializer;
-    private final SnapshotManager<S, Key<?>> snapshotRepository;
+    private final SnapshotSerializer<User> snapshotSerializer;
+    private final SnapshotManager< Key<?>> snapshotRepository;
 
     public SerializerInitializationEvent(
-        SnapshotSerializer<S, User> snapshotSerializer,
-        SnapshotManager<S, Key<?>> snapshotRepository,
+        SnapshotSerializer<User> snapshotSerializer,
+        SnapshotManager<Key<?>> snapshotRepository,
         Cause cause) {
         this.cause = cause;
         this.snapshotSerializer = snapshotSerializer;
@@ -46,11 +45,11 @@ public class SerializerInitializationEvent<S extends Snapshot<?>> extends Abstra
         return cause;
     }
 
-    public SnapshotSerializer<S, User> getSnapshotSerializer() {
+    public SnapshotSerializer<User> getSnapshotSerializer() {
         return snapshotSerializer;
     }
 
-    public SnapshotManager<S, Key<?>> getSnapshotRepository() {
+    public SnapshotManager<Key<?>> getSnapshotRepository() {
         return snapshotRepository;
     }
 }

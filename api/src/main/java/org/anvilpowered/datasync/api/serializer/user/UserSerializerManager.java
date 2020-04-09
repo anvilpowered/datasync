@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.api.serializer.user;
 
 import org.anvilpowered.anvil.api.manager.Manager;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 
 import java.util.Collection;
@@ -28,10 +27,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface UserSerializerManager<
-    TSnapshot extends Snapshot<?>,
     TUser,
     TString>
-    extends Manager<UserSerializerComponent<?, TSnapshot, TUser, ?>> {
+    extends Manager<UserSerializerComponent<?, TUser, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {

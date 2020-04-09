@@ -28,14 +28,13 @@ import java.util.concurrent.CompletableFuture;
 
 public interface SnapshotRepository<
     TKey,
-    TSnapshot extends Snapshot<TKey>,
     TDataKey,
     TDataStore>
-    extends Repository<TKey, TSnapshot, TDataStore> {
+    extends Repository<TKey, Snapshot<TKey>, TDataStore> {
 
-    boolean setSnapshotValue(TSnapshot snapshot, TDataKey key, Optional<?> optionalValue);
+    boolean setSnapshotValue(Snapshot<?> snapshot, TDataKey key, Optional<?> optionalValue);
 
-    Optional<?> getSnapshotValue(TSnapshot snapshot, TDataKey key);
+    Optional<?> getSnapshotValue(Snapshot<?> snapshot, TDataKey key);
 
     CompletableFuture<Boolean> setItemStacks(TKey id, List<SerializedItemStack> itemStacks);
 

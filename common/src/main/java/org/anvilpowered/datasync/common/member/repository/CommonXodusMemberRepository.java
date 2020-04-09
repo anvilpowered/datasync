@@ -44,14 +44,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class CommonXodusMemberRepository<
-    TMember extends Member<EntityId> & Mappable<Entity>,
-    TSnapshot extends Snapshot<EntityId>,
-    TUser,
-    TDataKey>
-    extends CommonMemberRepository<EntityId, TMember, TSnapshot, TUser, TDataKey, PersistentEntityStore>
-    implements BaseXodusRepository<TMember>,
-    XodusMemberRepository<TMember, TSnapshot, TUser> {
+public class CommonXodusMemberRepository<TDataKey>
+    extends CommonMemberRepository<EntityId, TDataKey, PersistentEntityStore>
+    implements BaseXodusRepository<Member<EntityId>>,
+    XodusMemberRepository {
 
     @Inject
     public CommonXodusMemberRepository(DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
@@ -59,7 +55,7 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TMember>> getOneForUser(UUID userUUID) {
+    public CompletableFuture<Optional<Member<EntityId>>> getOneForUser(UUID userUUID) {
         return getOne(asQuery(userUUID));
     }
 
@@ -207,7 +203,7 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
         return CompletableFuture.supplyAsync(() ->
             getDataStoreContext().getDataStore().computeInReadonlyTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
@@ -220,7 +216,7 @@ public class CommonXodusMemberRepository<
                 }
                 List<EntityId> ids = optionalList.get();
                 for (EntityId id : ids) {
-                    Optional<TSnapshot> optionalSnapshot = snapshotRepository.getOne(id).join()
+                    Optional<Snapshot<EntityId>> optionalSnapshot = snapshotRepository.getOne(id).join()
                         .filter(s -> checkInstant(s.getCreatedUtc(), createdUtc));
                     if (optionalSnapshot.isPresent()) {
                         return optionalSnapshot;
@@ -232,12 +228,12 @@ public class CommonXodusMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(EntityId id, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(EntityId id, Instant createdUtc) {
         return getSnapshot(asQuery(id), createdUtc);
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshotForUser(UUID userUUID, Instant createdUtc) {
         return getSnapshot(asQuery(userUUID), createdUtc);
     }
 

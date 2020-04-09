@@ -25,7 +25,7 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.User;
 
-public class SpongeHungerSerializer extends CommonHungerSerializer<Snapshot<?>, Key<?>, User> {
+public class SpongeHungerSerializer extends CommonHungerSerializer<Key<?>, User> {
 
     @Override
     public boolean serialize(Snapshot<?> snapshot, User user) {

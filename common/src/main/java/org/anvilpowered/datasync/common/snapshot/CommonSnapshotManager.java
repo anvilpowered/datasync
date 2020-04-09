@@ -21,13 +21,12 @@ package org.anvilpowered.datasync.common.snapshot;
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.base.manager.BaseManager;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 
-public class CommonSnapshotManager<TSnapshot extends Snapshot<?>, TDataKey>
-    extends BaseManager<SnapshotRepository<?, TSnapshot, TDataKey, ?>>
-    implements SnapshotManager<TSnapshot, TDataKey> {
+public class CommonSnapshotManager<TDataKey>
+    extends BaseManager<SnapshotRepository<?, TDataKey, ?>>
+    implements SnapshotManager<TDataKey> {
 
     @Inject
     public CommonSnapshotManager(Registry registry) {

@@ -88,7 +88,7 @@ public class SnapshotViewCommand implements CommandExecutor {
 
             SyncLockCommand.assertUnlocked(source);
 
-            if (!snapshotSerializer.isSerializerEnabled("msdatasync:inventory")) {
+            if (!snapshotSerializer.isSerializerEnabled("datasync:inventory")) {
                 throw new CommandException(Text.of(pluginInfo.getPrefix(), "Inventory serializer must be enabled in config to use this feature"));
             }
 

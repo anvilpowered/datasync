@@ -32,7 +32,7 @@ public final class DataSyncKeys {
 
     public static final Key<List<String>> SERIALIZE_ENABLED_SERIALIZERS = new Key<List<String>>(
         "SERIALIZE_ENABLED_SERIALIZERS",
-        Arrays.asList("msdatasync:experience", "msdatasync:gameMode", "msdatasync:health", "msdatasync:hunger", "msdatasync:inventory")
+        Arrays.asList("datasync:experience", "datasync:gameMode", "datasync:health", "datasync:hunger", "datasync:inventory")
     ) {
     };
 
@@ -42,6 +42,8 @@ public final class DataSyncKeys {
     };
     public static final Key<Boolean> SERIALIZE_ON_DISCONNECT = new Key<Boolean>("SERIALIZE_ON_DISCONNECT", true) {
     };
+    public static final Key<Boolean> SERIALIZE_CLEAR_ON_JOIN = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", false) {
+    };
     public static final Key<Boolean> SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", false) {
     };
     public static final Key<Integer> SNAPSHOT_MIN_COUNT = new Key<Integer>("SNAPSHOT_MIN_COUNT", 5) {
@@ -50,25 +52,25 @@ public final class DataSyncKeys {
     };
     public static final Key<Integer> SNAPSHOT_UPLOAD_INTERVAL_MINUTES = new Key<Integer>("SNAPSHOT_UPLOAD_INTERVAL", 5) {
     };
-    public static final Key<String> LOCK_COMMAND_PERMISSION = new Key<String>("LOCK_COMMAND_PERMISSION", "msdatasync.lock") {
+    public static final Key<String> LOCK_COMMAND_PERMISSION = new Key<String>("LOCK_COMMAND_PERMISSION", "datasync.lock") {
     };
-    public static final Key<String> RELOAD_COMMAND_PERMISSION = new Key<String>("RELOAD_COMMAND_PERMISSION", "msdatasync.reload") {
+    public static final Key<String> RELOAD_COMMAND_PERMISSION = new Key<String>("RELOAD_COMMAND_PERMISSION", "datasync.reload") {
     };
-    public static final Key<String> SNAPSHOT_BASE_PERMISSION = new Key<String>("SNAPSHOT_BASE_PERMISSION", "msdatasync.snapshot.base") {
+    public static final Key<String> SNAPSHOT_BASE_PERMISSION = new Key<String>("SNAPSHOT_BASE_PERMISSION", "datasync.snapshot.base") {
     };
-    public static final Key<String> SNAPSHOT_CREATE_PERMISSION = new Key<String>("SNAPSHOT_CREATE_PERMISSION", "msdatasync.snapshot.create") {
+    public static final Key<String> SNAPSHOT_CREATE_PERMISSION = new Key<String>("SNAPSHOT_CREATE_PERMISSION", "datasync.snapshot.create") {
     };
-    public static final Key<String> SNAPSHOT_DELETE_PERMISSION = new Key<String>("SNAPSHOT_DELETE_PERMISSION", "msdatasync.snapshot.delete") {
+    public static final Key<String> SNAPSHOT_DELETE_PERMISSION = new Key<String>("SNAPSHOT_DELETE_PERMISSION", "datasync.snapshot.delete") {
     };
-    public static final Key<String> SNAPSHOT_RESTORE_PERMISSION = new Key<String>("SNAPSHOT_RESTORE_PERMISSION", "msdatasync.snapshot.restore") {
+    public static final Key<String> SNAPSHOT_RESTORE_PERMISSION = new Key<String>("SNAPSHOT_RESTORE_PERMISSION", "datasync.snapshot.restore") {
     };
-    public static final Key<String> SNAPSHOT_VIEW_EDIT_PERMISSION = new Key<String>("SNAPSHOT_VIEW_EDIT_PERMISSION", "msdatasync.snapshot.view.edit") {
+    public static final Key<String> SNAPSHOT_VIEW_EDIT_PERMISSION = new Key<String>("SNAPSHOT_VIEW_EDIT_PERMISSION", "datasync.snapshot.view.edit") {
     };
-    public static final Key<String> SNAPSHOT_VIEW_BASE_PERMISSION = new Key<String>("SNAPSHOT_VIEW_BASE_PERMISSION", "msdatasync.snapshot.view.base") {
+    public static final Key<String> SNAPSHOT_VIEW_BASE_PERMISSION = new Key<String>("SNAPSHOT_VIEW_BASE_PERMISSION", "datasync.snapshot.view.base") {
     };
-    public static final Key<String> MANUAL_OPTIMIZATION_ALL_PERMISSION = new Key<String>("MANUAL_OPTIMIZATION_ALL_PERMISSION", "msdatasync.optimize.all") {
+    public static final Key<String> MANUAL_OPTIMIZATION_ALL_PERMISSION = new Key<String>("MANUAL_OPTIMIZATION_ALL_PERMISSION", "datasync.optimize.all") {
     };
-    public static final Key<String> MANUAL_OPTIMIZATION_BASE_PERMISSION = new Key<String>("MANUAL_OPTIMIZATION_BASE_PERMISSION", "msdatasync.optimize.base") {
+    public static final Key<String> MANUAL_OPTIMIZATION_BASE_PERMISSION = new Key<String>("MANUAL_OPTIMIZATION_BASE_PERMISSION", "datasync.optimize.base") {
     };
 
     static {

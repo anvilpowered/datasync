@@ -18,18 +18,16 @@
 
 package org.anvilpowered.datasync.common.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.HealthSerializer;
 
 public abstract class CommonHealthSerializer<
-    TSnapshot extends Snapshot<?>,
     TDataKey,
     TUser>
-    extends CommonSerializer<TSnapshot, TDataKey, TUser>
-    implements HealthSerializer<TSnapshot, TUser> {
+    extends CommonSerializer<TDataKey, TUser>
+    implements HealthSerializer<TUser> {
 
     @Override
     public String getName() {
-        return "msdatasync:health";
+        return "datasync:health";
     }
 }

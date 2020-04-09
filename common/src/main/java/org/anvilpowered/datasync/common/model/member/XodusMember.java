@@ -24,7 +24,6 @@ import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.api.datastore.annotation.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
-import org.anvilpowered.datasync.api.model.member.MappableMember;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @XodusEntity
-public class XodusMember extends XodusDbo implements MappableMember<EntityId, Entity> {
+public class XodusMember extends XodusDbo implements org.anvilpowered.datasync.api.model.member.Member<EntityId>, Mappable<Entity> {
 
     private String userUUID;
 

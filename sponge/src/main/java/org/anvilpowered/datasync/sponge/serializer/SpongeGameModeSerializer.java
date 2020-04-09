@@ -25,7 +25,7 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.User;
 
-public class SpongeGameModeSerializer extends CommonGameModeSerializer<Snapshot<?>, Key<?>, User> {
+public class SpongeGameModeSerializer extends CommonGameModeSerializer<Key<?>, User> {
 
     @Override
     public boolean serialize(Snapshot<?> snapshot, User user) {

@@ -25,7 +25,7 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.User;
 
-public class SpongeHealthSerializer extends CommonHealthSerializer<Snapshot<?>, Key<?>, User> {
+public class SpongeHealthSerializer extends CommonHealthSerializer<Key<?>, User> {
 
     @Override
     public boolean serialize(Snapshot<?> snapshot, User user) {

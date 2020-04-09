@@ -37,16 +37,13 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class CommonMemberRepository<
     TKey,
-    TMember extends Member<TKey>,
-    TSnapshot extends Snapshot<TKey>,
-    TUser,
     TDataKey,
     TDataStore>
-    extends BaseRepository<TKey, TMember, TDataStore>
-    implements MemberRepository<TKey, TMember, TSnapshot, TUser, TDataStore> {
+    extends BaseRepository<TKey, Member<TKey>, TDataStore>
+    implements MemberRepository<TKey, TDataStore> {
 
     @Inject
-    protected SnapshotRepository<TKey, TSnapshot, TDataKey, TDataStore> snapshotRepository;
+    protected SnapshotRepository<TKey, TDataKey, TDataStore> snapshotRepository;
 
     @Inject
     protected TimeFormatService timeFormatService;
@@ -56,26 +53,20 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TMember>> getOneOrGenerateForUser(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                Optional<TMember> optionalMember = getOneForUser(userUUID).join();
-                if (optionalMember.isPresent()) return optionalMember;
-                // if there isn't one already, create a new one
-                TMember member = generateEmpty();
-                member.setUserUUID(userUUID);
-                return insertOne(member).join();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Optional.empty();
-            }
+    public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID) {
+        return getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
+            if (optionalMember.isPresent()) return optionalMember;
+            // if there isn't one already, create a new one
+            Member<TKey> member = generateEmpty();
+            member.setUserUUID(userUUID);
+            return insertOne(member).join();
         });
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Class<TMember> getTClass() {
-        return (Class<TMember>) getDataStoreContext().getEntityClassUnsafe("member");
+    public Class<Member<TKey>> getTClass() {
+        return (Class<Member<TKey>>) getDataStoreContext().getEntityClassUnsafe("member");
     }
 
     @Override
@@ -94,7 +85,7 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshot(TKey id, Optional<String> optionalString) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id, Optional<String> optionalString) {
         return CompletableFuture.supplyAsync(() -> {
             if (optionalString.isPresent()) {
 
@@ -116,12 +107,12 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString) {
         return getIdForUser(userUUID).thenApplyAsync(o -> o.flatMap(id -> getSnapshot(id, optionalString).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getLatestSnapshot(TKey id) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getLatestSnapshot(TKey id) {
         return getOne(id).thenApplyAsync(optionalMember ->
             optionalMember.flatMap(member -> {
                 int size = member.getSnapshotIds().size();
@@ -134,12 +125,12 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getLatestSnapshotForUser(UUID userUUID) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getLatestSnapshotForUser(UUID userUUID) {
         return getOneOrGenerateForUser(userUUID).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> snapshotRepository.getOne(member.getSnapshotIds().get(member.getSnapshotIds().size() - 1)).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getPrevious(TKey id, TKey snapshotId) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getPrevious(TKey id, TKey snapshotId) {
         return getOne(id).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> {
             int size = member.getSnapshotIds().size();
             for (int i = 0; i < size; i++) {
@@ -155,17 +146,17 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, TKey snapshotId) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID, TKey snapshotId) {
         return getIdForUser(userUUID).thenApplyAsync(o -> o.flatMap(id -> getPrevious(id, snapshotId).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getPreviousForUser(UUID userUUID, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID, Instant createdUtc) {
         return getSnapshotForUser(userUUID, createdUtc).thenApplyAsync(o -> o.flatMap(s -> getPreviousForUser(userUUID, s.getId()).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getNext(TKey id, TKey snapshotId) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getNext(TKey id, TKey snapshotId) {
         return getOne(id).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> {
             int size = member.getSnapshotIds().size();
             for (int i = 0; i < size; i++) {
@@ -181,12 +172,12 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, TKey snapshotId) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID, TKey snapshotId) {
         return getIdForUser(userUUID).thenApplyAsync(o -> o.flatMap(id -> getNext(id, snapshotId).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<TSnapshot>> getNextForUser(UUID userUUID, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID, Instant createdUtc) {
         return getSnapshotForUser(userUUID, createdUtc).thenApplyAsync(o -> o.flatMap(s -> getNextForUser(userUUID, s.getId()).join()));
     }
 }

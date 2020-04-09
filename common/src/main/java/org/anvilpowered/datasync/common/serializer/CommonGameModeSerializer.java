@@ -18,18 +18,16 @@
 
 package org.anvilpowered.datasync.common.serializer;
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.GameModeSerializer;
 
 public abstract class CommonGameModeSerializer<
-    TSnapshot extends Snapshot<?>,
     TDataKey,
     TUser>
-    extends CommonSerializer<TSnapshot, TDataKey, TUser>
-    implements GameModeSerializer<TSnapshot, TUser> {
+    extends CommonSerializer<TDataKey, TUser>
+    implements GameModeSerializer<TUser> {
 
     @Override
     public String getName() {
-        return "msdatasync:gameMode";
+        return "datasync:gameMode";
     }
 }
