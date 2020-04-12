@@ -42,7 +42,7 @@ public final class DataSyncKeys {
     };
     public static final Key<Boolean> SERIALIZE_ON_DISCONNECT = new Key<Boolean>("SERIALIZE_ON_DISCONNECT", true) {
     };
-    public static final Key<Boolean> SERIALIZE_CLEAR_ON_JOIN = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", false) {
+    public static final Key<Boolean> SERIALIZE_CLEAR_ON_JOIN = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", true) {
     };
     public static final Key<Boolean> SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", false) {
     };

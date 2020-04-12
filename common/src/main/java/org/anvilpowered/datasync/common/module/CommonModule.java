@@ -33,8 +33,6 @@ import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
-import org.anvilpowered.datasync.api.model.member.Member;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;

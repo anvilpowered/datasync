@@ -22,11 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
 import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
@@ -47,7 +45,7 @@ public class PlayerListener {
     private PluginInfo<Text> pluginInfo;
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User, Text> userSerializerManager;
+    private UserSerializerManager<User, Text> userSerializerManager;
 
     private boolean joinSerializationEnabled;
     private boolean disconnectSerializationEnabled;

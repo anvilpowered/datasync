@@ -29,6 +29,7 @@ public class SpongeOptimizeCommandNode
     @Inject
     private OptimizeStopCommand optimizeStopCommand;
 
+    @Inject
     public SpongeOptimizeCommandNode(Registry registry) {
         super(registry);
     }
@@ -80,6 +81,9 @@ public class SpongeOptimizeCommandNode
     }
 
     public CommandSpec getRoot() {
+        if (root == null) {
+            loadCommands();
+        }
         return root;
     }
 

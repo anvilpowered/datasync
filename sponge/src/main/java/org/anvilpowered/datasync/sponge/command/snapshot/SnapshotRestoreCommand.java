@@ -37,7 +37,7 @@ import java.util.Optional;
 public class SnapshotRestoreCommand implements CommandExecutor {
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
+    private UserSerializerManager<User, Text> userSerializer;
 
     @Inject
     private PluginInfo<Text> pluginInfo;

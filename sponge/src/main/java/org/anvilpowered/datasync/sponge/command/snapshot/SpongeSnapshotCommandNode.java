@@ -39,6 +39,7 @@ public class SpongeSnapshotCommandNode
 
     private CommandSpec root;
 
+    @Inject
     public SpongeSnapshotCommandNode(Registry registry) {
         super(registry);
     }
@@ -128,6 +129,9 @@ public class SpongeSnapshotCommandNode
     }
 
     public CommandSpec getRoot() {
+        if (root == null) {
+            loadCommands();
+        }
         return root;
     }
 

@@ -134,7 +134,7 @@ public abstract class CommonSnapshotSerializer<
         externalSerializers.forEach(serializer -> {
             String name = serializer.getName();
             if (name.startsWith("datasync") || name.split(":").length != 2) {
-                System.err.println("[MSDataSync] External serialization module name \"" + serializer.getName() + "\" is invalid. Ignoring!");
+                System.err.println("[DataSync] External serialization module name \"" + serializer.getName() + "\" is invalid. Ignoring!");
                 externalSerializersToRemove.add(serializer);
             }
         });
@@ -147,7 +147,7 @@ public abstract class CommonSnapshotSerializer<
     @Override
     public boolean serialize(Snapshot<?> snapshot, TUser user) {
         if (serializers.isEmpty()) {
-            System.err.println("[MSDataSync] No enabled serializers");
+            System.err.println("[DataSync] No enabled serializers");
             return false;
         }
         boolean success = true;
@@ -157,7 +157,7 @@ public abstract class CommonSnapshotSerializer<
             try {
                 snapshot.getModulesUsed().add(serializer.getName());
                 if (!serializer.serialize(snapshot, user)) {
-                    System.err.println("[MSDataSync] Serialization module \"" + serializer.getName() + "\" failed for " + userService.getUserName(user) + "! All valid data was still uploaded!");
+                    System.err.println("[DataSync] Serialization module \"" + serializer.getName() + "\" failed for " + userService.getUserName(user) + "! All valid data was still uploaded!");
                     success = false;
                     snapshot.getModulesFailed().add(serializer.getName());
                 }
@@ -171,7 +171,7 @@ public abstract class CommonSnapshotSerializer<
     @Override
     public boolean deserialize(Snapshot<?> snapshot, TUser user) {
         if (serializers.isEmpty()) {
-            System.err.println("[MSDataSync] No enabled deserializers");
+            System.err.println("[DataSync] No enabled deserializers");
             return false;
         }
         boolean success = true;
@@ -182,11 +182,11 @@ public abstract class CommonSnapshotSerializer<
                 if (serializersToUse.remove(serializer.getName())) {
                     // only use modules that were used to upload
                     if (!serializer.deserialize(snapshot, user)) {
-                        System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for " + userService.getUserName(user));
+                        System.err.println("[DataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for " + userService.getUserName(user));
                         success = false;
                     }
                 } else {
-                    System.err.println("[MSDataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for " + userService.getUserName(user) + " but it is enabled in the config, skipping!");
+                    System.err.println("[DataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for " + userService.getUserName(user) + " but it is enabled in the config, skipping!");
                 }
             } catch (Exception e) {
                 success = false;
@@ -194,7 +194,7 @@ public abstract class CommonSnapshotSerializer<
         }
 
         serializersToUse.forEach(moduleName -> System.err.println(
-            "[MSDataSync] Deserialization module \""
+            "[DataSync] Deserialization module \""
                 + moduleName +
                 "\" was used in snapshot "
                 + snapshot.getId() +

@@ -20,8 +20,6 @@ package org.anvilpowered.datasync.sponge.command.snapshot;
 
 import com.google.inject.Inject;
 import org.anvilpowered.datasync.api.member.MemberManager;
-import org.anvilpowered.datasync.api.model.member.Member;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -39,7 +37,7 @@ import java.util.Optional;
 public class SnapshotListCommand implements CommandExecutor {
 
     @Inject
-    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
+    private MemberManager<Text> memberManager;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

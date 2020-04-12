@@ -33,11 +33,7 @@ public class CommonConfigurationService extends BaseConfigurationService {
     public CommonConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
         super(configLoader);
         setDefault(Keys.MONGODB_DBNAME, "datasync");
-    }
-
-    @Override
-    protected void initNodeNameMap() {
-        super.initNodeNameMap();
+        withDefault();
         setName(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS, "serialize.enabledSerializers");
         setName(DataSyncKeys.DESERIALIZE_ON_JOIN, "serialize.deserializeOnJoin");
         setName(DataSyncKeys.SERIALIZE_ON_DEATH, "serialize.serializeOnDeath");
@@ -46,21 +42,16 @@ public class CommonConfigurationService extends BaseConfigurationService {
         setName(DataSyncKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
         setName(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
         setName(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "snapshot.uploadInterval");
-    }
-
-    @Override
-    protected void initNodeDescriptionMap() {
-        super.initNodeDescriptionMap();
         setDescription(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS,
             "\nThings to sync to DB." +
                 "\nAvailable: datasync:experience, datasync:gameMode, datasync:health, datasync:hunger, datasync:inventory"
         );
-        setDescription(DataSyncKeys.DESERIALIZE_ON_JOIN, "\nWhether MSDataSync should deserialize players on join");
-        setDescription(DataSyncKeys.SERIALIZE_ON_DEATH, "\nWhether MSDataSync should serialize players to DB on death");
-        setDescription(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "\nWhether MSDataSync should serialize players to DB on disconnect");
+        setDescription(DataSyncKeys.DESERIALIZE_ON_JOIN, "\nWhether DataSync should deserialize players on join");
+        setDescription(DataSyncKeys.SERIALIZE_ON_DEATH, "\nWhether DataSync should serialize players to DB on death");
+        setDescription(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "\nWhether DataSync should serialize players to DB on disconnect");
         setDescription(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
-            "\nWhether MSDataSync should wait for snapshots to be uploaded before downloading them.\n" +
-                "Note: this option is highly recommended if you are running a multi-server environment like Velocity"
+            "\nWhether DataSync should wait for snapshots to be uploaded before downloading them." +
+                "\nNote: this option is highly recommended if you are running a multi-server environment like Velocity"
         );
         setDescription(DataSyncKeys.SNAPSHOT_MIN_COUNT, "\nMinimum number of snapshots to keep before deleting any");
         setDescription(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY,

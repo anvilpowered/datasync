@@ -143,7 +143,8 @@ public class SpongeInventorySerializer
     private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
         Map<String, Object> result = new HashMap<>();
         values.forEach((dq, o) -> {
-            String s = dq.asString(SEPARATOR).replace(PERIOD, PERIOD_REPLACEMENT);
+//            String s = dq.asString(SEPARATOR).replace(PERIOD, PERIOD_REPLACEMENT);
+            String s = dq.asString(SEPARATOR);
             if (o instanceof Map) {
                 Object m = serialize((Map<DataQuery, Object>) o);
                 result.put(s, m);
@@ -154,7 +155,8 @@ public class SpongeInventorySerializer
                     if (li instanceof DataContainer) {
                         r1.add(serialize(((DataContainer) li).getValues(false)));
                     } else if (li instanceof String) {
-                        r1.add(((String) li).replace(PERIOD, PERIOD_REPLACEMENT));
+//                        r1.add(((String) li).replace(PERIOD, PERIOD_REPLACEMENT));
+                        r1.add(li);
                     }
                 });
                 result.put(s, r1);
@@ -173,7 +175,7 @@ public class SpongeInventorySerializer
             if (o == null) {
                 continue;
             }
-            s = s.replace(PERIOD_REPLACEMENT, PERIOD);
+//            s = s.replace(PERIOD_REPLACEMENT, PERIOD);
             DataQuery dq = DataQuery.of(SEPARATOR, s);
             if (o instanceof Map) {
                 Map<String, Object> m = (Map<String, Object>) o;
@@ -187,7 +189,7 @@ public class SpongeInventorySerializer
                         m1 = ((List<?>) m1).stream().filter(Objects::nonNull).collect(Collectors.toList());
                     }
                     Object value = m1;
-                    s1 = s1.replace(PERIOD_REPLACEMENT, PERIOD);
+//                    s1 = s1.replace(PERIOD_REPLACEMENT, PERIOD);
                     if (m1 instanceof Map) {
                         try {
                             Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
@@ -205,7 +207,8 @@ public class SpongeInventorySerializer
                 }
                 result.put(dq, r1);
             } else if (!s.equals("ItemType") && o instanceof String) {
-                String n = o.toString().replace(PERIOD_REPLACEMENT, PERIOD);
+//                String n = o.toString().replace(PERIOD_REPLACEMENT, PERIOD);
+                String n = o.toString();
                 result.put(dq, n);
             } else if (o instanceof List) {
                 result.put(dq, ((List<?>) o).stream().filter(Objects::nonNull).collect(Collectors.toList()));

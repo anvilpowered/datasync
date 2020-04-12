@@ -21,18 +21,17 @@ package org.anvilpowered.datasync.sponge.plugin;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.datasync.common.plugin.DataSync;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
 import org.anvilpowered.datasync.sponge.listeners.PlayerListener;
 import org.anvilpowered.datasync.sponge.module.SpongeModule;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Text;
 
 @Plugin(
     id = DataSyncPluginInfo.id,
@@ -54,7 +53,8 @@ public class DataSyncSponge extends DataSync<PluginContainer, Key<?>> {
     @Override
     protected void applyToBuilder(Environment.Builder builder) {
         super.applyToBuilder(builder);
-        builder.addEarlyServices(PlayerListener.class);
+        builder.addEarlyServices(PlayerListener.class, t ->
+            Sponge.getEventManager().registerListeners(this, t));
     }
 
     @Listener

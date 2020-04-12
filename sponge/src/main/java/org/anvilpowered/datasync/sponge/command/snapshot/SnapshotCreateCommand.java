@@ -20,7 +20,6 @@ package org.anvilpowered.datasync.sponge.command.snapshot;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
 import org.spongepowered.api.command.CommandException;
@@ -39,7 +38,7 @@ public class SnapshotCreateCommand implements CommandExecutor {
     private PluginInfo<Text> pluginInfo;
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
+    private UserSerializerManager<User, Text> userSerializer;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

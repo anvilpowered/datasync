@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.sponge.command;
 
 import com.google.inject.Inject;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -33,7 +32,7 @@ import org.spongepowered.api.text.Text;
 public class SyncUploadCommand implements CommandExecutor {
 
     @Inject
-    private UserSerializerManager<Snapshot<?>, User, Text> userSerializer;
+    private UserSerializerManager<User, Text> userSerializer;
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {

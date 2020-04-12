@@ -18,35 +18,23 @@
 
 package org.anvilpowered.datasync.sponge.module;
 
-import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
-import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
-import org.anvilpowered.anvil.api.Anvil;
-import org.anvilpowered.anvil.api.misc.BindingExtensions;
-import org.anvilpowered.datasync.api.model.member.Member;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.anvil.api.command.CommandNode;
+import org.anvilpowered.datasync.api.keys.DataKeyService;
 import org.anvilpowered.datasync.api.serializer.ExperienceSerializer;
 import org.anvilpowered.datasync.api.serializer.GameModeSerializer;
 import org.anvilpowered.datasync.api.serializer.HealthSerializer;
 import org.anvilpowered.datasync.api.serializer.HungerSerializer;
 import org.anvilpowered.datasync.api.serializer.InventorySerializer;
 import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
-import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
-import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
+import org.anvilpowered.datasync.api.tasks.SerializationTaskService;
 import org.anvilpowered.datasync.common.data.config.CommonConfigurationService;
-import org.anvilpowered.datasync.common.keys.CommonDataKeyService;
 import org.anvilpowered.datasync.common.module.CommonModule;
-import org.anvilpowered.datasync.common.serializer.CommonExperienceSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonGameModeSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonHealthSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonHungerSerializer;
-import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
-import org.anvilpowered.datasync.common.serializer.CommonSnapshotSerializer;
 import org.anvilpowered.datasync.common.serializer.user.component.CommonUserSerializerComponent;
 import org.anvilpowered.datasync.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
-import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
+import org.anvilpowered.datasync.sponge.command.SpongeSyncCommandNode;
 import org.anvilpowered.datasync.sponge.data.config.SpongeConfigurationService;
 import org.anvilpowered.datasync.sponge.keys.CommonSpongeDataKeyService;
 import org.anvilpowered.datasync.sponge.serializer.SpongeExperienceSerializer;
@@ -68,7 +56,6 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
 
-@SuppressWarnings({"unchecked", "UnstableApiUsage"})
 public class SpongeModule extends CommonModule<
     Key<?>,
     Player,
@@ -79,8 +66,6 @@ public class SpongeModule extends CommonModule<
     @Override
     protected void configure() {
         super.configure();
-
-        BindingExtensions be = Anvil.getBindingExtensions(binder());
 
         bind(CommonConfigurationService.class).to(SpongeConfigurationService.class);
 
@@ -98,25 +83,27 @@ public class SpongeModule extends CommonModule<
         }).to(SpongeInventorySerializer.class);
         bind(new TypeLiteral<SnapshotSerializer<User>>() {
         }).to(SpongeSnapshotSerializer.class);
-        bind(new TypeLiteral<CommonDataKeyService<Key<?>>>() {
+        bind(new TypeLiteral<DataKeyService<Key<?>>>() {
         }).to(CommonSpongeDataKeyService.class);
-        bind(new TypeLiteral<CommonSerializationTaskService<User, Text, CommandSource>>() {
-        }).to(SpongeSerializationTaskService.class);
+        bind(SerializationTaskService.class).to(SpongeSerializationTaskService.class);
 
-        bind(new TypeLiteral<UserSerializerComponent<ObjectId, User, Datastore>>() {
+        bind(new TypeLiteral<CommonUserSerializerComponent<ObjectId, User, Player, Key<?>, Datastore>>() {
         }).to(new TypeLiteral<SpongeUserSerializerComponent<ObjectId, Datastore>>() {
         });
 
-        bind(new TypeLiteral<UserSerializerComponent<EntityId, User, PersistentEntityStore>>() {
+        bind(new TypeLiteral<CommonUserSerializerComponent<EntityId, User, Player, Key<?>, PersistentEntityStore>>() {
         }).to(new TypeLiteral<SpongeUserSerializerComponent<EntityId, PersistentEntityStore>>() {
         });
 
-        bind(new TypeLiteral<SnapshotOptimizationService<ObjectId, User, CommandSource, Datastore>>() {
+        bind(new TypeLiteral<CommonSnapshotOptimizationService<ObjectId, User, Player, CommandSource, Key<?>, Datastore>>() {
         }).to(new TypeLiteral<SpongeSnapshotOptimizationService<ObjectId, Datastore>>() {
         });
 
-        bind(new TypeLiteral<SnapshotOptimizationService<EntityId, User, CommandSource, PersistentEntityStore>>() {
+        bind(new TypeLiteral<CommonSnapshotOptimizationService<EntityId, User, Player, CommandSource, Key<?>, PersistentEntityStore>>() {
         }).to(new TypeLiteral<SpongeSnapshotOptimizationService<EntityId, PersistentEntityStore>>() {
         });
+
+        bind(new TypeLiteral<CommandNode<CommandSource>>() {
+        }).to(SpongeSyncCommandNode.class);
     }
 }

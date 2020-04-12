@@ -62,8 +62,7 @@ public class SpongeUserSerializerComponent<
     @Override
     public CompletableFuture<Optional<Snapshot<TKey>>> deserialize(final User user) {
         snapshotOptimizationManager.getPrimaryComponent().addLockedPlayer(user.getUniqueId());
-        if (registry.getOrDefault(DataSyncKeys.SERIALIZE_CLEAR_ON_JOIN)
-            && registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS).contains("datasync:inventory")) {
+        if (registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS).contains("datasync:inventory")) {
             user.getInventory().clear();
         }
         CompletableFuture<Void> waitForSnapshot;
@@ -87,7 +86,7 @@ public class SpongeUserSerializerComponent<
         }
         return waitForSnapshot.thenApplyAsync(v -> memberRepository.getLatestSnapshotForUser(user.getUniqueId()).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
-                System.err.println("[MSDataSync] Could not find snapshot for " + user.getName() + "! Check your DB configuration!");
+                System.err.println("[DataSync] Could not find snapshot for " + user.getName() + "! Check your DB configuration!");
                 return Optional.<Snapshot<TKey>>empty();
             }
             if (deserialize(optionalSnapshot.get(), user)) {

@@ -51,7 +51,7 @@ public abstract class CommonSnapshotRepository<
     }
 
     @Override
-    public boolean setSnapshotValue(Snapshot<TKey> snapshot, TDataKey key, Optional<?> optionalValue) {
+    public boolean setSnapshotValue(Snapshot<?> snapshot, TDataKey key, Optional<?> optionalValue) {
         if (!optionalValue.isPresent()) {
             return false;
         }
@@ -64,7 +64,7 @@ public abstract class CommonSnapshotRepository<
     }
 
     @Override
-    public Optional<?> getSnapshotValue(Snapshot<TKey> snapshot, TDataKey key) {
+    public Optional<?> getSnapshotValue(Snapshot<?> snapshot, TDataKey key) {
         Optional<String> optionalName = dataKeyService.getName(key);
         return optionalName.map(s -> snapshot.getKeys().get(s));
     }

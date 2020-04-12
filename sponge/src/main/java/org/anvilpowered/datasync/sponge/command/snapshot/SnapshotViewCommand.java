@@ -22,14 +22,12 @@ import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.datasync.api.member.MemberManager;
-import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.InventorySerializer;
 import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.anvilpowered.datasync.common.data.key.DataSyncKeys;
 import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -56,16 +54,16 @@ import java.util.function.Consumer;
 public class SnapshotViewCommand implements CommandExecutor {
 
     @Inject
-    private MemberManager<Member<?>, Snapshot<?>, User, Text> memberManager;
+    private MemberManager<Text> memberManager;
 
     @Inject
-    private SnapshotManager<Snapshot<?>, Key<?>> snapshotRepository;
+    private SnapshotManager<Key<?>> snapshotRepository;
 
     @Inject
-    private SnapshotSerializer<Snapshot<?>, User> snapshotSerializer;
+    private SnapshotSerializer<User> snapshotSerializer;
 
     @Inject
-    private InventorySerializer<Snapshot<?>, User, Inventory, ItemStackSnapshot> inventorySerializer;
+    private InventorySerializer<User, Inventory, ItemStackSnapshot> inventorySerializer;
 
     @Inject
     private TimeFormatService timeFormatService;
@@ -99,7 +97,7 @@ public class SnapshotViewCommand implements CommandExecutor {
             }
             User targetUser = optionalUser.get();
 
-            Consumer<Optional<Snapshot<?>>> afterFound = optionalSnapshot -> {
+            Consumer<Optional<? extends Snapshot<?>>> afterFound = optionalSnapshot -> {
                 if (!optionalSnapshot.isPresent()) {
                     source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "Could not find snapshot for " + targetUser.getName()));
                     return;
