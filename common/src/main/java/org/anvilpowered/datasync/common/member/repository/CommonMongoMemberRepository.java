@@ -20,7 +20,7 @@ package org.anvilpowered.datasync.common.member.repository;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.base.repository.BaseMongoRepository;
+import org.anvilpowered.anvil.base.datastore.BaseMongoRepository;
 import org.anvilpowered.datasync.api.member.repository.MongoMemberRepository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;

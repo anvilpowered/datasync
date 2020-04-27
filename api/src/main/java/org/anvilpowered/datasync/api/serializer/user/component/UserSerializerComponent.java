@@ -18,7 +18,7 @@
 
 package org.anvilpowered.datasync.api.serializer.user.component;
 
-import org.anvilpowered.anvil.api.component.Component;
+import org.anvilpowered.anvil.api.datastore.Component;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.Serializer;
 

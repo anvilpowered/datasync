@@ -18,7 +18,7 @@
 
 package org.anvilpowered.datasync.api.snapshotoptimization.component;
 
-import org.anvilpowered.anvil.api.component.Component;
+import org.anvilpowered.anvil.api.datastore.Component;
 
 import java.util.Collection;
 import java.util.UUID;

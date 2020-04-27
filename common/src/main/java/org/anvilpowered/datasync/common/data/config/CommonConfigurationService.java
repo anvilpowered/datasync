@@ -32,6 +32,7 @@ public class CommonConfigurationService extends BaseConfigurationService {
     @Inject
     public CommonConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
         super(configLoader);
+        setDefault(Keys.DATA_DIRECTORY, "datasync");
         setDefault(Keys.MONGODB_DBNAME, "datasync");
         withDefault();
         setName(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS, "serialize.enabledSerializers");

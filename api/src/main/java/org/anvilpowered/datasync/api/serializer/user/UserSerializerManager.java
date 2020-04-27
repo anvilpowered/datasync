@@ -18,7 +18,7 @@
 
 package org.anvilpowered.datasync.api.serializer.user;
 
-import org.anvilpowered.anvil.api.manager.Manager;
+import org.anvilpowered.anvil.api.datastore.Manager;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 
 import java.util.Collection;

@@ -22,7 +22,7 @@ import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.anvil.base.component.BaseComponent;
+import org.anvilpowered.anvil.base.datastore.BaseComponent;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
@@ -232,7 +232,7 @@ public abstract class CommonSnapshotOptimizationService<
                         incrementDeleted();
                     } else {
                         String[] dateOrId = {id.toString()};
-                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = timeFormatService.format(date)));
+                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = timeFormatService.format(date).get()));
                         sendError(source, "There was an error removing snapshot " + dateOrId[0] + " from " + userService.getUserName(user));
                     }
                 }).join();

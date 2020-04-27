@@ -23,7 +23,6 @@ import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.datasync.api.model.member.Member;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.common.snapshotoptimization.component.CommonSnapshotOptimizationService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;

@@ -18,7 +18,7 @@
 
 package org.anvilpowered.datasync.api.member.repository;
 
-import org.anvilpowered.anvil.api.repository.Repository;
+import org.anvilpowered.anvil.api.datastore.Repository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 

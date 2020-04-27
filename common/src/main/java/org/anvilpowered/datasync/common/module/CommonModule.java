@@ -20,13 +20,12 @@ package org.anvilpowered.datasync.common.module;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
+import com.google.inject.name.Names;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.anvilpowered.anvil.api.Anvil;
 import org.anvilpowered.anvil.api.data.config.ConfigurationService;
 import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.anvil.api.manager.annotation.MongoDBComponent;
-import org.anvilpowered.anvil.api.manager.annotation.XodusComponent;
 import org.anvilpowered.anvil.api.misc.BindingExtensions;
 import org.anvilpowered.anvil.api.plugin.BasicPluginInfo;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
@@ -99,7 +98,7 @@ public class CommonModule<
             },
             new TypeToken<CommonUserSerializerComponent<ObjectId, TUser, TPlayer, TDataKey, Datastore>>(getClass()) {
             },
-            MongoDBComponent.class
+            Names.named("mongodb")
         );
 
         be.bind(
@@ -111,7 +110,7 @@ public class CommonModule<
             },
             new TypeToken<CommonUserSerializerComponent<EntityId, TUser, TPlayer, TDataKey, PersistentEntityStore>>(getClass()) {
             },
-            XodusComponent.class
+            Names.named("xodus")
         );
 
         be.bind(
@@ -130,7 +129,7 @@ public class CommonModule<
             },
             new TypeToken<CommonSnapshotOptimizationService<ObjectId, TUser, TPlayer, TCommandSource, TDataKey, Datastore>>(getClass()) {
             },
-            MongoDBComponent.class
+            Names.named("mongodb")
         );
 
         be.bind(
@@ -142,7 +141,7 @@ public class CommonModule<
             },
             new TypeToken<CommonSnapshotOptimizationService<EntityId, TUser, TPlayer, TCommandSource, TDataKey, PersistentEntityStore>>(getClass()) {
             },
-            XodusComponent.class
+            Names.named("xodus")
         );
 
         be.bind(
@@ -161,7 +160,7 @@ public class CommonModule<
             },
             new TypeToken<CommonMongoMemberRepository<TDataKey>>(getClass()) {
             },
-            MongoDBComponent.class
+            Names.named("mongodb")
         );
 
         be.bind(
@@ -173,7 +172,7 @@ public class CommonModule<
             },
             new TypeToken<CommonXodusMemberRepository<TDataKey>>(getClass()) {
             },
-            XodusComponent.class
+            Names.named("xodus")
         );
 
         be.bind(
@@ -192,7 +191,7 @@ public class CommonModule<
             },
             new TypeToken<CommonMongoSnapshotRepository<TDataKey>>(getClass()) {
             },
-            MongoDBComponent.class
+            Names.named("mongodb")
         );
 
         be.bind(
@@ -204,7 +203,7 @@ public class CommonModule<
             },
             new TypeToken<CommonXodusSnapshotRepository<TDataKey>>(getClass()) {
             },
-            XodusComponent.class
+            Names.named("xodus")
         );
 
         be.bind(
@@ -214,6 +213,7 @@ public class CommonModule<
             }
         );
 
-        be.withContexts(MongoDBComponent.class, XodusComponent.class);
+        be.withMongoDB();
+        be.withXodus();
     }
 }

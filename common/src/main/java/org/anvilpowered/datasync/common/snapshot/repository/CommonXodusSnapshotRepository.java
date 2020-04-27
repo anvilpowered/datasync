@@ -19,13 +19,12 @@
 package org.anvilpowered.datasync.common.snapshot.repository;
 
 import com.google.inject.Inject;
-import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.model.Mappable;
-import org.anvilpowered.anvil.base.repository.BaseXodusRepository;
+import org.anvilpowered.anvil.base.datastore.BaseXodusRepository;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 

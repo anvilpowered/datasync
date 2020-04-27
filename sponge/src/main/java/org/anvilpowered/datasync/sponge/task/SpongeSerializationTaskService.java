@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.datasync.sponge.tasks;
+package org.anvilpowered.datasync.sponge.task;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

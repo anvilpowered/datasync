@@ -52,6 +52,9 @@ public class SpongeSyncCommandNode
     private SyncReloadCommand syncReloadCommand;
 
     @Inject
+    private SyncTestCommand syncTestCommand;
+
+    @Inject
     private SyncUploadCommand syncUploadCommand;
 
     @Inject
@@ -85,6 +88,12 @@ public class SpongeSyncCommandNode
             .description(Text.of(RELOAD_DESCRIPTION))
             .permission(registry.getOrDefault(DataSyncKeys.RELOAD_COMMAND_PERMISSION))
             .executor(syncReloadCommand)
+            .build());
+
+        subCommands.put(TEST_ALIAS, CommandSpec.builder()
+            .description(Text.of(TEST_DESCRIPTION))
+            .permission(registry.getOrDefault(DataSyncKeys.TEST_COMMAND_PERMISSION))
+            .executor(syncTestCommand)
             .build());
 
         subCommands.put(UPLOAD_ALIAS, CommandSpec.builder()

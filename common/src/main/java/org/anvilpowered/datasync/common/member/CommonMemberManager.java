@@ -24,7 +24,7 @@ import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.anvil.base.manager.BaseManager;
+import org.anvilpowered.anvil.base.datastore.BaseManager;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
@@ -67,7 +67,7 @@ public class CommonMemberManager<
     @Override
     public CompletableFuture<TString> deleteSnapshot(UUID userUUID, Optional<String> optionalString) {
         return getPrimaryComponent().getSnapshotForUser(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
-            String userName = userService.getUserName(userUUID).orElse("null");
+            String userName = userService.getUserName(userUUID).join().orElse("null");
             if (!optionalSnapshot.isPresent()) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
@@ -76,7 +76,7 @@ public class CommonMemberManager<
             }
 
             Instant createdUtc = optionalSnapshot.get().getCreatedUtc();
-            String formattedInstant = timeFormatService.format(createdUtc);
+            String formattedInstant = timeFormatService.format(createdUtc).get();
 
             return getPrimaryComponent().deleteSnapshotForUser(userUUID, createdUtc).thenApplyAsync(success -> {
                 if (success) {
@@ -84,7 +84,7 @@ public class CommonMemberManager<
                         .append(pluginInfo.getPrefix())
                         .yellow().append("Successfully deleted snapshot ")
                         .gold().append(formattedInstant)
-                        .yellow().append(" for ", userService.getUserName(userUUID).orElse("null"))
+                        .yellow().append(" for ", userService.getUserName(userUUID).join().orElse("null"))
                         .build();
                 } else {
                     return textService.builder()
@@ -120,13 +120,13 @@ public class CommonMemberManager<
 
     @Override
     public TString info(UUID userUUID, Snapshot<?> snapshot) {
-        String userName = userService.getUserName(userUUID).orElse("null");
+        String userName = userService.getUserName(userUUID).join().orElse("null");
 
         Instant created = snapshot.getCreatedUtc();
         Instant updated = snapshot.getUpdatedUtc();
 
-        String createdString = timeFormatService.format(created);
-        String updatedString = timeFormatService.format(updated);
+        String createdString = timeFormatService.format(created).get();
+        String updatedString = timeFormatService.format(updated).get();
 
         String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
         String diffUpdatedString = timeFormatService.format(Duration.between(updated, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
@@ -194,7 +194,7 @@ public class CommonMemberManager<
     @Override
     public CompletableFuture<TString> info(UUID userUUID, Optional<String> optionalString) {
         return getPrimaryComponent().getSnapshotForUser(userUUID, optionalString).thenApplyAsync(optionalSnapshot -> {
-            String userName = userService.getUserName(userUUID).orElse("null");
+            String userName = userService.getUserName(userUUID).join().orElse("null");
             if (!optionalSnapshot.isPresent()) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
@@ -209,9 +209,9 @@ public class CommonMemberManager<
     public CompletableFuture<Iterable<TString>> list(UUID userUUID) {
         return getPrimaryComponent().getSnapshotCreationTimesForUser(userUUID).thenApplyAsync(createdUtcs -> {
             Collection<TString> lines = new ArrayList<>();
-            String userName = userService.getUserName(userUUID).orElse("null");
+            String userName = userService.getUserName(userUUID).join().orElse("null");
             createdUtcs.forEach(created -> {
-                String createdString = timeFormatService.format(created);
+                String createdString = timeFormatService.format(created).get();
                 String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
                 lines.add(textService.builder()
                     .append(

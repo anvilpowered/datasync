@@ -18,7 +18,7 @@
 
 package org.anvilpowered.datasync.common.model.serializeditemstack;
 
-import org.anvilpowered.anvil.api.datastore.annotation.XodusEmbedded;
+import org.anvilpowered.anvil.api.datastore.XodusEmbedded;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 
 import java.util.HashMap;

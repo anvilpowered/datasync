@@ -27,6 +27,5 @@ public class DataSyncRegistry extends BaseExtendedRegistry {
 
     public DataSyncRegistry() {
         setDefault(Keys.BASE_SCAN_PACKAGE, "org.anvilpowered.datasync.common.model");
-        setDefault(Keys.DATA_DIRECTORY, "datasync");
     }
 }

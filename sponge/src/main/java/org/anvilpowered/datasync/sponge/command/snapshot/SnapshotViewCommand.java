@@ -103,7 +103,7 @@ public class SnapshotViewCommand implements CommandExecutor {
                     return;
                 }
                 Snapshot<?> snapshot = optionalSnapshot.get();
-                source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Editing snapshot ", TextColors.GOLD, timeFormatService.format(optionalSnapshot.get().getCreatedUtc())));
+                source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Editing snapshot ", TextColors.GOLD, timeFormatService.format(optionalSnapshot.get().getCreatedUtc()).get()));
                 final boolean[] closeData = {false};
                 final boolean permissionToEdit = player.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_EDIT_PERMISSION.getFallbackValue());
                 Inventory inventory = Inventory.builder().of(inventoryArchetype).listener(InteractInventoryEvent.Close.class, e -> {
@@ -112,7 +112,7 @@ public class SnapshotViewCommand implements CommandExecutor {
                             Text.of(
                                 pluginInfo.getPrefix(), TextColors.YELLOW,
                                 "Closed snapshot ", TextColors.GOLD,
-                                timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
+                                timeFormatService.format(optionalSnapshot.get().getCreatedUtc()).get(),
                                 TextColors.YELLOW, " without saving"
                             )
                         );
@@ -126,7 +126,7 @@ public class SnapshotViewCommand implements CommandExecutor {
                                 Text.of(
                                     pluginInfo.getPrefix(), TextColors.YELLOW,
                                     "Successfully edited snapshot ", TextColors.GOLD,
-                                    timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
+                                    timeFormatService.format(optionalSnapshot.get().getCreatedUtc()).get(),
                                     TextColors.YELLOW, " for ", targetUser.getName()
                                 )
                             );
@@ -152,7 +152,7 @@ public class SnapshotViewCommand implements CommandExecutor {
 
                 }).build(pluginContainer);
                 inventorySerializer.deserializeInventory(snapshot, inventory);
-                player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, timeFormatService.format(snapshot.getCreatedUtc())));
+                player.openInventory(inventory, Text.of(TextColors.DARK_AQUA, timeFormatService.format(snapshot.getCreatedUtc()).get()));
             };
 
             memberManager.getPrimaryComponent().getSnapshotForUser(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))

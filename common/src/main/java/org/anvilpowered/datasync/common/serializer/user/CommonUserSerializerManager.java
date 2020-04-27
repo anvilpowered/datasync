@@ -24,9 +24,8 @@ import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.anvil.base.manager.BaseManager;
+import org.anvilpowered.anvil.base.datastore.BaseManager;
 import org.anvilpowered.datasync.api.member.MemberManager;
-import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
@@ -64,6 +63,11 @@ public class CommonUserSerializerManager<
     @Inject
     public CommonUserSerializerManager(Registry registry) {
         super(registry);
+    }
+
+    private String getCreatedString(Snapshot<?> snapshot) {
+        return timeFormatService.format(snapshot.getCreatedUtc()).get()
+           + " (" + snapshot.getName() + ")";
     }
 
     @Override
@@ -112,10 +116,7 @@ public class CommonUserSerializerManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .yellow().append("Successfully uploaded snapshot ")
-                    .gold().append(
-                        timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
-                        " (", name, ")"
-                    )
+                    .gold().append(getCreatedString(optionalSnapshot.get()))
                     .yellow().append(" for ", userService.getUserName(user), "!")
                     .build();
             }
@@ -141,10 +142,7 @@ public class CommonUserSerializerManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .yellow().append("Successfully downloaded snapshot ")
-                    .gold().append(
-                        timeFormatService.format(optionalSnapshot.get().getCreatedUtc()),
-                        " (", optionalSnapshot.get().getName(), ")"
-                    )
+                    .gold().append(getCreatedString(optionalSnapshot.get()))
                     .yellow().append(" for ", userService.getUserName(user), " on ", event, "!")
                     .build();
             }
@@ -182,11 +180,12 @@ public class CommonUserSerializerManager<
                         .red().append("Could not find snapshot for ", userName)
                         .build();
                 }
-                String createdString = timeFormatService.format(optionalSnapshot.get().getCreatedUtc());
                 getPrimaryComponent().deserialize(optionalSnapshot.get(), optionalUser.get());
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
-                    .yellow().append("Restored snapshot ", createdString, " for ", userName)
+                    .yellow().append("Restored snapshot ")
+                    .gold().append(getCreatedString(optionalSnapshot.get()))
+                    .yellow().append(" for ", userName)
                     .build();
             });
     }

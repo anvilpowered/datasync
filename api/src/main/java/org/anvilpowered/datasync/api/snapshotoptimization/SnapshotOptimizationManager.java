@@ -18,7 +18,7 @@
 
 package org.anvilpowered.datasync.api.snapshotoptimization;
 
-import org.anvilpowered.anvil.api.manager.Manager;
+import org.anvilpowered.anvil.api.datastore.Manager;
 import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 
 public interface SnapshotOptimizationManager<

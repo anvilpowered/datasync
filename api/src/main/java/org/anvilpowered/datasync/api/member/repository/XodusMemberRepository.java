@@ -22,8 +22,7 @@ import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.entitystore.StoreTransaction;
-import org.anvilpowered.anvil.api.model.Mappable;
-import org.anvilpowered.anvil.api.repository.XodusRepository;
+import org.anvilpowered.anvil.api.datastore.XodusRepository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 

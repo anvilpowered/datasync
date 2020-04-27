@@ -21,12 +21,14 @@ public abstract class CommonSyncCommandNode<TCommandExecutor, TCommandSource>
 
     protected static final List<String> LOCK_ALIAS = Arrays.asList("lock", "l");
     protected static final List<String> RELOAD_ALIAS = Collections.singletonList("reload");
+    protected static final List<String> TEST_ALIAS = Collections.singletonList("test");
     protected static final List<String> UPLOAD_ALIAS = Arrays.asList("upload", "up");
     protected static final List<String> HELP_ALIAS = Collections.singletonList("help");
     protected static final List<String> VERSION_ALIAS = Collections.singletonList("version");
 
     protected static final String LOCK_DESCRIPTION = "Lock / Unlock sensitive commands.";
     protected static final String RELOAD_DESCRIPTION = "Reloads DataSync.";
+    protected static final String TEST_DESCRIPTION = "Uploads and then downloads a snapshot.";
     protected static final String UPLOAD_DESCRIPTION = "Uploads all players on server.";
     protected static final String HELP_DESCRIPTION = "Shows this help page.";
     protected static final String VERSION_DESCRIPTION = "Shows plugin version.";
@@ -63,6 +65,10 @@ public abstract class CommonSyncCommandNode<TCommandExecutor, TCommandSource>
         descriptions = new HashMap<>();
         permissions = new HashMap<>();
         usages = new HashMap<>();
+        descriptions.put(LOCK_ALIAS, c -> LOCK_DESCRIPTION);
+        descriptions.put(RELOAD_ALIAS, c -> RELOAD_DESCRIPTION);
+        descriptions.put(TEST_ALIAS, c -> TEST_DESCRIPTION);
+        descriptions.put(UPLOAD_ALIAS, c -> UPLOAD_DESCRIPTION);
         descriptions.put(HELP_ALIAS, c -> HELP_DESCRIPTION);
         descriptions.put(VERSION_ALIAS, c -> VERSION_DESCRIPTION);
         usages.put(RELOAD_ALIAS, c -> RELOAD_USAGE);

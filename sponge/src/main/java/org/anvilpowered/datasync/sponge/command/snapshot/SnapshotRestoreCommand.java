@@ -20,10 +20,8 @@ package org.anvilpowered.datasync.sponge.command.snapshot;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.sponge.command.SyncLockCommand;
-import org.anvilpowered.datasync.sponge.plugin.DataSyncSponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;

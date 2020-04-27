@@ -45,7 +45,7 @@ import org.anvilpowered.datasync.sponge.serializer.SpongeInventorySerializer;
 import org.anvilpowered.datasync.sponge.serializer.SpongeSnapshotSerializer;
 import org.anvilpowered.datasync.sponge.serializer.user.component.SpongeUserSerializerComponent;
 import org.anvilpowered.datasync.sponge.snapshotoptimization.component.SpongeSnapshotOptimizationService;
-import org.anvilpowered.datasync.sponge.tasks.SpongeSerializationTaskService;
+import org.anvilpowered.datasync.sponge.task.SpongeSerializationTaskService;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.spongepowered.api.command.CommandSource;

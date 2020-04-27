@@ -1,7 +1,6 @@
 package org.anvilpowered.datasync.common.command.snapshot;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.command.CommandNode;
 import org.anvilpowered.anvil.api.command.CommandService;
 import org.anvilpowered.anvil.api.data.registry.Registry;

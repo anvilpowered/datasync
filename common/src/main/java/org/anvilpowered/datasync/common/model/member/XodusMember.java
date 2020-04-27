@@ -21,7 +21,7 @@ package org.anvilpowered.datasync.common.model.member;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
-import org.anvilpowered.anvil.api.datastore.annotation.XodusEntity;
+import org.anvilpowered.anvil.api.datastore.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
 

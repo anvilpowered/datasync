@@ -23,16 +23,10 @@ import com.google.inject.Singleton;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.anvilpowered.datasync.common.data.config.CommonConfigurationService;
-import org.anvilpowered.anvil.api.Anvil;
-import org.anvilpowered.anvil.base.component.BaseComponent;
 import org.spongepowered.api.config.DefaultConfig;
 
 @Singleton
 public class SpongeConfigurationService extends CommonConfigurationService {
-
-    Anvil a;
-
-    BaseComponent b;
 
     @Inject
     public SpongeConfigurationService(

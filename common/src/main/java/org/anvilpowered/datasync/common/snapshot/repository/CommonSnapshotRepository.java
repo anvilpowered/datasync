@@ -20,7 +20,7 @@ package org.anvilpowered.datasync.common.snapshot.repository;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.base.repository.BaseRepository;
+import org.anvilpowered.anvil.base.datastore.BaseRepository;
 import org.anvilpowered.datasync.api.keys.DataKeyService;
 import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;

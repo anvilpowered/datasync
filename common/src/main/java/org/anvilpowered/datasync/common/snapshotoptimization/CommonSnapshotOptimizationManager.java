@@ -22,13 +22,12 @@ import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.anvil.base.manager.BaseManager;
+import org.anvilpowered.anvil.base.datastore.BaseManager;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import org.anvilpowered.datasync.api.snapshotoptimization.component.SnapshotOptimizationService;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.concurrent.CompletableFuture;
 
 public class CommonSnapshotOptimizationManager<
     TUser,

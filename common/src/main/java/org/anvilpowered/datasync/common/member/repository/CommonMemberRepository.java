@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.model.ObjectWithId;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
-import org.anvilpowered.anvil.base.repository.BaseRepository;
+import org.anvilpowered.anvil.base.datastore.BaseRepository;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;

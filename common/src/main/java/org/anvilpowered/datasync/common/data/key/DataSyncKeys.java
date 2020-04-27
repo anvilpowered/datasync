@@ -56,6 +56,8 @@ public final class DataSyncKeys {
     };
     public static final Key<String> RELOAD_COMMAND_PERMISSION = new Key<String>("RELOAD_COMMAND_PERMISSION", "datasync.reload") {
     };
+    public static final Key<String> TEST_COMMAND_PERMISSION = new Key<String>("TEST_COMMAND_PERMISSION", "datasync.test") {
+    };
     public static final Key<String> SNAPSHOT_BASE_PERMISSION = new Key<String>("SNAPSHOT_BASE_PERMISSION", "datasync.snapshot.base") {
     };
     public static final Key<String> SNAPSHOT_CREATE_PERMISSION = new Key<String>("SNAPSHOT_CREATE_PERMISSION", "datasync.snapshot.create") {
@@ -84,6 +86,7 @@ public final class DataSyncKeys {
         Keys.registerKey(SNAPSHOT_UPLOAD_INTERVAL_MINUTES);
         Keys.registerKey(LOCK_COMMAND_PERMISSION);
         Keys.registerKey(RELOAD_COMMAND_PERMISSION);
+        Keys.registerKey(TEST_COMMAND_PERMISSION);
         Keys.registerKey(SNAPSHOT_BASE_PERMISSION);
         Keys.registerKey(SNAPSHOT_CREATE_PERMISSION);
         Keys.registerKey(SNAPSHOT_DELETE_PERMISSION);
