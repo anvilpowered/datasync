@@ -25,7 +25,6 @@ import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.datastore.BaseXodusRepository;
-import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
 import java.io.IOException;
@@ -42,7 +41,7 @@ public class CommonXodusSnapshotRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Boolean> setItemStacks(EntityId id, List<SerializedItemStack> itemStacks) {
+    public CompletableFuture<Boolean> setItemStacks(EntityId id, List<String> itemStacks) {
         return update(asQuery(id), entity -> {
             try {
                 entity.setBlob("itemStacks", new ByteArraySizedInputStream(Mappable.serializeUnsafe(itemStacks)));

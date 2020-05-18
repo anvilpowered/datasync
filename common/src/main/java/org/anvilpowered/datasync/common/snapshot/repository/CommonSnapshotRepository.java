@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseRepository;
 import org.anvilpowered.datasync.api.keys.DataKeyService;
-import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 
@@ -70,7 +69,7 @@ public abstract class CommonSnapshotRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> parseAndSetItemStacks(Object id, List<SerializedItemStack> itemStacks) {
+    public CompletableFuture<Boolean> parseAndSetItemStacks(Object id, List<String> itemStacks) {
         return parse(id).map(i -> setItemStacks(i, itemStacks)).orElse(CompletableFuture.completedFuture(false));
     }
 }

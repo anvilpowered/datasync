@@ -24,7 +24,6 @@ import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.api.datastore.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
-import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
 
     private Map<String, Object> keys;
 
-    private List<SerializedItemStack> itemStacks;
+    private List<String> itemStacks;
 
     @Override
     public String getName() {
@@ -108,7 +107,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
     }
 
     @Override
-    public List<SerializedItemStack> getItemStacks() {
+    public List<String> getItemStacks() {
         if (itemStacks == null) {
             itemStacks = new ArrayList<>();
         }
@@ -116,7 +115,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
     }
 
     @Override
-    public void setItemStacks(List<SerializedItemStack> itemStacks) {
+    public void setItemStacks(List<String> itemStacks) {
         this.itemStacks = Objects.requireNonNull(itemStacks, "itemStacks cannot be null");
     }
 
@@ -163,9 +162,13 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
         if (name instanceof String) {
             this.server = (String) server;
         }
-        Mappable.<List<String>>deserialize(object.getBlob("modulesUsed")).ifPresent(t -> modulesUsed = t);
-        Mappable.<List<String>>deserialize(object.getBlob("modulesFailed")).ifPresent(t -> modulesFailed = t);
-        Mappable.<Map<String, Object>>deserialize(object.getBlob("keys")).ifPresent(t -> keys = t);
-        Mappable.<List<SerializedItemStack>>deserialize(object.getBlob("itemStacks")).ifPresent(t -> itemStacks = t);
+        Mappable.<List<String>>deserialize(object.getBlob("modulesUsed"))
+            .ifPresent(t -> modulesUsed = t);
+        Mappable.<List<String>>deserialize(object.getBlob("modulesFailed"))
+            .ifPresent(t -> modulesFailed = t);
+        Mappable.<Map<String, Object>>deserialize(object.getBlob("keys"))
+            .ifPresent(t -> keys = t);
+        Mappable.<List<String>>deserialize(object.getBlob("itemStacks"))
+            .ifPresent(t -> itemStacks = t);
     }
 }

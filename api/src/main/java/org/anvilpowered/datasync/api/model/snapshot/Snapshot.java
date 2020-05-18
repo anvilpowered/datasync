@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.api.model.snapshot;
 
 import org.anvilpowered.anvil.api.model.ObjectWithId;
-import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +40,6 @@ public interface Snapshot<TKey> extends ObjectWithId<TKey> {
     Map<String, Object> getKeys();
     void setKeys(Map<String, Object> keys);
 
-    List<SerializedItemStack> getItemStacks();
-    void setItemStacks(List<SerializedItemStack> itemStacks);
+    List<String> getItemStacks();
+    void setItemStacks(List<String> itemStacks);
 }

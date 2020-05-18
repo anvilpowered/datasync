@@ -18,15 +18,14 @@
 
 package org.anvilpowered.datasync.sponge.serializer;
 
-import com.google.common.collect.ImmutableList;
-import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
+import com.google.inject.Inject;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
-import org.spongepowered.api.data.DataContainer;
-import org.spongepowered.api.data.DataQuery;
-import org.spongepowered.api.data.DataView;
+import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.persistence.DataFormats;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -37,54 +36,42 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class SpongeInventorySerializer
     extends CommonInventorySerializer<Key<?>, User, Inventory, ItemStackSnapshot> {
 
-    private static final char SEPARATOR = '_';
-    private static final char PERIOD_REPLACEMENT = '~';
-    private static final char PERIOD = '.';
+
     private static final int INVENTORY_SLOTS = 41;
 
+    @Inject
+    private Logger logger;
+
     @Override
-    @SuppressWarnings("unchecked")
     public boolean serializeInventory(Snapshot<?> snapshot, Inventory inventory, int maxSlots) {
-        try {
-            boolean success = true;
-            List<SerializedItemStack> itemStacks = new ArrayList<>();
-            Iterator<Inventory> iterator = inventory.slots().iterator();
+        boolean success = true;
+        List<String> itemStacks = new ArrayList<>();
+        Iterator<Inventory> iterator = inventory.slots().iterator();
 
-            Class<SerializedItemStack> clazz = (Class<SerializedItemStack>) snapshotManager.getPrimaryComponent()
-                .getDataStoreContext().getEntityClassUnsafe("serializeditemstack");
-
-            for (int i = 0; i < maxSlots; i++) {
-                if (!iterator.hasNext()) break;
-                Inventory slot = iterator.next();
-                SerializedItemStack serializedItemStack = clazz.newInstance();
-                ItemStack stack = slot.peek().orElse(ItemStack.empty());
-                DataContainer dc = stack.toContainer();
-                try {
-                    serializedItemStack.setProperties(serialize(dc.getValues(false)));
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                    System.err.println("[MSDataSync] There was an error while serializing slot " + i + " with item " + stack.getType().getId() + "! Will not add this item to snapshot!");
-                    success = false;
-                    continue;
-                }
-                itemStacks.add(serializedItemStack);
+        for (int i = 0; i < maxSlots; i++) {
+            if (!iterator.hasNext()) break;
+            Inventory slot = iterator.next();
+            ItemStack stack = slot.peek().orElse(ItemStack.empty());
+            String json = "error";
+            try {
+                json = DataFormats.JSON.write(stack.toContainer());
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("There was an error while serializing slot " + i +
+                    " with item " + stack.getType().getId());
+                success = false;
             }
-            snapshot.setItemStacks(itemStacks);
-            return success;
-        } catch (RuntimeException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
+            itemStacks.add(json);
         }
+        snapshot.setItemStacks(itemStacks);
+        return success;
     }
 
     @Override
@@ -99,33 +86,34 @@ public class SpongeInventorySerializer
 
     @Override
     public boolean deserializeInventory(Snapshot<?> snapshot, Inventory inventory, ItemStackSnapshot fallbackItemStackSnapshot) {
-        try {
-            inventory.clear();
-            Iterator<SerializedItemStack> stacks = snapshot.getItemStacks().iterator();
-            Iterator<Inventory> slots = inventory.slots().iterator();
-            while (slots.hasNext()) {
-                Inventory slot = slots.next();
-                if (stacks.hasNext()) {
-                    SerializedItemStack stack = stacks.next();
-                    try {
-                        DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                        deserialize(stack.getProperties()).forEach(dc::set);
-                        ItemStack is = ItemStack.builder().fromContainer(dc).build();
-                        slot.set(is);
-                    } catch (RuntimeException e) {
-                        e.printStackTrace();
-                    }
-                } else if (!(inventory instanceof PlayerInventory)) {
-                    if (slots.hasNext()) {
-                        slot.set(fallbackItemStackSnapshot.createStack());
+        inventory.clear();
+        Iterator<String> stacks = snapshot.getItemStacks().iterator();
+        Iterator<Inventory> slots = inventory.slots().iterator();
+        while (slots.hasNext()) {
+            Inventory slot = slots.next();
+            if (stacks.hasNext()) {
+                String stack = stacks.next();
+                if ("error".equals(stack)) {
+                    logger.error("ItemStack error detected from DB");
+                }
+                try {
+                    Optional<ItemStack> itemStack = Sponge.getDataManager()
+                        .deserialize(ItemStack.class, DataFormats.JSON.read(stack));
+                    if (itemStack.isPresent()) {
+                        slot.set(itemStack.get());
                     } else {
-                        slot.set(exitWithoutSavingItemStackSnapshot.createStack());
+                        logger.error("Failed to parse ItemStack from DB");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (!(inventory instanceof PlayerInventory)) {
+                if (slots.hasNext()) {
+                    slot.set(fallbackItemStackSnapshot.createStack());
+                } else {
+                    slot.set(exitWithoutSavingItemStackSnapshot.createStack());
                 }
             }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return false;
         }
         return true;
     }
@@ -138,85 +126,6 @@ public class SpongeInventorySerializer
     @Override
     public boolean deserialize(Snapshot<?> snapshot, User user) {
         return deserializeInventory(snapshot, user.getInventory());
-    }
-
-    private static Map<String, Object> serialize(Map<DataQuery, Object> values) {
-        Map<String, Object> result = new HashMap<>();
-        values.forEach((dq, o) -> {
-//            String s = dq.asString(SEPARATOR).replace(PERIOD, PERIOD_REPLACEMENT);
-            String s = dq.asString(SEPARATOR);
-            if (o instanceof Map) {
-                Object m = serialize((Map<DataQuery, Object>) o);
-                result.put(s, m);
-            } else if (o instanceof List) {
-                List<?> list = (List<?>) o;
-                List<Object> r1 = new ArrayList<>();
-                list.forEach(li -> {
-                    if (li instanceof DataContainer) {
-                        r1.add(serialize(((DataContainer) li).getValues(false)));
-                    } else if (li instanceof String) {
-//                        r1.add(((String) li).replace(PERIOD, PERIOD_REPLACEMENT));
-                        r1.add(li);
-                    }
-                });
-                result.put(s, r1);
-            } else {
-                result.put(s, o);
-            }
-        });
-        return result;
-    }
-
-    private static Map<DataQuery, Object> deserialize(Map<String, Object> values) {
-        Map<DataQuery, Object> result = new HashMap<>();
-        for (Map.Entry<String, Object> e : values.entrySet()) {
-            String s = e.getKey();
-            Object o = e.getValue();
-            if (o == null) {
-                continue;
-            }
-//            s = s.replace(PERIOD_REPLACEMENT, PERIOD);
-            DataQuery dq = DataQuery.of(SEPARATOR, s);
-            if (o instanceof Map) {
-                Map<String, Object> m = (Map<String, Object>) o;
-                Map<DataQuery, Object> r1 = new HashMap<>();
-                for (Map.Entry<String, Object> mapEntry : m.entrySet()) {
-                    String s1 = mapEntry.getKey();
-                    Object m1 = mapEntry.getValue();
-                    if (m1 == null) {
-                        continue;
-                    } else if (m1 instanceof List) {
-                        m1 = ((List<?>) m1).stream().filter(Objects::nonNull).collect(Collectors.toList());
-                    }
-                    Object value = m1;
-//                    s1 = s1.replace(PERIOD_REPLACEMENT, PERIOD);
-                    if (m1 instanceof Map) {
-                        try {
-                            Map<DataQuery, Object> v = deserialize((Map<String, Object>) m1);
-                            DataContainer dc = DataContainer.createNew(DataView.SafetyMode.ALL_DATA_CLONED);
-                            v.forEach(dc::set);
-                            if (s1.equals("ench")) {
-                                value = ImmutableList.of(dc);
-                            } else {
-                                value = dc;
-                            }
-                        } catch (Exception ignored) {
-                        }
-                    }
-                    r1.put(DataQuery.of(SEPARATOR, s1), value);
-                }
-                result.put(dq, r1);
-            } else if (!s.equals("ItemType") && o instanceof String) {
-//                String n = o.toString().replace(PERIOD_REPLACEMENT, PERIOD);
-                String n = o.toString();
-                result.put(dq, n);
-            } else if (o instanceof List) {
-                result.put(dq, ((List<?>) o).stream().filter(Objects::nonNull).collect(Collectors.toList()));
-            } else {
-                result.put(dq, o);
-            }
-        }
-        return result;
     }
 
     private ItemStackSnapshot defaultFallbackItemStackSnapshot =

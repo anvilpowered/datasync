@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.common.model.snapshot;
 
 import org.anvilpowered.anvil.base.model.MongoDbo;
-import org.anvilpowered.datasync.api.model.serializeditemstack.SerializedItemStack;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -43,7 +42,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
 
     private Map<String, Object> keys;
 
-    private List<SerializedItemStack> itemStacks;
+    private List<String> itemStacks;
 
     @Override
     public String getName() {
@@ -105,7 +104,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
     }
 
     @Override
-    public List<SerializedItemStack> getItemStacks() {
+    public List<String> getItemStacks() {
         if (itemStacks == null) {
             itemStacks = new ArrayList<>();
         }
@@ -113,7 +112,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
     }
 
     @Override
-    public void setItemStacks(List<SerializedItemStack> itemStacks) {
+    public void setItemStacks(List<String> itemStacks) {
         this.itemStacks = Objects.requireNonNull(itemStacks, "itemStacks cannot be null");
     }
 }
