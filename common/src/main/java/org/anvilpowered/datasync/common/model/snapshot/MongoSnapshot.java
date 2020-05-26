@@ -18,11 +18,14 @@
 
 package org.anvilpowered.datasync.common.model.snapshot;
 
+import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.base.model.MongoDbo;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +45,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
 
     private Map<String, Object> keys;
 
-    private List<String> itemStacks;
+    private byte[] inventory;
 
     @Override
     public String getName() {
@@ -104,15 +107,12 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
     }
 
     @Override
-    public List<String> getItemStacks() {
-        if (itemStacks == null) {
-            itemStacks = new ArrayList<>();
-        }
-        return itemStacks;
+    public ByteArrayInputStream getInventory() {
+        return new ByteArraySizedInputStream(inventory);
     }
 
     @Override
-    public void setItemStacks(List<String> itemStacks) {
-        this.itemStacks = Objects.requireNonNull(itemStacks, "itemStacks cannot be null");
+    public void setInventory(ByteArrayOutputStream inventory) {
+        this.inventory = inventory.toByteArray();
     }
 }

@@ -165,6 +165,10 @@ public class CommonUserSerializerManager<
     public CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString) {
         return memberManager.getPrimaryComponent()
             .getSnapshotForUser(userUUID, optionalString)
+            .exceptionally(e -> {
+                e.printStackTrace();
+                return Optional.empty();
+            })
             .thenApplyAsync(optionalSnapshot -> {
                 Optional<TUser> optionalUser = userService.get(userUUID);
                 if (!optionalUser.isPresent()) {

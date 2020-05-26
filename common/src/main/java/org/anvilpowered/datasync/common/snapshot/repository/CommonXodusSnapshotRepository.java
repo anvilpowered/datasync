@@ -21,14 +21,11 @@ package org.anvilpowered.datasync.common.snapshot.repository;
 import com.google.inject.Inject;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
-import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.datastore.BaseXodusRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
-import java.io.IOException;
-import java.util.List;
+import java.io.ByteArrayInputStream;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonXodusSnapshotRepository<TDataKey>
@@ -41,13 +38,9 @@ public class CommonXodusSnapshotRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Boolean> setItemStacks(EntityId id, List<String> itemStacks) {
+    public CompletableFuture<Boolean> setInventory(EntityId id, ByteArrayInputStream inventory) {
         return update(asQuery(id), entity -> {
-            try {
-                entity.setBlob("itemStacks", new ByteArraySizedInputStream(Mappable.serializeUnsafe(itemStacks)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            entity.setBlob("inventory", inventory);
         });
     }
 }

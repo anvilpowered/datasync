@@ -22,7 +22,9 @@ import com.google.inject.Inject;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
 import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.DataContainer;
+import org.spongepowered.api.data.DataQuery;
+import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.persistence.DataFormats;
@@ -35,14 +37,12 @@ import org.spongepowered.api.item.inventory.entity.PlayerInventory;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 public class SpongeInventorySerializer
     extends CommonInventorySerializer<Key<?>, User, Inventory, ItemStackSnapshot> {
-
 
     private static final int INVENTORY_SLOTS = 41;
 
@@ -52,25 +52,26 @@ public class SpongeInventorySerializer
     @Override
     public boolean serializeInventory(Snapshot<?> snapshot, Inventory inventory, int maxSlots) {
         boolean success = true;
-        List<String> itemStacks = new ArrayList<>();
         Iterator<Inventory> iterator = inventory.slots().iterator();
 
+        DataContainer container = DataContainer.createNew();
         for (int i = 0; i < maxSlots; i++) {
             if (!iterator.hasNext()) break;
             Inventory slot = iterator.next();
-            ItemStack stack = slot.peek().orElse(ItemStack.empty());
-            String json = "error";
-            try {
-                json = DataFormats.JSON.write(stack.toContainer());
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.error("There was an error while serializing slot " + i +
-                    " with item " + stack.getType().getId());
-                success = false;
+            Optional<ItemStack> stack = slot.peek();
+            if (!stack.isPresent()) {
+                continue;
             }
-            itemStacks.add(json);
+            container.set(DataQuery.of("slot", Integer.toString(i)), stack.get());
         }
-        snapshot.setItemStacks(itemStacks);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            DataFormats.NBT.writeTo(outputStream, container);
+        } catch (Exception e) {
+            logger.error("An error occurred during serialization", e);
+            success = false;
+        }
+        snapshot.setInventory(outputStream);
         return success;
     }
 
@@ -87,26 +88,27 @@ public class SpongeInventorySerializer
     @Override
     public boolean deserializeInventory(Snapshot<?> snapshot, Inventory inventory, ItemStackSnapshot fallbackItemStackSnapshot) {
         inventory.clear();
-        Iterator<String> stacks = snapshot.getItemStacks().iterator();
+        DataContainer container;
+        try {
+            container = DataFormats.NBT.readFrom(snapshot.getInventory());
+        } catch (Exception e) {
+            logger.error("An error occurred during deserialization", e);
+            return false;
+        }
         Iterator<Inventory> slots = inventory.slots().iterator();
+        int i = 0;
         while (slots.hasNext()) {
             Inventory slot = slots.next();
-            if (stacks.hasNext()) {
-                String stack = stacks.next();
-                if ("error".equals(stack)) {
-                    logger.error("ItemStack error detected from DB");
+            if (i < INVENTORY_SLOTS) {
+                Optional<Object> optionalItemStack = container.get(DataQuery.of("slot",
+                    Integer.toString(i++)));
+                if (!optionalItemStack.isPresent()) {
+                    continue; // air
                 }
-                try {
-                    Optional<ItemStack> itemStack = Sponge.getDataManager()
-                        .deserialize(ItemStack.class, DataFormats.JSON.read(stack));
-                    if (itemStack.isPresent()) {
-                        slot.set(itemStack.get());
-                    } else {
-                        logger.error("Failed to parse ItemStack from DB");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                ItemStack itemStack = ItemStack.builder()
+                    .fromContainer((DataView) optionalItemStack.get())
+                    .build();
+                slot.set(itemStack);
             } else if (!(inventory instanceof PlayerInventory)) {
                 if (slots.hasNext()) {
                     slot.set(fallbackItemStackSnapshot.createStack());

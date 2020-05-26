@@ -25,7 +25,7 @@ import org.anvilpowered.datasync.api.keys.DataKeyService;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 
-import java.util.List;
+import java.io.ByteArrayInputStream;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -69,7 +69,9 @@ public abstract class CommonSnapshotRepository<
     }
 
     @Override
-    public CompletableFuture<Boolean> parseAndSetItemStacks(Object id, List<String> itemStacks) {
-        return parse(id).map(i -> setItemStacks(i, itemStacks)).orElse(CompletableFuture.completedFuture(false));
+    public CompletableFuture<Boolean> parseAndSetInventory(
+        Object id, ByteArrayInputStream inventory) {
+        return parse(id).map(i -> setInventory(i, inventory))
+            .orElse(CompletableFuture.completedFuture(false));
     }
 }

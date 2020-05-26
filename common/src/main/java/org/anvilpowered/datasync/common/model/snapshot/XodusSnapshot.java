@@ -25,7 +25,9 @@ import org.anvilpowered.anvil.api.datastore.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +47,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
 
     private Map<String, Object> keys;
 
-    private List<String> itemStacks;
+    private byte[] inventory;
 
     @Override
     public String getName() {
@@ -107,16 +109,13 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
     }
 
     @Override
-    public List<String> getItemStacks() {
-        if (itemStacks == null) {
-            itemStacks = new ArrayList<>();
-        }
-        return itemStacks;
+    public ByteArraySizedInputStream getInventory() {
+        return new ByteArraySizedInputStream(inventory);
     }
 
     @Override
-    public void setItemStacks(List<String> itemStacks) {
-        this.itemStacks = Objects.requireNonNull(itemStacks, "itemStacks cannot be null");
+    public void setInventory(ByteArrayOutputStream inventory) {
+        this.inventory = inventory.toByteArray();
     }
 
     @Override
@@ -143,11 +142,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            object.setBlob("itemStacks", new ByteArraySizedInputStream(Mappable.serializeUnsafe(getItemStacks())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        object.setBlob("inventory", getInventory());
         return object;
     }
 
@@ -168,7 +163,18 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
             .ifPresent(t -> modulesFailed = t);
         Mappable.<Map<String, Object>>deserialize(object.getBlob("keys"))
             .ifPresent(t -> keys = t);
-        Mappable.<List<String>>deserialize(object.getBlob("itemStacks"))
-            .ifPresent(t -> itemStacks = t);
+        try {
+            InputStream inputStream = object.getBlob("inventory");
+            if (inputStream != null) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                int next;
+                while ((next = inputStream.read()) != -1) {
+                    outputStream.write(next);
+                }
+                setInventory(outputStream);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

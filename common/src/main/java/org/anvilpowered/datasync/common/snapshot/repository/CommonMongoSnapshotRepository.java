@@ -25,7 +25,7 @@ import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
-import java.util.List;
+import java.io.ByteArrayInputStream;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoSnapshotRepository<TDataKey>
@@ -38,7 +38,7 @@ public class CommonMongoSnapshotRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Boolean> setItemStacks(ObjectId id, List<String> itemStacks) {
-        return update(asQuery(id), set("itemStacks", itemStacks));
+    public CompletableFuture<Boolean> setInventory(ObjectId id, ByteArrayInputStream inventory) {
+        return update(asQuery(id), set("inventory", inventory));
     }
 }

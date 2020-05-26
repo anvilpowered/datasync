@@ -212,7 +212,8 @@ public class CommonMemberManager<
             String userName = userService.getUserName(userUUID).join().orElse("null");
             createdUtcs.forEach(created -> {
                 String createdString = timeFormatService.format(created).get();
-                String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
+                String diffCreatedString = timeFormatService.format(Duration.between(created,
+                    OffsetDateTime.now(ZoneOffset.UTC).toInstant())).get() + " ago";
                 lines.add(textService.builder()
                     .append(
                         textService.builder()

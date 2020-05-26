@@ -31,7 +31,8 @@ public class SyncTestCommand implements CommandExecutor {
         Player player = (Player) source;
         userSerializerManager.serialize(player)
             .exceptionally(e -> {
-                source.sendMessage(Text.of(e.getMessage()));
+                e.printStackTrace();
+                source.sendMessage(Text.of((Object[]) e.getStackTrace()));
                 return null;
             })
             .thenAcceptAsync(text -> {
@@ -41,7 +42,7 @@ public class SyncTestCommand implements CommandExecutor {
                 source.sendMessage(text);
                 source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.GREEN, "Deserializing in 5 seconds"));
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
