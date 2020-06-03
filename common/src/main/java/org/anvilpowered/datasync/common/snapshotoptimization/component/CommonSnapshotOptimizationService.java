@@ -232,7 +232,7 @@ public abstract class CommonSnapshotOptimizationService<
                         incrementDeleted();
                     } else {
                         String[] dateOrId = {id.toString()};
-                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = timeFormatService.format(date).get()));
+                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = timeFormatService.format(date).toString()));
                         sendError(source, "There was an error removing snapshot " + dateOrId[0] + " from " + userService.getUserName(user));
                     }
                 }).join();

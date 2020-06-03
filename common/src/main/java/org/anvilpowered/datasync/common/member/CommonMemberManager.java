@@ -76,7 +76,7 @@ public class CommonMemberManager<
             }
 
             Instant createdUtc = optionalSnapshot.get().getCreatedUtc();
-            String formattedInstant = timeFormatService.format(createdUtc).get();
+            String formattedInstant = timeFormatService.format(createdUtc).toString();
 
             return getPrimaryComponent().deleteSnapshotForUser(userUUID, createdUtc).thenApplyAsync(success -> {
                 if (success) {
@@ -125,8 +125,8 @@ public class CommonMemberManager<
         Instant created = snapshot.getCreatedUtc();
         Instant updated = snapshot.getUpdatedUtc();
 
-        String createdString = timeFormatService.format(created).get();
-        String updatedString = timeFormatService.format(updated).get();
+        String createdString = timeFormatService.format(created).toString();
+        String updatedString = timeFormatService.format(updated).toString();
 
         String diffCreatedString = timeFormatService.format(Duration.between(created, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
         String diffUpdatedString = timeFormatService.format(Duration.between(updated, OffsetDateTime.now(ZoneOffset.UTC).toInstant())) + " ago";
@@ -211,9 +211,9 @@ public class CommonMemberManager<
             Collection<TString> lines = new ArrayList<>();
             String userName = userService.getUserName(userUUID).join().orElse("null");
             createdUtcs.forEach(created -> {
-                String createdString = timeFormatService.format(created).get();
+                String createdString = timeFormatService.format(created).toString();
                 String diffCreatedString = timeFormatService.format(Duration.between(created,
-                    OffsetDateTime.now(ZoneOffset.UTC).toInstant())).get() + " ago";
+                    OffsetDateTime.now(ZoneOffset.UTC).toInstant())).toString() + " ago";
                 lines.add(textService.builder()
                     .append(
                         textService.builder()

@@ -66,7 +66,7 @@ public class CommonUserSerializerManager<
     }
 
     private String getCreatedString(Snapshot<?> snapshot) {
-        return timeFormatService.format(snapshot.getCreatedUtc()).get()
+        return timeFormatService.format(snapshot.getCreatedUtc()).toString()
            + " (" + snapshot.getName() + ")";
     }
 
