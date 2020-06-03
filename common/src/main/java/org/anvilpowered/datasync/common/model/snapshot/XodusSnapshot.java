@@ -21,6 +21,7 @@ package org.anvilpowered.datasync.common.model.snapshot;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
+import jetbrains.exodus.util.LightByteArrayOutputStream;
 import org.anvilpowered.anvil.api.datastore.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
@@ -109,13 +110,13 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
     }
 
     @Override
-    public ByteArraySizedInputStream getInventory() {
-        return new ByteArraySizedInputStream(inventory);
+    public byte[] getInventory() {
+        return inventory;
     }
 
     @Override
-    public void setInventory(ByteArrayOutputStream inventory) {
-        this.inventory = inventory.toByteArray();
+    public void setInventory(byte[] inventory) {
+        this.inventory = inventory;
     }
 
     @Override
@@ -142,7 +143,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
         } catch (IOException e) {
             e.printStackTrace();
         }
-        object.setBlob("inventory", getInventory());
+        object.setBlob("inventory", new ByteArraySizedInputStream(inventory));
         return object;
     }
 
@@ -166,12 +167,13 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
         try {
             InputStream inputStream = object.getBlob("inventory");
             if (inputStream != null) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                LightByteArrayOutputStream outputStream =
+                    new LightByteArrayOutputStream(inputStream.available());
                 int next;
                 while ((next = inputStream.read()) != -1) {
                     outputStream.write(next);
                 }
-                setInventory(outputStream);
+                setInventory(outputStream.toByteArray());
             }
         } catch (IOException e) {
             e.printStackTrace();

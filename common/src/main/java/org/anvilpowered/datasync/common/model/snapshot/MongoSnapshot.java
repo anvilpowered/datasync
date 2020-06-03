@@ -18,14 +18,11 @@
 
 package org.anvilpowered.datasync.common.model.snapshot;
 
-import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.base.model.MongoDbo;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,12 +104,12 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
     }
 
     @Override
-    public ByteArrayInputStream getInventory() {
-        return new ByteArraySizedInputStream(inventory);
+    public byte[] getInventory() {
+        return inventory;
     }
 
     @Override
-    public void setInventory(ByteArrayOutputStream inventory) {
-        this.inventory = inventory.toByteArray();
+    public void setInventory(byte[] inventory) {
+        this.inventory = inventory;
     }
 }

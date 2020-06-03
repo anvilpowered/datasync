@@ -21,7 +21,6 @@ package org.anvilpowered.datasync.api.snapshot.repository;
 import org.anvilpowered.anvil.api.datastore.Repository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
-import java.io.ByteArrayInputStream;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -35,7 +34,7 @@ public interface SnapshotRepository<
 
     Optional<?> getSnapshotValue(Snapshot<?> snapshot, TDataKey key);
 
-    CompletableFuture<Boolean> setInventory(TKey id, ByteArrayInputStream itemStacks);
+    CompletableFuture<Boolean> setInventory(TKey id, byte[] inventory);
 
-    CompletableFuture<Boolean> parseAndSetInventory(Object id, ByteArrayInputStream inventory);
+    CompletableFuture<Boolean> parseAndSetInventory(Object id, byte[] inventory);
 }

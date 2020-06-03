@@ -19,6 +19,8 @@
 package org.anvilpowered.datasync.sponge.serializer;
 
 import com.google.inject.Inject;
+import jetbrains.exodus.util.ByteArraySizedInputStream;
+import jetbrains.exodus.util.LightByteArrayOutputStream;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
 import org.slf4j.Logger;
@@ -37,7 +39,9 @@ import org.spongepowered.api.item.inventory.entity.PlayerInventory;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -64,14 +68,14 @@ public class SpongeInventorySerializer
             }
             container.set(DataQuery.of("slot", Integer.toString(i)), stack.get());
         }
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        LightByteArrayOutputStream outputStream = new LightByteArrayOutputStream();
         try {
             DataFormats.NBT.writeTo(outputStream, container);
         } catch (Exception e) {
             logger.error("An error occurred during serialization", e);
             success = false;
         }
-        snapshot.setInventory(outputStream);
+        snapshot.setInventory(outputStream.toByteArray());
         return success;
     }
 
@@ -90,7 +94,7 @@ public class SpongeInventorySerializer
         inventory.clear();
         DataContainer container;
         try {
-            container = DataFormats.NBT.readFrom(snapshot.getInventory());
+            container = DataFormats.NBT.readFrom(new ByteArrayInputStream(snapshot.getInventory()));
         } catch (Exception e) {
             logger.error("An error occurred during deserialization", e);
             return false;

@@ -20,8 +20,6 @@ package org.anvilpowered.datasync.api.model.snapshot;
 
 import org.anvilpowered.anvil.api.model.ObjectWithId;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +40,6 @@ public interface Snapshot<TKey> extends ObjectWithId<TKey> {
     Map<String, Object> getKeys();
     void setKeys(Map<String, Object> keys);
 
-    ByteArrayInputStream getInventory();
-    void setInventory(ByteArrayOutputStream inventory);
+    byte[] getInventory();
+    void setInventory(byte[] inventory);
 }
