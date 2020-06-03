@@ -26,6 +26,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoSnapshotRepository<TDataKey>
@@ -39,6 +40,15 @@ public class CommonMongoSnapshotRepository<TDataKey>
 
     @Override
     public CompletableFuture<Boolean> setInventory(ObjectId id, ByteArrayInputStream inventory) {
-        return update(asQuery(id), set("inventory", inventory));
+        return CompletableFuture.supplyAsync(() -> {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            int next;
+            while ((next = inventory.read()) != -1) {
+                outputStream.write(next);
+            }
+            return getDataStoreContext().getDataStore()
+                .update(asQuery(id), set("inventory", outputStream.toByteArray()))
+                .getUpdatedCount() > 0;
+        });
     }
 }
