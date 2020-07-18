@@ -28,7 +28,8 @@ public final class DataSyncPluginInfo<TString, TCommandSource> implements Plugin
     public static final String id = "datasync";
     public static final String name = "DataSync";
     public static final String version = "$modVersion";
-    public static final String description = "A plugin to synchronize player inventories with a database";
+    public static final String description
+        = "A plugin to synchronize player inventories with a database";
     public static final String url = "https://github.com/AnvilPowered/DataSync";
     public static final String[] authors = {"Cableguy20"};
     public static final String organizationName = "AnvilPowered";

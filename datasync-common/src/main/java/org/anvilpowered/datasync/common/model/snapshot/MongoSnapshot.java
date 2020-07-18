@@ -18,6 +18,7 @@
 
 package org.anvilpowered.datasync.common.model.snapshot;
 
+import com.google.common.base.Preconditions;
 import org.anvilpowered.anvil.base.model.MongoDbo;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
@@ -27,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Entity("snapshots")
 public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
@@ -74,7 +74,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
 
     @Override
     public void setModulesUsed(List<String> modulesUsed) {
-        this.modulesUsed = Objects.requireNonNull(modulesUsed, "modulesUsed cannot be null");
+        this.modulesUsed = Preconditions.checkNotNull(modulesUsed, "modulesUsed");
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
 
     @Override
     public void setModulesFailed(List<String> modulesFailed) {
-        this.modulesFailed = Objects.requireNonNull(modulesFailed, "modulesFailed cannot be null");
+        this.modulesFailed = Preconditions.checkNotNull(modulesFailed, "modulesFailed");
     }
 
     @Override
@@ -100,7 +100,7 @@ public class MongoSnapshot extends MongoDbo implements Snapshot<ObjectId> {
 
     @Override
     public void setKeys(Map<String, Object> keys) {
-        this.keys = Objects.requireNonNull(keys, "keys cannot be null");
+        this.keys = Preconditions.checkNotNull(keys, "keys");
     }
 
     @Override

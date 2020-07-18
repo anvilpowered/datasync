@@ -29,6 +29,7 @@ import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
+import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -41,6 +42,9 @@ public abstract class CommonUserSerializerComponent<
     TDataStore>
     extends BaseComponent<TKey, TDataStore>
     implements UserSerializerComponent<TKey, TUser, TDataStore> {
+
+    @Inject
+    protected Logger logger;
 
     @Inject
     protected MemberRepository<TKey, TDataStore> memberRepository;
@@ -69,10 +73,14 @@ public abstract class CommonUserSerializerComponent<
         serialize(snapshot, user);
         return snapshotRepository.insertOne(snapshot).thenApplyAsync(optionalSnapshot -> {
             if (!optionalSnapshot.isPresent()) {
-                System.err.println("[DataSync] Snapshot upload failed for " + userService.getUserName(user) + "! Check your DB configuration!");
+                logger.warn(
+                    "[DataSync] Snapshot upload failed for {}}! Check your DB configuration!",
+                    userService.getUserName(user)
+                );
                 return Optional.empty();
             }
-            if (memberRepository.addSnapshotForUser(userService.getUUID(user), optionalSnapshot.get().getId()).join()) {
+            if (memberRepository.addSnapshotForUser(userService.getUUID(user),
+                optionalSnapshot.get().getId()).join()) {
                 return optionalSnapshot;
             } else {
                 // remove snapshot from DB because it was not added to the user successfully

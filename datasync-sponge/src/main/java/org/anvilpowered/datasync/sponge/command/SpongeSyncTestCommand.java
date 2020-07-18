@@ -12,8 +12,6 @@ import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.Optional;
-
 public class SpongeSyncTestCommand implements CommandExecutor {
 
     @Inject
@@ -40,13 +38,14 @@ public class SpongeSyncTestCommand implements CommandExecutor {
                     return;
                 }
                 source.sendMessage(text);
-                source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.GREEN, "Deserializing in 5 seconds"));
+                source.sendMessage(Text.of(pluginInfo.getPrefix(),
+                    TextColors.GREEN, "Deserializing in 5 seconds"));
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                userSerializerManager.restore(player.getUniqueId(), Optional.empty())
+                userSerializerManager.restore(player.getUniqueId(), null)
                     .thenAcceptAsync(source::sendMessage);
             });
         return CommandResult.success();

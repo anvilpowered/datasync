@@ -24,7 +24,6 @@ import org.anvilpowered.datasync.api.data.key.DataSyncKeys;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
 import org.anvilpowered.datasync.common.serializer.user.component.CommonUserSerializerComponent;
-import org.slf4j.Logger;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;
@@ -42,9 +41,6 @@ public class SpongeUserSerializerComponent<
     extends CommonUserSerializerComponent<TKey, User, Player, Key<?>, TDataStore> {
 
     @Inject
-    private Logger logger;
-
-    @Inject
     private PluginContainer pluginContainer;
 
     @Inject
@@ -58,7 +54,8 @@ public class SpongeUserSerializerComponent<
     @Override
     public boolean deserialize(Snapshot<?> snapshot, User user) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
-        Task.builder().execute(() -> result.complete(snapshotSerializer.deserialize(snapshot, user))
+        Task.builder().execute(() ->
+            result.complete(snapshotSerializer.deserialize(snapshot, user))
         ).submit(pluginContainer);
         return result.join();
     }
@@ -69,7 +66,8 @@ public class SpongeUserSerializerComponent<
         // save current user data
         Snapshot<TKey> previousState = snapshotRepository.generateEmpty();
         serialize(previousState, user);
-        if (registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS).contains("datasync:inventory")) {
+        if (registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS)
+            .contains("datasync:inventory")) {
             user.getInventory().clear();
         }
         CompletableFuture<Void> waitForSnapshot;

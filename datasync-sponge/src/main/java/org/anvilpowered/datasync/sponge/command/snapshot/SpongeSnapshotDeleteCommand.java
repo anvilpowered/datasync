@@ -47,7 +47,10 @@ public class SpongeSnapshotDeleteCommand implements CommandExecutor {
         if (!optionalUser.isPresent()) {
             throw new CommandException(Text.of(pluginInfo.getPrefix(), "User is required"));
         }
-        memberManager.deleteSnapshot(optionalUser.get().getUniqueId(), context.getOne(Text.of("snapshot"))).thenAcceptAsync(source::sendMessage);
+        memberManager.deleteSnapshot(
+            optionalUser.get().getUniqueId(),
+            context.<String>getOne(Text.of("snapshot")).orElse(null)
+        ).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

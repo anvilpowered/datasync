@@ -30,6 +30,7 @@ import org.anvilpowered.datasync.api.serializer.HungerSerializer;
 import org.anvilpowered.datasync.api.serializer.InventorySerializer;
 import org.anvilpowered.datasync.api.serializer.Serializer;
 import org.anvilpowered.datasync.api.serializer.SnapshotSerializer;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,9 @@ public abstract class CommonSnapshotSerializer<
     private InventorySerializer<TUser, TInventory, TItemStackSnapshot> inventorySerializer;
 
     @Inject
+    private Logger logger;
+
+    @Inject
     private UserService<TUser, TPlayer> userService;
 
     protected Registry registry;
@@ -94,7 +98,8 @@ public abstract class CommonSnapshotSerializer<
 
         verifyExternalSerializers();
 
-        List<String> enabledSerializers = new ArrayList<>(registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS));
+        List<String> enabledSerializers = new ArrayList<>(
+            registry.getOrDefault(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS));
         serializers = new ArrayList<>();
 
         if (enabledSerializers.remove("datasync:experience")) {
@@ -134,7 +139,8 @@ public abstract class CommonSnapshotSerializer<
         externalSerializers.forEach(serializer -> {
             String name = serializer.getName();
             if (name.startsWith("datasync") || name.split(":").length != 2) {
-                System.err.println("[DataSync] External serialization module name \"" + serializer.getName() + "\" is invalid. Ignoring!");
+                logger.warn("[DataSync] External serialization module {} is invalid. Ignoring!",
+                    serializer.getName());
                 externalSerializersToRemove.add(serializer);
             }
         });
@@ -147,7 +153,7 @@ public abstract class CommonSnapshotSerializer<
     @Override
     public boolean serialize(Snapshot<?> snapshot, TUser user) {
         if (serializers.isEmpty()) {
-            System.err.println("[DataSync] No enabled serializers");
+            logger.info("[DataSync] No enabled serializers");
             return false;
         }
         boolean success = true;
@@ -157,7 +163,12 @@ public abstract class CommonSnapshotSerializer<
             try {
                 snapshot.getModulesUsed().add(serializer.getName());
                 if (!serializer.serialize(snapshot, user)) {
-                    System.err.println("[DataSync] Serialization module \"" + serializer.getName() + "\" failed for " + userService.getUserName(user) + "! All valid data was still uploaded!");
+                    logger.error(
+                        "[DataSync] Serialization module {} failed for {}! All valid data was "
+                            + "still uploaded!",
+                        serializer.getName(),
+                        userService.getUserName(user)
+                    );
                     success = false;
                     snapshot.getModulesFailed().add(serializer.getName());
                 }
@@ -182,24 +193,34 @@ public abstract class CommonSnapshotSerializer<
                 if (serializersToUse.remove(serializer.getName())) {
                     // only use modules that were used to upload
                     if (!serializer.deserialize(snapshot, user)) {
-                        System.err.println("[DataSync] Deserialization module \"" + serializer.getName() + "\" failed for snapshot " + snapshot.getId() + " for " + userService.getUserName(user));
+                        logger.error(
+                            "[DataSync] Deserialization module {} failed for snapshot {} for {}",
+                            serializer.getName(),
+                            snapshot.getIdAsString(),
+                            userService.getUserName(user)
+                        );
                         success = false;
                     }
                 } else {
-                    System.err.println("[DataSync] Deserialization module \"" + serializer.getName() + "\" was not used in snapshot " + snapshot.getId() + " for " + userService.getUserName(user) + " but it is enabled in the config, skipping!");
+                    logger.warn(
+                        "[DataSync] Deserialization module {} was not used in "
+                            + "snapshot {} for {} but it is enabled in the config, skipping!",
+                        serializer.getName(),
+                        snapshot.getIdAsString(),
+                        userService.getUserName(user)
+                    );
                 }
             } catch (Exception e) {
                 success = false;
             }
         }
 
-        serializersToUse.forEach(moduleName -> System.err.println(
-            "[DataSync] Deserialization module \""
-                + moduleName +
-                "\" was used in snapshot "
-                + snapshot.getId() +
-                " but it is not enabled in the config! Not all data from snapshot could be added to user "
-                + userService.getUserName(user)
+        serializersToUse.forEach(moduleName -> logger.warn(
+            "[DataSync] Deserialization module {} was used in snapshot {} but is not enabled "
+                + "in the config! Not all data from snapshot could be added to {}",
+            moduleName,
+            snapshot.getIdAsString(),
+            userService.getUserName(user)
         ));
         return success;
     }

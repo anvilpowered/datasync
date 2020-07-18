@@ -18,21 +18,22 @@
 
 package org.anvilpowered.datasync.common.model.member;
 
+import com.google.common.base.Preconditions;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
 import org.anvilpowered.anvil.api.datastore.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
+import org.anvilpowered.datasync.api.model.member.Member;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @XodusEntity
-public class XodusMember extends XodusDbo implements org.anvilpowered.datasync.api.model.member.Member<EntityId>, Mappable<Entity> {
+public class XodusMember extends XodusDbo implements Member<EntityId>, Mappable<Entity> {
 
     private String userUUID;
     private boolean skipDeserialization;
@@ -59,7 +60,7 @@ public class XodusMember extends XodusDbo implements org.anvilpowered.datasync.a
 
     @Override
     public void setSnapshotIds(List<EntityId> snapshotIds) {
-        this.snapshotIds = Objects.requireNonNull(snapshotIds, "snapshotIds cannot be null");
+        this.snapshotIds = Preconditions.checkNotNull(snapshotIds, "snapshotIds");
         prePersist();
     }
 
@@ -83,7 +84,8 @@ public class XodusMember extends XodusDbo implements org.anvilpowered.datasync.a
             object.setProperty("skipDeserialization", true);
         }
         try {
-            object.setBlob("snapshotIds", new ByteArraySizedInputStream(Mappable.serializeUnsafe(getSnapshotIds())));
+            object.setBlob("snapshotIds",
+                new ByteArraySizedInputStream(Mappable.serializeUnsafe(getSnapshotIds())));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,6 +103,7 @@ public class XodusMember extends XodusDbo implements org.anvilpowered.datasync.a
         if (skipDeserialization instanceof Boolean) {
             this.skipDeserialization = (Boolean) skipDeserialization;
         }
-        Mappable.<List<EntityId>>deserialize(object.getBlob("snapshotIds")).ifPresent(t -> snapshotIds = t);
+        Mappable.<List<EntityId>>deserialize(object.getBlob("snapshotIds"))
+            .ifPresent(t -> snapshotIds = t);
     }
 }

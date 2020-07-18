@@ -33,7 +33,8 @@ public class CommonXodusSnapshotRepository<TDataKey>
     implements BaseXodusRepository<Snapshot<EntityId>> {
 
     @Inject
-    public CommonXodusSnapshotRepository(DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
+    public CommonXodusSnapshotRepository(
+        DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
         super(dataStoreContext);
     }
 

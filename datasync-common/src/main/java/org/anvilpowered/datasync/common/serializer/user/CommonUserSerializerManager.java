@@ -29,6 +29,7 @@ import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -86,8 +87,8 @@ public class CommonUserSerializerManager<
         CompletableFuture<TString> result = new CompletableFuture<>();
 
         for (TUser user : users) {
-            getPrimaryComponent().serialize(user, "Manual").thenAcceptAsync(optionalSnapshot -> {
-                if (optionalSnapshot.isPresent()) {
+            getPrimaryComponent().serialize(user, "Manual").thenAcceptAsync(os -> {
+                if (os.isPresent()) {
                     successful.add(user);
                 } else {
                     unsuccessful.add(user);
@@ -95,12 +96,18 @@ public class CommonUserSerializerManager<
                 if (successful.size() + unsuccessful.size() >= users.size()) {
                     TextService.Builder<TString, TCommandSource> builder = textService.builder();
                     if (!successful.isEmpty()) {
-                        String s = successful.stream().map(u -> userService.getUserName(user)).collect(Collectors.joining(", "));
-                        builder.yellow().append("The following players were successfully serialized:\n").green().append(s);
+                        String s = successful.stream().map(u -> userService.getUserName(user))
+                            .collect(Collectors.joining(", "));
+                        builder.yellow()
+                            .append("The following players were successfully serialized:\n")
+                            .green().append(s);
                     }
                     if (!unsuccessful.isEmpty()) {
-                        String s = unsuccessful.stream().map(u -> userService.getUserName(user)).collect(Collectors.joining(", "));
-                        builder.red().append("The following players were unsuccessfully serialized:\n").green().append(s);
+                        String s = unsuccessful.stream().map(u -> userService.getUserName(user))
+                            .collect(Collectors.joining(", "));
+                        builder.red()
+                            .append("The following players were unsuccessfully serialized:\n")
+                            .green().append(s);
                     }
                     result.complete(builder.build());
                 }
@@ -162,9 +169,9 @@ public class CommonUserSerializerManager<
     }
 
     @Override
-    public CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString) {
+    public CompletableFuture<TString> restore(UUID userUUID, @Nullable String snapshot) {
         return memberManager.getPrimaryComponent()
-            .getSnapshotForUser(userUUID, optionalString)
+            .getSnapshotForUser(userUUID, snapshot)
             .exceptionally(e -> {
                 e.printStackTrace();
                 return Optional.empty();

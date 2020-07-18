@@ -55,7 +55,7 @@ public abstract class CommonSnapshotOptimizationService<
     implements SnapshotOptimizationService<TKey, TUser, TCommandSource, TDataStore> {
 
     @Inject
-    protected MemberRepository<TKey,TDataStore> memberRepository;
+    protected MemberRepository<TKey, TDataStore> memberRepository;
 
     @Inject
     protected SnapshotRepository<TKey, TDataKey, TDataStore> snapshotRepository;
@@ -91,7 +91,8 @@ public abstract class CommonSnapshotOptimizationService<
 
     private Registry registry;
 
-    protected CommonSnapshotOptimizationService(Registry registry, DataStoreContext<TKey, TDataStore> dataStoreContext) {
+    protected CommonSnapshotOptimizationService(
+        Registry registry, DataStoreContext<TKey, TDataStore> dataStoreContext) {
         super(dataStoreContext);
         this.registry = registry;
         registry.whenLoaded(this::registryLoaded).register();
@@ -100,7 +101,8 @@ public abstract class CommonSnapshotOptimizationService<
     }
 
     private void registryLoaded() {
-        Optional<List<int[]>> optional = syncUtils.decodeOptimizationStrategy(registry.getOrDefault(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY));
+        Optional<List<int[]>> optional = syncUtils.decodeOptimizationStrategy(
+            registry.getOrDefault(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY));
         optimizationStrategy = optional.orElse(null);
     }
 
@@ -180,7 +182,12 @@ public abstract class CommonSnapshotOptimizationService<
     /**
      * @return true if something was deleted
      */
-    protected final CompletableFuture<Boolean> optimizeFull(final List<TKey> snapshotIds, final UUID userUUID, final TCommandSource source, final String name) {
+    protected final CompletableFuture<Boolean> optimizeFull(
+        final List<TKey> snapshotIds,
+        final UUID userUUID,
+        final TCommandSource source,
+        final String name
+    ) {
         int baseInterval = registry.getOrDefault(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES);
         Optional<TPlayer> optionalPlayer = userService.getPlayer(userUUID);
         if (!optionalPlayer.isPresent()) {
@@ -191,11 +198,11 @@ public abstract class CommonSnapshotOptimizationService<
         CompletableFuture<Void> uploadFuture = new CompletableFuture<>();
 
         CompletableFuture.runAsync(() -> {
-            if (snapshotIds.stream().noneMatch(objectId -> within(objectId, baseInterval).join())) {
-                submitTask(() -> userSerializer.serialize(user, name).thenAcceptAsync(optionalSnapshot -> {
-                    if (optionalSnapshot.isPresent()) {
+            if (snapshotIds.stream().noneMatch(id -> within(id, baseInterval).join())) {
+                submitTask(() -> userSerializer.serialize(user, name).thenAcceptAsync(os -> {
+                    if (os.isPresent()) {
                         incrementUploaded();
-                        snapshotIds.add(optionalSnapshot.get().getId());
+                        snapshotIds.add(os.get().getId());
                     } else {
                         sendError(source, "There was an error serializing user " + user);
                     }
@@ -207,7 +214,10 @@ public abstract class CommonSnapshotOptimizationService<
         });
         return uploadFuture.thenApplyAsync(v -> {
             if (optimizationStrategy == null) {
-                sendError(source, "Invalid optimization strategy, optimization is disabled. Please check your config!");
+                sendError(source,
+                    "Invalid optimization strategy, optimization is disabled." +
+                        "Please check your config!"
+                );
                 return false;
             }
             int minCount = registry.getOrDefault(DataSyncKeys.SNAPSHOT_MIN_COUNT);
@@ -217,7 +227,9 @@ public abstract class CommonSnapshotOptimizationService<
             List<TKey> toDelete = new ArrayList<>();
             optimizationStrategy.forEach(i -> filter(snapshotIds, toDelete, i[0], i[1]).join()); // this line adds snapshot ids to the delete list based on config settings
             int[] last = optimizationStrategy.get(optimizationStrategy.size() - 1);
-            snapshotIds.stream().filter(snapshotId -> within(snapshotId, last[0] * last[1]).join()).collect(Collectors.toList()).forEach(snapshotIds::remove);
+            snapshotIds.stream()
+                .filter(snapshotId -> within(snapshotId, last[0] * last[1]).join())
+                .collect(Collectors.toList()).forEach(snapshotIds::remove);
             toDelete.addAll(snapshotIds);
             boolean[] deletedAnything = {false};
             for (TKey id : toDelete) {
@@ -232,8 +244,11 @@ public abstract class CommonSnapshotOptimizationService<
                         incrementDeleted();
                     } else {
                         String[] dateOrId = {id.toString()};
-                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate -> optionalDate.ifPresent(date -> dateOrId[0] = timeFormatService.format(date).toString()));
-                        sendError(source, "There was an error removing snapshot " + dateOrId[0] + " from " + userService.getUserName(user));
+                        snapshotRepository.getCreatedUtc(id).thenAcceptAsync(optionalDate ->
+                            optionalDate.ifPresent(date ->
+                                dateOrId[0] = timeFormatService.format(date).toString()));
+                        sendError(source, "There was an error removing snapshot "
+                            + dateOrId[0] + " from " + userService.getUserName(user));
                     }
                 }).join();
             }
@@ -242,12 +257,22 @@ public abstract class CommonSnapshotOptimizationService<
     }
 
     protected final CompletableFuture<Boolean> within(final TKey id, final long minutes) {
-        return getCreatedUtc(id).thenApplyAsync(createdUtc -> OffsetDateTime.now(ZoneOffset.UTC).toInstant().isBefore(createdUtc.plusSeconds(minutes * 60L)));
+        return getCreatedUtc(id).thenApplyAsync(createdUtc ->
+            OffsetDateTime.now(ZoneOffset.UTC).toInstant()
+                .isBefore(createdUtc.plusSeconds(minutes * 60L))
+        );
     }
 
-    protected final CompletableFuture<Void> filter(final List<TKey> snapshotIds, final List<TKey> toDelete, final int intervalMinutes, final int maxCount) {
+    protected final CompletableFuture<Void> filter(
+        final List<TKey> snapshotIds,
+        final List<TKey> toDelete,
+        final int intervalMinutes,
+        final int maxCount
+    ) {
         return CompletableFuture.runAsync(() -> {
-            snapshotIds.stream().filter(snapshotId -> within(snapshotId, intervalMinutes).join()).collect(Collectors.toList()).forEach(snapshotIds::remove);
+            snapshotIds.stream()
+                .filter(snapshotId -> within(snapshotId, intervalMinutes).join())
+                .collect(Collectors.toList()).forEach(snapshotIds::remove);
             for (int i = 2; i <= maxCount; i++) {
                 TKey allowed = null;
                 for (TKey snapshotId : snapshotIds) {

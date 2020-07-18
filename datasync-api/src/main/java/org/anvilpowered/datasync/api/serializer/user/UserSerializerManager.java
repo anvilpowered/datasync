@@ -20,6 +20,7 @@ package org.anvilpowered.datasync.api.serializer.user;
 
 import org.anvilpowered.anvil.api.datastore.Manager;
 import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -61,5 +62,5 @@ public interface UserSerializerManager<
 
     CompletableFuture<TString> deserialize(TUser user);
 
-    CompletableFuture<TString> restore(UUID userUUID, Optional<String> optionalString);
+    CompletableFuture<TString> restore(UUID userUUID, @Nullable String snapshot);
 }

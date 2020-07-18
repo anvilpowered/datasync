@@ -54,13 +54,17 @@ public class SpongeSnapshotSerializer extends CommonSnapshotSerializer<Key<?>, U
     @Override
     protected void postLoadedEvent() {
         Sponge.getPluginManager().fromInstance(dataSyncSponge).ifPresent(container -> {
-            EventContext eventContext = EventContext.builder().add(EventContextKeys.PLUGIN, container).build();
-            Sponge.getEventManager().post(new SerializerInitializationEvent(this, snapshotManager, Cause.of(eventContext, dataSyncSponge)));
+            EventContext eventContext
+                = EventContext.builder().add(EventContextKeys.PLUGIN, container).build();
+            Sponge.getEventManager().post(new SerializerInitializationEvent(this,
+                    snapshotManager, Cause.of(eventContext, dataSyncSponge)));
         });
     }
 
     @Override
     protected void announceEnabled(String name) {
-        Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Enabling ", name, " serializer"));
+        Sponge.getServer().getConsole().sendMessage(
+            Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Enabling ", name, " serializer")
+        );
     }
 }

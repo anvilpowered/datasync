@@ -21,6 +21,7 @@ package org.anvilpowered.datasync.api.member.repository;
 import org.anvilpowered.anvil.api.datastore.Repository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.time.Instant;
 import java.util.List;
@@ -72,9 +73,10 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID, Instant createdUtc);
 
-    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id, Optional<String> optionalString);
+    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id, @Nullable String snapshot);
 
-    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString);
+    CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID,
+                                                                   @Nullable String snapshot);
 
     CompletableFuture<List<TKey>> getClosestSnapshots(TKey id, Instant createdUtc);
 

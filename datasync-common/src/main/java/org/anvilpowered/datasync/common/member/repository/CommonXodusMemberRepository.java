@@ -50,7 +50,8 @@ public class CommonXodusMemberRepository<TDataKey>
     XodusMemberRepository {
 
     @Inject
-    public CommonXodusMemberRepository(DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
+    public CommonXodusMemberRepository(
+        DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
         super(dataStoreContext);
     }
 
@@ -60,12 +61,14 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getSnapshotIds(Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
+    public CompletableFuture<List<EntityId>> getSnapshotIds(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
         return CompletableFuture.supplyAsync(() ->
             getDataStoreContext().getDataStore().computeInExclusiveTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
                 if (iterator.hasNext()) {
-                    Optional<List<EntityId>> optionalList = Mappable.deserialize(iterator.next().getBlob("snapshotIds"));
+                    Optional<List<EntityId>> optionalList
+                        = Mappable.deserialize(iterator.next().getBlob("snapshotIds"));
                     if (optionalList.isPresent()) {
                         return optionalList.get();
                     }
@@ -81,7 +84,8 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<List<Instant>> getSnapshotCreationTimes(Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
+    public CompletableFuture<List<Instant>> getSnapshotCreationTimes(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
         return getSnapshotIds(query).thenApplyAsync(ids -> ids.stream()
             .map(id -> snapshotRepository.getCreatedUtc(id).join().orElse(null))
             .filter(Objects::nonNull)
@@ -98,7 +102,10 @@ public class CommonXodusMemberRepository<TDataKey>
         return getSnapshotCreationTimes(asQuery(userUUID));
     }
 
-    private CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Predicate<? super EntityId> idPredicate) {
+    private CompletableFuture<Boolean> deleteSnapshot(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query,
+        Predicate<? super EntityId> idPredicate
+    ) {
         return CompletableFuture.supplyAsync(() ->
             getDataStoreContext().getDataStore().computeInTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
@@ -106,7 +113,8 @@ public class CommonXodusMemberRepository<TDataKey>
                     return false;
                 }
                 Entity toEdit = iterator.next();
-                Optional<List<EntityId>> optionalList = Mappable.deserialize(toEdit.getBlob("snapshotIds"));
+                Optional<List<EntityId>> optionalList
+                    = Mappable.deserialize(toEdit.getBlob("snapshotIds"));
                 if (!optionalList.isPresent()) {
                     return false;
                 }
@@ -128,7 +136,8 @@ public class CommonXodusMemberRepository<TDataKey>
                 }
                 ids.remove(indexToRemove);
                 try {
-                    toEdit.setBlob("snapshotIds", new ByteArraySizedInputStream(Mappable.serializeUnsafe(ids)));
+                    toEdit.setBlob("snapshotIds",
+                        new ByteArraySizedInputStream(Mappable.serializeUnsafe(ids)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -138,13 +147,23 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, EntityId snapshotId) {
+    public CompletableFuture<Boolean> deleteSnapshot(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query,
+        EntityId snapshotId
+    ) {
         return deleteSnapshot(query, snapshotId::equals);
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
-        return deleteSnapshot(query, id -> getSnapshot(query, createdUtc).join().map(s -> s.getId().equals(id)).orElse(false));
+    public CompletableFuture<Boolean> deleteSnapshot(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query,
+        Instant createdUtc
+    ) {
+        return deleteSnapshot(query, id ->
+            getSnapshot(query, createdUtc).join()
+                .map(s -> s.getId().equals(id))
+                .orElse(false)
+        );
     }
 
     @Override
@@ -168,7 +187,9 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Boolean> addSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, EntityId snapshotId) {
+    public CompletableFuture<Boolean> addSnapshot(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query,
+        EntityId snapshotId) {
         return CompletableFuture.supplyAsync(() ->
             getDataStoreContext().getDataStore().computeInTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
@@ -176,14 +197,16 @@ public class CommonXodusMemberRepository<TDataKey>
                     return false;
                 }
                 Entity toEdit = iterator.next();
-                Optional<List<EntityId>> optionalList = Mappable.deserialize(toEdit.getBlob("snapshotIds"));
+                Optional<List<EntityId>> optionalList
+                    = Mappable.deserialize(toEdit.getBlob("snapshotIds"));
                 if (!optionalList.isPresent()) {
                     return false;
                 }
                 List<EntityId> ids = optionalList.get();
                 ids.add(snapshotId);
                 try {
-                    toEdit.setBlob("snapshotIds", new ByteArraySizedInputStream(Mappable.serializeUnsafe(ids)));
+                    toEdit.setBlob("snapshotIds",
+                        new ByteArraySizedInputStream(Mappable.serializeUnsafe(ids)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -203,20 +226,25 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query,
+        Instant createdUtc
+    ) {
         return CompletableFuture.supplyAsync(() ->
             getDataStoreContext().getDataStore().computeInReadonlyTransaction(txn -> {
                 Iterator<Entity> iterator = query.apply(txn).iterator();
                 if (!iterator.hasNext()) {
                     return Optional.empty();
                 }
-                Optional<List<EntityId>> optionalList = Mappable.deserialize(iterator.next().getBlob("snapshotIds"));
+                Optional<List<EntityId>> optionalList
+                    = Mappable.deserialize(iterator.next().getBlob("snapshotIds"));
                 if (!optionalList.isPresent()) {
                     return Optional.empty();
                 }
                 List<EntityId> ids = optionalList.get();
                 for (EntityId id : ids) {
-                    Optional<Snapshot<EntityId>> optionalSnapshot = snapshotRepository.getOne(id).join()
+                    Optional<Snapshot<EntityId>> optionalSnapshot
+                        = snapshotRepository.getOne(id).join()
                         .filter(s -> checkInstant(s.getCreatedUtc(), createdUtc));
                     if (optionalSnapshot.isPresent()) {
                         return optionalSnapshot;
@@ -228,17 +256,20 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(EntityId id, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshot(EntityId id,
+                                                                       Instant createdUtc) {
         return getSnapshot(asQuery(id), createdUtc);
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshotForUser(UUID userUUID, Instant createdUtc) {
+    public CompletableFuture<Optional<Snapshot<EntityId>>> getSnapshotForUser(UUID userUUID,
+                                                                              Instant createdUtc) {
         return getSnapshot(asQuery(userUUID), createdUtc);
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getClosestSnapshots(Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
+    public CompletableFuture<List<EntityId>> getClosestSnapshots(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query, Instant createdUtc) {
         return null;
     }
 
@@ -248,7 +279,8 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<List<EntityId>> getClosestSnapshotsForUser(UUID userUUID, Instant createdUtc) {
+    public CompletableFuture<List<EntityId>> getClosestSnapshotsForUser(UUID userUUID,
+                                                                        Instant createdUtc) {
         return null;
     }
 
@@ -258,7 +290,8 @@ public class CommonXodusMemberRepository<TDataKey>
     }
 
     @Override
-    public CompletableFuture<Boolean> setSkipDeserialization(EntityId id, boolean skipDeserialization) {
+    public CompletableFuture<Boolean> setSkipDeserialization(EntityId id,
+                                                             boolean skipDeserialization) {
         if (skipDeserialization) {
             return update(asQuery(id), e -> e.setProperty("skipDeserialization", true));
         }

@@ -31,7 +31,8 @@ public abstract class CommonSerializationTaskService<
     implements SerializationTaskService {
 
     @Inject
-    protected SnapshotOptimizationManager<TUser, TString, TCommandSource> snapshotOptimizationManager;
+    protected SnapshotOptimizationManager<TUser, TString, TCommandSource>
+        snapshotOptimizationManager;
 
     protected Registry registry;
 

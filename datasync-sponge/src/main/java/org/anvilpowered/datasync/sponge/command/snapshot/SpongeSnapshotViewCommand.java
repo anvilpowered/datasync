@@ -159,8 +159,12 @@ public class SpongeSnapshotViewCommand implements CommandExecutor {
                     timeFormatService.format(snapshot.getCreatedUtc()).toString()));
             };
 
-            memberManager.getPrimaryComponent().getSnapshotForUser(targetUser.getUniqueId(), context.getOne(Text.of("snapshot")))
-                .thenAcceptAsync(optionalSnapshot -> Task.builder().execute(() -> afterFound.accept(optionalSnapshot)).submit(pluginContainer));
+            memberManager.getPrimaryComponent().getSnapshotForUser(
+                targetUser.getUniqueId(),
+                context.<String>getOne(Text.of("snapshot")).orElse(null)
+            ).thenAcceptAsync(optionalSnapshot ->
+                Task.builder().execute(() ->
+                    afterFound.accept(optionalSnapshot)).submit(pluginContainer));
 
             return CommandResult.success();
         } else {

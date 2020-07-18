@@ -27,6 +27,7 @@ import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 
 import java.time.Instant;
@@ -74,7 +75,8 @@ public abstract class CommonMemberRepository<
 
     @Override
     public CompletableFuture<Optional<TKey>> getIdForUser(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> getOneOrGenerateForUser(userUUID).join().map(ObjectWithId::getId));
+        return CompletableFuture.supplyAsync(() ->
+            getOneOrGenerateForUser(userUUID).join().map(ObjectWithId::getId));
     }
 
     @Override
@@ -84,34 +86,34 @@ public abstract class CommonMemberRepository<
 
     @Override
     public CompletableFuture<List<TKey>> getSnapshotIdsForUser(UUID userUUID) {
-        return getOneOrGenerateForUser(userUUID).thenApplyAsync(o -> o.map(Member::getSnapshotIds).orElse(Collections.emptyList()));
+        return getOneOrGenerateForUser(userUUID).thenApplyAsync(o ->
+            o.map(Member::getSnapshotIds).orElse(Collections.emptyList()));
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id, Optional<String> optionalString) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> getSnapshot(TKey id,
+                                                                   @Nullable String snapshot) {
         return CompletableFuture.supplyAsync(() -> {
-            if (optionalString.isPresent()) {
-
-                Optional<TKey> optionalId = parse(optionalString);
-                if (optionalId.isPresent()) {
-                    return snapshotRepository.getOne(optionalId.get()).join();
-                }
-
-                Optional<Instant> date = timeFormatService.parseInstant(optionalString.get());
-                if (date.isPresent()) {
-                    return getSnapshot(id, date.get()).join();
-                }
-
-                return Optional.empty();
-            } else {
+            if (snapshot == null) {
                 return getLatestSnapshot(id).join();
             }
+            Optional<TKey> optionalId = parse(snapshot);
+            if (optionalId.isPresent()) {
+                return snapshotRepository.getOne(optionalId.get()).join();
+            }
+            Optional<Instant> date = timeFormatService.parseInstant(snapshot);
+            if (date.isPresent()) {
+                return getSnapshot(id, date.get()).join();
+            }
+            return Optional.empty();
         });
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(UUID userUUID, Optional<String> optionalString) {
-        return getIdForUser(userUUID).thenApplyAsync(o -> o.flatMap(id -> getSnapshot(id, optionalString).join()));
+    public CompletableFuture<Optional<Snapshot<TKey>>> getSnapshotForUser(
+        UUID userUUID, @Nullable String snapshot) {
+        return getIdForUser(userUUID).thenApplyAsync(o ->
+            o.flatMap(id -> getSnapshot(id, snapshot).join()));
     }
 
     @Override
@@ -129,7 +131,7 @@ public abstract class CommonMemberRepository<
 
     @Override
     public CompletableFuture<Optional<Snapshot<TKey>>> getLatestSnapshotForUser(UUID userUUID) {
-        return getOneOrGenerateForUser(userUUID).thenApplyAsync(optionalMember -> optionalMember.flatMap(member -> {
+        return getOneOrGenerateForUser(userUUID).thenApplyAsync(om -> om.flatMap(member -> {
             if (member.isSkipDeserialization()) {
                 logger.info("Skipping deserialization for user " + userUUID + " because it was " +
                     "set to true in the DB. It will now be set to false.");
@@ -140,7 +142,8 @@ public abstract class CommonMemberRepository<
             if (snapshotCount == 0) {
                 return Optional.empty();
             }
-            return snapshotRepository.getOne(member.getSnapshotIds().get(snapshotCount - 1)).join();
+            return snapshotRepository.getOne(member.getSnapshotIds().get(snapshotCount - 1))
+                .join();
         }));
     }
 
@@ -161,13 +164,17 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID, TKey snapshotId) {
-        return getIdForUser(userUUID).thenApplyAsync(o -> o.flatMap(id -> getPrevious(id, snapshotId).join()));
+    public CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID,
+                                                                          TKey snapshotId) {
+        return getIdForUser(userUUID)
+            .thenApplyAsync(o ->o.flatMap(id -> getPrevious(id, snapshotId).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID, Instant createdUtc) {
-        return getSnapshotForUser(userUUID, createdUtc).thenApplyAsync(o -> o.flatMap(s -> getPreviousForUser(userUUID, s.getId()).join()));
+    public CompletableFuture<Optional<Snapshot<TKey>>> getPreviousForUser(UUID userUUID,
+                                                                          Instant createdUtc) {
+        return getSnapshotForUser(userUUID, createdUtc)
+            .thenApplyAsync(o -> o.flatMap(s -> getPreviousForUser(userUUID, s.getId()).join()));
     }
 
     @Override
@@ -187,12 +194,16 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID, TKey snapshotId) {
-        return getIdForUser(userUUID).thenApplyAsync(o -> o.flatMap(id -> getNext(id, snapshotId).join()));
+    public CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID,
+                                                                      TKey snapshotId) {
+        return getIdForUser(userUUID)
+            .thenApplyAsync(o -> o.flatMap(id -> getNext(id, snapshotId).join()));
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID, Instant createdUtc) {
-        return getSnapshotForUser(userUUID, createdUtc).thenApplyAsync(o -> o.flatMap(s -> getNextForUser(userUUID, s.getId()).join()));
+    public CompletableFuture<Optional<Snapshot<TKey>>> getNextForUser(UUID userUUID,
+                                                                      Instant createdUtc) {
+        return getSnapshotForUser(userUUID, createdUtc)
+            .thenApplyAsync(o -> o.flatMap(s -> getNextForUser(userUUID, s.getId()).join()));
     }
 }

@@ -52,7 +52,9 @@ public class CommonSyncUtils implements SyncUtils {
         }
 
         for (int i = 0; i < numsList.size() - 1; i++) {
-            if (numsList.get(i + 1)[0] != numsList.get(i)[0] * numsList.get(i)[1]) return Optional.empty();
+            if (numsList.get(i + 1)[0] != numsList.get(i)[0] * numsList.get(i)[1]) {
+                return Optional.empty();
+            }
         }
         return Optional.of(numsList);
     }

@@ -21,8 +21,8 @@ package org.anvilpowered.datasync.api.member;
 import org.anvilpowered.anvil.api.datastore.Manager;
 import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -49,11 +49,11 @@ public interface MemberManager<TString>
         return "members";
     }
 
-    CompletableFuture<TString> deleteSnapshot(UUID userUUID, Optional<String> optionalString);
+    CompletableFuture<TString> deleteSnapshot(UUID userUUID, @Nullable String snapshot);
 
     TString info(UUID userUUID, Snapshot<?> snapshot);
 
-    CompletableFuture<TString> info(UUID userUUID, Optional<String> optionalString);
+    CompletableFuture<TString> info(UUID userUUID, @Nullable String snapshot);
 
     CompletableFuture<Iterable<TString>> list(UUID userUUID);
 }

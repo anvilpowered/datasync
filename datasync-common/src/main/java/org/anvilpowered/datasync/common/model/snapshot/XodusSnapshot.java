@@ -18,6 +18,7 @@
 
 package org.anvilpowered.datasync.common.model.snapshot;
 
+import com.google.common.base.Preconditions;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
@@ -25,6 +26,7 @@ import jetbrains.exodus.util.LightByteArrayOutputStream;
 import org.anvilpowered.anvil.api.datastore.XodusEntity;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.model.XodusDbo;
+import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @XodusEntity
-public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync.api.model.snapshot.Snapshot<EntityId>, Mappable<Entity> {
+public class XodusSnapshot extends XodusDbo implements Snapshot<EntityId>, Mappable<Entity> {
 
     private String name;
 
@@ -79,7 +81,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
 
     @Override
     public void setModulesUsed(List<String> modulesUsed) {
-        this.modulesUsed = Objects.requireNonNull(modulesUsed, "modulesUsed cannot be null");
+        this.modulesUsed = Preconditions.checkNotNull(modulesUsed, "modulesUsed");
     }
 
     @Override
@@ -92,7 +94,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
 
     @Override
     public void setModulesFailed(List<String> modulesFailed) {
-        this.modulesFailed = Objects.requireNonNull(modulesFailed, "modulesFailed cannot be null");
+        this.modulesFailed = Preconditions.checkNotNull(modulesFailed, "modulesFailed");
     }
 
     @Override
@@ -105,7 +107,7 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
 
     @Override
     public void setKeys(Map<String, Object> keys) {
-        this.keys = Objects.requireNonNull(keys, "keys cannot be null");
+        this.keys = Preconditions.checkNotNull(keys, "keys");
     }
 
     @Override
@@ -128,21 +130,25 @@ public class XodusSnapshot extends XodusDbo implements org.anvilpowered.datasync
             object.setProperty("server", server);
         }
         try {
-            object.setBlob("modulesUsed", new ByteArraySizedInputStream(Mappable.serializeUnsafe(getModulesUsed())));
+            object.setBlob("modulesUsed",
+                new ByteArraySizedInputStream(Mappable.serializeUnsafe(getModulesUsed())));
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            object.setBlob("modulesFailed", new ByteArraySizedInputStream(Mappable.serializeUnsafe(getModulesFailed())));
+            object.setBlob("modulesFailed",
+                new ByteArraySizedInputStream(Mappable.serializeUnsafe(getModulesFailed())));
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            object.setBlob("keys", new ByteArraySizedInputStream(Mappable.serializeUnsafe(getKeys())));
+            object.setBlob("keys",
+                new ByteArraySizedInputStream(Mappable.serializeUnsafe(getKeys())));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        object.setBlob("inventory", new ByteArraySizedInputStream(inventory));
+        object.setBlob("inventory",
+            new ByteArraySizedInputStream(inventory));
         return object;
     }
 

@@ -18,6 +18,7 @@
 
 package org.anvilpowered.datasync.common.model.member;
 
+import com.google.common.base.Preconditions;
 import org.anvilpowered.anvil.base.model.MongoDbo;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.bson.types.ObjectId;
@@ -25,7 +26,6 @@ import org.mongodb.morphia.annotations.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity("members")
@@ -55,7 +55,7 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
 
     @Override
     public void setSnapshotIds(List<ObjectId> snapshotIds) {
-        this.snapshotIds = Objects.requireNonNull(snapshotIds, "snapshotIds cannot be null");
+        this.snapshotIds = Preconditions.checkNotNull(snapshotIds, "snapshotIds");
     }
 
     @Override

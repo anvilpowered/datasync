@@ -55,7 +55,7 @@ import org.anvilpowered.datasync.common.snapshotoptimization.component.CommonSna
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
-@SuppressWarnings({"unchecked", "UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage"})
 public class CommonModule<
     TDataKey,
     TPlayer,
@@ -94,9 +94,11 @@ public class CommonModule<
             },
             new TypeToken<UserSerializerComponent<?, TUser, ?>>(getClass()) {
             },
-            new TypeToken<UserSerializerComponent<ObjectId, TUser, Datastore>>(getClass()) {
+            new TypeToken<UserSerializerComponent<
+                ObjectId, TUser, Datastore>>(getClass()) {
             },
-            new TypeToken<CommonUserSerializerComponent<ObjectId, TUser, TPlayer, TDataKey, Datastore>>(getClass()) {
+            new TypeToken<CommonUserSerializerComponent<
+                ObjectId, TUser, TPlayer, TDataKey, Datastore>>(getClass()) {
             },
             Names.named("mongodb")
         );
@@ -106,9 +108,11 @@ public class CommonModule<
             },
             new TypeToken<UserSerializerComponent<?, TUser, ?>>(getClass()) {
             },
-            new TypeToken<UserSerializerComponent<EntityId, TUser, PersistentEntityStore>>(getClass()) {
+            new TypeToken<UserSerializerComponent<
+                EntityId, TUser, PersistentEntityStore>>(getClass()) {
             },
-            new TypeToken<CommonUserSerializerComponent<EntityId, TUser, TPlayer, TDataKey, PersistentEntityStore>>(getClass()) {
+            new TypeToken<CommonUserSerializerComponent<
+                EntityId, TUser, TPlayer, TDataKey, PersistentEntityStore>>(getClass()) {
             },
             Names.named("xodus")
         );
@@ -116,7 +120,8 @@ public class CommonModule<
         be.bind(
             new TypeToken<UserSerializerManager<TUser, TString>>(getClass()) {
             },
-            new TypeToken<CommonUserSerializerManager<TUser, TPlayer, TString, TCommandSource>>(getClass()) {
+            new TypeToken<CommonUserSerializerManager<
+                TUser, TPlayer, TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -125,9 +130,11 @@ public class CommonModule<
             },
             new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?>>(getClass()) {
             },
-            new TypeToken<SnapshotOptimizationService<ObjectId, TUser, TCommandSource, Datastore>>(getClass()) {
+            new TypeToken<SnapshotOptimizationService<
+                ObjectId, TUser, TCommandSource, Datastore>>(getClass()) {
             },
-            new TypeToken<CommonSnapshotOptimizationService<ObjectId, TUser, TPlayer, TCommandSource, TDataKey, Datastore>>(getClass()) {
+            new TypeToken<CommonSnapshotOptimizationService<
+                ObjectId, TUser, TPlayer, TCommandSource, TDataKey, Datastore>>(getClass()) {
             },
             Names.named("mongodb")
         );
@@ -137,17 +144,22 @@ public class CommonModule<
             },
             new TypeToken<SnapshotOptimizationService<?, TUser, TCommandSource, ?>>(getClass()) {
             },
-            new TypeToken<SnapshotOptimizationService<EntityId, TUser, TCommandSource, PersistentEntityStore>>(getClass()) {
+            new TypeToken<SnapshotOptimizationService<
+                EntityId, TUser, TCommandSource, PersistentEntityStore>>(getClass()) {
             },
-            new TypeToken<CommonSnapshotOptimizationService<EntityId, TUser, TPlayer, TCommandSource, TDataKey, PersistentEntityStore>>(getClass()) {
+            new TypeToken<CommonSnapshotOptimizationService<
+                EntityId, TUser, TPlayer, TCommandSource, TDataKey, PersistentEntityStore>>(
+                getClass()) {
             },
             Names.named("xodus")
         );
 
         be.bind(
-            new TypeToken<SnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
+            new TypeToken<SnapshotOptimizationManager<
+                TUser, TString, TCommandSource>>(getClass()) {
             },
-            new TypeToken<CommonSnapshotOptimizationManager<TUser, TString, TCommandSource>>(getClass()) {
+            new TypeToken<CommonSnapshotOptimizationManager<
+                TUser, TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -156,7 +168,7 @@ public class CommonModule<
             },
             new TypeToken<MemberRepository<?, ?>>(getClass()) {
             },
-            new TypeToken<MemberRepository<ObjectId,  Datastore>>(getClass()) {
+            new TypeToken<MemberRepository<ObjectId, Datastore>>(getClass()) {
             },
             new TypeToken<CommonMongoMemberRepository<TDataKey>>(getClass()) {
             },
@@ -178,7 +190,8 @@ public class CommonModule<
         be.bind(
             new TypeToken<MemberManager<TString>>(getClass()) {
             },
-            new TypeToken<CommonMemberManager<TUser, TPlayer, TString, TCommandSource>>(getClass()) {
+            new TypeToken<CommonMemberManager<
+                TUser, TPlayer, TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -199,7 +212,8 @@ public class CommonModule<
             },
             new TypeToken<SnapshotRepository<?, TDataKey, ?>>(getClass()) {
             },
-            new TypeToken<SnapshotRepository<EntityId, TDataKey, PersistentEntityStore>>(getClass()) {
+            new TypeToken<SnapshotRepository<
+                EntityId, TDataKey, PersistentEntityStore>>(getClass()) {
             },
             new TypeToken<CommonXodusSnapshotRepository<TDataKey>>(getClass()) {
             },

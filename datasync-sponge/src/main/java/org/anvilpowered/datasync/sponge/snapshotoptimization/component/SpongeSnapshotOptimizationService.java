@@ -45,7 +45,8 @@ import java.util.concurrent.CompletableFuture;
 public class SpongeSnapshotOptimizationService<
     TKey,
     TDataStore>
-    extends CommonSnapshotOptimizationService<TKey, User, Player, CommandSource, Key<?>, TDataStore> {
+    extends CommonSnapshotOptimizationService<
+    TKey, User, Player, CommandSource, Key<?>, TDataStore> {
 
     @Inject
     protected PluginInfo<Text> pluginInfo;
@@ -54,7 +55,10 @@ public class SpongeSnapshotOptimizationService<
     protected PluginContainer pluginContainer;
 
     @Inject
-    public SpongeSnapshotOptimizationService(Registry registry, DataStoreContext<TKey, TDataStore> dataStoreContext) {
+    public SpongeSnapshotOptimizationService(
+        Registry registry,
+        DataStoreContext<TKey, TDataStore> dataStoreContext
+    ) {
         super(registry, dataStoreContext);
     }
 
@@ -67,7 +71,8 @@ public class SpongeSnapshotOptimizationService<
 
     @Override
     protected void sendError(final CommandSource source, final String message) {
-        sendMessageToSourceAndConsole(source, Text.of(pluginInfo.getPrefix(), TextColors.RED, message));
+        sendMessageToSourceAndConsole(source,
+            Text.of(pluginInfo.getPrefix(), TextColors.RED, message));
     }
 
     @Override
@@ -75,13 +80,19 @@ public class SpongeSnapshotOptimizationService<
         Task.builder().execute(runnable).submit(pluginContainer);
     }
 
-    private CompletableFuture<Boolean> optimize(final User user, final CommandSource source, final String name) {
-        if (lockedPlayers.contains(user.getUniqueId())) return CompletableFuture.completedFuture(false);
-        return memberRepository.getSnapshotIdsForUser(user.getUniqueId()).thenApplyAsync(snapshotIds -> optimizeFull(snapshotIds, user.getUniqueId(), source, name).join());
+    private CompletableFuture<Boolean> optimize(final User user, final CommandSource source,
+                                                final String name) {
+        if (lockedPlayers.contains(user.getUniqueId())) {
+            return CompletableFuture.completedFuture(false);
+        }
+        return memberRepository.getSnapshotIdsForUser(user.getUniqueId()).thenApplyAsync(ids ->
+            optimizeFull(ids, user.getUniqueId(), source, name).join()
+        );
     }
 
     @Override
-    public boolean optimize(final Collection<? extends User> users, final CommandSource source, final String name) {
+    public boolean optimize(final Collection<? extends User> users, final CommandSource source,
+                            final String name) {
         if (isOptimizationTaskRunning()) {
             return false;
         }
@@ -95,7 +106,12 @@ public class SpongeSnapshotOptimizationService<
                 }
             }
         }).thenAcceptAsync(v -> {
-            printOptimizationFinished(source, getSnapshotsDeleted(), getSnapshotsUploaded(), getMembersCompleted());
+            printOptimizationFinished(
+                source,
+                getSnapshotsDeleted(),
+                getSnapshotsUploaded(),
+                getMembersCompleted()
+            );
             resetCounters();
             stopOptimizationTask();
         });
@@ -116,7 +132,8 @@ public class SpongeSnapshotOptimizationService<
                 if (!optionalMember.isPresent()) continue;
                 Member<TKey> member = optionalMember.get();
                 if (!lockedPlayers.contains(member.getUserUUID())) {
-                    optimizeFull(member.getSnapshotIds(), member.getUserUUID(), source, "Manual").join();
+                    optimizeFull(member.getSnapshotIds(), member.getUserUUID(), source, "Manual")
+                        .join();
                 }
                 incrementCompleted();
 
@@ -125,17 +142,29 @@ public class SpongeSnapshotOptimizationService<
                 }
             }
         }).thenAcceptAsync(v -> {
-            printOptimizationFinished(source, getSnapshotsDeleted(), getSnapshotsUploaded(), getMembersCompleted());
+            printOptimizationFinished(
+                source,
+                getSnapshotsDeleted(),
+                getSnapshotsUploaded(),
+                getMembersCompleted()
+            );
             resetCounters();
             stopOptimizationTask();
         });
         return true;
     }
 
-    private void printOptimizationFinished(final CommandSource source, final int snapshotsDeleted, final int snapshotsUploaded, final int membersCompleted) {
-        String snapshotsDeletedString = snapshotsDeleted == 1 ? " snapshot from " : " snapshots from ";
-        String snapshotsUploadedString = snapshotsUploaded == 1 ? " snapshot" : " snapshots";
-        String memberString = membersCompleted == 1 ? " user!" : " users!";
-        source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW, "Optimization complete! Uploaded ", snapshotsUploaded, snapshotsUploadedString, " and removed ", snapshotsDeleted, snapshotsDeletedString, membersCompleted, memberString));
+    private void printOptimizationFinished(CommandSource source, int snapshotsDeleted,
+                                           int snapshotsUploaded, int membersCompleted) {
+        String snapshotsDeletedString = snapshotsDeleted == 1
+                                        ? " snapshot from " : " snapshots from ";
+        String snapshotsUploadedString = snapshotsUploaded == 1
+                                         ? " snapshot" : " snapshots";
+        String memberString = membersCompleted == 1
+                              ? " user!" : " users!";
+        source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW,
+            "Optimization complete! Uploaded ", snapshotsUploaded, snapshotsUploadedString,
+            " and removed ", snapshotsDeleted, snapshotsDeletedString, membersCompleted,
+            memberString));
     }
 }
