@@ -38,7 +38,7 @@ import org.spongepowered.api.plugin.Plugin;
     version = DataSyncPluginInfo.version,
     dependencies = @Dependency(
         id = "anvil",
-        version = "0.2-SNAPSHOT"
+        version = "0.2"
     ),
     description = DataSyncPluginInfo.description,
     url = DataSyncPluginInfo.url,
