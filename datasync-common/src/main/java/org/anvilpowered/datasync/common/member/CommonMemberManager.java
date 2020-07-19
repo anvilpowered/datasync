@@ -36,8 +36,10 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class CommonMemberManager<
     TUser,
@@ -120,46 +122,37 @@ public class CommonMemberManager<
             ).build();
     }
 
+    private TString getNavButton(String label, String hover, String hoverCap, String userName, UUID userUUID,
+                                 Supplier<CompletableFuture<? extends Optional<? extends Snapshot<?>>>> snapshot) {
+        return textService.builder()
+            .aqua().append(label)
+            .onHoverShowText(textService.builder().aqua().append(hoverCap))
+            .onClickExecuteCallback(cs -> snapshot.get()
+                .thenAcceptAsync(o -> {
+                    if (o.isPresent()) {
+                        textService.send(info(userUUID, o.get()), cs);
+                    } else {
+                        textService.builder().red()
+                            .append(pluginInfo.getPrefix(), "No ", hover, " snapshot exists for ", userName, "!")
+                            .sendTo(cs);
+                    }
+                })
+            ).build();
+    }
+
     private TString getSnapshotNavigation(UUID userUUID, String userName, Instant created) {
         return textService.builder()
-            .append(textService.builder()
-                .aqua().append("[ < ]")
-                .onHoverShowText(textService.builder().aqua().append("Previous"))
-                .onClickExecuteCallback(cs -> getPrimaryComponent()
-                    .getPreviousForUser(userUUID, created)
-                    .thenAcceptAsync(o -> {
-                        if (o.isPresent()) {
-                            textService.send(info(userUUID, o.get()), cs);
-                        } else {
-                            textService.builder().red()
-                                .append(pluginInfo.getPrefix(),
-                                    "No previous snapshot exists for ", userName, "!"
-                                ).sendTo(cs);
-                        }
-                    }))
-            ).append(" ")
+            .append(getNavButton("[ < ]", "previous", "Previous", userName, userUUID,
+                () -> getPrimaryComponent().getPreviousForUser(userUUID, created)))
+            .append(" ")
             .append(textService.builder()
                 .aqua().append("[ List ]")
                 .onHoverShowText(textService.builder().aqua().append("Go back to list"))
                 .onClickRunCommand("/sync snapshot list " + userName)
             ).append(" ")
-            .append(
-                textService.builder()
-                    .aqua().append("[ > ]")
-                    .onHoverShowText(textService.builder().aqua().append("Next"))
-                    .onClickExecuteCallback(cs -> getPrimaryComponent()
-                        .getNextForUser(userUUID, created)
-                        .thenAcceptAsync(o -> {
-                            if (o.isPresent()) {
-                                textService.send(info(userUUID, o.get()), cs);
-                            } else {
-                                textService.builder().red()
-                                    .append(pluginInfo.getPrefix(),
-                                        "No next snapshot exists for ", userName, "!"
-                                    ).sendTo(cs);
-                            }
-                        }))
-            ).build();
+            .append(getNavButton("[ > ]", "next", "Next", userName, userUUID,
+                () -> getPrimaryComponent().getPreviousForUser(userUUID, created)))
+            .build();
     }
 
     private TString getInfoBar(String userName) {
