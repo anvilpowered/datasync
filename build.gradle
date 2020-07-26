@@ -1,6 +1,6 @@
 allprojects {
     group "org.anvilpowered"
-    version "0.7.0"
+    version "0.8.0-SNAPSHOT"
 }
 
 subprojects {
@@ -15,7 +15,7 @@ subprojects {
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
-        implementation 'org.anvilpowered:anvil-api:0.2'
+        implementation 'org.anvilpowered:anvil-api:0.3-SNAPSHOT'
     }
     test {
         useJUnitPlatform()
