@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.anvil.api.util.FreezePlayerService;
 import org.anvilpowered.datasync.api.data.key.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.sponge.command.SpongeSyncLockCommand;
@@ -46,6 +47,9 @@ public class SpongePlayerListener {
 
     @Inject
     private UserSerializerManager<User, Text> userSerializerManager;
+
+    @Inject
+    private FreezePlayerService freezePlayerService;
 
     private boolean joinSerializationEnabled;
     private boolean disconnectSerializationEnabled;
@@ -83,8 +87,10 @@ public class SpongePlayerListener {
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent, @Root Player player) {
         if (joinSerializationEnabled) {
+            freezePlayerService.freeze(player.getUniqueId());
             userSerializerManager.deserialize(player, "Join")
-                .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
+                .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage)
+                .thenRunAsync(() -> freezePlayerService.unFreeze(player.getUniqueId()));
         }
     }
 
