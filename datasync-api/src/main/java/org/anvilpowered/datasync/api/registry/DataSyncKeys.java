@@ -46,14 +46,14 @@ public final class DataSyncKeys {
     public static final Key<Boolean> DESERIALIZE_ON_JOIN
         = new Key<Boolean>("DESERIALIZE_ON_JOIN", false) {
     };
+    public static final Key<Integer> DESERIALIZE_ON_JOIN_DELAY_MILLIS
+        = new Key<Integer>("DESERIALIZE_ON_JOIN_WAIT_MILLIS", 0) {
+    };
     public static final Key<Boolean> SERIALIZE_ON_DEATH
         = new Key<Boolean>("SERIALIZE_ON_DEATH", true) {
     };
     public static final Key<Boolean> SERIALIZE_ON_DISCONNECT
         = new Key<Boolean>("SERIALIZE_ON_DISCONNECT", true) {
-    };
-    public static final Key<Boolean> SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN
-        = new Key<Boolean>("SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN", false) {
     };
     public static final Key<Integer> SNAPSHOT_MIN_COUNT
         = new Key<Integer>("SNAPSHOT_MIN_COUNT", 5) {
@@ -104,7 +104,7 @@ public final class DataSyncKeys {
             .register(DESERIALIZE_ON_JOIN)
             .register(SERIALIZE_ON_DEATH)
             .register(SERIALIZE_ON_DISCONNECT)
-            .register(SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN)
+            .register(DESERIALIZE_ON_JOIN_DELAY_MILLIS)
             .register(SNAPSHOT_MIN_COUNT)
             .register(SNAPSHOT_OPTIMIZATION_STRATEGY)
             .register(SNAPSHOT_UPLOAD_INTERVAL_MINUTES)

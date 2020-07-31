@@ -56,9 +56,15 @@ public interface UserSerializerManager<
 
     CompletableFuture<TString> serialize(TUser user);
 
+    CompletableFuture<TString> serializeDisconnect(TUser user);
+
+    CompletableFuture<TString> deserialize(TUser user, String event, CompletableFuture<Void> waitFuture);
+
     CompletableFuture<TString> deserialize(TUser user, String event);
 
     CompletableFuture<TString> deserialize(TUser user);
+
+    CompletableFuture<TString> deserializeJoin(TUser user);
 
     CompletableFuture<TString> restore(UUID userUUID, @Nullable String snapshot);
 }

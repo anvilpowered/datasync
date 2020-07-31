@@ -61,7 +61,7 @@ public class SpongeUserSerializerComponent<
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> deserialize(final User user) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> deserialize(User user, CompletableFuture<Void> waitFuture) {
         snapshotOptimizationManager.getPrimaryComponent().addLockedPlayer(user.getUniqueId());
         // save current user data
         Snapshot<TKey> previousState = snapshotRepository.generateEmpty();
@@ -70,32 +70,18 @@ public class SpongeUserSerializerComponent<
             .contains("datasync:inventory")) {
             user.getInventory().clear();
         }
-        CompletableFuture<Void> waitForSnapshot;
-        if (registry.getOrDefault(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN)) {
-            waitForSnapshot = CompletableFuture.runAsync(() -> {
-//                while (true){
-//                    if (!memberRepository.getNext().map(member -> {
-//                        System.out.println(member.userUUID);
-//                        return member.userUUID.equals(user.getUniqueId());
-//                    }).orElse(false))
-//                        break;
-//                }
-                try {
-                    Thread.sleep(7000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            waitForSnapshot = CompletableFuture.completedFuture(null);
-        }
-        return waitForSnapshot
+        return waitFuture
             .thenApplyAsync(v -> memberRepository.getLatestSnapshotForUser(user.getUniqueId())
                 .exceptionally(e -> {
                     e.printStackTrace();
                     return Optional.empty();
                 })
                 .thenApplyAsync(optionalSnapshot -> {
+                    // make sure user is still online
+                    if (!user.isOnline()) {
+                        logger.warn("{} has logged off. Skipping deserialization!", user.getName());
+                        return Optional.<Snapshot<TKey>>empty();
+                    }
                     if (!optionalSnapshot.isPresent()) {
                         logger.warn("Could not find snapshot for " + user.getName() + "! " +
                             "Check your DB configuration! Rolling back user.");

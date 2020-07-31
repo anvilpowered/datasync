@@ -34,6 +34,7 @@ import org.anvilpowered.datasync.api.member.MemberRepository;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerComponent;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
+import org.anvilpowered.datasync.api.serializer.user.UserTransitCache;
 import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.anvilpowered.datasync.api.snapshot.SnapshotRepository;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
@@ -47,6 +48,7 @@ import org.anvilpowered.datasync.common.registry.CommonConfigurationService;
 import org.anvilpowered.datasync.common.registry.CommonRegistry;
 import org.anvilpowered.datasync.common.serializer.user.CommonUserSerializerComponent;
 import org.anvilpowered.datasync.common.serializer.user.CommonUserSerializerManager;
+import org.anvilpowered.datasync.common.serializer.user.CommonUserTransitCache;
 import org.anvilpowered.datasync.common.snapshot.CommonMongoSnapshotRepository;
 import org.anvilpowered.datasync.common.snapshot.CommonSnapshotManager;
 import org.anvilpowered.datasync.common.snapshot.CommonXodusSnapshotRepository;
@@ -70,6 +72,8 @@ public class CommonModule<
         BindingExtensions be = Anvil.getBindingExtensions(binder());
 
         bind(SyncUtils.class).to(CommonSyncUtils.class);
+
+        bind(UserTransitCache.class).to(CommonUserTransitCache.class);
 
         bind(ConfigurationService.class).to(CommonConfigurationService.class);
 

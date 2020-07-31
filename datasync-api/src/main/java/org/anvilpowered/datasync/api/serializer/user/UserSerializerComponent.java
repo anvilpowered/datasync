@@ -34,5 +34,5 @@ public interface UserSerializerComponent<
 
     CompletableFuture<Optional<Snapshot<TKey>>> serialize(TUser user, String name);
 
-    CompletableFuture<Optional<Snapshot<TKey>>> deserialize(TUser user);
+    CompletableFuture<Optional<Snapshot<TKey>>> deserialize(TUser user, CompletableFuture<Void> waitFuture);
 }

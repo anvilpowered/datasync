@@ -83,7 +83,7 @@ public class SpongePlayerListener {
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join joinEvent, @Root Player player) {
         if (joinSerializationEnabled) {
-            userSerializerManager.deserialize(player, "Join")
+            userSerializerManager.deserializeJoin(player)
                 .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }
@@ -93,7 +93,7 @@ public class SpongePlayerListener {
                                    @Root Player player) {
         SpongeSyncLockCommand.lockPlayer(player);
         if (disconnectSerializationEnabled) {
-            userSerializerManager.serialize(player, "Disconnect")
+            userSerializerManager.serializeDisconnect(player)
                 .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }

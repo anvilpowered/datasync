@@ -19,6 +19,8 @@
 package org.anvilpowered.datasync.common.serializer.user;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.entity.RestrictionCriteria;
+import org.anvilpowered.anvil.api.entity.RestrictionService;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.TextService;
@@ -27,10 +29,14 @@ import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.anvil.base.datastore.BaseManager;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerComponent;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
+import org.anvilpowered.datasync.api.serializer.user.UserTransitCache;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,6 +63,12 @@ public class CommonUserSerializerManager<
 
     @Inject
     protected UserService<TUser, TPlayer> userService;
+
+    @Inject
+    private UserTransitCache userTransitCache;
+
+    @Inject
+    private RestrictionService restrictionService;
 
     @Inject
     protected TimeFormatService timeFormatService;
@@ -143,8 +155,23 @@ public class CommonUserSerializerManager<
     }
 
     @Override
-    public CompletableFuture<TString> deserialize(TUser user, String event) {
-        return getPrimaryComponent().deserialize(user).thenApplyAsync(optionalSnapshot -> {
+    public CompletableFuture<TString> serializeDisconnect(TUser user) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (userTransitCache.isJoining(userService.getUUID(user))) {
+                return textService.builder()
+                    .append(pluginInfo.getPrefix())
+                    .red().append("User ")
+                    .gold().append(userService.getUserName(user))
+                    .red().append(" left during join deserialization. Skipping upload to prevent data loss!")
+                    .build();
+            }
+            return serialize(user, "Disconnect").join();
+        });
+    }
+
+    @Override
+    public CompletableFuture<TString> deserialize(TUser user, String event, CompletableFuture<Void> waitFuture) {
+        return getPrimaryComponent().deserialize(user, waitFuture).thenApplyAsync(optionalSnapshot -> {
             if (optionalSnapshot.isPresent()) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
@@ -164,8 +191,63 @@ public class CommonUserSerializerManager<
     }
 
     @Override
+    public CompletableFuture<TString> deserialize(TUser user, String event) {
+        return deserialize(user, event, CompletableFuture.completedFuture(null));
+    }
+
+    @Override
     public CompletableFuture<TString> deserialize(TUser user) {
         return deserialize(user, "N/A");
+    }
+
+    @Override
+    public CompletableFuture<TString> deserializeJoin(TUser user) {
+        final int delay = registry.getOrDefault(DataSyncKeys.DESERIALIZE_ON_JOIN_DELAY_MILLIS);
+        if (delay <= 0) {
+            return deserialize(user, "Join");
+        }
+        final Optional<TPlayer> optionalPlayer = userService.getPlayer(user);
+        if (!optionalPlayer.isPresent()) {
+            return CompletableFuture.completedFuture(textService.builder()
+                .append(pluginInfo.getPrefix())
+                .red().append("User ")
+                .gold().append(userService.getUserName(user))
+                .red().append(" is not online!")
+                .build());
+        }
+        return CompletableFuture.supplyAsync(() -> {
+            final UUID userUUID = userService.getUUID(user);
+            userTransitCache.joinStart(userUUID);
+            final DecimalFormat df = new DecimalFormat("#.#");
+            df.setRoundingMode(RoundingMode.CEILING);
+            final String formattedDelay = df.format((double) delay / 1000d);
+            final TPlayer player = optionalPlayer.get();
+            restrictionService.put(
+                user,
+                RestrictionCriteria.all()
+            );
+            textService.builder()
+                .append(pluginInfo.getPrefix())
+                .yellow().append("You have been frozen. Your data will be downloaded in ")
+                .gold().append(formattedDelay)
+                .yellow().append(" seconds!")
+                .sendTo((TCommandSource) player);
+            final CompletableFuture<Void> waitFuture = CompletableFuture.runAsync(() -> {
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            final TString result = deserialize(user, "Join", waitFuture).join();
+            restrictionService.remove(player);
+            textService.builder()
+                .append(pluginInfo.getPrefix())
+                .green().append("You have been unfrozen!")
+                .sendTo((TCommandSource) player);
+            userTransitCache.joinEnd(userUUID);
+            return result;
+        });
     }
 
     @Override

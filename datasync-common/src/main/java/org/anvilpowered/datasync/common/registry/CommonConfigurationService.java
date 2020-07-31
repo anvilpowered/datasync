@@ -37,9 +37,9 @@ public class CommonConfigurationService extends BaseConfigurationService {
         withDefault();
         setName(DataSyncKeys.SERIALIZE_ENABLED_SERIALIZERS, "serialize.enabledSerializers");
         setName(DataSyncKeys.DESERIALIZE_ON_JOIN, "serialize.deserializeOnJoin");
+        setName(DataSyncKeys.DESERIALIZE_ON_JOIN_DELAY_MILLIS, "serialize.deserializeOnJoinDelayMillis");
         setName(DataSyncKeys.SERIALIZE_ON_DEATH, "serialize.serializeOnDeath");
         setName(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "serialize.serializeOnDisconnect");
-        setName(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN, "serialize.waitForSnapshotOnJoin");
         setName(DataSyncKeys.SNAPSHOT_MIN_COUNT, "snapshot.minCount");
         setName(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY, "snapshot.optimizationStrategy");
         setName(DataSyncKeys.SNAPSHOT_UPLOAD_INTERVAL_MINUTES, "snapshot.uploadInterval");
@@ -48,12 +48,20 @@ public class CommonConfigurationService extends BaseConfigurationService {
                 "\nAvailable: datasync:experience, datasync:gameMode, datasync:health, datasync:hunger, datasync:inventory"
         );
         setDescription(DataSyncKeys.DESERIALIZE_ON_JOIN, "\nWhether DataSync should deserialize players on join");
+        setDescription(DataSyncKeys.DESERIALIZE_ON_JOIN_DELAY_MILLIS,
+            "\nThe number of milliseconds DataSync should wait before downloading a snapshot on join."
+                + "\nNote: This only takes effect if deserializeOnJoin=true"
+                + "\nOnly set this for multi-server environments like Velocity or Bungeecord."
+                + "\n- This is necessary when the disconnect snapshot is uploaded too late."
+                + "\n- Player inventories will be frozen until the snapshot is downloaded to prevent item loss."
+                + "\n- A value around 5000-10000 should suffice for most heavy modpacks. Adjust as required."
+                + "\nAdditional notes:"
+                + "\n- If players are consistently losing inventories on join, increase this number."
+                + "\n- If players are consistently having to wait on join, decrease this number."
+
+        );
         setDescription(DataSyncKeys.SERIALIZE_ON_DEATH, "\nWhether DataSync should serialize players to DB on death");
         setDescription(DataSyncKeys.SERIALIZE_ON_DISCONNECT, "\nWhether DataSync should serialize players to DB on disconnect");
-        setDescription(DataSyncKeys.SERIALIZE_WAIT_FOR_SNAPSHOT_ON_JOIN,
-            "\nWhether DataSync should wait for snapshots to be uploaded before downloading them." +
-                "\nNote: this option is highly recommended if you are running a multi-server environment like Velocity"
-        );
         setDescription(DataSyncKeys.SNAPSHOT_MIN_COUNT, "\nMinimum number of snapshots to keep before deleting any");
         setDescription(DataSyncKeys.SNAPSHOT_OPTIMIZATION_STRATEGY,
             "\nSnapshot optimization strategy. Format:\n" +
