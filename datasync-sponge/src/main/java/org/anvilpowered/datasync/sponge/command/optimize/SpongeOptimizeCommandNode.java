@@ -1,8 +1,8 @@
 package org.anvilpowered.datasync.sponge.command.optimize;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.datasync.api.data.key.DataSyncKeys;
+import org.anvilpowered.anvil.api.registry.Registry;
+import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.common.command.optimize.CommonOptimizeCommandNode;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandSource;

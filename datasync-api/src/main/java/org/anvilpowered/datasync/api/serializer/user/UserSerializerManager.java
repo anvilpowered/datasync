@@ -19,11 +19,9 @@
 package org.anvilpowered.datasync.api.serializer.user;
 
 import org.anvilpowered.anvil.api.datastore.Manager;
-import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 

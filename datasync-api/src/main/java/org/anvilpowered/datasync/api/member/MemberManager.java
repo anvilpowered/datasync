@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.api.member;
 
 import org.anvilpowered.anvil.api.datastore.Manager;
-import org.anvilpowered.datasync.api.member.repository.MemberRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.checkerframework.checker.nullness.qual.Nullable;
 

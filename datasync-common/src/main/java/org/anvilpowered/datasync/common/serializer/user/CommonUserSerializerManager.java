@@ -19,16 +19,16 @@
 package org.anvilpowered.datasync.common.serializer.user;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.anvil.base.datastore.BaseManager;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+import org.anvilpowered.datasync.api.serializer.user.UserSerializerComponent;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
-import org.anvilpowered.datasync.api.serializer.user.component.UserSerializerComponent;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;

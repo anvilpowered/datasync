@@ -20,11 +20,11 @@ package org.anvilpowered.datasync.sponge.serializer;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.datasync.common.serializer.CommonSnapshotSerializer;
 import org.anvilpowered.datasync.sponge.DataSyncSponge;
-import org.anvilpowered.datasync.sponge.events.SerializerInitializationEvent;
+import org.anvilpowered.datasync.sponge.event.SerializerInitializationEvent;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;

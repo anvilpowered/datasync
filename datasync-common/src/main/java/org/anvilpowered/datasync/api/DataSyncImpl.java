@@ -4,8 +4,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.datasync.api.keys.DataKeyService;
-import org.anvilpowered.datasync.api.tasks.SerializationTaskService;
+import org.anvilpowered.datasync.api.key.DataKeyService;
+import org.anvilpowered.datasync.api.task.SerializationTaskService;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
 
 @SuppressWarnings("UnstableApiUsage")

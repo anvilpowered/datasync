@@ -23,7 +23,7 @@ import com.google.inject.Injector;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.datasync.api.DataSyncImpl;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
-import org.anvilpowered.datasync.sponge.listeners.SpongePlayerListener;
+import org.anvilpowered.datasync.sponge.listener.SpongePlayerListener;
 import org.anvilpowered.datasync.sponge.module.SpongeModule;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;

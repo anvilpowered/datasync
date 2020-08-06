@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.api.snapshot;
 
 import org.anvilpowered.anvil.api.datastore.Manager;
-import org.anvilpowered.datasync.api.snapshot.repository.SnapshotRepository;
 
 public interface SnapshotManager<TDataKey> extends Manager<SnapshotRepository<?, TDataKey, ?>> {
 

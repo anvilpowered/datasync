@@ -20,9 +20,9 @@ package org.anvilpowered.datasync.sponge.task;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.datasync.common.tasks.CommonSerializationTaskService;
+import org.anvilpowered.anvil.api.registry.Registry;
+import org.anvilpowered.datasync.common.task.CommonSerializationTaskService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.User;

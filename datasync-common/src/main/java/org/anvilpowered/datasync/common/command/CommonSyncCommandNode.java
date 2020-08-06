@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.command.CommandNode;
 import org.anvilpowered.anvil.api.command.CommandService;
-import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
 
 import java.util.Arrays;
