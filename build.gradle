@@ -21,6 +21,6 @@ subprojects {
         useJUnitPlatform()
     }
     if (project.hasProperty("buildNumber") && version.contains("-SNAPSHOT")) {
-        modVersion = modVersion.replace("-SNAPSHOT", "-RC${buildNumber}")
+        version = version.replace("-SNAPSHOT", "-RC${buildNumber}")
     }
 }
