@@ -96,9 +96,14 @@ public class CommonUserSerializerManager<
 
         ConcurrentLinkedQueue<TUser> successful = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<TUser> unsuccessful = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<TUser> joining = new ConcurrentLinkedQueue<>();
         CompletableFuture<TString> result = new CompletableFuture<>();
 
         for (TUser user : users) {
+            if (userTransitCache.isJoining(userService.getUUID(user))) {
+                joining.add(user);
+                continue;
+            }
             getPrimaryComponent().serialize(user, "Manual").thenAcceptAsync(os -> {
                 if (os.isPresent()) {
                     successful.add(user);
@@ -119,6 +124,13 @@ public class CommonUserSerializerManager<
                             .collect(Collectors.joining(", "));
                         builder.red()
                             .append("The following players were unsuccessfully serialized:\n")
+                            .green().append(s);
+                    }
+                    if (!joining.isEmpty()) {
+                        String s = joining.stream().map(userService::getUserName)
+                            .collect(Collectors.joining(", "));
+                        builder.red()
+                            .append("The following players were joining and not serialized to prevent data loss:\n")
                             .green().append(s);
                     }
                     result.complete(builder.build());
@@ -155,17 +167,19 @@ public class CommonUserSerializerManager<
     }
 
     @Override
-    public CompletableFuture<TString> serializeDisconnect(TUser user) {
+    public CompletableFuture<TString> serializeSafe(TUser user, String name) {
         return CompletableFuture.supplyAsync(() -> {
             if (userTransitCache.isJoining(userService.getUUID(user))) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
-                    .red().append("User ")
+                    .red().append("Prevented ")
+                    .gold().append(name)
+                    .red().append(" serialization for ")
                     .gold().append(userService.getUserName(user))
-                    .red().append(" left during join deserialization. Skipping upload to prevent data loss!")
+                    .red().append(". Skipping upload to prevent data loss!")
                     .build();
             }
-            return serialize(user, "Disconnect").join();
+            return serialize(user, name).join();
         });
     }
 

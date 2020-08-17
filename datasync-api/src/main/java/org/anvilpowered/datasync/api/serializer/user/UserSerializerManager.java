@@ -56,7 +56,7 @@ public interface UserSerializerManager<
 
     CompletableFuture<TString> serialize(TUser user);
 
-    CompletableFuture<TString> serializeDisconnect(TUser user);
+    CompletableFuture<TString> serializeSafe(TUser user, String name);
 
     CompletableFuture<TString> deserialize(TUser user, String event, CompletableFuture<Void> waitFuture);
 

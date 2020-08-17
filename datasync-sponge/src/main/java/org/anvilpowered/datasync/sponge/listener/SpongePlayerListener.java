@@ -93,7 +93,7 @@ public class SpongePlayerListener {
                                    @Root Player player) {
         SpongeSyncLockCommand.lockPlayer(player);
         if (disconnectSerializationEnabled) {
-            userSerializerManager.serializeDisconnect(player)
+            userSerializerManager.serializeSafe(player, "Disconnect")
                 .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }
@@ -102,7 +102,7 @@ public class SpongePlayerListener {
     public void onPlayerDeath(DestructEntityEvent.Death deathEvent,
                               @Getter("getTargetEntity") Player player) {
         if (deathSerializationEnabled) {
-            userSerializerManager.serialize(player, "Death")
+            userSerializerManager.serializeSafe(player, "Death")
                 .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
         }
     }

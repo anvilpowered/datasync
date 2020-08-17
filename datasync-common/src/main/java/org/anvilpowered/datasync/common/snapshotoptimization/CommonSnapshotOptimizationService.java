@@ -27,6 +27,7 @@ import org.anvilpowered.datasync.api.member.MemberRepository;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
 import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerComponent;
+import org.anvilpowered.datasync.api.serializer.user.UserTransitCache;
 import org.anvilpowered.datasync.api.snapshot.SnapshotRepository;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationService;
 
@@ -62,6 +63,9 @@ public abstract class CommonSnapshotOptimizationService<
 
     @Inject
     protected UserSerializerComponent<TKey, TUser, TDataStore> userSerializer;
+
+    @Inject
+    private UserTransitCache userTransitCache;
 
     @Inject
     protected SyncUtils syncUtils;
@@ -194,6 +198,10 @@ public abstract class CommonSnapshotOptimizationService<
             return CompletableFuture.completedFuture(false);
         }
         TUser user = (TUser) optionalPlayer.get();
+        if (userTransitCache.isJoining(userUUID)) {
+            sendError(source, "Skipped optimization for joining player " + userService.getUserName(user));
+            return CompletableFuture.completedFuture(false);
+        }
 
         CompletableFuture<Void> uploadFuture = new CompletableFuture<>();
 
