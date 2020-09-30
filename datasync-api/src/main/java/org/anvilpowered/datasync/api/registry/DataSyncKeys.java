@@ -19,84 +19,125 @@
 package org.anvilpowered.datasync.api.registry;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.reflect.TypeToken;
 import org.anvilpowered.anvil.api.registry.Key;
 import org.anvilpowered.anvil.api.registry.Keys;
+import org.anvilpowered.anvil.api.registry.TypeTokens;
 
-import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class DataSyncKeys {
+
+    public static final TypeToken<List<String>> LIST_STRING = new TypeToken<List<String>>() {
+    };
 
     private DataSyncKeys() {
         throw new AssertionError("**boss music** No instance for you!");
     }
 
-    public static final Key<List<String>> SERIALIZE_ENABLED_SERIALIZERS = new Key<List<String>>(
-        "SERIALIZE_ENABLED_SERIALIZERS",
-        ImmutableList.of(
-            "datasync:experience",
-            "datasync:gameMode",
-            "datasync:health",
-            "datasync:hunger",
-            "datasync:inventory"
-        )
-    ) {
-    };
+    public static final Key<List<String>> SERIALIZE_ENABLED_SERIALIZERS =
+        Key.builder(LIST_STRING)
+            .name("SERIALIZE_ENABLED_SERIALIZERS")
+            .fallback(ImmutableList.of(
+                "datasync:experience",
+                "datasync:gameMode",
+                "datasync:health",
+                "datasync:hunger",
+                "datasync:inventory"
+            ))
+            .build();
 
-    public static final Key<Boolean> DESERIALIZE_ON_JOIN
-        = new Key<Boolean>("DESERIALIZE_ON_JOIN", false) {
-    };
-    public static final Key<Integer> DESERIALIZE_ON_JOIN_DELAY_MILLIS
-        = new Key<Integer>("DESERIALIZE_ON_JOIN_WAIT_MILLIS", 0) {
-    };
-    public static final Key<Boolean> SERIALIZE_ON_DEATH
-        = new Key<Boolean>("SERIALIZE_ON_DEATH", true) {
-    };
-    public static final Key<Boolean> SERIALIZE_ON_DISCONNECT
-        = new Key<Boolean>("SERIALIZE_ON_DISCONNECT", true) {
-    };
-    public static final Key<Integer> SNAPSHOT_MIN_COUNT
-        = new Key<Integer>("SNAPSHOT_MIN_COUNT", 5) {
-    };
-    public static final Key<List<String>> SNAPSHOT_OPTIMIZATION_STRATEGY
-        = new Key<List<String>>("SNAPSHOT_OPTIMIZATION_STRATEGY", Arrays.asList("60:24", "1440:7")) {
-    };
-    public static final Key<Integer> SNAPSHOT_UPLOAD_INTERVAL_MINUTES
-        = new Key<Integer>("SNAPSHOT_UPLOAD_INTERVAL", 5) {
-    };
-    public static final Key<String> LOCK_COMMAND_PERMISSION
-        = new Key<String>("LOCK_COMMAND_PERMISSION", "datasync.lock") {
-    };
-    public static final Key<String> RELOAD_COMMAND_PERMISSION
-        = new Key<String>("RELOAD_COMMAND_PERMISSION", "datasync.reload") {
-    };
-    public static final Key<String> TEST_COMMAND_PERMISSION
-        = new Key<String>("TEST_COMMAND_PERMISSION", "datasync.test") {
-    };
-    public static final Key<String> SNAPSHOT_BASE_PERMISSION
-        = new Key<String>("SNAPSHOT_BASE_PERMISSION", "datasync.snapshot.base") {
-    };
-    public static final Key<String> SNAPSHOT_CREATE_PERMISSION
-        = new Key<String>("SNAPSHOT_CREATE_PERMISSION", "datasync.snapshot.create") {
-    };
-    public static final Key<String> SNAPSHOT_DELETE_PERMISSION
-        = new Key<String>("SNAPSHOT_DELETE_PERMISSION", "datasync.snapshot.delete") {
-    };
-    public static final Key<String> SNAPSHOT_RESTORE_PERMISSION
-        = new Key<String>("SNAPSHOT_RESTORE_PERMISSION", "datasync.snapshot.restore") {
-    };
-    public static final Key<String> SNAPSHOT_VIEW_EDIT_PERMISSION
-        = new Key<String>("SNAPSHOT_VIEW_EDIT_PERMISSION", "datasync.snapshot.view.edit") {
-    };
-    public static final Key<String> SNAPSHOT_VIEW_BASE_PERMISSION
-        = new Key<String>("SNAPSHOT_VIEW_BASE_PERMISSION", "datasync.snapshot.view.base") {
-    };
-    public static final Key<String> MANUAL_OPTIMIZATION_ALL_PERMISSION
-        = new Key<String>("MANUAL_OPTIMIZATION_ALL_PERMISSION", "datasync.optimize.all") {
-    };
-    public static final Key<String> MANUAL_OPTIMIZATION_BASE_PERMISSION
-        = new Key<String>("MANUAL_OPTIMIZATION_BASE_PERMISSION", "datasync.optimize.base") {
-    };
+    public static final Key<Boolean> DESERIALIZE_ON_JOIN =
+        Key.builder(TypeTokens.BOOLEAN)
+            .name("DESERIALIZE_ON_JOIN")
+            .fallback(false)
+            .build();
+    public static final Key<Integer> DESERIALIZE_ON_JOIN_DELAY_MILLIS =
+        Key.builder(TypeTokens.INTEGER)
+            .name("DESERIALIZE_ON_JOIN_WAIT_MILLIS")
+            .fallback(0)
+            .build();
+    public static final Key<Boolean> SERIALIZE_ON_DEATH =
+        Key.builder(TypeTokens.BOOLEAN)
+            .name("SERIALIZE_ON_DEATH")
+            .fallback(true)
+            .build();
+    public static final Key<Boolean> SERIALIZE_ON_DISCONNECT =
+        Key.builder(TypeTokens.BOOLEAN)
+            .name("SERIALIZE_ON_DISCONNECT")
+            .fallback(true)
+            .build();
+    public static final Key<Integer> SNAPSHOT_MIN_COUNT =
+        Key.builder(TypeTokens.INTEGER)
+            .name("SNAPSHOT_MIN_COUNT")
+            .fallback(5)
+            .build();
+    public static final Key<List<String>> SNAPSHOT_OPTIMIZATION_STRATEGY =
+        Key.builder(LIST_STRING)
+            .name("SNAPSHOT_OPTIMIZATION_STRATEGY")
+            .fallback(ImmutableList.of("60:24", "1440:7"))
+            .build();
+    public static final Key<Integer> SNAPSHOT_UPLOAD_INTERVAL_MINUTES =
+        Key.builder(TypeTokens.INTEGER)
+            .name("SNAPSHOT_UPLOAD_INTERVAL")
+            .fallback(5)
+            .build();
+    public static final Key<String> LOCK_COMMAND_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("LOCK_COMMAND_PERMISSION")
+            .fallback("datasync.lock")
+            .build();
+    public static final Key<String> RELOAD_COMMAND_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("RELOAD_COMMAND_PERMISSION")
+            .fallback("datasync.reload")
+            .build();
+    public static final Key<String> TEST_COMMAND_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("TEST_COMMAND_PERMISSION")
+            .fallback("datasync.test")
+            .build();
+    public static final Key<String> SNAPSHOT_BASE_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("SNAPSHOT_BASE_PERMISSION")
+            .fallback("datasync.snapshot.base")
+            .build();
+    public static final Key<String> SNAPSHOT_CREATE_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("SNAPSHOT_CREATE_PERMISSION")
+            .fallback("datasync.snapshot.create")
+            .build();
+    public static final Key<String> SNAPSHOT_DELETE_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("SNAPSHOT_DELETE_PERMISSION")
+            .fallback("datasync.snapshot.delete")
+            .build();
+    public static final Key<String> SNAPSHOT_RESTORE_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("SNAPSHOT_RESTORE_PERMISSION")
+            .fallback("datasync.snapshot.restore")
+            .build();
+    public static final Key<String> SNAPSHOT_VIEW_EDIT_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("SNAPSHOT_VIEW_EDIT_PERMISSION")
+            .fallback("datasync.snapshot.view.edit")
+            .build();
+    public static final Key<String> SNAPSHOT_VIEW_BASE_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("SNAPSHOT_VIEW_BASE_PERMISSION")
+            .fallback("datasync.snapshot.view.base")
+            .build();
+    public static final Key<String> MANUAL_OPTIMIZATION_ALL_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("MANUAL_OPTIMIZATION_ALL_PERMISSION")
+            .fallback("datasync.optimize.all")
+            .build();
+    public static final Key<String> MANUAL_OPTIMIZATION_BASE_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("MANUAL_OPTIMIZATION_BASE_PERMISSION")
+            .fallback("datasync.optimize.base")
+            .build();
 
     static {
         Keys.startRegistration("datasync")
