@@ -25,11 +25,21 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.User;
 
+import java.util.Optional;
+
 public class SpongeHealthSerializer extends CommonHealthSerializer<Key<?>, User> {
 
     @Override
     public boolean serialize(Snapshot<?> snapshot, User user) {
-        return Utils.serialize(snapshotManager, snapshot, user, Keys.HEALTH);
+        Optional<Double> health = user.get(Keys.HEALTH).flatMap(h -> {
+            if (h <= 0) {
+                return user.get(Keys.MAX_HEALTH);
+            } else {
+                return Optional.of(h);
+            }
+        });
+        return snapshotManager.getPrimaryComponent()
+            .setSnapshotValue(snapshot, Keys.HEALTH, health);
     }
 
     @Override
