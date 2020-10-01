@@ -21,37 +21,39 @@ package org.anvilpowered.datasync.common.serializer.user;
 import com.google.inject.Singleton;
 import org.anvilpowered.datasync.api.serializer.user.UserTransitCache;
 
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Singleton
 public class CommonUserTransitCache implements UserTransitCache {
 
-    private final Set<UUID> uuids;
+    private final ConcurrentMap<UUID, CompletableFuture<Boolean>> uuids;
 
     public CommonUserTransitCache() {
-        uuids = new TreeSet<>();
+        uuids = new ConcurrentHashMap<>();
     }
 
     @Override
-    public void joinStart(UUID userUUID) {
-        synchronized (uuids) {
-            uuids.add(userUUID);
-        }
+    public void joinStart(UUID userUUID, CompletableFuture<Boolean> waitFuture) {
+        uuids.put(userUUID, waitFuture);
     }
 
     @Override
     public void joinEnd(UUID userUUID) {
-        synchronized (uuids) {
-            uuids.remove(userUUID);
+        CompletableFuture<Boolean> waitFuture = uuids.remove(userUUID);
+        // mark the wait future as invalid
+        // in normal cases, this will be called after deserialization is already complete which will have no effect.
+        // However, if the player leaves before waitFuture is done, mark it as invalid which prevents
+        // premature deserialization
+        if (waitFuture != null) {
+            waitFuture.complete(false);
         }
     }
 
     @Override
     public boolean isJoining(UUID userUUID) {
-        synchronized (uuids) {
-            return uuids.contains(userUUID);
-        }
+        return uuids.containsKey(userUUID);
     }
 }

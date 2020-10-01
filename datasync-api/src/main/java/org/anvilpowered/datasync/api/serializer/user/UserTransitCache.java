@@ -19,6 +19,7 @@
 package org.anvilpowered.datasync.api.serializer.user;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * All methods are thread-safe
@@ -28,9 +29,10 @@ public interface UserTransitCache {
     /**
      * Declares that the user with the provided {@link UUID} has started the joining process.
      *
-     * @param userUUID The {@link UUID} of the joining user
+     * @param userUUID   The {@link UUID} of the joining user
+     * @param waitFuture A future that returns {@code true} when the player is ready to be deserialized, otherwise {@code false}
      */
-    void joinStart(UUID userUUID);
+    void joinStart(UUID userUUID, CompletableFuture<Boolean> waitFuture);
 
     /**
      * Declares that the user with the provided {@link UUID} has ended the joining process.

@@ -61,7 +61,7 @@ public class SpongeUserSerializerComponent<
     }
 
     @Override
-    public CompletableFuture<Optional<Snapshot<TKey>>> deserialize(User user, CompletableFuture<Void> waitFuture) {
+    public CompletableFuture<Optional<Snapshot<TKey>>> deserialize(User user, CompletableFuture<Boolean> waitFuture) {
         snapshotOptimizationManager.getPrimaryComponent().addLockedPlayer(user.getUniqueId());
         // save current user data
         Snapshot<TKey> previousState = snapshotRepository.generateEmpty();
@@ -70,8 +70,11 @@ public class SpongeUserSerializerComponent<
             .contains("datasync:inventory")) {
             user.getInventory().clear();
         }
-        return waitFuture
-            .thenApplyAsync(v -> memberRepository.getLatestSnapshotForUser(user.getUniqueId())
+        return waitFuture.thenApplyAsync(shouldDeserialize -> {
+            if (!shouldDeserialize) {
+                return Optional.<Snapshot<TKey>>empty();
+            }
+            return memberRepository.getLatestSnapshotForUser(user.getUniqueId())
                 .exceptionally(e -> {
                     e.printStackTrace();
                     return Optional.empty();
@@ -92,10 +95,11 @@ public class SpongeUserSerializerComponent<
                         return optionalSnapshot;
                     }
                     return Optional.<Snapshot<TKey>>empty();
-                }).join()).thenApplyAsync(s -> {
-                snapshotOptimizationManager.getPrimaryComponent()
-                    .removeLockedPlayer(user.getUniqueId());
-                return s;
-            });
+                }).join();
+        }).thenApplyAsync(s -> {
+            snapshotOptimizationManager.getPrimaryComponent()
+                .removeLockedPlayer(user.getUniqueId());
+            return s;
+        });
     }
 }

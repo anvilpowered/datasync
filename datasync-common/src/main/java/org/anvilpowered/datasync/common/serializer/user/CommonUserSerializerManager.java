@@ -169,7 +169,9 @@ public class CommonUserSerializerManager<
     @Override
     public CompletableFuture<TString> serializeSafe(TUser user, String name) {
         return CompletableFuture.supplyAsync(() -> {
-            if (userTransitCache.isJoining(userService.getUUID(user))) {
+            UUID userUUID = userService.getUUID(user);
+            if (userTransitCache.isJoining(userUUID)) {
+                userTransitCache.joinEnd(userUUID);
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .red().append("Prevented ")
@@ -184,7 +186,7 @@ public class CommonUserSerializerManager<
     }
 
     @Override
-    public CompletableFuture<TString> deserialize(TUser user, String event, CompletableFuture<Void> waitFuture) {
+    public CompletableFuture<TString> deserialize(TUser user, String event, CompletableFuture<Boolean> waitFuture) {
         return getPrimaryComponent().deserialize(user, waitFuture).thenApplyAsync(optionalSnapshot -> {
             if (optionalSnapshot.isPresent()) {
                 return textService.builder()
@@ -206,7 +208,7 @@ public class CommonUserSerializerManager<
 
     @Override
     public CompletableFuture<TString> deserialize(TUser user, String event) {
-        return deserialize(user, event, CompletableFuture.completedFuture(null));
+        return deserialize(user, event, CompletableFuture.completedFuture(true));
     }
 
     @Override
@@ -231,7 +233,16 @@ public class CommonUserSerializerManager<
         }
         return CompletableFuture.supplyAsync(() -> {
             final UUID userUUID = userService.getUUID(user);
-            userTransitCache.joinStart(userUUID);
+            final CompletableFuture<Boolean> waitFuture = CompletableFuture.supplyAsync(() -> {
+                try {
+                    Thread.sleep(delay);
+                    return true;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            });
+            userTransitCache.joinStart(userUUID, waitFuture);
             final DecimalFormat df = new DecimalFormat("#.#");
             df.setRoundingMode(RoundingMode.CEILING);
             final String formattedDelay = df.format((double) delay / 1000d);
@@ -246,13 +257,6 @@ public class CommonUserSerializerManager<
                 .gold().append(formattedDelay)
                 .yellow().append(" seconds!")
                 .sendTo((TCommandSource) player);
-            final CompletableFuture<Void> waitFuture = CompletableFuture.runAsync(() -> {
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
             final TString result = deserialize(user, "Join", waitFuture).join();
             restrictionService.remove(player);
             textService.builder()
