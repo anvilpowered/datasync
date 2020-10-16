@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.common.member;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.model.ObjectWithId;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.base.datastore.BaseRepository;
@@ -51,10 +50,6 @@ public abstract class CommonMemberRepository<
 
     @Inject
     protected TimeFormatService timeFormatService;
-
-    public CommonMemberRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID) {

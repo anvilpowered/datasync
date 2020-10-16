@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.common.snapshot;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseRepository;
 import org.anvilpowered.datasync.api.key.DataKeyService;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
@@ -37,10 +36,6 @@ public abstract class CommonSnapshotRepository<
 
     @Inject
     DataKeyService<TDataKey> dataKeyService;
-
-    protected CommonSnapshotRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     @SuppressWarnings("unchecked")

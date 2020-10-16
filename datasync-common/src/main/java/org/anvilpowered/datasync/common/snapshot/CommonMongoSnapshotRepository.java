@@ -18,8 +18,6 @@
 
 package org.anvilpowered.datasync.common.snapshot;
 
-import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseMongoRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
@@ -30,11 +28,6 @@ import java.util.concurrent.CompletableFuture;
 public class CommonMongoSnapshotRepository<TDataKey>
     extends CommonSnapshotRepository<ObjectId, TDataKey, Datastore>
     implements BaseMongoRepository<Snapshot<ObjectId>> {
-
-    @Inject
-    public CommonMongoSnapshotRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public CompletableFuture<Boolean> setInventory(ObjectId id, byte[] inventory) {

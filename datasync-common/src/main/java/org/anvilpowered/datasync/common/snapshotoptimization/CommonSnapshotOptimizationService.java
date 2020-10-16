@@ -18,7 +18,6 @@
 
 package org.anvilpowered.datasync.common.snapshotoptimization;
 
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
@@ -95,9 +94,7 @@ public abstract class CommonSnapshotOptimizationService<
 
     private Registry registry;
 
-    protected CommonSnapshotOptimizationService(
-        Registry registry, DataStoreContext<TKey, TDataStore> dataStoreContext) {
-        super(dataStoreContext);
+    protected CommonSnapshotOptimizationService(Registry registry) {
         this.registry = registry;
         registry.whenLoaded(this::registryLoaded).register();
         lockedPlayers = new ConcurrentLinkedQueue<>();

@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.sponge.snapshotoptimization;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.datasync.api.model.member.Member;
@@ -55,11 +54,8 @@ public class SpongeSnapshotOptimizationService<
     protected PluginContainer pluginContainer;
 
     @Inject
-    public SpongeSnapshotOptimizationService(
-        Registry registry,
-        DataStoreContext<TKey, TDataStore> dataStoreContext
-    ) {
-        super(registry, dataStoreContext);
+    public SpongeSnapshotOptimizationService(Registry registry) {
+        super(registry);
     }
 
     private void sendMessageToSourceAndConsole(final CommandSource source, Text message) {

@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.common.serializer.user;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.registry.Keys;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.UserService;
@@ -60,10 +59,6 @@ public abstract class CommonUserSerializerComponent<
 
     @Inject
     protected UserService<TUser, TPlayer> userService;
-
-    protected CommonUserSerializerComponent(DataStoreContext<TKey, TDataStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public CompletableFuture<Optional<Snapshot<TKey>>> serialize(TUser user, String name) {

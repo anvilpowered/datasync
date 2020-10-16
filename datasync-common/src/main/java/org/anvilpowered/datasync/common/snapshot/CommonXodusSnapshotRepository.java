@@ -18,11 +18,9 @@
 
 package org.anvilpowered.datasync.common.snapshot;
 
-import com.google.inject.Inject;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseXodusRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 
@@ -31,12 +29,6 @@ import java.util.concurrent.CompletableFuture;
 public class CommonXodusSnapshotRepository<TDataKey>
     extends CommonSnapshotRepository<EntityId, TDataKey, PersistentEntityStore>
     implements BaseXodusRepository<Snapshot<EntityId>> {
-
-    @Inject
-    public CommonXodusSnapshotRepository(
-        DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public CompletableFuture<Boolean> setInventory(EntityId id, byte[] inventory) {

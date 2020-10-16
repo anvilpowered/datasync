@@ -19,7 +19,6 @@
 package org.anvilpowered.datasync.sponge.serializer.user;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
@@ -45,11 +44,6 @@ public class SpongeUserSerializerComponent<
 
     @Inject
     private SnapshotOptimizationManager<User, Text, CommandSource> snapshotOptimizationManager;
-
-    @Inject
-    public SpongeUserSerializerComponent(DataStoreContext<TKey, TDataStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public boolean deserialize(Snapshot<?> snapshot, User user) {

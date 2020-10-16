@@ -18,13 +18,11 @@
 
 package org.anvilpowered.datasync.common.member;
 
-import com.google.inject.Inject;
 import jetbrains.exodus.entitystore.Entity;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.entitystore.StoreTransaction;
 import jetbrains.exodus.util.ByteArraySizedInputStream;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.model.Mappable;
 import org.anvilpowered.anvil.base.datastore.BaseXodusRepository;
 import org.anvilpowered.datasync.api.member.XodusMemberRepository;
@@ -48,12 +46,6 @@ public class CommonXodusMemberRepository<TDataKey>
     extends CommonMemberRepository<EntityId, TDataKey, PersistentEntityStore>
     implements BaseXodusRepository<Member<EntityId>>,
     XodusMemberRepository {
-
-    @Inject
-    public CommonXodusMemberRepository(
-        DataStoreContext<EntityId, PersistentEntityStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public CompletableFuture<Optional<Member<EntityId>>> getOneForUser(UUID userUUID) {
