@@ -18,10 +18,10 @@
 
 package org.anvilpowered.datasync.common.snapshot;
 
+import dev.morphia.Datastore;
 import org.anvilpowered.anvil.base.datastore.BaseMongoRepository;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
 
 import java.util.concurrent.CompletableFuture;
 

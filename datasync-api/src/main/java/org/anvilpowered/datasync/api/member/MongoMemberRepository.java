@@ -18,12 +18,12 @@
 
 package org.anvilpowered.datasync.api.member;
 
+import dev.morphia.Datastore;
+import dev.morphia.query.Query;
 import org.anvilpowered.anvil.api.datastore.MongoRepository;
 import org.anvilpowered.datasync.api.model.member.Member;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
 
 import java.time.Instant;
 import java.util.List;

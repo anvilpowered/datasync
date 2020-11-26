@@ -19,6 +19,7 @@
 package org.anvilpowered.datasync.sponge.module;
 
 import com.google.inject.TypeLiteral;
+import dev.morphia.Datastore;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.anvilpowered.anvil.api.command.CommandNode;
@@ -47,7 +48,6 @@ import org.anvilpowered.datasync.sponge.serializer.user.SpongeUserSerializerComp
 import org.anvilpowered.datasync.sponge.snapshotoptimization.SpongeSnapshotOptimizationService;
 import org.anvilpowered.datasync.sponge.task.SpongeSerializationTaskService;
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.entity.living.player.Player;

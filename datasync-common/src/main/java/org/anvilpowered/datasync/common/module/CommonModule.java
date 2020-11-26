@@ -21,6 +21,7 @@ package org.anvilpowered.datasync.common.module;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
+import dev.morphia.Datastore;
 import jetbrains.exodus.entitystore.EntityId;
 import jetbrains.exodus.entitystore.PersistentEntityStore;
 import org.anvilpowered.anvil.api.Anvil;
@@ -55,7 +56,6 @@ import org.anvilpowered.datasync.common.snapshot.CommonXodusSnapshotRepository;
 import org.anvilpowered.datasync.common.snapshotoptimization.CommonSnapshotOptimizationManager;
 import org.anvilpowered.datasync.common.snapshotoptimization.CommonSnapshotOptimizationService;
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
 
 @SuppressWarnings({"UnstableApiUsage"})
 public class CommonModule<
