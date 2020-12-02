@@ -25,6 +25,7 @@ import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.datasync.common.command.CommonSyncCommandNode;
 import org.anvilpowered.datasync.spigot.DataSyncSpigot;
 import org.anvilpowered.datasync.spigot.command.optimize.SpigotOptimizeCommandNode;
+import org.anvilpowered.datasync.spigot.command.snapshot.SpigotSnapshotCommandNode;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
@@ -56,6 +57,9 @@ public class SpigotSyncCommandNode
     private SpigotOptimizeCommandNode optimizeCommandNode;
 
     @Inject
+    private SpigotSnapshotCommandNode snapshotCommandNode;
+
+    @Inject
     public SpigotSyncCommandNode(Registry registry) {
         super(registry);
     }
@@ -70,6 +74,9 @@ public class SpigotSyncCommandNode
         subCommands.put(HELP_ALIAS, commandService.generateHelpCommand(this));
         subCommands.put(ImmutableList.of("optimize", "opt", "o"), commandService.generateRoutingCommand(
             commandService.generateHelpCommand(optimizeCommandNode), optimizeCommandNode.getSubCommands(), false
+        ));
+        subCommands.put(ImmutableList.of("snapshot", "snap", "s"), commandService.generateRoutingCommand(
+            commandService.generateHelpCommand(snapshotCommandNode), snapshotCommandNode.getSubCommands(), false
         ));
 
         Objects.requireNonNull(plugin.getCommand("datasync")).setExecutor(
