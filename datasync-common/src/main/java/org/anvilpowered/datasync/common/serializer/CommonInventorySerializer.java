@@ -28,6 +28,8 @@ public abstract class CommonInventorySerializer<
     extends CommonSerializer<TDataKey, TUser>
     implements InventorySerializer<TUser, TInventory, TItemStackSnapshot> {
 
+    protected static final int INVENTORY_SLOTS = 41;
+
     @Override
     public String getName() {
         return "datasync:inventory";

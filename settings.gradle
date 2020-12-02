@@ -2,3 +2,5 @@ rootProject.name = 'DataSync'
 include 'datasync-api'
 include 'datasync-common'
 include 'datasync-sponge'
+include 'datasync-spigot'
+

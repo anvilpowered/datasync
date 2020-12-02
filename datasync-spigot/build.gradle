@@ -1,0 +1,38 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'io.pixeloutlaw.spigot.build' version '0.5.0'
+}
+
+jar.enabled = false // we only want shadowJar
+
+spigotBuildTools {
+    versions = ["1.16.1"]
+}
+
+repositories {
+    mavenLocal()
+}
+
+
+dependencies {
+    implementation project(':datasync-api')
+    implementation project(':datasync-common')
+    implementation configurate_hocon
+    implementation spigot
+}
+
+shadowJar {
+    String jarName = "DataSync-Spigot-${project.version}.jar"
+    println "Building: " + jarName
+    archiveFileName = jarName
+
+    dependencies {
+        include project(':datasync-api')
+        include project(':datasync-common')
+    }
+}
+
+artifacts {
+    archives shadowJar
+}
+

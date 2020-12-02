@@ -45,8 +45,6 @@ import java.util.Optional;
 public class SpongeInventorySerializer
     extends CommonInventorySerializer<Key<?>, User, Inventory, ItemStackSnapshot> {
 
-    private static final int INVENTORY_SLOTS = 41;
-
     @Inject
     private Logger logger;
 

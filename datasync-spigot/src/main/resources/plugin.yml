@@ -1,0 +1,10 @@
+name: DataSync
+version: "0.3.0-SNAPSHOT"
+main: org.anvilpowered.datasync.spigot.DataSyncSpigot
+api-version: 1.15
+authors: [Cableguy20, STG_Allen]
+description: player data securer (fuckin meme)
+depend: [Anvil]
+commands:
+  datasync:
+    description: DataSync root command
