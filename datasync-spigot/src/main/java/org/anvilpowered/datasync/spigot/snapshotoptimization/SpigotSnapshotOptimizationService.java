@@ -65,7 +65,6 @@ public class SpigotSnapshotOptimizationService<
         }
     }
 
-
     @Override
     protected void sendError(CommandSender sender, String message) {
         sendMessageToSourceAndConsole(sender, message);
@@ -148,7 +147,12 @@ public class SpigotSnapshotOptimizationService<
         String snapshotsDeletedString = snapshotsDeleted == 1 ? " snapshot from " : " snapshots from ";
         String snapshotsUploadedString = snapshotsUploaded == 1 ? " snapshot " : " snapshots ";
         String memberString = membersCompleted == 1 ? " user!" : " users!";
-        sender.sendMessage("Optimization Complete! uploaded " + snapshotsUploaded + snapshotsUploadedString
-            + " and removed " + snapshotsDeleted + snapshotsDeletedString + membersCompleted + memberString);
+        textService.builder()
+            .append(pluginInfo.getPrefix())
+            .yellow().append("Optimization Complete! Uploaded ")
+            .append(snapshotsUploaded).append(snapshotsUploadedString)
+            .append(" and remove ").append(snapshotsDeleted).append(snapshotsDeletedString)
+            .append(membersCompleted).append(memberString)
+            .sendTo(sender);
     }
 }

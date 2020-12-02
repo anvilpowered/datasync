@@ -23,9 +23,11 @@ import com.google.inject.Singleton;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.registry.Registry;
+import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,10 +39,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @Singleton
 public class SpigotPlayerListener implements Listener {
 
-    private Registry registry;
+    private final Registry registry;
 
     @Inject
     private PluginInfo<TextComponent> pluginInfo;
+
+    @Inject
+    private TextService<TextComponent, CommandSender> textService;
 
     @Inject
     private UserSerializerManager<Player, TextComponent> userSerializerManager;
@@ -72,11 +77,12 @@ public class SpigotPlayerListener implements Listener {
     }
 
     private void sendWarning(String name) {
-        Bukkit.getConsoleSender().sendMessage(
-            "Attention! You have opted to disable " + name + ".\n" +
-                "If you would like to enable this, set `" + name + "=true` in the config and restart your server or run /sync " +
-                "reload."
-        );
+        textService.builder()
+            .append(pluginInfo.getPrefix())
+            .red().append("Attention! You have opted to disable")
+            .append(name).append(".\nIf you would like to enable this, set `")
+            .append(name).append("=true` in the config and restart your server or run /sync reload")
+            .sendToConsole();
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
