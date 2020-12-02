@@ -6,10 +6,11 @@ plugins {
 jar.enabled = false // we only want shadowJar
 
 spigotBuildTools {
-    versions = ["1.16.1"]
+    versions = ["1.16.4", "1.16.1", "1.15.2", "1.12.2"]
 }
 
 repositories {
+    // We use spigotBuildTools
     mavenLocal()
 }
 
@@ -17,8 +18,13 @@ repositories {
 dependencies {
     implementation project(':datasync-api')
     implementation project(':datasync-common')
+    implementation project(':datasync-spigot:1.16.4')
+    implementation project(':datasync-spigot:1.16.1')
+    implementation project(':datasync-spigot:1.15.2')
+    implementation project(':datasync-spigot:1.12.2')
+
     implementation configurate_hocon
-    implementation spigot
+    implementation spigot_1_16_1
 }
 
 shadowJar {
@@ -29,6 +35,11 @@ shadowJar {
     dependencies {
         include project(':datasync-api')
         include project(':datasync-common')
+        include project(':datasync-spigot:1.16.4')
+        include project(':datasync-spigot:1.16.1')
+        include project(':datasync-spigot:1.15.2')
+        include project(':datasync-spigot:1.12.2')
+
     }
 }
 

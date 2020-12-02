@@ -90,3 +90,9 @@ We included a child lock so you would be slightly less likely to accidentally br
 Changed any settings? Just run `/sync reload` and the plugin will reload
 - Database connection gets reopened (with updated db settings from config)
 - Sync task is restarted (with updated settings from config)
+
+## Compiling 
+
+1. Run `./gradlew runSpigotBuildTools`
+    - This may take some time, go grab a drink while you wait (This only has to be ran once)
+2. run `./gradlew assemble`

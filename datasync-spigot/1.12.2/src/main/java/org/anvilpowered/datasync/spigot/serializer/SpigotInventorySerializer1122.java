@@ -1,13 +1,31 @@
+/*
+ *   DataSync - AnvilPowered
+ *   Copyright (C) 2020 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Lesser General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.anvilpowered.datasync.spigot.serializer;
 
 import jetbrains.exodus.util.ByteArraySizedInputStream;
 import jetbrains.exodus.util.LightByteArrayOutputStream;
-import net.minecraft.server.v1_16_R1.NBTCompressedStreamTools;
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.NBTCompressedStreamTools;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.common.serializer.CommonInventorySerializer;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,13 +35,12 @@ import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.util.Objects;
 
-public class SpigotInventorySerializer
+public class SpigotInventorySerializer1122
     extends CommonInventorySerializer<String, Player, Inventory, ItemStack> {
 
     @Override
     public boolean serializeInventory(Snapshot<?> snapshot, Inventory inventory, int maxSlots) {
         boolean success = true;
-        System.out.println("Serialization in progress....");
         try {
             LightByteArrayOutputStream outputStream = new LightByteArrayOutputStream();
             DataOutputStream dataOutput = new DataOutputStream(outputStream);
@@ -32,7 +49,7 @@ public class SpigotInventorySerializer
             NBTTagCompound slot = new NBTTagCompound();
             root.set("slot", slot);
             for (int i = 0; i < contents.length; i++) {
-                if (contents[i] == null || contents[i].getType().isAir()) {
+                if (contents[i] == null || contents[i].getType().equals(Material.AIR)) {
                     continue;
                 }
                 NBTTagCompound itemNBT = new NBTTagCompound();
@@ -45,7 +62,6 @@ public class SpigotInventorySerializer
             e.printStackTrace();
             success = false;
         }
-        System.out.println("Serialization complete.");
         return success;
     }
 
@@ -57,33 +73,24 @@ public class SpigotInventorySerializer
     @Override
     public boolean deserializeInventory(Snapshot<?> snapshot, Inventory inventory, ItemStack fallbackItemStack) {
         inventory.clear();
-        System.out.println("Deserialization in progress..");
         NBTTagCompound root;
         try {
             root = NBTCompressedStreamTools.a(new DataInputStream(new ByteArraySizedInputStream(snapshot.getInventory())));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
 
-        try {
             NBTTagCompound slot = (NBTTagCompound) root.get("slot");
             for (int i = 0; i < INVENTORY_SLOTS; i++) {
                 if (slot.get(String.valueOf(i)) == null) {
                     continue;
                 }
                 inventory.setItem(i,
-                    CraftItemStack.asBukkitCopy(net.minecraft.server.v1_16_R1.ItemStack.a(
+                    CraftItemStack.asBukkitCopy(new net.minecraft.server.v1_12_R1.ItemStack(
                         (NBTTagCompound) slot.get(String.valueOf(i)))
                     ));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-
-
-        System.out.println("Deserialization complete.");
         return true;
     }
 
@@ -117,3 +124,4 @@ public class SpigotInventorySerializer
         return deserializeInventory(snapshot, player.getInventory());
     }
 }
+
