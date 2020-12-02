@@ -8,3 +8,5 @@ depend: [Anvil]
 commands:
   datasync:
     description: DataSync root command
+    aliases:
+      - sync

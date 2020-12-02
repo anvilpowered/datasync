@@ -42,9 +42,6 @@ public class SpigotPlayerListener implements Listener {
     private final Registry registry;
 
     @Inject
-    private PluginInfo<TextComponent> pluginInfo;
-
-    @Inject
     private TextService<TextComponent, CommandSender> textService;
 
     @Inject
@@ -78,7 +75,7 @@ public class SpigotPlayerListener implements Listener {
 
     private void sendWarning(String name) {
         textService.builder()
-            .append(pluginInfo.getPrefix())
+            .appendPrefix()
             .red().append("Attention! You have opted to disable")
             .append(name).append(".\nIf you would like to enable this, set `")
             .append(name).append("=true` in the config and restart your server or run /sync reload")

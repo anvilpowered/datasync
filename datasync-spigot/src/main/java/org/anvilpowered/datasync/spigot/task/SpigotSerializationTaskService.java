@@ -37,9 +37,6 @@ public class SpigotSerializationTaskService extends CommonSerializationTaskServi
     private DataSyncSpigot plugin;
 
     @Inject
-    private PluginInfo<TextComponent> pluginInfo;
-
-    @Inject
     private TextService<TextComponent, CommandSender> textService;
 
     private Runnable task = null;
@@ -53,7 +50,7 @@ public class SpigotSerializationTaskService extends CommonSerializationTaskServi
     public void startSerializationTask() {
         if (baseInterval > 0) {
             textService.builder()
-                .append(pluginInfo.getPrefix())
+                .appendPrefix()
                 .green().append("Submitting sync task! Upload interval: ")
                 .gold().append(baseInterval)
                 .green().append(" minutes")
@@ -75,7 +72,7 @@ public class SpigotSerializationTaskService extends CommonSerializationTaskServi
         return () -> {
             if (snapshotOptimizationManager.getPrimaryComponent().isOptimizationTaskRunning()) {
                 textService.builder()
-                    .append(pluginInfo.getPrefix())
+                    .appendPrefix()
                     .yellow().append("Optimization task already running! Task will skip")
                     .sendToConsole();
             } else {

@@ -45,9 +45,6 @@ public class SpigotSnapshotOptimizationService<
     TKey, Player, Player, CommandSender, String, TDataStore> {
 
     @Inject
-    private PluginInfo<TextComponent> pluginInfo;
-
-    @Inject
     private TextService<TextComponent, CommandSender> textService;
 
     @Inject
@@ -148,7 +145,7 @@ public class SpigotSnapshotOptimizationService<
         String snapshotsUploadedString = snapshotsUploaded == 1 ? " snapshot " : " snapshots ";
         String memberString = membersCompleted == 1 ? " user!" : " users!";
         textService.builder()
-            .append(pluginInfo.getPrefix())
+            .appendPrefix()
             .yellow().append("Optimization Complete! Uploaded ")
             .append(snapshotsUploaded).append(snapshotsUploadedString)
             .append(" and remove ").append(snapshotsDeleted).append(snapshotsDeletedString)
