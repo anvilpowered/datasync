@@ -46,6 +46,9 @@ public class SpigotSnapshotCommandNode extends CommonSnapshotCommandNode<Command
     private SpigotSnapshotRestoreCommand snapshotRestoreCommand;
 
     @Inject
+    private SpigotSnapshotViewCommand snapshotViewCommand;
+
+    @Inject
     public SpigotSnapshotCommandNode(Registry registry) {
         super(registry);
     }
@@ -59,6 +62,7 @@ public class SpigotSnapshotCommandNode extends CommonSnapshotCommandNode<Command
         subCommands.put(INFO_ALIAS, snapshotInfoCommand);
         subCommands.put(LIST_ALIAS, snapshotListCommand);
         subCommands.put(RESTORE_ALIAS, snapshotRestoreCommand);
+        subCommands.put(VIEW_ALIAS, snapshotViewCommand);
     }
 
     public Map<List<String>, CommandExecutor> getSubCommands() {
