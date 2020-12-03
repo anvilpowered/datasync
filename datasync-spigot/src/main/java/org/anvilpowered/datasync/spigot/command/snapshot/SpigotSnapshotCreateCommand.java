@@ -18,60 +18,20 @@
 
 package org.anvilpowered.datasync.spigot.command.snapshot;
 
-import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.api.registry.DataSyncKeys;
-import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
-import org.anvilpowered.datasync.spigot.command.SpigotSyncLockCommand;
-import org.bukkit.Bukkit;
+import org.anvilpowered.datasync.common.command.snapshot.CommonSnapshotCreateCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
-
-public class SpigotSnapshotCreateCommand implements CommandExecutor {
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
-
-    @Inject
-    private UserSerializerManager<Player, TextComponent> userSerializer;
+public class SpigotSnapshotCreateCommand
+    extends CommonSnapshotCreateCommand<TextComponent, Player, Player, CommandSender>
+    implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission(DataSyncKeys.SNAPSHOT_CREATE_PERMISSION.getFallbackValue())) {
-            textService.builder()
-            .appendPrefix()
-            .red().append("Insufficient Permissions!")
-            .sendTo(sender);
-            return false;
-        }
-
-        if (!SpigotSyncLockCommand.assertUnlocked(sender)) {
-            return false;
-        }
-
-        if (args.length < 1) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("User is required")
-                .sendTo(sender);
-            return false;
-        }
-
-        Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(args[0]));
-        if (!optionalPlayer.isPresent()) {
-            textService.builder()
-            .appendPrefix()
-            .red().append("Invalid player!")
-            .sendTo(sender);
-            return false;
-        }
-
-        userSerializer.serialize(optionalPlayer.get()).thenAcceptAsync(msg -> textService.send(msg, sender));
+    public boolean onCommand(CommandSender source, Command command, String s, String[] context) {
+        execute(source, context);
         return true;
     }
 }

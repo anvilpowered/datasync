@@ -18,38 +18,20 @@
 
 package org.anvilpowered.datasync.spigot.command;
 
-import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.api.registry.DataSyncKeys;
-import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
-import org.bukkit.Bukkit;
+import org.anvilpowered.datasync.common.command.CommonSyncUploadCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SpigotSyncUploadCommand implements CommandExecutor {
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
-
-    @Inject
-    private UserSerializerManager<Player, TextComponent> userSerializer;
+public class SpigotSyncUploadCommand
+    extends CommonSyncUploadCommand<TextComponent, Player, Player, CommandSender>
+    implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!(sender.hasPermission(DataSyncKeys.SNAPSHOT_CREATE_PERMISSION.getFallbackValue()))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(sender);
-            return false;
-        }
-        if (SpigotSyncLockCommand.assertUnlocked(sender)) {
-            userSerializer.serialize(Bukkit.getServer().getOnlinePlayers()).thenAcceptAsync(msg -> textService.send(msg, sender));
-            return true;
-        }
-        return false;
+    public boolean onCommand(CommandSender source, Command command, String s, String[] args) {
+        execute(source);
+        return true;
     }
 }

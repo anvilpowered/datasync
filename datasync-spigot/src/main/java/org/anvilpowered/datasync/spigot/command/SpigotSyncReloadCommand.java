@@ -18,38 +18,19 @@
 
 package org.anvilpowered.datasync.spigot.command;
 
-import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.registry.Registry;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.api.registry.DataSyncKeys;
+import org.anvilpowered.datasync.common.command.CommonSyncReloadCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class SpigotSyncReloadCommand implements CommandExecutor {
-
-    @Inject
-    private Registry registry;
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
+public class SpigotSyncReloadCommand
+    extends CommonSyncReloadCommand<TextComponent, CommandSender>
+    implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission(DataSyncKeys.RELOAD_COMMAND_PERMISSION.getFallbackValue())) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(sender);
-            return false;
-        }
-
-        registry.load();
-        textService.builder()
-            .appendPrefix()
-            .green().append("Successfully reloaded!")
-            .sendTo(sender);
-        return false;
+    public boolean onCommand(CommandSender source, Command command, String label, String[] args) {
+        execute(source);
+        return true;
     }
 }

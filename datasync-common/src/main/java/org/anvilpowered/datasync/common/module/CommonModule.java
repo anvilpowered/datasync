@@ -32,6 +32,7 @@ import org.anvilpowered.anvil.api.registry.ConfigurationService;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.member.MemberRepository;
+import org.anvilpowered.datasync.api.misc.LockService;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerComponent;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
@@ -43,6 +44,7 @@ import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationSe
 import org.anvilpowered.datasync.common.member.CommonMemberManager;
 import org.anvilpowered.datasync.common.member.CommonMongoMemberRepository;
 import org.anvilpowered.datasync.common.member.CommonXodusMemberRepository;
+import org.anvilpowered.datasync.common.misc.CommonLockService;
 import org.anvilpowered.datasync.common.misc.CommonSyncUtils;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
 import org.anvilpowered.datasync.common.registry.CommonConfigurationService;
@@ -78,6 +80,13 @@ public class CommonModule<
         bind(ConfigurationService.class).to(CommonConfigurationService.class);
 
         bind(Registry.class).to(CommonRegistry.class);
+
+        be.bind(
+            new TypeToken<LockService>(getClass()){
+            },
+            new TypeToken<CommonLockService<TString, TUser, TPlayer, TCommandSource>>(getClass()){
+            }
+        );
 
         be.bind(
             new TypeToken<BasicPluginInfo>(getClass()) {

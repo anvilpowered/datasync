@@ -21,7 +21,6 @@ package org.anvilpowered.datasync.spigot.task;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.datasync.common.task.CommonSerializationTaskService;
@@ -56,7 +55,7 @@ public class SpigotSerializationTaskService extends CommonSerializationTaskServi
                 .green().append(" minutes")
                 .sendToConsole();
             task = getSerializationTask();
-            Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, 1200);
+            Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, (baseInterval * 60) * 20);
         }
     }
 

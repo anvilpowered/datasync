@@ -18,34 +18,20 @@
 
 package org.anvilpowered.datasync.spigot.command.optimize;
 
-import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.api.registry.DataSyncKeys;
-import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
+import org.anvilpowered.datasync.common.command.optimize.CommonOptimizeInfoCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SpigotOptimizeInfoCommand implements CommandExecutor {
-
-    @Inject
-    private SnapshotOptimizationManager<Player, TextComponent, CommandSender> snapshotOptimizationManager;
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
+public class SpigotOptimizeInfoCommand
+    extends CommonOptimizeInfoCommand<TextComponent, Player, CommandSender>
+    implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission(DataSyncKeys.MANUAL_OPTIMIZATION_BASE_PERMISSION.getFallbackValue())) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(sender);
-            return false;
-        }
-        textService.send(snapshotOptimizationManager.info(), sender);
+    public boolean onCommand(CommandSender source, Command command, String s, String[] args) {
+        execute(source);
         return true;
     }
 }

@@ -18,98 +18,20 @@
 
 package org.anvilpowered.datasync.spigot.command.optimize;
 
-import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.api.registry.DataSyncKeys;
-import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager;
-import org.bukkit.Bukkit;
+import org.anvilpowered.datasync.common.command.optimize.CommonOptimizeStartCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class SpigotOptimizeStartCommand implements CommandExecutor {
-
-    @Inject
-    private SnapshotOptimizationManager<Player, TextComponent, CommandSender> snapshotOptimizationManager;
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
+public class SpigotOptimizeStartCommand
+    extends CommonOptimizeStartCommand<TextComponent, Player, Player, CommandSender>
+    implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission(DataSyncKeys.MANUAL_OPTIMIZATION_BASE_PERMISSION.getFallbackValue())) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(sender);
-            return false;
-        }
-
-        if (args.length == 0) {
-            textService.builder()
-                .appendPrefix()
-                .yellow().append("Mode is required")
-                .sendTo(sender);
-            return false;
-        }
-        String mode = args[0];
-
-        if (args.length < 2) {
-            textService.builder()
-                .appendPrefix()
-                .yellow().append("No users were selected by your query")
-                .sendTo(sender);
-        }
-        args[0] = "";
-        List<String> playerNames = Arrays.asList(args.clone());
-
-        if (mode.equals("all")) {
-            if (!sender.hasPermission(DataSyncKeys.MANUAL_OPTIMIZATION_ALL_PERMISSION.getFallbackValue())) {
-                textService.builder()
-                    .appendPrefix()
-                    .red().append("You do not have permission to start optimization task: all")
-                    .sendTo(sender);
-            } else if (snapshotOptimizationManager.getPrimaryComponent().optimize(sender)) {
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("Successfully started optimization task: all")
-                    .sendTo(sender);
-            } else {
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("Optimizer already running! Use /sync optimize info");
-            }
-        } else {
-            if (playerNames.isEmpty()) {
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("No users were selected by your query")
-                    .sendTo(sender);
-                return true;
-            } else {
-                List<Player> players = new ArrayList<>();
-                for (String name : playerNames) {
-                    players.add(Bukkit.getPlayer(name));
-                }
-                if (snapshotOptimizationManager.getPrimaryComponent().optimize(players, sender, "Manual")) {
-                    textService.builder()
-                        .appendPrefix()
-                        .yellow().append("Successfully started optimization task: user")
-                        .sendTo(sender);
-                } else {
-                    textService.builder()
-                        .appendPrefix()
-                        .yellow().append("Optimizer already running! Use /sync optimize info")
-                        .sendTo(sender);
-                }
-            }
-        }
+        execute(sender, args);
         return true;
     }
 }

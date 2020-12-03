@@ -18,60 +18,20 @@
 
 package org.anvilpowered.datasync.spigot.command.snapshot;
 
-import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.api.member.MemberManager;
-import org.anvilpowered.datasync.api.registry.DataSyncKeys;
-import org.anvilpowered.datasync.spigot.command.SpigotSyncLockCommand;
-import org.bukkit.Bukkit;
+import org.anvilpowered.datasync.common.command.snapshot.CommonSnapshotDeleteCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
-
-public class SpigotSnapshotDeleteCommand implements CommandExecutor {
-
-    @Inject
-    private MemberManager<TextComponent> memberManager;
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
+public class SpigotSnapshotDeleteCommand
+    extends CommonSnapshotDeleteCommand<TextComponent, Player, Player, CommandSender>
+    implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission(DataSyncKeys.SNAPSHOT_DELETE_PERMISSION.getFallbackValue())) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions")
-                .sendTo(sender);
-            return false;
-        }
-
-        if (!SpigotSyncLockCommand.assertUnlocked(sender)) {
-            return false;
-        }
-
-        if (args.length != 2) {
-            textService.builder()
-                .appendPrefix()
-                .yellow().append("User and Snapshot are required!")
-                .sendTo(sender);
-            return false;
-        }
-        Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(args[0]));
-        if (!optionalPlayer.isPresent()) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Invalid player!")
-                .sendTo(sender);
-            return false;
-        }
-
-        memberManager.deleteSnapshot(optionalPlayer.get().getUniqueId(), args[1])
-            .thenAcceptAsync(msg -> textService.send(msg, sender));
+    public boolean onCommand(CommandSender source, Command command, String s, String[] context) {
+        execute(source, context);
         return true;
     }
 }

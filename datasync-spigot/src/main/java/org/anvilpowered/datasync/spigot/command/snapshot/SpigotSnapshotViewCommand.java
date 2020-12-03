@@ -5,18 +5,16 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.datasync.api.member.MemberManager;
+import org.anvilpowered.datasync.api.misc.LockService;
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
 import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.InventorySerializer;
-import org.anvilpowered.datasync.api.snapshot.SnapshotManager;
 import org.anvilpowered.datasync.spigot.DataSyncSpigot;
-import org.anvilpowered.datasync.spigot.command.SpigotSyncLockCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,10 +27,10 @@ public class SpigotSnapshotViewCommand implements CommandExecutor {
     private DataSyncSpigot plugin;
 
     @Inject
-    private MemberManager<TextComponent> memberManager;
+    private LockService lockService;
 
     @Inject
-    private SnapshotManager<String> snapshotManager;
+    private MemberManager<TextComponent> memberManager;
 
     @Inject
     private InventorySerializer<Player, Inventory, ItemStack> inventorySerializer;
@@ -58,7 +56,7 @@ public class SpigotSnapshotViewCommand implements CommandExecutor {
                 .sendToConsole();
             return false;
         }
-        if (!SpigotSyncLockCommand.assertUnlocked(sender)) {
+        if (!lockService.assertUnlocked(sender)) {
             return false;
         }
         String player;

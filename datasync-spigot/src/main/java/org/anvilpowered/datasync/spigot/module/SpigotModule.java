@@ -111,8 +111,10 @@ public class SpigotModule extends CommonModule<
             case "1.15.2":
                 bind(new TypeLiteral<InventorySerializer<Player, Inventory, ItemStack>>() {
                 }).to(SpigotInventorySerializer1152.class);
+                break;
             default:
                 System.err.println("Could not bind the inventory serializer to your MC version!");
+                break;
         }
 
         bind(new TypeLiteral<SnapshotSerializer<Player>>() {

@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
+import org.anvilpowered.datasync.common.command.snapshot.CommonSnapshotRestoreCommand;
 import org.anvilpowered.datasync.spigot.command.SpigotSyncLockCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -31,45 +32,13 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class SpigotSnapshotRestoreCommand implements CommandExecutor {
-
-    @Inject
-    private TextService<TextComponent, CommandSender> textService;
-
-    @Inject
-    private UserSerializerManager<Player, TextComponent> userSerializer;
+public class SpigotSnapshotRestoreCommand
+    extends CommonSnapshotRestoreCommand<TextComponent, Player, Player, CommandSender>
+    implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!SpigotSyncLockCommand.assertUnlocked(sender)) {
-            return false;
-        }
-        String player;
-        String snapshot;
-
-        if (args.length == 0) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("User is required!")
-                .sendTo(sender);
-            return false;
-        } else if (args.length == 1) {
-            player = args[0];
-            snapshot = null;
-        } else {
-            player = args[0];
-            snapshot = args[1];
-        }
-        Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(player));
-        if (!optionalPlayer.isPresent()) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Invalid player!")
-                .sendTo(sender);
-            return false;
-        }
-        userSerializer.restore(optionalPlayer.get().getUniqueId(), snapshot)
-            .thenAcceptAsync(msg -> textService.send(msg, sender));
-        return true;
+    public boolean onCommand(CommandSender source, Command command, String s, String[] context) {
+        execute(source, context);
+       return true;
     }
 }
