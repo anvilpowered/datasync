@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.registry.Registry;
+import org.anvilpowered.datasync.api.misc.LockService;
 import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.sponge.command.SpongeSyncLockCommand;
@@ -40,6 +41,9 @@ import org.spongepowered.api.text.format.TextColors;
 public class SpongePlayerListener {
 
     private Registry registry;
+
+    @Inject
+    private LockService lockService;
 
     @Inject
     private PluginInfo<Text> pluginInfo;
@@ -91,7 +95,7 @@ public class SpongePlayerListener {
     @Listener
     public void onPlayerDisconnect(ClientConnectionEvent.Disconnect disconnectEvent,
                                    @Root Player player) {
-        SpongeSyncLockCommand.lockPlayer(player);
+        lockService.add(player.getUniqueId());
         if (disconnectSerializationEnabled) {
             userSerializerManager.serializeSafe(player, "Disconnect")
                 .thenAcceptAsync(Sponge.getServer().getConsole()::sendMessage);
