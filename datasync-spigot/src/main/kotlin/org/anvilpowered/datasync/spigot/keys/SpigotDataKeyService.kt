@@ -15,23 +15,19 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package org.anvilpowered.datasync.spigot.keys
 
-package org.anvilpowered.datasync.spigot.serializer;
+import com.google.inject.Inject
+import com.google.inject.Singleton
+import org.anvilpowered.datasync.common.key.CommonDataKeyService
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-import org.anvilpowered.datasync.common.serializer.CommonGameModeSerializer;
-import org.anvilpowered.datasync.spigot.util.Utils;
-import org.bukkit.entity.Player;
-
-public class SpigotGameModeSerializer extends CommonGameModeSerializer<String, Player> {
-
-    @Override
-    public boolean serialize(Snapshot<?> snapshot, Player player) {
-        return Utils.serialize(snapshotManager, snapshot, player, "GAME_MODE");
-    }
-
-    @Override
-    public boolean deserialize(Snapshot<?> snapshot, Player player) {
-        return Utils.deserialize(snapshotManager, snapshot, player, "GAME_MODE");
+@Singleton
+class SpigotDataKeyService @Inject constructor() : CommonDataKeyService<String>() {
+    init {
+        addMapping("FOOD_LEVEL", "food_level")
+        addMapping("SATURATION", "saturation")
+        addMapping("HEALTH", "health")
+        addMapping("TOTAL_EXPERIENCE", "total_experience")
+        addMapping("GAME_MODE", "game_mode")
     }
 }

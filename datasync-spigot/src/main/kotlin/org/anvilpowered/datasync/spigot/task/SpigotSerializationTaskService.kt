@@ -15,73 +15,64 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package org.anvilpowered.datasync.spigot.task
 
-package org.anvilpowered.datasync.spigot.task;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.registry.Registry;
-import org.anvilpowered.anvil.api.util.TextService;
-import org.anvilpowered.datasync.common.task.CommonSerializationTaskService;
-import org.anvilpowered.datasync.spigot.DataSyncSpigot;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.google.inject.Inject
+import com.google.inject.Singleton
+import net.md_5.bungee.api.chat.TextComponent
+import org.anvilpowered.anvil.api.registry.Registry
+import org.anvilpowered.anvil.api.util.TextService
+import org.anvilpowered.datasync.common.task.CommonSerializationTaskService
+import org.anvilpowered.datasync.spigot.DataSyncSpigot
+import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 @Singleton
-public class SpigotSerializationTaskService extends CommonSerializationTaskService<Player, TextComponent, CommandSender> {
+class SpigotSerializationTaskService @Inject constructor(registry: Registry) : CommonSerializationTaskService<Player, TextComponent, CommandSender>(registry) {
 
     @Inject
-    private DataSyncSpigot plugin;
+    private lateinit var plugin: DataSyncSpigot
 
     @Inject
-    private TextService<TextComponent, CommandSender> textService;
+    private lateinit var textService: TextService<TextComponent, CommandSender>
 
-    private Runnable task = null;
+    private var task: Runnable? = null
 
-    @Inject
-    public SpigotSerializationTaskService(Registry registry) {
-        super(registry);
-    }
-
-    @Override
-    public void startSerializationTask() {
+    override fun startSerializationTask() {
         if (baseInterval > 0) {
             textService.builder()
                 .appendPrefix()
                 .green().append("Submitting sync task! Upload interval: ")
                 .gold().append(baseInterval)
                 .green().append(" minutes")
-                .sendToConsole();
-            task = getSerializationTask();
-            Bukkit.getScheduler().runTaskTimer(plugin, task, 0L, (baseInterval * 60) * 20);
+                .sendToConsole()
+            task = serializationTask
+            Bukkit.getScheduler().runTaskTimer(plugin, task!!, 0L, baseInterval * 60 * 20.toLong())
         }
     }
 
-    @Override
-    public void stopSerializationTask() {
+    override fun stopSerializationTask() {
         if (task != null) {
-            task = null;
+            task = null
         }
     }
 
-    @Override
-    public Runnable getSerializationTask() {
-        return () -> {
-            if (snapshotOptimizationManager.getPrimaryComponent().isOptimizationTaskRunning()) {
+    override fun getSerializationTask(): Runnable {
+        return Runnable {
+            if (snapshotOptimizationManager.primaryComponent.isOptimizationTaskRunning) {
                 textService.builder()
                     .appendPrefix()
                     .yellow().append("Optimization task already running! Task will skip")
-                    .sendToConsole();
+                    .sendToConsole()
             } else {
-                snapshotOptimizationManager.getPrimaryComponent()
+                snapshotOptimizationManager.primaryComponent
                     .optimize(
                         Bukkit.getOnlinePlayers(),
                         Bukkit.getConsoleSender(),
                         "Auto"
-                    );
+                    )
             }
-        };
+        }
     }
 }

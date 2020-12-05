@@ -73,7 +73,5 @@ class SpongeOptimizeCommandNode @Inject constructor(
         return root!!
     }
 
-    override fun getName(): String {
-        return "optimize"
-    }
+    override fun getName(): String = "optimize"
 }

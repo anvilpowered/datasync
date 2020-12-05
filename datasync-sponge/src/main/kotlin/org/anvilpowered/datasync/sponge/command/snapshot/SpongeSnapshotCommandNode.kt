@@ -24,7 +24,6 @@ import org.anvilpowered.datasync.common.command.CommonSyncCommandNode
 import org.anvilpowered.datasync.common.command.snapshot.CommonSnapshotCommandNode
 import org.spongepowered.api.command.CommandCallable
 import org.spongepowered.api.command.CommandSource
-import org.spongepowered.api.command.args.GenericArguments
 import org.spongepowered.api.command.spec.CommandExecutor
 import org.spongepowered.api.command.spec.CommandSpec
 import org.spongepowered.api.text.Text
@@ -34,8 +33,8 @@ class SpongeSnapshotCommandNode @Inject constructor(
     registry: Registry
 ) : CommonSnapshotCommandNode<CommandExecutor, CommandSource>(registry) {
 
-    companion object{
-        var root : CommandSpec? = null
+    companion object {
+        var root: CommandSpec? = null
     }
 
     @Inject
@@ -84,11 +83,6 @@ class SpongeSnapshotCommandNode @Inject constructor(
         return root!!
     }
 
-    override fun getName(): String {
-        return "snapshot"
-    }
-
-    override fun getPath(): Array<String> {
-        return CommonSyncCommandNode.SYNC_PATH
-    }
+    override fun getName(): String = "snapshot"
+    override fun getPath(): Array<String> = CommonSyncCommandNode.SYNC_PATH
 }

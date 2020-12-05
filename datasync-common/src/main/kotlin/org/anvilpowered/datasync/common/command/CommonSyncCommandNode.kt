@@ -48,13 +48,11 @@ abstract class CommonSyncCommandNode<TCommandExecutor, TCommandSource> protected
         const val RELOAD_USAGE = "[-a|--all|-r|--regex] [plugin]"
         const val HELP_COMMAND = "/datasync help"
         var SYNC_PATH = arrayOf("sync")
-        private const val ERROR_MESSAGE = "Sync command has not been loaded yet"
     }
 
     private var alreadyLoaded: Boolean
     private var descriptions: MutableMap<List<String>, Function<TCommandSource, String>>
     private var permissions: Map<List<String>, Predicate<TCommandSource>>
-
     private var usages: MutableMap<List<String>, Function<TCommandSource, String>>
 
     @Inject
@@ -71,16 +69,16 @@ abstract class CommonSyncCommandNode<TCommandExecutor, TCommandSource> protected
             alreadyLoaded = true
         }.register()
         alreadyLoaded = false
-        descriptions = HashMap()
-        permissions = HashMap()
-        usages = HashMap()
-        descriptions.put(LOCK_ALIAS){ LOCK_DESCRIPTION}
-        descriptions.put(RELOAD_ALIAS){ RELOAD_DESCRIPTION}
-        descriptions.put(TEST_ALIAS){ TEST_DESCRIPTION}
-        descriptions.put(UPLOAD_ALIAS){ UPLOAD_DESCRIPTION}
-        descriptions.put(HELP_ALIAS){ HELP_DESCRIPTION}
-        descriptions.put(VERSION_ALIAS){ VERSION_DESCRIPTION}
-        usages.put(RELOAD_ALIAS) { RELOAD_USAGE}
+        descriptions = mutableMapOf()
+        permissions = mutableMapOf()
+        usages = mutableMapOf()
+        descriptions.put(LOCK_ALIAS) { LOCK_DESCRIPTION }
+        descriptions.put(RELOAD_ALIAS) { RELOAD_DESCRIPTION }
+        descriptions.put(TEST_ALIAS) { TEST_DESCRIPTION }
+        descriptions.put(UPLOAD_ALIAS) { UPLOAD_DESCRIPTION }
+        descriptions.put(HELP_ALIAS) { HELP_DESCRIPTION }
+        descriptions.put(VERSION_ALIAS) { VERSION_DESCRIPTION }
+        usages.put(RELOAD_ALIAS) { RELOAD_USAGE }
     }
 
     protected abstract fun loadCommands()

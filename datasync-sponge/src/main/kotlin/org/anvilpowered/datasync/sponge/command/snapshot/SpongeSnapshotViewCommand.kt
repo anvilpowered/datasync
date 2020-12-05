@@ -21,6 +21,7 @@ import com.google.inject.Inject
 import org.anvilpowered.anvil.api.plugin.PluginInfo
 import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.anvil.api.splitContext
+import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.TimeFormatService
 import org.anvilpowered.datasync.api.member.MemberManager
 import org.anvilpowered.datasync.api.misc.LockService
@@ -79,6 +80,9 @@ class SpongeSnapshotViewCommand : CommandCallable {
     private lateinit var timeFormatService: TimeFormatService
 
     @Inject
+    private lateinit var textService: TextService<Text, CommandSource>
+
+    @Inject
     private lateinit var pluginContainer: PluginContainer
 
     @Inject
@@ -92,30 +96,45 @@ class SpongeSnapshotViewCommand : CommandCallable {
         val USAGE: Text = Text.of(CommonSnapshotCommandNode.VIEW_USAGE)
     }
 
+    private val serializerDisabled: Text by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Inventory serializer must be enabled in the config to use this feature")
+            .build()
+    }
+
+    private val lockedError: Text by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("You must first unlock this command with /sync lock off")
+            .build()
+    }
+
     override fun process(source: CommandSource, arguments: String): CommandResult {
         val context: Array<String> = arguments.splitContext()
         return if (source is Player) {
             if (!snapshotSerializer.isSerializerEnabled("datasync:inventory")) {
-                throw CommandException(Text.of(pluginInfo.prefix, "Inventory serializer must be enabled in config to use this feature"))
+                throw CommandException(serializerDisabled)
             }
             if (!lockService.assertUnlocked(source)) {
-                throw CommandException(
-                    Text.of(pluginInfo.prefix, TextColors.YELLOW, "You must first unlock this command with /sync lock off")
-                )
+                throw CommandException(lockedError)
             }
             val target: String
             val snapshot: String?
-            if (context.isEmpty()) {
-                source.sendMessage(USAGE)
-                return CommandResult.success();
-            } else if (context.size == 1) {
-                target = context[0]
-                snapshot = null
-            } else {
-                target = context[0]
-                snapshot = context[1]
+            when {
+                context.isEmpty() -> {
+                    source.sendMessage(USAGE)
+                    return CommandResult.success()
+                }
+                context.size == 1 -> {
+                    target = context[0]
+                    snapshot = null
+                }
+                else -> {
+                    target = context[0]
+                    snapshot = context[1]
+                }
             }
-            val player = source
             val optionalUser: Optional<Player> = Sponge.getServer().getPlayer(target)
             if (!optionalUser.isPresent) {
                 throw CommandException(Text.of(pluginInfo.prefix, "User is required"))
@@ -132,14 +151,14 @@ class SpongeSnapshotViewCommand : CommandCallable {
                     timeFormatService.format(optionalSnapshot.get().createdUtc)
                 ))
                 val closeData = booleanArrayOf(false)
-                val permissionToEdit = player.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_EDIT_PERMISSION.fallbackValue)
+                val permissionToEdit = source.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_EDIT_PERMISSION.fallbackValue)
                 val inventory = Inventory.builder().of(inventoryArchetype).listener(InteractInventoryEvent.Close::class.java) { e: InteractInventoryEvent.Close ->
                     if (closeData[0] || !permissionToEdit) {
                         source.sendMessage(
                             Text.of(
                                 pluginInfo.prefix, TextColors.YELLOW,
                                 "Closed snapshot ", TextColors.GOLD,
-                                timeFormatService.format(optionalSnapshot.get().createdUtc),
+                                timeFormatService.format(snapshot.createdUtc),
                                 TextColors.YELLOW, " without saving"
                             )
                         )
@@ -153,7 +172,7 @@ class SpongeSnapshotViewCommand : CommandCallable {
                                 Text.of(
                                     pluginInfo.prefix, TextColors.YELLOW,
                                     "Successfully edited snapshot ", TextColors.GOLD,
-                                    timeFormatService.format(optionalSnapshot.get().createdUtc),
+                                    timeFormatService.format(snapshot.createdUtc),
                                     TextColors.YELLOW, " for ", targetUser.name
                                 )
                             )
@@ -181,11 +200,11 @@ class SpongeSnapshotViewCommand : CommandCallable {
                     ) {
                         e.isCancelled = true
                         closeData[0] = true
-                        player.closeInventory()
+                        source.closeInventory()
                     }
                 }.build(pluginContainer)
                 inventorySerializer.deserializeInventory(snapshot, inventory)
-                player.openInventory(inventory, Text.of(TextColors.DARK_AQUA,
+                source.openInventory(inventory, Text.of(TextColors.DARK_AQUA,
                     timeFormatService.format(snapshot.createdUtc).toString()))
             }
             memberManager.primaryComponent.getSnapshotForUser(
@@ -211,8 +230,6 @@ class SpongeSnapshotViewCommand : CommandCallable {
     }
 
     override fun getShortDescription(source: CommandSource): Optional<Text> = DESCRIPTION
-
     override fun getHelp(source: CommandSource): Optional<Text> = DESCRIPTION
-
     override fun getUsage(source: CommandSource): Text = USAGE
 }

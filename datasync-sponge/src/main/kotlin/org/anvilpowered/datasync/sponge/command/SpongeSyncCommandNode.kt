@@ -39,10 +39,10 @@ class SpongeSyncCommandNode @Inject constructor(
     registry: Registry
 ) : CommonSyncCommandNode<CommandExecutor, CommandSource>(registry) {
 
-    companion object{
-        var root : CommandSpec? = null
+    companion object {
+        var root: CommandSpec? = null
     }
-    
+
     @Inject
     private lateinit var optimizeCommandNode: SpongeOptimizeCommandNode
 
@@ -60,7 +60,7 @@ class SpongeSyncCommandNode @Inject constructor(
 
     @Inject
     private lateinit var syncUploadCommand: SpongeSyncUploadCommand
-    
+
     override fun loadCommands() {
         println("Loading Commands")
         val subCommands: MutableMap<List<String>, CommandCallable> = HashMap()
@@ -81,7 +81,7 @@ class SpongeSyncCommandNode @Inject constructor(
             .description(Text.of(VERSION_DESCRIPTION))
             .executor(commandService.generateVersionCommand(HELP_COMMAND))
             .build()
-        root= CommandSpec.builder()
+        root = CommandSpec.builder()
             .description(Text.of(ROOT_DESCRIPTION))
             .executor(commandService.generateRootCommand(HELP_COMMAND))
             .children(subCommands)

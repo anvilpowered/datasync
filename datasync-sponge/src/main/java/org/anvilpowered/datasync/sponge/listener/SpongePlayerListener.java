@@ -22,11 +22,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.registry.Registry;
+import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.datasync.api.misc.LockService;
 import org.anvilpowered.datasync.api.registry.DataSyncKeys;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
-import org.anvilpowered.datasync.sponge.command.SpongeSyncLockCommand;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
@@ -35,18 +36,17 @@ import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 
 @Singleton
 public class SpongePlayerListener {
 
-    private Registry registry;
+    private final Registry registry;
 
     @Inject
     private LockService lockService;
 
     @Inject
-    private PluginInfo<Text> pluginInfo;
+    private TextService<Text, CommandSource> textService;
 
     @Inject
     private UserSerializerManager<User, Text> userSerializerManager;
@@ -77,11 +77,13 @@ public class SpongePlayerListener {
     }
 
     private void sendWarning(String name) {
-        Sponge.getServer().getConsole().sendMessage(
-            Text.of(pluginInfo.getPrefix(), TextColors.RED,
-                "Attention! You have opted to disable ", name, ".\n" +
-                    "If you would like to enable this, set `", name, "=true` in the config and restart your server or run /sync reload")
-        );
+        textService.builder()
+            .appendPrefix()
+            .red().append(
+            "Attention! You have opted to disable", name, ".\n",
+            "If you would like to disable this, set`", name,
+            "=true` in the config and restart your server or run /sync reload"
+        ).sendToConsole();
     }
 
     @Listener

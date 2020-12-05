@@ -45,7 +45,6 @@ abstract class CommonOptimizeCommandNode<TCommandExecutor, TCommandSource> prote
         const val START_USAGE = "all|user [<user>]"
 
         const val HELP_COMMAND = "/sync optimize help"
-        private const val ERROR_MESSAGE = "Sync command has not been loaded yet"
     }
 
     private var alreadyLoaded: Boolean
@@ -64,9 +63,9 @@ abstract class CommonOptimizeCommandNode<TCommandExecutor, TCommandSource> prote
             alreadyLoaded = true
         }.register()
         alreadyLoaded = false
-        descriptions = HashMap()
-        permissions = HashMap()
-        usages = HashMap()
+        descriptions = mutableMapOf()
+        permissions = mutableMapOf()
+        usages = mutableMapOf()
         descriptions.put(START_ALIAS) { START_DESCRIPTION }
         descriptions.put(INFO_ALIAS) { INFO_DESCRIPTION }
         descriptions.put(STOP_ALIAS) { INFO_DESCRIPTION }

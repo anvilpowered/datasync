@@ -15,29 +15,26 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package org.anvilpowered.datasync.spigot.serializer
 
-package org.anvilpowered.datasync.spigot.serializer;
+import org.anvilpowered.datasync.api.model.snapshot.Snapshot
+import org.anvilpowered.datasync.common.serializer.CommonHungerSerializer
+import org.anvilpowered.datasync.spigot.util.Utils
+import org.bukkit.entity.Player
 
-import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
-import org.anvilpowered.datasync.common.serializer.CommonHungerSerializer;
-import org.anvilpowered.datasync.spigot.util.Utils;
-import org.bukkit.entity.Player;
-
-public class SpigotHungerSerializer extends CommonHungerSerializer<String, Player> {
-
-    @Override
-    public boolean serialize(Snapshot<?> snapshot, Player player) {
+class SpigotHungerSerializer : CommonHungerSerializer<String, Player>() {
+    
+    override fun serialize(snapshot: Snapshot<*>, player: Player): Boolean {
         // second statement should still run if first one fails
-        boolean a = Utils.serialize(snapshotManager, snapshot, player, "FOOD_LEVEL");
-        boolean b = Utils.serialize(snapshotManager, snapshot, player, "SATURATION");
-        return a && b;
+        val a = Utils.serialize(snapshotManager, snapshot, player, "FOOD_LEVEL")
+        val b = Utils.serialize(snapshotManager, snapshot, player, "SATURATION")
+        return a && b
     }
 
-    @Override
-    public boolean deserialize(Snapshot<?> snapshot, Player player) {
+    override fun deserialize(snapshot: Snapshot<*>, player: Player): Boolean {
         // second statement should still run if first one fails
-        boolean a = Utils.deserialize(snapshotManager, snapshot, player, "FOOD_LEVEL");
-        boolean b = Utils.deserialize(snapshotManager, snapshot, player, "SATURATION");
-        return a && b;
+        val a = Utils.deserialize(snapshotManager, snapshot, player, "FOOD_LEVEL")
+        val b = Utils.deserialize(snapshotManager, snapshot, player, "SATURATION")
+        return a && b
     }
 }

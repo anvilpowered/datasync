@@ -22,7 +22,6 @@ import org.anvilpowered.anvil.api.command.CommandNode
 import org.anvilpowered.anvil.api.command.CommandService
 import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo
-import java.util.Arrays
 import java.util.HashMap
 import java.util.function.Function
 import java.util.function.Predicate
@@ -58,7 +57,6 @@ abstract class CommonSnapshotCommandNode<TCommandExecutor, TCommandSource> prote
         const val LIST_USAGE = "<user>"
 
         const val HELP_COMMAND = "/sync snapshot|snap|s help"
-        const val ERROR_MESSAGE = "Sync command has not been loaded yet"
     }
 
     private var alreadyLoaded: Boolean
@@ -77,9 +75,9 @@ abstract class CommonSnapshotCommandNode<TCommandExecutor, TCommandSource> prote
             alreadyLoaded = true
         }.register()
         alreadyLoaded = false
-        descriptions = HashMap()
-        permissions = HashMap()
-        usages = HashMap()
+        descriptions = mutableMapOf()
+        permissions = mutableMapOf()
+        usages = mutableMapOf()
         descriptions.put(CREATE_ALIAS) { CREATE_DESCRIPTION }
         descriptions.put(DELETE_ALIAS) { DELETE_DESCRIPTION }
         descriptions.put(VIEW_ALIAS) { VIEW_DESCRIPTION }
