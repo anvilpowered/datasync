@@ -34,6 +34,7 @@ import org.anvilpowered.datasync.api.member.MemberManager;
 import org.anvilpowered.datasync.api.member.MemberRepository;
 import org.anvilpowered.datasync.api.misc.LockService;
 import org.anvilpowered.datasync.api.misc.SyncUtils;
+import org.anvilpowered.datasync.api.plugin.PluginMessages;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerComponent;
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager;
 import org.anvilpowered.datasync.api.serializer.user.UserTransitCache;
@@ -47,6 +48,7 @@ import org.anvilpowered.datasync.common.member.CommonXodusMemberRepository;
 import org.anvilpowered.datasync.common.misc.CommonLockService;
 import org.anvilpowered.datasync.common.misc.CommonSyncUtils;
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo;
+import org.anvilpowered.datasync.common.plugin.DataSyncPluginMessages;
 import org.anvilpowered.datasync.common.registry.CommonConfigurationService;
 import org.anvilpowered.datasync.common.registry.CommonRegistry;
 import org.anvilpowered.datasync.common.serializer.user.CommonUserSerializerComponent;
@@ -81,26 +83,21 @@ public class CommonModule<
 
         bind(Registry.class).to(CommonRegistry.class);
 
-        be.bind(
-            new TypeToken<LockService>(getClass()){
-            },
-            new TypeToken<CommonLockService<TString, TUser, TPlayer, TCommandSource>>(getClass()){
-            }
-        );
+        be.bind(new TypeToken<LockService>(getClass()) {
+        }, new TypeToken<CommonLockService<TString, TUser, TPlayer, TCommandSource>>(getClass()) {
+        });
 
-        be.bind(
-            new TypeToken<BasicPluginInfo>(getClass()) {
-            },
-            new TypeToken<DataSyncPluginInfo<TString, TCommandSource>>(getClass()) {
-            }
-        );
+        be.bind(new TypeToken<BasicPluginInfo>(getClass()) {
+        }, new TypeToken<DataSyncPluginInfo<TString, TCommandSource>>(getClass()) {
+        });
 
-        be.bind(
-            new TypeToken<PluginInfo<TString>>(getClass()) {
-            },
-            new TypeToken<DataSyncPluginInfo<TString, TCommandSource>>(getClass()) {
-            }
-        );
+        be.bind(new TypeToken<PluginInfo<TString>>(getClass()) {
+        }, new TypeToken<DataSyncPluginInfo<TString, TCommandSource>>(getClass()) {
+        });
+
+        be.bind(new TypeToken<PluginMessages<TString>>(getClass()) {
+        }, new TypeToken<DataSyncPluginMessages<TString, TCommandSource>>(getClass()) {
+        });
 
         be.bind(
             new TypeToken<UserSerializerComponent<?, ?, ?>>(getClass()) {
@@ -233,12 +230,9 @@ public class CommonModule<
             Names.named("xodus")
         );
 
-        be.bind(
-            new TypeToken<SnapshotManager<TDataKey>>(getClass()) {
-            },
-            new TypeToken<CommonSnapshotManager<TDataKey>>(getClass()) {
-            }
-        );
+        be.bind(new TypeToken<SnapshotManager<TDataKey>>(getClass()) {
+        }, new TypeToken<CommonSnapshotManager<TDataKey>>(getClass()) {
+        });
 
         be.withMongoDB();
         be.withXodus();

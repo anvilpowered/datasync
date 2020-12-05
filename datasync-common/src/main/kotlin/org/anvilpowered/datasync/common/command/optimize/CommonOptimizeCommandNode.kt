@@ -23,7 +23,6 @@ import org.anvilpowered.anvil.api.command.CommandService
 import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.datasync.common.command.CommonSyncCommandNode
 import org.anvilpowered.datasync.common.plugin.DataSyncPluginInfo
-import java.util.Arrays
 import java.util.HashMap
 import java.util.function.Function
 import java.util.function.Predicate
@@ -32,8 +31,8 @@ abstract class CommonOptimizeCommandNode<TCommandExecutor, TCommandSource> prote
     protected var registry: Registry
 ) : CommandNode<TCommandSource> {
     companion object {
-        val START_ALIAS: MutableList<String> = Arrays.asList("start", "s")
-        val INFO_ALIAS: MutableList<String> = Arrays.asList("info", "i")
+        val START_ALIAS = listOf("start", "s")
+        val INFO_ALIAS = listOf("info", "i")
         val STOP_ALIAS = listOf("stop")
         val HELP_ALIAS = listOf("help")
 
@@ -68,11 +67,11 @@ abstract class CommonOptimizeCommandNode<TCommandExecutor, TCommandSource> prote
         descriptions = HashMap()
         permissions = HashMap()
         usages = HashMap()
-        descriptions[START_ALIAS] = Function { c: TCommandSource -> START_DESCRIPTION }
-        descriptions[INFO_ALIAS] = Function { c: TCommandSource -> INFO_DESCRIPTION }
-        descriptions[STOP_ALIAS] = Function { c: TCommandSource -> STOP_DESCRIPTION }
-        descriptions[HELP_ALIAS] = Function { c: TCommandSource -> HELP_DESCRIPTION }
-        usages[START_ALIAS] = Function { c: TCommandSource -> START_USAGE }
+        descriptions.put(START_ALIAS) { START_DESCRIPTION }
+        descriptions.put(INFO_ALIAS) { INFO_DESCRIPTION }
+        descriptions.put(STOP_ALIAS) { INFO_DESCRIPTION }
+        descriptions.put(HELP_ALIAS) { HELP_DESCRIPTION }
+        usages.put(START_ALIAS) { START_USAGE }
     }
 
     protected abstract fun loadCommands()

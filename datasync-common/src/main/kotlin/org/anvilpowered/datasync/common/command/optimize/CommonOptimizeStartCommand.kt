@@ -22,6 +22,7 @@ import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.UserService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager
 import java.util.ArrayList
@@ -37,6 +38,9 @@ open class CommonOptimizeStartCommand<
     private lateinit var permissionService: PermissionService
 
     @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
+
+    @Inject
     protected lateinit var registry: Registry
 
     @Inject
@@ -47,28 +51,33 @@ open class CommonOptimizeStartCommand<
 
     @Inject
     private lateinit var userService: UserService<TUser, TPlayer>
+
+    private val modeRequired: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Mode is required!")
+            .build()
+    }
+
+    private val noUsersSelected: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("No users were selected by your query")
+            .build()
+    }
     
     fun execute(source: TCommandSource, context: Array<String>) {
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.MANUAL_OPTIMIZATION_BASE_PERMISSION))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(source)
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         if (context.isEmpty()) {
-            textService.builder()
-                .appendPrefix()
-                .yellow().append("Mode is required")
-                .sendTo(source)
+            textService.send(modeRequired, source)
             return
         }
         val mode = context[0]
         if (context.size < 2) {
-            textService.builder()
-                .appendPrefix()
-                .yellow().append("No users were selected by your query")
-                .sendTo(source)
+            textService.send(noUsersSelected, source)
         }
         context[0] = ""
         val playerNames = Arrays.asList(*context.clone())
@@ -91,10 +100,7 @@ open class CommonOptimizeStartCommand<
             }
         } else {
             if (playerNames.isEmpty()) {
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("No users were selected by your query")
-                    .sendTo(source)
+                textService.send(noUsersSelected, source)
                 return
             } else {
                 val players: MutableList<TUser> = ArrayList()

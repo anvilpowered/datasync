@@ -34,8 +34,8 @@ import java.util.Optional
 class SpongeSyncLockCommand : CommonSyncLockCommand<Text, User, Player, CommandSource>(), CommandCallable {
 
     companion object {
-        val DESCRIPTION : Optional<Text> = Optional.of(Text.of(CommonSyncCommandNode.LOCK_DESCRIPTION))
-        val USAGE : Text = Text.of("<on:off>")
+        val DESCRIPTION: Optional<Text> = Optional.of(Text.of(CommonSyncCommandNode.LOCK_DESCRIPTION))
+        val USAGE: Text = Text.of("<on:off>")
     }
 
     override fun process(source: CommandSource, arguments: String): CommandResult {

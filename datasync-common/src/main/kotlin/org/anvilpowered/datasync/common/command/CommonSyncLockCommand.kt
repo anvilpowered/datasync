@@ -23,6 +23,7 @@ import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.UserService
 import org.anvilpowered.datasync.api.misc.LockService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 
 open class CommonSyncLockCommand<
@@ -38,6 +39,9 @@ open class CommonSyncLockCommand<
     private lateinit var permissionService: PermissionService
 
     @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
+
+    @Inject
     protected lateinit var registry: Registry
 
     @Inject
@@ -45,6 +49,35 @@ open class CommonSyncLockCommand<
 
     @Inject
     private lateinit var userService: UserService<TUser, TPlayer>
+
+    private val lockEnabled: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Lock Enabled")
+            .build()
+    }
+
+    private val lockDisabled: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Lock disabled")
+            .red().append(" (be careful)")
+            .build()
+    }
+
+    private val alreadyEnabled: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Lock already enabled")
+            .build()
+    }
+
+    private val alreadyDisabled: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Lock already disabled")
+            .build()
+    }
 
     fun execute(source: TCommandSource, context: Array<String>, playerClass: Class<TPlayer>) {
         if (!playerClass.isAssignableFrom(source.javaClass)) {
@@ -55,6 +88,7 @@ open class CommonSyncLockCommand<
             return
         }
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.LOCK_COMMAND_PERMISSION))) {
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         val player = userService.getPlayer(source as TUser)
@@ -63,7 +97,7 @@ open class CommonSyncLockCommand<
         }
         val index = lockService.unlockedPlayers.indexOf(userService.getUUID(source as TUser))
         val status = if (index >= 0) "unlocked" else "locked"
-        if (context.size < 1) {
+        if (context.isEmpty()) {
             textService.builder()
                 .appendPrefix()
                 .yellow().append("Currently $status")
@@ -73,28 +107,15 @@ open class CommonSyncLockCommand<
         when (context[0]) {
             "on" -> if (index >= 0) {
                 lockService.unlockedPlayers.removeAt(index)
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("Lock enabled")
-                    .sendTo(source)
+                textService.send(lockEnabled, source)
             } else {
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("Lock already enabled")
-                    .sendTo(source)
+                textService.send(alreadyEnabled, source)
             }
             "off" -> if (index < 0) {
                 lockService.add(userService.getUUID(source as TUser))
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("Lock disabled")
-                    .red().append(" (be careful)")
-                    .sendTo(source)
+                textService.send(lockDisabled, source)
             } else {
-                textService.builder()
-                    .appendPrefix()
-                    .yellow().append("Lock already disabled")
-                    .sendTo(source)
+                textService.send(alreadyDisabled, source)
             }
             else -> textService.builder()
                 .appendPrefix()

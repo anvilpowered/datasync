@@ -23,6 +23,7 @@ import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.UserService
 import org.anvilpowered.datasync.api.misc.LockService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager
 
@@ -32,6 +33,9 @@ open class CommonSnapshotRestoreCommand<TString, TUser, TPlayer, TCommandSource>
 
     @Inject
     private lateinit var permissionService: PermissionService
+
+    @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
 
     @Inject
     protected lateinit var registry: Registry
@@ -44,13 +48,10 @@ open class CommonSnapshotRestoreCommand<TString, TUser, TPlayer, TCommandSource>
 
     @Inject
     private lateinit var userSerializerManager: UserSerializerManager<TUser, TString>
-    
+
     fun execute(source: TCommandSource, context: Array<String>) {
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.SNAPSHOT_RESTORE_PERMISSION))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(source)
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         if (!lockService.assertUnlocked(source)) {
@@ -60,10 +61,7 @@ open class CommonSnapshotRestoreCommand<TString, TUser, TPlayer, TCommandSource>
         val snapshot: String?
         when {
             context.isEmpty() -> {
-                textService.builder()
-                    .appendPrefix()
-                    .red().append("User is required!")
-                    .sendTo(source)
+                textService.send(pluginMessages.userRequired, source)
                 return
             }
             context.size == 1 -> {
@@ -75,15 +73,12 @@ open class CommonSnapshotRestoreCommand<TString, TUser, TPlayer, TCommandSource>
                 snapshot = context[1]
             }
         }
-        val optionalPlayer = userService.getPlayer(player)
-        if (!optionalPlayer.isPresent) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Invalid player!")
-                .sendTo(source)
+        val optionalUser = userService.getPlayer(player)
+        if (!optionalUser.isPresent) {
+            textService.send(pluginMessages.invalidUser, source)
             return
         }
-        userSerializerManager.restore(userService.getUUID(optionalPlayer.get() as TUser), snapshot)
+        userSerializerManager.restore(userService.getUUID(optionalUser.get() as TUser), snapshot)
             .thenAcceptAsync { msg: TString -> textService.send(msg, source) }
     }
 }

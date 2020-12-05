@@ -24,10 +24,11 @@ import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.UserService
 import org.anvilpowered.datasync.api.member.MemberManager
 import org.anvilpowered.datasync.api.misc.LockService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 
 open class CommonSnapshotDeleteCommand<TString, TUser, TPlayer, TCommandSource> {
-    
+
     @Inject
     private lateinit var lockService: LockService
 
@@ -38,6 +39,9 @@ open class CommonSnapshotDeleteCommand<TString, TUser, TPlayer, TCommandSource> 
     private lateinit var permissionService: PermissionService
 
     @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
+
+    @Inject
     protected lateinit var registry: Registry
 
     @Inject
@@ -46,33 +50,31 @@ open class CommonSnapshotDeleteCommand<TString, TUser, TPlayer, TCommandSource> 
     @Inject
     private lateinit var userService: UserService<TUser, TPlayer>
 
+    private val argsRequired: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("User and Snapshot are required!")
+            .build()
+    }
+
     fun execute(source: TCommandSource, context: Array<String>) {
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.SNAPSHOT_DELETE_PERMISSION))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(source)
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         if (!lockService.assertUnlocked(source)) {
             return
         }
         if (context.size != 2) {
-            textService.builder()
-                .appendPrefix()
-                .yellow().append("User and Snapshot are required!")
-                .sendTo(source)
+            textService.send(argsRequired, source)
             return
         }
-        val optionalPlayer = userService.getPlayer(context[0])
-        if (!optionalPlayer.isPresent) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Invalid player!")
-                .sendTo(source)
+        val optionalUser = userService.getPlayer(context[0])
+        if (!optionalUser.isPresent) {
+            textService.send(pluginMessages.invalidUser, source)
             return
         }
-        memberManager.deleteSnapshot(userService.getUUID(optionalPlayer.get() as TUser), context[1])
+        memberManager.deleteSnapshot(userService.getUUID(optionalUser.get() as TUser), context[1])
             .thenAcceptAsync { msg: TString -> textService.send(msg, source) }
     }
 }

@@ -87,6 +87,6 @@ class SpongeSyncCommandNode @Inject constructor(
             .children(subCommands)
             .build()
         Sponge.getCommandManager()
-            .register(environment.plugin, root, "sync", "datasync")
+            .register(environment.plugin, root!!, "sync", "datasync")
     }
 }

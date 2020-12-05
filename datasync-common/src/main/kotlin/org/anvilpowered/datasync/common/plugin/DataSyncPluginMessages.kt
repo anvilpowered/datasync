@@ -15,44 +15,40 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.anvilpowered.datasync.common.command
+
+package org.anvilpowered.datasync.common.plugin
 
 import com.google.inject.Inject
-import org.anvilpowered.anvil.api.registry.Registry
-import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.datasync.api.plugin.PluginMessages
-import org.anvilpowered.datasync.api.registry.DataSyncKeys
 
-open class CommonSyncReloadCommand<
-    TString : Any,
-    TCommandSource : Any> {
-
-    @Inject
-    private lateinit var permissionService: PermissionService
-
-    @Inject
-    private lateinit var pluginMessages: PluginMessages<TString>
-
-    @Inject
-    protected lateinit var registry: Registry
+class DataSyncPluginMessages<TString, TCommandSource> : PluginMessages<TString> {
 
     @Inject
     private lateinit var textService: TextService<TString, TCommandSource>
 
-    private val reloadSuccess: TString by lazy {
+    private val noPermissionText: TString by lazy {
         textService.builder()
             .appendPrefix()
-            .green().append("Successfully reloaded!")
+            .red().append("You do not have permission for this command!")
             .build()
     }
 
-    fun execute(source: TCommandSource) {
-        if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.RELOAD_COMMAND_PERMISSION))) {
-            textService.send(pluginMessages.noPermissions, source)
-            return
-        }
-        registry.load()
-        textService.send(reloadSuccess, source)
+    private val userRequiredText: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("User is required!")
+            .build()
     }
+
+    private val invalidUserText: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("Invalid User!")
+            .build()
+    }
+
+    override fun getNoPermissions(): TString = noPermissionText
+    override fun getUserRequired(): TString = userRequiredText
+    override fun getInvalidUser(): TString = invalidUserText
 }

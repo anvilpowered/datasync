@@ -22,6 +22,7 @@ import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.UserService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager
 
@@ -35,6 +36,9 @@ open class CommonSyncTestCommand<
     private lateinit var permissionService: PermissionService
 
     @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
+
+    @Inject
     protected lateinit var registry: Registry
 
     @Inject
@@ -45,7 +49,21 @@ open class CommonSyncTestCommand<
 
     @Inject
     private lateinit var userSerializerManager: UserSerializerManager<TUser, TString>
-    
+
+    private val error: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .yellow().append("An error has occurred while serializing your snapshot!")
+            .build()
+    }
+
+    private val deserializing: TString by lazy {
+        textService.builder()
+            .appendPrefix()
+            .green().append("Deserializing in 5 seconds")
+            .build();
+    }
+
     fun execute(source: TCommandSource, playerClass: Class<TPlayer>) {
         if (!playerClass.isAssignableFrom(source.javaClass)) {
             textService.builder()
@@ -55,10 +73,7 @@ open class CommonSyncTestCommand<
             return
         }
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.TEST_COMMAND_PERMISSION))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(source)
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         val optionalPlayer = userService.getPlayer(source as TUser)
@@ -68,7 +83,7 @@ open class CommonSyncTestCommand<
         userSerializerManager.serialize(optionalPlayer.get() as TUser)
             .exceptionally { e: Throwable ->
                 e.printStackTrace()
-                textService.send(textService.of("An error has occurred!"), source)
+                textService.send(error, source)
                 null
             }
             .thenAcceptAsync { text: TString? ->
@@ -76,17 +91,14 @@ open class CommonSyncTestCommand<
                     return@thenAcceptAsync
                 }
                 textService.send(text, source)
-                textService.builder()
-                    .appendPrefix()
-                    .green().append("Deserializing in 5 seconds")
-                    .sendTo(source)
+                textService.send(deserializing, source)
                 try {
                     Thread.sleep(5000)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
                 userSerializerManager.restore(userService.getUUID(optionalPlayer.get() as TUser), null)
-                    .thenAcceptAsync { msg: TString? -> textService.send(msg, source) }
+                    .thenAcceptAsync { msg: TString -> textService.send(msg, source) }
             }
     }
 }

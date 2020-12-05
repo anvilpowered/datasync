@@ -21,6 +21,7 @@ import com.google.inject.Inject
 import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.snapshotoptimization.SnapshotOptimizationManager
 
@@ -33,6 +34,9 @@ open class CommonOptimizeInfoCommand<
     private lateinit var permissionService: PermissionService
 
     @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
+
+    @Inject
     protected lateinit var registry: Registry
 
     @Inject
@@ -43,10 +47,7 @@ open class CommonOptimizeInfoCommand<
     
     fun execute(source: TCommandSource) {
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.MANUAL_OPTIMIZATION_BASE_PERMISSION))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(source)
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         textService.send(snapshotOptimizationManager.info(), source)

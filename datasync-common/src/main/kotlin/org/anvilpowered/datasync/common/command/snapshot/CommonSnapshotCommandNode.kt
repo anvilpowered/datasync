@@ -31,12 +31,12 @@ abstract class CommonSnapshotCommandNode<TCommandExecutor, TCommandSource> prote
     protected var registry: Registry
 ) : CommandNode<TCommandSource> {
     companion object {
-        val CREATE_ALIAS = Arrays.asList("create", "c", "upload", "up")
+        val CREATE_ALIAS = listOf("create", "c", "upload", "up")
         val DELETE_ALIAS = listOf("delete")
-        val VIEW_ALIAS = Arrays.asList("view", "e", "edit")
-        val INFO_ALIAS = Arrays.asList("info", "i")
-        val LIST_ALIAS = Arrays.asList("list", "l")
-        val RESTORE_ALIAS = Arrays.asList("restore", "r", "download", "down")
+        val VIEW_ALIAS = listOf("view", "e", "edit")
+        val INFO_ALIAS = listOf("info", "i")
+        val LIST_ALIAS = listOf("list", "l")
+        val RESTORE_ALIAS = listOf("restore", "r", "download", "down")
         val HELP_ALIAS = listOf("help")
         val VERSION_ALIAS = listOf("version")
 
@@ -80,20 +80,20 @@ abstract class CommonSnapshotCommandNode<TCommandExecutor, TCommandSource> prote
         descriptions = HashMap()
         permissions = HashMap()
         usages = HashMap()
-        descriptions[CREATE_ALIAS] = Function { c: TCommandSource -> CREATE_DESCRIPTION }
-        descriptions[DELETE_ALIAS] = Function { c: TCommandSource -> DELETE_DESCRIPTION }
-        descriptions[VIEW_ALIAS] = Function { c: TCommandSource -> VIEW_DESCRIPTION }
-        descriptions[INFO_ALIAS] = Function { c: TCommandSource -> INFO_DESCRIPTION }
-        descriptions[RESTORE_ALIAS] = Function { c: TCommandSource -> RESTORE_DESCRIPTION }
-        descriptions[LIST_ALIAS] = Function { c: TCommandSource -> LIST_DESCRIPTION }
-        descriptions[HELP_ALIAS] = Function { c: TCommandSource -> HELP_DESCRIPTION }
-        descriptions[VERSION_ALIAS] = Function { c: TCommandSource -> VERSION_DESCRIPTION }
-        usages[CREATE_ALIAS] = Function { c: TCommandSource -> CREATE_USAGE }
-        usages[DELETE_ALIAS] = Function { c: TCommandSource -> DELETE_USAGE }
-        usages[VIEW_ALIAS] = Function { c: TCommandSource -> VIEW_USAGE }
-        usages[INFO_ALIAS] = Function { c: TCommandSource -> INFO_USAGE }
-        usages[RESTORE_ALIAS] = Function { c: TCommandSource -> RESTORE_USAGE }
-        usages[LIST_ALIAS] = Function { c: TCommandSource -> LIST_USAGE }
+        descriptions.put(CREATE_ALIAS) { CREATE_DESCRIPTION }
+        descriptions.put(DELETE_ALIAS) { DELETE_DESCRIPTION }
+        descriptions.put(VIEW_ALIAS) { VIEW_DESCRIPTION }
+        descriptions.put(INFO_ALIAS) { INFO_DESCRIPTION }
+        descriptions.put(RESTORE_ALIAS) { RESTORE_DESCRIPTION }
+        descriptions.put(LIST_ALIAS) { LIST_DESCRIPTION }
+        descriptions.put(HELP_ALIAS) { HELP_DESCRIPTION }
+        descriptions.put(VERSION_ALIAS) { VERSION_DESCRIPTION }
+        usages.put(CREATE_ALIAS) { CREATE_USAGE }
+        usages.put(DELETE_ALIAS) { DELETE_USAGE }
+        usages.put(VIEW_ALIAS) { VIEW_USAGE }
+        usages.put(INFO_ALIAS) { INFO_USAGE }
+        usages.put(RESTORE_ALIAS) { RESTORE_USAGE }
+        usages.put(LIST_ALIAS) { LIST_USAGE }
     }
 
     protected abstract fun loadCommands()

@@ -23,6 +23,7 @@ import org.anvilpowered.anvil.api.util.PermissionService
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.UserService
 import org.anvilpowered.datasync.api.misc.LockService
+import org.anvilpowered.datasync.api.plugin.PluginMessages
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.serializer.user.UserSerializerManager
 
@@ -33,6 +34,9 @@ open class CommonSnapshotCreateCommand<TString, TUser, TPlayer, TCommandSource> 
 
     @Inject
     private lateinit var permissionService: PermissionService
+
+    @Inject
+    private lateinit var pluginMessages: PluginMessages<TString>
 
     @Inject
     protected lateinit var registry: Registry
@@ -48,31 +52,22 @@ open class CommonSnapshotCreateCommand<TString, TUser, TPlayer, TCommandSource> 
 
     fun execute(source: TCommandSource, context: Array<String>) {
         if (!permissionService.hasPermission(source, registry.getOrDefault(DataSyncKeys.SNAPSHOT_CREATE_PERMISSION))) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Insufficient Permissions!")
-                .sendTo(source)
+            textService.send(pluginMessages.noPermissions, source)
             return
         }
         if (!lockService.assertUnlocked(source)) {
             return
         }
-        if (context.size < 1) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("User is required!")
-                .sendTo(source)
+        if (context.isEmpty()) {
+            textService.send(pluginMessages.userRequired, source)
             return
         }
-        val optionalPlayer = userService.getPlayer(context[0])
-        if (!optionalPlayer.isPresent) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("Invalid user!")
-                .sendTo(source)
+        val optionalUser = userService.getPlayer(context[0])
+        if (!optionalUser.isPresent) {
+            textService.send(pluginMessages.invalidUser, source)
             return
         }
-        userSerializerManager.serialize(optionalPlayer.get() as TUser)
+        userSerializerManager.serialize(optionalUser.get() as TUser)
             .thenAcceptAsync { msg: TString -> textService.send(msg, source) }
     }
 }

@@ -32,10 +32,10 @@ abstract class CommonSyncCommandNode<TCommandExecutor, TCommandSource> protected
     protected var registry: Registry
 ) : CommandNode<TCommandSource> {
     companion object {
-        val LOCK_ALIAS = Arrays.asList("lock", "l")
+        val LOCK_ALIAS = listOf("lock", "l")
         val RELOAD_ALIAS = listOf("reload")
         val TEST_ALIAS = listOf("test")
-        val UPLOAD_ALIAS = Arrays.asList("upload", "up")
+        val UPLOAD_ALIAS = listOf("upload", "up")
         val HELP_ALIAS = listOf("help")
         val VERSION_ALIAS = listOf("version")
         const val LOCK_DESCRIPTION = "Lock / Unlock sensitive commands."
@@ -74,13 +74,13 @@ abstract class CommonSyncCommandNode<TCommandExecutor, TCommandSource> protected
         descriptions = HashMap()
         permissions = HashMap()
         usages = HashMap()
-        descriptions[LOCK_ALIAS] = Function { c: TCommandSource -> LOCK_DESCRIPTION }
-        descriptions[RELOAD_ALIAS] = Function { c: TCommandSource -> RELOAD_DESCRIPTION }
-        descriptions[TEST_ALIAS] = Function { c: TCommandSource -> TEST_DESCRIPTION }
-        descriptions[UPLOAD_ALIAS] = Function { c: TCommandSource -> UPLOAD_DESCRIPTION }
-        descriptions[HELP_ALIAS] = Function { c: TCommandSource -> HELP_DESCRIPTION }
-        descriptions[VERSION_ALIAS] = Function { c: TCommandSource -> VERSION_DESCRIPTION }
-        usages[RELOAD_ALIAS] = Function { c: TCommandSource -> RELOAD_USAGE }
+        descriptions.put(LOCK_ALIAS){ LOCK_DESCRIPTION}
+        descriptions.put(RELOAD_ALIAS){ RELOAD_DESCRIPTION}
+        descriptions.put(TEST_ALIAS){ TEST_DESCRIPTION}
+        descriptions.put(UPLOAD_ALIAS){ UPLOAD_DESCRIPTION}
+        descriptions.put(HELP_ALIAS){ HELP_DESCRIPTION}
+        descriptions.put(VERSION_ALIAS){ VERSION_DESCRIPTION}
+        usages.put(RELOAD_ALIAS) { RELOAD_USAGE}
     }
 
     protected abstract fun loadCommands()
