@@ -67,11 +67,7 @@ class SpigotSerializationTaskService @Inject constructor(registry: Registry) : C
                     .sendToConsole()
             } else {
                 snapshotOptimizationManager.primaryComponent
-                    .optimize(
-                        Bukkit.getOnlinePlayers(),
-                        Bukkit.getConsoleSender(),
-                        "Auto"
-                    )
+                    .optimize(Bukkit.getOnlinePlayers(), Bukkit.getConsoleSender(), "Auto")
             }
         }
     }

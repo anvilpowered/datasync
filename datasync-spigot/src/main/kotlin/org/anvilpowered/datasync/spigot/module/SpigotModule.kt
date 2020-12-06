@@ -103,9 +103,9 @@ class SpigotModule : CommonModule<String, Player, Player, TextComponent, Command
         bind(object : TypeLiteral<CommonUserSerializerComponent<EntityId, Player, Player, String, PersistentEntityStore>>() {
         }).to(object : TypeLiteral<SpigotUserSerializerComponent<EntityId, PersistentEntityStore>>() {})
         bind(object : TypeLiteral<CommonSnapshotOptimizationService<ObjectId, Player, Player, CommandSender, String, Datastore>>() {
-        }).to(object : TypeLiteral<SpigotSnapshotOptimizationService<ObjectId, Datastore>>() {})
+        }) to object : TypeLiteral<SpigotSnapshotOptimizationService<ObjectId, Datastore>>() {}
         bind(object : TypeLiteral<CommonSnapshotOptimizationService<EntityId, Player, Player, CommandSender, String, PersistentEntityStore>>() {
-        }).to(object : TypeLiteral<SpigotSnapshotOptimizationService<EntityId, PersistentEntityStore>>() {})
+        }) to object : TypeLiteral<SpigotSnapshotOptimizationService<EntityId, PersistentEntityStore>>() {}
         bind(object : TypeLiteral<CommandNode<CommandSender>>() {
         }).to(SpigotSyncCommandNode::class.java)
     }

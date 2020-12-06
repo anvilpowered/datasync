@@ -17,12 +17,11 @@
  */
 package org.anvilpowered.datasync.spigot.keys
 
-import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.anvilpowered.datasync.common.key.CommonDataKeyService
 
 @Singleton
-class SpigotDataKeyService @Inject constructor() : CommonDataKeyService<String>() {
+class SpigotDataKeyService : CommonDataKeyService<String>() {
     init {
         addMapping("FOOD_LEVEL", "food_level")
         addMapping("SATURATION", "saturation")

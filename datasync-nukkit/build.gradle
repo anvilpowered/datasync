@@ -1,0 +1,32 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+jar.enabled = false // we only want shadowJar
+
+repositories {
+    maven { url 'http://repo.nukkitx.com/maven-snapshots' }
+}
+
+dependencies {
+    implementation nukkit
+    implementation project(':datasync-api')
+    implementation project(':datasync-common')
+    implementation configurate_hocon
+}
+
+shadowJar {
+    String jarName = "DataSync-Nukkit-${project.version}.jar"
+    println "Building: " + jarName
+    archiveFileName = jarName
+
+    dependencies {
+        include project(':datasync-api')
+        include project(':datasync-common')
+
+    }
+}
+
+artifacts {
+    archives shadowJar
+}

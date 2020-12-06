@@ -46,6 +46,7 @@ class DataSyncSpigot : JavaPlugin() {
     private inner class Inner(rootInjector: Injector) : DataSyncImpl<String>(rootInjector, SpigotModule()) {
         override fun applyToBuilder(builder: Environment.Builder) {
             super.applyToBuilder(builder)
+            builder.setLoggerSupplier(this@DataSyncSpigot::getLogger)
             builder.addEarlyServices(SpigotPlayerListener::class.java) { t: SpigotPlayerListener ->
                 Bukkit.getPluginManager().registerEvents(t, this@DataSyncSpigot)
             }

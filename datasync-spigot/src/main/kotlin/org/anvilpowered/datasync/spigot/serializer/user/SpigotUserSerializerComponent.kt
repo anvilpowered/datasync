@@ -48,7 +48,7 @@ class SpigotUserSerializerComponent<TKey, TDataStore> : CommonUserSerializerComp
             player.inventory.clear()
         }
         return waitFuture.thenApplyAsync { shouldDeserialize: Boolean ->
-            if (shouldDeserialize) {
+            if (!shouldDeserialize) {
                 return@thenApplyAsync Optional.empty<Snapshot<TKey>>()
             }
             memberRepository.getLatestSnapshotForUser(player.uniqueId)
@@ -58,11 +58,11 @@ class SpigotUserSerializerComponent<TKey, TDataStore> : CommonUserSerializerComp
                 }
                 .thenApplyAsync { optionalSnapshot: Optional<Snapshot<TKey>> ->
                     // make sure user is still online
-                    if (player.isOnline) {
+                    if (!player.isOnline) {
                         logger.warn("{} has logged off. Skipping deserialization", player.name)
                         return@thenApplyAsync Optional.empty<Snapshot<TKey>>()
                     }
-                    if (optionalSnapshot.isPresent) {
+                    if (!optionalSnapshot.isPresent) {
                         logger.warn("Could not find snapshot for {} Check your DB configuration Rolling back user.",
                             player.name)
                         deserialize(previousState, player)

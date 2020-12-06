@@ -38,7 +38,7 @@ object Utils {
                 .setSnapshotValue(snapshot, key, Optional.of(player.totalExperience))
             "GAME_MODE" -> snapshotManager.primaryComponent
                 .setSnapshotValue(snapshot, key, Optional.of(player.gameMode))
-            else -> throw AssertionError("Failed to serialize snapshot for " + player.displayName)
+            else -> throw AssertionError("Failed to serialize snapshot for $player.displayName")
         }
     }
 

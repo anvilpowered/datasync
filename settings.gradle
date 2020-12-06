@@ -7,4 +7,5 @@ include 'datasync-spigot:1.16.4'
 include 'datasync-spigot:1.16.1'
 include 'datasync-spigot:1.15.2'
 include 'datasync-spigot:1.12.2'
+include 'datasync-nukkit'
 
