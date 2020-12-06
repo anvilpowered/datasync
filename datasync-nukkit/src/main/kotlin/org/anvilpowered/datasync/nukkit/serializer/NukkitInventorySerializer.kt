@@ -3,6 +3,7 @@ package org.anvilpowered.datasync.nukkit.serializer
 import cn.nukkit.Player
 import cn.nukkit.inventory.Inventory
 import cn.nukkit.item.Item
+import cn.nukkit.nbt.NBTIO
 import cn.nukkit.nbt.stream.NBTInputStream
 import cn.nukkit.nbt.stream.NBTOutputStream
 import cn.nukkit.nbt.tag.CompoundTag
@@ -20,13 +21,16 @@ class NukkitInventorySerializer : CommonInventorySerializer<String, Player, Inve
             val nbtOut = NBTOutputStream(outputStream)
             val root = CompoundTag()
             val slot = CompoundTag()
+            val contents: Map<Int, Item> = inventory.contents
             root.put("slot", slot)
-            for (content in inventory.contents) {
-                val itemNBT = CompoundTag()
-                itemNBT.putCompound(content.value.name, content.value.namedTag)
-                slot.putCompound(content.key.toString(), itemNBT)
+            for (i in contents.keys.iterator()) {
+                if (contents[i] == null) {
+                    continue
+                }
+                slot.put(i.toString(), NBTIO.putItemHelper(contents[i], i))
             }
             CompoundTag.writeNamedTag(root, nbtOut)
+            snapshot.setInventory(outputStream.toByteArray())
         } catch (e: Exception) {
             e.printStackTrace()
             success = false
@@ -38,12 +42,16 @@ class NukkitInventorySerializer : CommonInventorySerializer<String, Player, Inve
         inventory.clearAll()
         val root: CompoundTag
         try {
+            if (snapshot.inventory == null) {
+                return false
+            }
             root = CompoundTag.readNamedTag(NBTInputStream(ByteArraySizedInputStream(snapshot.inventory))) as CompoundTag
             val slot = root.get("slot") as CompoundTag
             for (i in 0 until INVENTORY_SLOTS) {
-                val item = Item(0)
-                item.customBlockData = slot[i.toString()] as CompoundTag
-                inventory.setItem(i, item)
+                if (slot[i.toString()] == null) {
+                    continue
+                }
+                inventory.setItem(i, NBTIO.getItemHelper(slot.get(i.toString()) as CompoundTag))
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -52,9 +60,12 @@ class NukkitInventorySerializer : CommonInventorySerializer<String, Player, Inve
         return true
     }
 
+
     override fun serialize(snapshot: Snapshot<*>, user: Player): Boolean = serializeInventory(snapshot, user.inventory)
     override fun deserialize(snapshot: Snapshot<*>, user: Player): Boolean = deserializeInventory(snapshot, user.inventory)
-    override fun serializeInventory(snapshot: Snapshot<*>, inventory: Inventory): Boolean = serializeInventory(snapshot, inventory)
+    override fun serializeInventory(snapshot: Snapshot<*>, inventory: Inventory): Boolean = serializeInventory(snapshot,
+        inventory, INVENTORY_SLOTS)
+
     override fun deserializeInventory(snapshot: Snapshot<*>, inventory: Inventory)
         : Boolean = deserializeInventory(snapshot, inventory, defaultFallbackItemStackSnapshot)
 

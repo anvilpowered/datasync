@@ -19,7 +19,6 @@ class NukkitSnapshotSerializer @Inject constructor(
     private lateinit var textService: TextService<String, CommandSender>
 
     override fun postLoadedEvent() {
-        TODO("Not yet implemented")
     }
 
     override fun announceEnabled(name: String) {

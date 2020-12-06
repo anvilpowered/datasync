@@ -29,7 +29,9 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 @Singleton
-class SpigotSerializationTaskService @Inject constructor(registry: Registry) : CommonSerializationTaskService<Player, TextComponent, CommandSender>(registry) {
+class SpigotSerializationTaskService @Inject constructor(
+    registry: Registry
+) : CommonSerializationTaskService<Player, TextComponent, CommandSender>(registry) {
 
     @Inject
     private lateinit var plugin: DataSyncSpigot
@@ -55,6 +57,7 @@ class SpigotSerializationTaskService @Inject constructor(registry: Registry) : C
     override fun stopSerializationTask() {
         if (task != null) {
             task = null
+            Bukkit.getScheduler().cancelTasks(plugin)
         }
     }
 

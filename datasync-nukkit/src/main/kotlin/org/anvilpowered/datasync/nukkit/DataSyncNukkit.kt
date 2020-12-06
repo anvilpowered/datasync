@@ -30,9 +30,13 @@ class DataSyncNukkit : PluginBase() {
         override fun applyToBuilder(builder: Environment.Builder) {
             super.applyToBuilder(builder)
             builder.setLoggerSupplier(this@DataSyncNukkit::getLogger)
-            builder.addEarlyServices(NukkitPlayerListener::class.java) { t: NukkitPlayerListener ->
-                Server.getInstance().pluginManager.registerEvents(t, this@DataSyncNukkit)
-            }
         }
+    }
+
+    override fun onEnable() {
+        Server.getInstance().pluginManager.registerEvents(
+            DataSyncImpl.getEnvironment().injector.getInstance(NukkitPlayerListener::class.java),
+            this
+        )
     }
 }

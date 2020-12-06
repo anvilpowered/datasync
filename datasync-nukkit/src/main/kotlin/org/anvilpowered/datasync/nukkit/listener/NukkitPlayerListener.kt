@@ -61,6 +61,7 @@ class NukkitPlayerListener @Inject constructor(
     @EventHandler(priority = EventPriority.NORMAL)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         if (joinSerializationEnabled) {
+            print("Attempting to deserialize")
             userSerializerManager.deserialize(event.player)
                 .thenAcceptAsync { msg: String -> textService.sendToConsole(msg) }
         }
