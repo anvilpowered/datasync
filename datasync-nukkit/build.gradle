@@ -13,6 +13,7 @@ dependencies {
     implementation project(':datasync-api')
     implementation project(':datasync-common')
     implementation configurate_hocon
+    implementation fakeinventories
 }
 
 shadowJar {
@@ -23,7 +24,7 @@ shadowJar {
     dependencies {
         include project(':datasync-api')
         include project(':datasync-common')
-
+        include dependency(fakeinventories)
     }
 }
 

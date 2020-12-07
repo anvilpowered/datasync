@@ -22,12 +22,12 @@ import cn.nukkit.Player
 import cn.nukkit.command.Command
 import cn.nukkit.command.CommandExecutor
 import cn.nukkit.command.CommandSender
-import org.anvilpowered.datasync.common.command.CommonSyncTestCommand
+import org.anvilpowered.datasync.common.command.CommonSyncLockCommand
 
-class NukkitSyncTestCommand : CommonSyncTestCommand<String, Player, Player, CommandSender>(), CommandExecutor {
+class NukkitSyncLockCommand : CommonSyncLockCommand<String, Player, Player, CommandSender>(), CommandExecutor {
 
-    override fun onCommand(source: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        execute(source, Player::class.java)
+    override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<String>): Boolean {
+        execute(source, context, Player::class.java)
         return true
     }
 }

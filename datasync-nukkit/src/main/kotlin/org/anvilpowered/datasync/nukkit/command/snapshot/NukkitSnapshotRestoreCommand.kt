@@ -1,6 +1,6 @@
 /*
- *   DataSync - AnvilPowered
- *   Copyright (C) 2020 Cableguy20
+ * DataSync - AnvilPowered
+ *   Copyright (C) 2020
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Lesser General Public License as published by
@@ -13,21 +13,21 @@
  *     GNU Lesser General Public License for more details.
  *
  *     You should have received a copy of the GNU Lesser General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-package org.anvilpowered.datasync.nukkit.command
+package org.anvilpowered.datasync.nukkit.command.snapshot
 
 import cn.nukkit.Player
 import cn.nukkit.command.Command
 import cn.nukkit.command.CommandExecutor
 import cn.nukkit.command.CommandSender
-import org.anvilpowered.datasync.common.command.CommonSyncTestCommand
+import org.anvilpowered.datasync.common.command.snapshot.CommonSnapshotRestoreCommand
 
-class NukkitSyncTestCommand : CommonSyncTestCommand<String, Player, Player, CommandSender>(), CommandExecutor {
+class NukkitSnapshotRestoreCommand : CommonSnapshotRestoreCommand<String, Player, Player, CommandSender>(), CommandExecutor {
 
-    override fun onCommand(source: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        execute(source, Player::class.java)
+    override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<String>): Boolean {
+        execute(source, context)
         return true
     }
 }
