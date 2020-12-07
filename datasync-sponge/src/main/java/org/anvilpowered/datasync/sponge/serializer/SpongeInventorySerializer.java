@@ -129,7 +129,7 @@ public class SpongeInventorySerializer
         return deserializeInventory(snapshot, user.getInventory());
     }
 
-    private ItemStackSnapshot defaultFallbackItemStackSnapshot =
+    private final ItemStackSnapshot defaultFallbackItemStackSnapshot =
         ItemStack.builder().itemType(ItemTypes.BARRIER).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.RED, "Not an actual slot")).build().createSnapshot();
 
     @Override
@@ -137,7 +137,7 @@ public class SpongeInventorySerializer
         return defaultFallbackItemStackSnapshot;
     }
 
-    private ItemStackSnapshot exitWithoutSavingItemStackSnapshot =
+    private final ItemStackSnapshot exitWithoutSavingItemStackSnapshot =
         ItemStack.builder().itemType(ItemTypes.GOLD_INGOT).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.GOLD, "Exit without saving")).build().createSnapshot();
 
     @Override

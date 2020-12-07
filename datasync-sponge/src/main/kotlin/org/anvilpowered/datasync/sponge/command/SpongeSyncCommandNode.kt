@@ -20,14 +20,12 @@ package org.anvilpowered.datasync.sponge.command
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.anvilpowered.anvil.api.registry.Registry
-import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.common.command.CommonSyncCommandNode
 import org.anvilpowered.datasync.sponge.command.optimize.SpongeOptimizeCommandNode
 import org.anvilpowered.datasync.sponge.command.snapshot.SpongeSnapshotCommandNode
 import org.spongepowered.api.Sponge
 import org.spongepowered.api.command.CommandCallable
 import org.spongepowered.api.command.CommandSource
-import org.spongepowered.api.command.context.GenericArguments
 import org.spongepowered.api.command.spec.CommandExecutor
 import org.spongepowered.api.command.spec.CommandSpec
 import org.spongepowered.api.text.Text

@@ -80,20 +80,19 @@ class SpigotModule : CommonModule<String, Player, Player, TextComponent, Command
         }).to(SpigotHealthSerializer::class.java)
         bind(object : TypeLiteral<HungerSerializer<Player>>() {
         }).to(SpigotHungerSerializer::class.java)
-        when (Bukkit.getServer().version.substring(
-            Bukkit.getVersion().indexOf("MC: ") + 4,
-            Bukkit.getVersion().length - 1)) {
-            "1.16.4" -> bind(object : TypeLiteral<InventorySerializer<Player, Inventory, ItemStack>>() {
-            }).to(SpigotInventorySerializer1164::class.java)
-            "1.16.1" -> bind(object : TypeLiteral<InventorySerializer<Player, Inventory, ItemStack>>() {
-            }).to(SpigotInventorySerializer1161::class.java)
-            "1.12.2" -> bind(object : TypeLiteral<InventorySerializer<Player, Inventory, ItemStack>>() {
-            }).to(SpigotInventorySerializer1122::class.java)
-            "1.15.2" -> bind(object : TypeLiteral<InventorySerializer<Player, Inventory, ItemStack>>() {
 
-            }).to(SpigotInventorySerializer1152::class.java)
-            else -> System.err.println("Could not bind the inventory serializer to your MC version!")
-        }
+        bind(object : TypeLiteral<InventorySerializer<Player, Inventory, ItemStack>>() {
+        }).to(
+            when (Bukkit.getServer().version.substring(
+                Bukkit.getVersion().indexOf("MC: ") + 4,
+                Bukkit.getVersion().length - 1)) {
+                "1.16.4" -> SpigotInventorySerializer1164::class.java
+                "1.16.1" -> SpigotInventorySerializer1161::class.java
+                "1.15.2" -> SpigotInventorySerializer1152::class.java
+                "1.12.2" -> SpigotInventorySerializer1122::class.java
+                else -> System.err.println("Could not bind your MC version!")
+            }
+        )
         bind(object : TypeLiteral<SnapshotSerializer<Player>>() {
         }).to(SpigotSnapshotSerializer::class.java)
         bind(object : TypeLiteral<DataKeyService<String>>() {

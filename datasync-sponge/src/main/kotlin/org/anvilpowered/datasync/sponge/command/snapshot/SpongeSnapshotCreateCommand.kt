@@ -23,7 +23,7 @@ class SpongeSnapshotCreateCommand : CommonSnapshotCreateCommand<Text, User, Play
 
     override fun process(source: CommandSource, context: String): CommandResult {
         execute(source, context.splitContext())
-        return CommandResult.success();
+        return CommandResult.success()
     }
 
     override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): MutableList<String> {

@@ -28,6 +28,7 @@ import cn.nukkit.item.Item
 import com.google.inject.Inject
 import com.nukkitx.fakeinventories.inventory.DoubleChestFakeInventory
 import com.nukkitx.fakeinventories.inventory.FakeInventories
+import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.TimeFormatService
 import org.anvilpowered.datasync.api.member.MemberManager
@@ -35,6 +36,7 @@ import org.anvilpowered.datasync.api.misc.LockService
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.serializer.InventorySerializer
+import org.anvilpowered.datasync.api.snapshot.SnapshotManager
 import org.anvilpowered.datasync.nukkit.DataSyncNukkit
 import java.util.Optional
 import java.util.function.Consumer
@@ -48,7 +50,13 @@ class NukkitSnapshotViewCommand : CommandExecutor {
     private lateinit var lockService: LockService
 
     @Inject
+    private lateinit var registry: Registry
+
+    @Inject
     private lateinit var memberManager: MemberManager<String>
+
+    @Inject
+    private lateinit var snapshotRepository: SnapshotManager<String>
 
     @Inject
     private lateinit var inventorySerializer: InventorySerializer<Player, Inventory, Item>
@@ -109,12 +117,43 @@ class NukkitSnapshotViewCommand : CommandExecutor {
                 .yellow().append("Editing snapshot ")
                 .gold().append(timeFormatService.format(optionalSnapshot.get().createdUtc))
                 .sendTo(source)
-            val player: Player = source as Player
+            val player: Player = source
             try {
-                val fakeInv : DoubleChestFakeInventory = FakeInventories().createDoubleChestInventory()
-                inventorySerializer.deserializeInventory(snapshot, fakeInv)
-                Server.getInstance().scheduler.scheduleTask(plugin, Runnable {
-                    player.addWindow(fakeInv)
+                val inv: DoubleChestFakeInventory = FakeInventories().createDoubleChestInventory()
+                inventorySerializer.deserializeInventory(snapshot, inv)
+                val closeData = booleanArrayOf(false)
+                val permissionToEdit = source.hasPermission(registry.getOrDefault(DataSyncKeys.SNAPSHOT_VIEW_EDIT_PERMISSION))
+                inv.addListener { event ->
+                    if (closeData[0] || !permissionToEdit) {
+                        textService.builder()
+                            .appendPrefix()
+                            .yellow().append("Closed snapshot")
+                            .gold().append(timeFormatService.format(snapshot.createdUtc))
+                            .yellow().append("without saving")
+                            .sendTo(source)
+                        return@addListener
+                    }
+
+                    inventorySerializer.serializeInventory(snapshot, event.inventory)
+                    snapshotRepository.primaryComponent.parseAndSetInventory(snapshot.id, snapshot.inventory).thenAcceptAsync { b: Boolean ->
+                        if (b) {
+                            textService.builder()
+                                .appendPrefix()
+                                .yellow().append("Successfully edited snapshot ")
+                                .gold().append(timeFormatService.format(snapshot.createdUtc))
+                                .yellow().append(" for ")
+                                .append(targetPlayer.name)
+                                .sendTo(source)
+                        } else {
+                            textService.builder()
+                                .appendPrefix()
+                                .red().append("An error occurred while serializing user ")
+                                .append(targetPlayer.name)
+                        }
+                    }
+                }
+                Server.getInstance().scheduler.scheduleTask(plugin, {
+                    player.addWindow(inv)
                 })
             } catch (e: Exception) {
                 e.printStackTrace()

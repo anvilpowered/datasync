@@ -14,7 +14,6 @@ repositories {
     mavenLocal()
 }
 
-
 dependencies {
     implementation project(':datasync-api')
     implementation project(':datasync-common')
@@ -39,7 +38,6 @@ shadowJar {
         include project(':datasync-spigot:1.16.1')
         include project(':datasync-spigot:1.15.2')
         include project(':datasync-spigot:1.12.2')
-
     }
 }
 
