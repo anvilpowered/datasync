@@ -15,6 +15,7 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package org.anvilpowered.datasync.spigot.command
 
 import com.google.common.collect.ImmutableList
@@ -55,8 +56,9 @@ class SpigotSyncCommandNode @Inject constructor(
 
     @Inject
     private lateinit var snapshotCommandNode: SpigotSnapshotCommandNode
+
     override fun loadCommands() {
-        val subCommands: MutableMap<List<String>, CommandExecutor?> = HashMap()
+        val subCommands: MutableMap<List<String>, CommandExecutor> = HashMap()
         subCommands[LOCK_ALIAS] = syncLockCommand
         subCommands[RELOAD_ALIAS] = syncReloadCommand
         subCommands[TEST_ALIAS] = syncTestCommand

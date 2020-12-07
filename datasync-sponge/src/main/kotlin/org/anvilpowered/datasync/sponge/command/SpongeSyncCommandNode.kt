@@ -27,7 +27,7 @@ import org.anvilpowered.datasync.sponge.command.snapshot.SpongeSnapshotCommandNo
 import org.spongepowered.api.Sponge
 import org.spongepowered.api.command.CommandCallable
 import org.spongepowered.api.command.CommandSource
-import org.spongepowered.api.command.args.GenericArguments
+import org.spongepowered.api.command.context.GenericArguments
 import org.spongepowered.api.command.spec.CommandExecutor
 import org.spongepowered.api.command.spec.CommandSpec
 import org.spongepowered.api.text.Text

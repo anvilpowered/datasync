@@ -1,6 +1,6 @@
 /*
- *   DataSync - AnvilPowered
- *   Copyright (C) 2020 Cableguy20
+ * DataSync - AnvilPowered
+ *   Copyright (C) 2020
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Lesser General Public License as published by
@@ -13,30 +13,30 @@
  *     GNU Lesser General Public License for more details.
  *
  *     You should have received a copy of the GNU Lesser General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-package org.anvilpowered.datasync.spigot.command.optimize
+package org.anvilpowered.datasync.nukkit.command.optimize
 
+import cn.nukkit.command.CommandExecutor
+import cn.nukkit.command.CommandSender
 import com.google.inject.Inject
 import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.datasync.common.command.optimize.CommonOptimizeCommandNode
-import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
 import java.util.HashMap
 
-class SpigotOptimizeCommandNode @Inject constructor(
+class NukkitOptimizeCommandNode @Inject constructor(
     registry: Registry
-) : CommonOptimizeCommandNode<CommandExecutor, CommandSender>(registry) {
+) : CommonOptimizeCommandNode<CommandExecutor, CommandSender>(registry){
 
     @Inject
-    private lateinit var optimizeInfoCommand: SpigotOptimizeInfoCommand
+    private lateinit var optimizeInfoCommand: NukkitOptimizeInfoCommand
 
     @Inject
-    private lateinit var optimizeStartCommand: SpigotOptimizeStartCommand
+    private lateinit var optimizeStartCommand: NukkitOptimizeStartCommand
 
     @Inject
-    private lateinit var optimizeStopCommand: SpigotOptimizeStopCommand
+    private lateinit var optimizeStopCommand: NukkitOptimizeStopCommand
 
     private val subCommands: MutableMap<List<String>, CommandExecutor> = HashMap()
     override fun loadCommands() {

@@ -1,3 +1,21 @@
+/*
+ *   DataSync - AnvilPowered
+ *   Copyright (C) 2020 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Lesser General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.anvilpowered.datasync.spigot.command.snapshot
 
 import com.google.inject.Inject
@@ -39,38 +57,38 @@ class SpigotSnapshotViewCommand : CommandExecutor {
     @Inject
     private lateinit var textService: TextService<TextComponent, CommandSender>
     
-    override fun onCommand(sender: CommandSender, command: Command, s: String, args: Array<String>): Boolean {
-        if (!sender.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION.fallbackValue)) {
+    override fun onCommand(source: CommandSender, command: Command, s: String, context: Array<String>): Boolean {
+        if (!source.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION.fallbackValue)) {
             textService.builder()
                 .appendPrefix()
                 .red().append("Insufficient Permissions!")
-                .sendTo(sender)
+                .sendTo(source)
             return false
         }
-        if (sender !is Player) {
+        if (source !is Player) {
             textService.builder()
                 .appendPrefix()
                 .yellow().append("Player only command!")
                 .sendToConsole()
             return false
         }
-        if (!lockService.assertUnlocked(sender)) {
+        if (!lockService.assertUnlocked(source)) {
             return false
         }
         val player: String
         val snapshot0: String?
-        if (args.isEmpty()) {
+        if (context.isEmpty()) {
             textService.builder()
                 .appendPrefix()
                 .red().append("User is required!")
-                .sendTo(sender)
+                .sendTo(source)
             return false
-        } else if (args.size == 1) {
-            player = args[0]
+        } else if (context.size == 1) {
+            player = context[0]
             snapshot0 = null
         } else {
-            player = args[0]
-            snapshot0 = args[1]
+            player = context[0]
+            snapshot0 = context[1]
         }
         val optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(player))
         if (!optionalPlayer.isPresent) {
@@ -86,11 +104,11 @@ class SpigotSnapshotViewCommand : CommandExecutor {
                 .appendPrefix()
                 .yellow().append("Editing snapshot ")
                 .gold().append(timeFormatService.format(optionalSnapshot.get().createdUtc))
-                .sendTo(sender)
+                .sendTo(source)
             try {
                 val inventory = Bukkit.createInventory(null, 45, "DataSync Inventory")
                 inventorySerializer.deserializeInventory(snapshot, inventory)
-                Bukkit.getScheduler().runTask(plugin, Runnable { sender.openInventory(inventory) })
+                Bukkit.getScheduler().runTask(plugin, Runnable { source.openInventory(inventory) })
             } catch (e: Exception) {
                 e.printStackTrace()
             }

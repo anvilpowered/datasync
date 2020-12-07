@@ -26,7 +26,7 @@ import org.anvilpowered.datasync.common.command.CommonSyncUploadCommand
 
 class NukkitSyncUploadCommand : CommonSyncUploadCommand<String, Player, Player, CommandSender>(), CommandExecutor {
     
-    override fun onCommand(source: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<String>): Boolean {
         execute(source)
         return true
     }

@@ -1,6 +1,6 @@
 /*
- *   DataSync - AnvilPowered
- *   Copyright (C) 2020 Cableguy20
+ * DataSync - AnvilPowered
+ *   Copyright (C) 2020
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Lesser General Public License as published by
@@ -13,22 +13,21 @@
  *     GNU Lesser General Public License for more details.
  *
  *     You should have received a copy of the GNU Lesser General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-package org.anvilpowered.datasync.spigot.command
+package org.anvilpowered.datasync.nukkit.command.optimize
 
-import net.md_5.bungee.api.chat.TextComponent
-import org.anvilpowered.datasync.common.command.CommonSyncTestCommand
-import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
+import cn.nukkit.Player
+import cn.nukkit.command.Command
+import cn.nukkit.command.CommandExecutor
+import cn.nukkit.command.CommandSender
+import org.anvilpowered.datasync.common.command.optimize.CommonOptimizeStartCommand
 
-class SpigotSyncTestCommand : CommonSyncTestCommand<TextComponent, Player, Player, CommandSender>(), CommandExecutor {
+class NukkitOptimizeStartCommand : CommonOptimizeStartCommand<String, Player, Player, CommandSender>(), CommandExecutor {
 
     override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<String>): Boolean {
-        execute(source, Player::class.java)
+        execute(source, context)
         return true
     }
 }

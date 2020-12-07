@@ -1,3 +1,21 @@
+/*
+ *   DataSync - AnvilPowered
+ *   Copyright (C) 2020 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Lesser General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.anvilpowered.datasync.nukkit.snapshotoptimization
 
 import cn.nukkit.Player
@@ -19,35 +37,35 @@ class NukkitSnapshotOptimizationService<TKey, TDataStore> @Inject constructor(
     @Inject
     private lateinit var textService: TextService<String, CommandSender>
 
-    private fun sendMessageToSourceAndConsole(sender: CommandSender, message: String) {
-        sender.sendMessage(message)
-        if (sender !is ConsoleCommandSender) {
+    private fun sendMessageToSourceAndConsole(source: CommandSender, message: String) {
+        source.sendMessage(message)
+        if (source !is ConsoleCommandSender) {
             Server.getInstance().consoleSender.sendMessage(message)
         }
     }
 
-    private fun optimize(player: Player, sender: CommandSender, name: String): CompletableFuture<Boolean> {
+    private fun optimize(player: Player, source: CommandSender, name: String): CompletableFuture<Boolean> {
         return if (lockedPlayers.contains(player.uniqueId)) {
             CompletableFuture.completedFuture(false)
         } else memberRepository.getSnapshotIdsForUser(player.uniqueId).thenApplyAsync { ids: List<TKey> ->
-            optimizeFull(ids, player.uniqueId, sender, name)
+            optimizeFull(ids, player.uniqueId, source, name)
         }.join()
     }
 
-    override fun optimize(players: Collection<Player>, sender: CommandSender, name: String): Boolean {
+    override fun optimize(players: Collection<Player>, source: CommandSender, name: String): Boolean {
         if (optimizationTaskRunning) {
             return false
         }
         CompletableFuture.runAsync {
             for (player in players) {
-                optimize(player, sender, name).join()
+                optimize(player, source, name).join()
                 incrementCompleted()
                 if (requestCancelOptimizationTask) {
                     break
                 }
             }
         }.thenAcceptAsync {
-            printOptimizationFinished(sender, snapshotsDeleted, snapshotsUploaded, membersCompleted)
+            printOptimizationFinished(source, snapshotsDeleted, snapshotsUploaded, membersCompleted)
         }
         return true
     }
@@ -88,7 +106,7 @@ class NukkitSnapshotOptimizationService<TKey, TDataStore> @Inject constructor(
         Server.getInstance().scheduler.run { runnable }
     }
 
-    private fun printOptimizationFinished(sender: CommandSender, snapshotsDeleted: Int,
+    private fun printOptimizationFinished(source: CommandSender, snapshotsDeleted: Int,
                                           snapshotsUploaded: Int, membersCompleted: Int) {
         val snapshotsDeletedString = if (snapshotsDeleted == 1) " snapshot from " else " snapshots from "
         val snapshotsUploadedString = if (snapshotsUploaded == 1) " snapshot " else " snapshots "
@@ -99,6 +117,6 @@ class NukkitSnapshotOptimizationService<TKey, TDataStore> @Inject constructor(
             .append(snapshotsUploaded).append(snapshotsUploadedString)
             .append(" and remove ").append(snapshotsDeleted).append(snapshotsDeletedString)
             .append(membersCompleted).append(memberString)
-            .sendTo(sender)
+            .sendTo(source)
     }
 }

@@ -25,7 +25,7 @@ import org.anvilpowered.datasync.common.command.CommonSyncReloadCommand
 
 class NukkitSyncReloadCommand : CommonSyncReloadCommand<String, CommandSender>(), CommandExecutor {
     
-    override fun onCommand(source: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+    override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<String>): Boolean {
         execute(source)
         return true
     }

@@ -26,7 +26,7 @@ import org.anvilpowered.datasync.common.command.CommonSyncTestCommand
 
 class NukkitSyncTestCommand : CommonSyncTestCommand<String, Player, Player, CommandSender>(), CommandExecutor {
 
-    override fun onCommand(source: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+    override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<out String>): Boolean {
         execute(source, Player::class.java)
         return true
     }

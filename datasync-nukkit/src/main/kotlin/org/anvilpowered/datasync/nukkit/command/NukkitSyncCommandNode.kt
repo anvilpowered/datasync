@@ -29,6 +29,7 @@ import com.google.inject.Singleton
 import org.anvilpowered.anvil.api.registry.Registry
 import org.anvilpowered.datasync.common.command.CommonSyncCommandNode
 import org.anvilpowered.datasync.nukkit.DataSyncNukkit
+import org.anvilpowered.datasync.nukkit.command.optimize.NukkitOptimizeCommandNode
 import org.anvilpowered.datasync.nukkit.command.snapshot.NukkitSnapshotCommandNode
 
 @Singleton
@@ -52,6 +53,8 @@ class NukkitSyncCommandNode @Inject constructor(
     @Inject
     private lateinit var syncUploadCommand: NukkitSyncUploadCommand
 
+    @Inject
+    private lateinit var optimizeCommandNode: NukkitOptimizeCommandNode
 
     @Inject
     private lateinit var snapshotCommandNode: NukkitSnapshotCommandNode
@@ -62,6 +65,9 @@ class NukkitSyncCommandNode @Inject constructor(
         subCommands[RELOAD_ALIAS] = syncReloadCommand
         subCommands[TEST_ALIAS] = syncTestCommand
         subCommands[UPLOAD_ALIAS] = syncUploadCommand
+        subCommands[ImmutableList.of("optimize", "opt", "o")] = commandService.generateRoutingCommand(
+            commandService.generateHelpCommand(optimizeCommandNode), optimizeCommandNode.getSubCommands(), false
+        )
         subCommands[ImmutableList.of("snapshot", "snap", "s")] = commandService.generateRoutingCommand(
             commandService.generateHelpCommand(snapshotCommandNode), snapshotCommandNode.getSubCommands(), false
         )

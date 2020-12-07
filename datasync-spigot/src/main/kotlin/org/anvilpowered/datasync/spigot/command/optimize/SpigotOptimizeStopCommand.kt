@@ -15,6 +15,7 @@
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package org.anvilpowered.datasync.spigot.command.optimize
 
 import net.md_5.bungee.api.chat.TextComponent
@@ -26,8 +27,8 @@ import org.bukkit.entity.Player
 
 class SpigotOptimizeStopCommand : CommonOptimizeStopCommand<TextComponent, Player, CommandSender>(), CommandExecutor {
 
-    override fun onCommand(sender: CommandSender, command: Command, s: String, args: Array<String>): Boolean {
-        execute(sender)
+    override fun onCommand(source: CommandSender, command: Command, s: String, context: Array<String>): Boolean {
+        execute(source)
         return true
     }
 }

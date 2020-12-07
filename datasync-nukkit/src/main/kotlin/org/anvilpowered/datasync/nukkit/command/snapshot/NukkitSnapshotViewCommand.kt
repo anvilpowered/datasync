@@ -59,42 +59,42 @@ class NukkitSnapshotViewCommand : CommandExecutor {
     @Inject
     private lateinit var textService: TextService<String, CommandSender>
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (!sender.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION.fallbackValue)) {
+    override fun onCommand(source: CommandSender, command: Command, label: String, context: Array<String>): Boolean {
+        if (!source.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION.fallbackValue)) {
             textService.builder()
                 .appendPrefix()
                 .red().append("Insufficient Permissions!")
-                .sendTo(sender)
+                .sendTo(source)
             return false
         }
-        if (sender !is Player) {
+        if (source !is Player) {
             textService.builder()
                 .appendPrefix()
                 .yellow().append("Player only command!")
                 .sendToConsole()
             return false
         }
-        if (!lockService.assertUnlocked(sender)) {
+        if (!lockService.assertUnlocked(source)) {
             return false
         }
         val player: String
         val snapshot0: String?
-        if (args.isEmpty()) {
+        if (context.isEmpty()) {
             textService.builder()
                 .appendPrefix()
                 .red().append("User is required!")
-                .sendTo(sender)
+                .sendTo(source)
             return false
-        } else if (args.size == 1) {
-            player = args[0]
+        } else if (context.size == 1) {
+            player = context[0]
             snapshot0 = null
         } else {
-            player = args[0]
-            snapshot0 = args[1]
+            player = context[0]
+            snapshot0 = context[1]
         }
         val optionalPlayer = Optional.of(Server.getInstance().getPlayer(player))
         if (!optionalPlayer.isPresent) {
-            sender.sendMessage("Offline Player! " + optionalPlayer.isPresent)
+            source.sendMessage("Offline Player! " + optionalPlayer.isPresent)
             return false
         }
 
@@ -108,8 +108,8 @@ class NukkitSnapshotViewCommand : CommandExecutor {
                 .appendPrefix()
                 .yellow().append("Editing snapshot ")
                 .gold().append(timeFormatService.format(optionalSnapshot.get().createdUtc))
-                .sendTo(sender)
-            val player: Player = sender as Player
+                .sendTo(source)
+            val player: Player = source as Player
             try {
                 val fakeInv : DoubleChestFakeInventory = FakeInventories().createDoubleChestInventory()
                 inventorySerializer.deserializeInventory(snapshot, fakeInv)
