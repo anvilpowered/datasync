@@ -3,6 +3,7 @@ version: "0.8.0-SNAPSHOT"
 main: org.anvilpowered.datasync.nukkit.DataSyncNukkit
 api: ["1.0.0"]
 description: A plugin to synchronize player inventories with a database
+author : AnvilPowered
 depend:
   - Anvil
 website: https://www.anvilpowered.org

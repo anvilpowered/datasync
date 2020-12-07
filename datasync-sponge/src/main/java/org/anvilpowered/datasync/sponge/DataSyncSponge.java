@@ -42,7 +42,7 @@ import org.spongepowered.api.plugin.Plugin;
     ),
     description = DataSyncPluginInfo.description,
     url = DataSyncPluginInfo.url,
-    authors = "Cableguy20"
+    authors = "AnvilPowered"
 )
 public class DataSyncSponge extends DataSyncImpl<Key<?>> {
 
