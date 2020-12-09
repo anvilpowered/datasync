@@ -2,9 +2,12 @@ name: DataSync
 version: "0.8.0-SNAPSHOT"
 main: org.anvilpowered.datasync.nukkit.DataSyncNukkit
 api: ["1.0.0"]
-description: A plugin to synchronize player inventories with a database
 author : AnvilPowered
-depend:
-  - Anvil
+description: A plugin to synchronize player inventories with a database
 website: https://www.anvilpowered.org
-load: POSTWORLD
+depend: [Anvil]
+commands:
+  datasync:
+    description: DataSync root command
+    aliases:
+      - sync

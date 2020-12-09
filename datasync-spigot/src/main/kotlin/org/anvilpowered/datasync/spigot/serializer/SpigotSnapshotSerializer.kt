@@ -38,7 +38,6 @@ class SpigotSnapshotSerializer @Inject constructor(
     private lateinit var textService: TextService<TextComponent, CommandSender>
 
     override fun postLoadedEvent() {
-        TODO("not yet implemented")
     }
 
     override fun announceEnabled(name: String) {

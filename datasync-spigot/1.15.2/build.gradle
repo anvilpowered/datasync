@@ -9,6 +9,7 @@ repositories {
 dependencies {
     implementation project(':datasync-api')
     implementation project(':datasync-common')
+    implementation project(':datasync-spigot')
 
     implementation spigot_1_15_2
 }

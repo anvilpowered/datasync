@@ -90,7 +90,10 @@ class SpigotModule : CommonModule<String, Player, Player, TextComponent, Command
                 "1.16.1" -> SpigotInventorySerializer1161::class.java
                 "1.15.2" -> SpigotInventorySerializer1152::class.java
                 "1.12.2" -> SpigotInventorySerializer1122::class.java
-                else -> System.err.println("Could not bind your MC version!")
+                else -> {
+                    System.err.println("Could not bind your MC version!")
+                    null
+                }
             }
         )
         bind(object : TypeLiteral<SnapshotSerializer<Player>>() {
@@ -103,9 +106,9 @@ class SpigotModule : CommonModule<String, Player, Player, TextComponent, Command
         bind(object : TypeLiteral<CommonUserSerializerComponent<EntityId, Player, Player, String, PersistentEntityStore>>() {
         }).to(object : TypeLiteral<SpigotUserSerializerComponent<EntityId, PersistentEntityStore>>() {})
         bind(object : TypeLiteral<CommonSnapshotOptimizationService<ObjectId, Player, Player, CommandSender, String, Datastore>>() {
-        }) to object : TypeLiteral<SpigotSnapshotOptimizationService<ObjectId, Datastore>>() {}
+        }).to(object : TypeLiteral<SpigotSnapshotOptimizationService<ObjectId, Datastore>>() {})
         bind(object : TypeLiteral<CommonSnapshotOptimizationService<EntityId, Player, Player, CommandSender, String, PersistentEntityStore>>() {
-        }) to object : TypeLiteral<SpigotSnapshotOptimizationService<EntityId, PersistentEntityStore>>() {}
+        }).to(object : TypeLiteral<SpigotSnapshotOptimizationService<EntityId, PersistentEntityStore>>() {})
         bind(object : TypeLiteral<CommandNode<CommandSender>>() {
         }).to(SpigotSyncCommandNode::class.java)
     }

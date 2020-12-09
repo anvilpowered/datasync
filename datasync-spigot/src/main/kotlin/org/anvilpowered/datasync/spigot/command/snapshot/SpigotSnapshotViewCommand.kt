@@ -23,12 +23,14 @@ import net.md_5.bungee.api.chat.TextComponent
 import org.anvilpowered.anvil.api.util.TextService
 import org.anvilpowered.anvil.api.util.TimeFormatService
 import org.anvilpowered.datasync.api.member.MemberManager
+import org.anvilpowered.datasync.api.misc.ListenerUtils
 import org.anvilpowered.datasync.api.misc.LockService
 import org.anvilpowered.datasync.api.model.snapshot.Snapshot
 import org.anvilpowered.datasync.api.registry.DataSyncKeys
 import org.anvilpowered.datasync.api.serializer.InventorySerializer
 import org.anvilpowered.datasync.spigot.DataSyncSpigot
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -41,6 +43,9 @@ import java.util.function.Consumer
 class SpigotSnapshotViewCommand : CommandExecutor {
     @Inject
     private lateinit var plugin: DataSyncSpigot
+
+    @Inject
+    private lateinit var listenerUtils: ListenerUtils
 
     @Inject
     private lateinit var lockService: LockService
@@ -56,7 +61,7 @@ class SpigotSnapshotViewCommand : CommandExecutor {
 
     @Inject
     private lateinit var textService: TextService<TextComponent, CommandSender>
-    
+
     override fun onCommand(source: CommandSender, command: Command, s: String, context: Array<String>): Boolean {
         if (!source.hasPermission(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION.fallbackValue)) {
             textService.builder()
@@ -77,18 +82,22 @@ class SpigotSnapshotViewCommand : CommandExecutor {
         }
         val player: String
         val snapshot0: String?
-        if (context.isEmpty()) {
-            textService.builder()
-                .appendPrefix()
-                .red().append("User is required!")
-                .sendTo(source)
-            return false
-        } else if (context.size == 1) {
-            player = context[0]
-            snapshot0 = null
-        } else {
-            player = context[0]
-            snapshot0 = context[1]
+        when {
+            context.isEmpty() -> {
+                textService.builder()
+                    .appendPrefix()
+                    .red().append("User is required!")
+                    .sendTo(source)
+                return false
+            }
+            context.size == 1 -> {
+                player = context[0]
+                snapshot0 = null
+            }
+            else -> {
+                player = context[0]
+                snapshot0 = context[1]
+            }
         }
         val optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(player))
         if (!optionalPlayer.isPresent) {
@@ -106,7 +115,14 @@ class SpigotSnapshotViewCommand : CommandExecutor {
                 .gold().append(timeFormatService.format(optionalSnapshot.get().createdUtc))
                 .sendTo(source)
             try {
-                val inventory = Bukkit.createInventory(null, 45, "DataSync Inventory")
+                val inventory = Bukkit.createInventory(
+                    null,
+                    45,
+                    ChatColor.translateAlternateColorCodes(
+                        '&',
+                        "&3" + timeFormatService.format(snapshot.createdUtc).toString()
+                    ))
+                listenerUtils.add(source.uniqueId, snapshot, targetPlayer.displayName)
                 inventorySerializer.deserializeInventory(snapshot, inventory)
                 Bukkit.getScheduler().runTask(plugin, Runnable { source.openInventory(inventory) })
             } catch (e: Exception) {

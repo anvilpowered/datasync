@@ -57,8 +57,8 @@ class SpigotSerializationTaskService @Inject constructor(
 
     override fun stopSerializationTask() {
         if (task != null) {
-            task = null
             Bukkit.getScheduler().cancelTasks(plugin)
+            task = null
         }
     }
 

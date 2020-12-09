@@ -28,12 +28,14 @@ import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 import java.io.DataInputStream
 import java.io.DataOutput
 import java.io.DataOutputStream
 import java.util.Objects
 
-class SpigotInventorySerializer1152 : CommonInventorySerializer<String, Player, Inventory, ItemStack>() {
+class SpigotInventorySerializer1152 : SpigotInventorySerializer() {
+
     override fun serializeInventory(snapshot: Snapshot<*>, inventory: Inventory, maxSlots: Int): Boolean {
         var success = true
         try {
@@ -60,10 +62,6 @@ class SpigotInventorySerializer1152 : CommonInventorySerializer<String, Player, 
         return success
     }
 
-    override fun serializeInventory(snapshot: Snapshot<*>, inventory: Inventory): Boolean {
-        return serializeInventory(snapshot, inventory, INVENTORY_SLOTS)
-    }
-
     override fun deserializeInventory(snapshot: Snapshot<*>, inventory: Inventory, fallbackItemStack: ItemStack): Boolean {
         inventory.clear()
         val root: NBTTagCompound
@@ -79,34 +77,16 @@ class SpigotInventorySerializer1152 : CommonInventorySerializer<String, Player, 
                         slot[i.toString()] as NBTTagCompound)
                     ))
             }
+            if (inventory !is PlayerInventory) {
+                inventory.setItem(44, exitWithoutSavingItemStackSnapshot)
+                inventory.setItem(43, fallbackItemStack)
+                inventory.setItem(42, fallbackItemStack)
+                inventory.setItem(41, fallbackItemStack)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             return false
         }
         return true
-    }
-
-    override fun deserializeInventory(snapshot: Snapshot<*>, itemStacks: Inventory): Boolean {
-        return deserializeInventory(snapshot, itemStacks, defaultFallbackItemStackSnapshot)
-    }
-
-    override fun getDefaultFallbackItemStackSnapshot(): ItemStack {
-        val itemStack = ItemStack(Material.BARRIER, 1)
-        Objects.requireNonNull(itemStack.itemMeta)!!.setDisplayName("Not an actual slot")
-        return itemStack
-    }
-
-    override fun getExitWithoutSavingItemStackSnapshot(): ItemStack {
-        val itemStack = ItemStack(Material.GOLD_INGOT, 1)
-        Objects.requireNonNull(itemStack.itemMeta)!!.setDisplayName("Exit without saving")
-        return itemStack
-    }
-
-    override fun serialize(snapshot: Snapshot<*>, player: Player): Boolean {
-        return serializeInventory(snapshot, player.inventory)
-    }
-
-    override fun deserialize(snapshot: Snapshot<*>, player: Player): Boolean {
-        return deserializeInventory(snapshot, player.inventory)
     }
 }

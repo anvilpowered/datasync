@@ -1,5 +1,7 @@
 package org.anvilpowered.datasync.api.misc;
 
+import org.anvilpowered.datasync.api.model.snapshot.Snapshot;
+
 import java.util.List;
 import java.util.UUID;
 
