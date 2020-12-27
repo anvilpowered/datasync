@@ -60,9 +60,6 @@ class SpigotPlayerListener @Inject constructor(
     private lateinit var listenerUtils: ListenerUtils
 
     @Inject
-    private lateinit var permissionService: PermissionService
-
-    @Inject
     private lateinit var snapshotRepository: SnapshotManager<String>
 
     @Inject
