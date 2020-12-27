@@ -221,13 +221,11 @@ class SpongeSnapshotViewCommand : CommandCallable {
         }
     }
 
-    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): MutableList<String> {
-        TODO("Not yet implemented")
-    }
+    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): List<String> =
+        listOf()
 
-    override fun testPermission(source: CommandSource): Boolean {
-        return source.hasPermission(registry.getOrDefault(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION))
-    }
+    override fun testPermission(source: CommandSource): Boolean =
+        source.hasPermission(registry.getOrDefault(DataSyncKeys.SNAPSHOT_VIEW_BASE_PERMISSION))
 
     override fun getShortDescription(source: CommandSource): Optional<Text> = DESCRIPTION
     override fun getHelp(source: CommandSource): Optional<Text> = DESCRIPTION

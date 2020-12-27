@@ -23,7 +23,6 @@ import org.anvilpowered.datasync.common.command.optimize.CommonOptimizeInfoComma
 import org.spongepowered.api.command.CommandCallable
 import org.spongepowered.api.command.CommandResult
 import org.spongepowered.api.command.CommandSource
-import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.entity.living.player.User
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.world.Location
@@ -34,7 +33,6 @@ class SpongeOptimizeInfoCommand : CommonOptimizeInfoCommand<Text, User, CommandS
 
     companion object {
         val DESCRIPTION: Optional<Text> = Optional.of(Text.of(CommonOptimizeCommandNode.INFO_DESCRIPTION))
-        val USAGE: Text = Text.of("")
     }
 
     override fun process(source: CommandSource, arguments: String): CommandResult {
@@ -42,15 +40,13 @@ class SpongeOptimizeInfoCommand : CommonOptimizeInfoCommand<Text, User, CommandS
         return CommandResult.success()
     }
 
-    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): MutableList<String> {
-        TODO("Not yet implemented")
-    }
+    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): List<String> =
+        listOf()
 
-    override fun testPermission(source: CommandSource): Boolean {
-        return source.hasPermission(registry.getOrDefault(DataSyncKeys.MANUAL_OPTIMIZATION_BASE_PERMISSION))
-    }
+    override fun testPermission(source: CommandSource): Boolean =
+        source.hasPermission(registry.getOrDefault(DataSyncKeys.MANUAL_OPTIMIZATION_BASE_PERMISSION))
 
     override fun getShortDescription(source: CommandSource): Optional<Text> = DESCRIPTION
     override fun getHelp(source: CommandSource): Optional<Text> = DESCRIPTION
-    override fun getUsage(source: CommandSource): Text = USAGE
+    override fun getUsage(source: CommandSource): Text = Text.of("")
 }

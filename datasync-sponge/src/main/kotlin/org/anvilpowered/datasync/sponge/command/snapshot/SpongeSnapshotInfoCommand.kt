@@ -43,13 +43,11 @@ class SpongeSnapshotInfoCommand : CommonSnapshotInfoCommand<Text, User, Player, 
         return CommandResult.success()
     }
 
-    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): MutableList<String> {
-        TODO("Not yet implemented")
-    }
+    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): List<String> =
+        listOf()
 
-    override fun testPermission(source: CommandSource): Boolean {
-        return source.hasPermission(registry.getOrDefault(DataSyncKeys.SNAPSHOT_BASE_PERMISSION))
-    }
+    override fun testPermission(source: CommandSource): Boolean =
+        source.hasPermission(registry.getOrDefault(DataSyncKeys.SNAPSHOT_BASE_PERMISSION))
 
     override fun getShortDescription(source: CommandSource): Optional<Text> = DESCRIPTION
     override fun getHelp(source: CommandSource): Optional<Text> = DESCRIPTION

@@ -34,7 +34,6 @@ class SpongeSyncTestCommand : CommonSyncTestCommand<Text, User, Player, CommandS
 
     companion object {
         val DESCRIPTION: Optional<Text> = Optional.of(Text.of(CommonSyncCommandNode.TEST_DESCRIPTION))
-        val USAGE: Text = Text.of("")
     }
 
     override fun process(source: CommandSource, arguments: String): CommandResult {
@@ -42,15 +41,13 @@ class SpongeSyncTestCommand : CommonSyncTestCommand<Text, User, Player, CommandS
         return CommandResult.success()
     }
 
-    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): MutableList<String> {
-        TODO("Not yet implemented")
-    }
+    override fun getSuggestions(source: CommandSource, arguments: String, targetPosition: Location<World>?): List<String> =
+        listOf()
 
-    override fun testPermission(source: CommandSource): Boolean {
-        return source.hasPermission(registry.getOrDefault(DataSyncKeys.TEST_COMMAND_PERMISSION))
-    }
+    override fun testPermission(source: CommandSource): Boolean =
+        source.hasPermission(registry.getOrDefault(DataSyncKeys.TEST_COMMAND_PERMISSION))
 
     override fun getShortDescription(source: CommandSource): Optional<Text> = DESCRIPTION
     override fun getHelp(source: CommandSource): Optional<Text> = DESCRIPTION
-    override fun getUsage(source: CommandSource): Text = USAGE
+    override fun getUsage(source: CommandSource): Text = Text.of("")
 }
