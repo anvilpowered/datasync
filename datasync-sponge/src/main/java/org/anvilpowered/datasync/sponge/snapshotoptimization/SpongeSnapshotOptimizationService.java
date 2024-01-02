@@ -158,9 +158,12 @@ public class SpongeSnapshotOptimizationService<
                                          ? " snapshot" : " snapshots";
         String memberString = membersCompleted == 1
                               ? " user!" : " users!";
-        source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW,
-            "Optimization complete! Uploaded ", snapshotsUploaded, snapshotsUploadedString,
-            " and removed ", snapshotsDeleted, snapshotsDeletedString, membersCompleted,
-            memberString));
+
+        if (snapshotsUploaded != 0 || snapshotsDeleted != 0 || membersCompleted != 0) {
+            source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.YELLOW,
+                    "Optimization complete! Uploaded ", snapshotsUploaded, snapshotsUploadedString,
+                    " and removed ", snapshotsDeleted, snapshotsDeletedString, membersCompleted,
+                    memberString));
+        }
     }
 }
